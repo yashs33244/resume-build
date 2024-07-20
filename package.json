@@ -29,6 +29,7 @@
   ],
   "dependencies": {
     "@icons-pack/react-simple-icons": "^9.5.0",
-    "@prisma/client": "^5.15.0"
+    "@prisma/client": "^5.15.0",
+    "jspdf": "^2.5.1"
   }
 }
