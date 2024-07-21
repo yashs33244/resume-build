@@ -77,5 +77,12 @@
     color: #333;
   }
   
+  .a4-size {
+    /* Additional styling if needed */
+    @media print {
+      width: 210mm;
+      height: 297mm;
+    }
+  }
   /* ...rest of your CSS */
   

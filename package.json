@@ -30,6 +30,9 @@
   "dependencies": {
     "@icons-pack/react-simple-icons": "^9.5.0",
     "@prisma/client": "^5.15.0",
-    "jspdf": "^2.5.1"
+    "@types/html-to-text": "^9.0.4",
+    "html-to-text": "^9.0.5",
+    "jspdf": "^2.5.1",
+    "react-quill": "^2.0.0"
   }
 }

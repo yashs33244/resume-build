@@ -1,4 +1,5 @@
 import React from 'react';
+import { htmlToText } from 'html-to-text';
 import '../app/css/resume.css';
 
 export interface ResumeProps {
@@ -40,8 +41,12 @@ export const Resume: React.FC<ResumeProps> = ({
   skills = {},
   achievement = { title: '', description: '' }
 }) => {
+  const renderHtml = (html: string) => {
+    return { __html: html };
+  };
+
   return (
-    <div className="resume" id="resume" >
+    <div className="resume" id="resume">
       <header>
         <div className="header-left">
           <h1>{name}</h1>
@@ -56,7 +61,7 @@ export const Resume: React.FC<ResumeProps> = ({
 
       <section>
         <h3>Bio</h3>
-        <p>{bio}</p>
+        <div dangerouslySetInnerHTML={renderHtml(bio)} />
       </section>
 
       <section>
@@ -80,7 +85,7 @@ export const Resume: React.FC<ResumeProps> = ({
             <p>{exp.duration}</p>
             <ul>
               {(exp.responsibilities || []).map((resp, i) => (
-                <li key={i}>{resp}</li>
+                <li key={i} dangerouslySetInnerHTML={renderHtml(resp)} />
               ))}
             </ul>
           </div>
@@ -89,18 +94,22 @@ export const Resume: React.FC<ResumeProps> = ({
 
       <section>
         <h3>Skills</h3>
-        {Object.entries(skills).map(([category, skillList], index) => (
-          <div key={index}>
-            <h4>{category}</h4>
-            <p>{skillList.join(', ')}</p>
-          </div>
-        ))}
+        {Object.entries(skills).map(([category, skillList]) => {
+          // Check if skillList is indeed an array before joining
+          const skillsText = Array.isArray(skillList) ? skillList.join(", ") : skillList;
+          return (
+            <div key={category}>
+              <h4>{category}</h4>
+              <p>{skillsText}</p> 
+            </div>
+          );
+        })}
       </section>
 
       <section>
         <h3>Achievement</h3>
         <h4>{achievement.title}</h4>
-        <p>{achievement.description}</p>
+        <div dangerouslySetInnerHTML={renderHtml(achievement.description)} />
       </section>
     </div>
   );
