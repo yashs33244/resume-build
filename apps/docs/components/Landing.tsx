@@ -30,7 +30,7 @@ export function LandingPage() {
               />
               <div className="flex justify-between mt-4">
                 <button className="px-6 py-2 bg-gray-200 text-gray-800 rounded-full">Back</button>
-              <Link href="/editor">
+              <Link href="/resume-builder">
                 <button className="px-6 py-2 bg-gray-800 text-white rounded-full" >
                   Continue
                 </button>

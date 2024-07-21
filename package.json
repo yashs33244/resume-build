@@ -16,6 +16,7 @@
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",
     "@repo/typescript-config": "workspace:*",
+    "@types/react-pdf": "^7.0.0",
     "prettier": "^3.3.2",
     "turbo": "latest"
   },
@@ -28,11 +29,17 @@
     "packages/*"
   ],
   "dependencies": {
+    "@heroicons/react": "^2.1.5",
     "@icons-pack/react-simple-icons": "^9.5.0",
     "@prisma/client": "^5.15.0",
+    "@reduxjs/toolkit": "^2.2.6",
     "@types/html-to-text": "^9.0.4",
     "html-to-text": "^9.0.5",
     "jspdf": "^2.5.1",
-    "react-quill": "^2.0.0"
+    "react-contenteditable": "^3.3.7",
+    "react-frame-component": "^5.2.7",
+    "react-pdf": "^9.1.0",
+    "react-quill": "^2.0.0",
+    "react-redux": "^9.1.2"
   }
 }

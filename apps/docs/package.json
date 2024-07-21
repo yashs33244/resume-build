@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@google/generative-ai": "^0.2.1",
+    "@react-pdf/renderer": "^3.4.4",
     "@repo/ui": "workspace:*",
     "@types/bcrypt": "^5.0.2",
     "bcrypt": "^5.1.1",
@@ -35,6 +36,7 @@
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "@types/react-pdf": "^7.0.0",
     "@types/sanitize-html": "^2.11.0",
     "autoprefixer": "^10.4.19",
     "eslint": "^8.57.0",
