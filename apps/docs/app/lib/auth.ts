@@ -1,17 +1,18 @@
 import { db } from "../db";
 import CredentialsProvider from "next-auth/providers/credentials";
+import GoogleProvider from "next-auth/providers/google";
 import bcrypt from "bcrypt";
 import { NextAuthOptions } from "next-auth";
 import { JWT } from "next-auth/jwt";
 import { JWTPayload, SignJWT, importJWK } from "jose";
-import { Session } from "next-auth";
+import { Session as NextAuthSession } from "next-auth";
 
-interface token extends JWT {
+interface Token extends JWT {
   uid: string;
   jwtToken: string;
 }
 
-export interface session extends Session {
+export interface CustomSession extends NextAuthSession {
   user: {
     id: string;
     jwtToken: string;
@@ -19,6 +20,7 @@ export interface session extends Session {
     name: string;
   };
 }
+
 interface User {
   id: string;
   name: string;
@@ -40,7 +42,7 @@ const generateJWT = async (payload: JWTPayload) => {
   return jwt;
 };
 
-export const authOptions = {
+export const authOptions: NextAuthOptions = {
   providers: [
     CredentialsProvider({
       name: "Credentials",
@@ -49,7 +51,6 @@ export const authOptions = {
         password: { label: "password", type: "password", placeholder: "" },
       },
       async authorize(credentials: any) {
-
         if (!credentials.username || !credentials.password) {
           return null;
         }
@@ -83,14 +84,11 @@ export const authOptions = {
             return null;
           }
         }
-        try {
-          // sign up
-          if (credentials.username.length < 3) {
-            return null
-          }
 
-          if (credentials.username.password < 3) {
-            return null
+        try {
+          // Sign up
+          if (credentials.username.length < 3 || credentials.password.length < 3) {
+            return null;
           }
 
           const user = await db.user.create({
@@ -116,11 +114,15 @@ export const authOptions = {
         }
       },
     }),
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID as string,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
+    }),
   ],
   secret: process.env.NEXTAUTH_SECRET || "secr3t",
   callbacks: {
     session: async ({ session, token }) => {
-      const newSession: session = session as session;
+      const newSession: CustomSession = session as CustomSession;
       if (newSession.user && token.uid) {
         newSession.user.id = token.uid as string;
         newSession.user.jwtToken = token.jwtToken as string;
@@ -128,7 +130,7 @@ export const authOptions = {
       return newSession!;
     },
     jwt: async ({ token, user }): Promise<JWT> => {
-      const newToken = token;
+      const newToken = token as Token;
 
       if (user) {
         newToken.uid = user.id;
@@ -136,5 +138,51 @@ export const authOptions = {
       }
       return newToken;
     },
+    async signIn({ user, account }) {
+      if (account?.provider === 'google') {
+        // Check if the user already exists
+        const userDb = await db.user.findUnique({
+          where: { email: user.email as string },
+        });
+
+        if (!userDb) {
+          // Create a new user if they don't exist
+          const newUser = await db.user.create({
+            data: {
+              email: user.email as string,
+              name: user.name as string,
+              password: 'GOOGLE_AUTH_' + Math.random().toString(36).slice(-8),
+              // You might want to handle Google-specific logic here
+              // For simplicity, we're just creating a record without a password
+            },
+          });
+
+          const jwt = await generateJWT({
+            id: newUser.id,
+          });
+
+          return {
+            id: newUser.id,
+            name: newUser.name,
+            email: newUser.email,
+            token: jwt,
+          };
+        }
+
+        // User already exists, return the existing user
+        const jwt = await generateJWT({
+          id: userDb.id,
+        });
+
+        return {
+          id: userDb.id,
+          name: userDb.name,
+          email: userDb.email,
+          token: jwt,
+        };
+      }
+
+      return true; // Allow sign-in if not using Google provider
+    },
   },
-} satisfies NextAuthOptions;
+};

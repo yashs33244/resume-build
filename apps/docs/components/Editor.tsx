@@ -118,20 +118,22 @@ export default function Editor() {
         return { ...prevData, [section]: updatedSection };
       } else if (section === 'skills') {
         const updatedSkills = { ...prevData.skills };
-        if (index !== undefined && category) {
+        if (category) {
           const updatedCategorySkills = Array.isArray(updatedSkills[category]) ? [...updatedSkills[category]] : [];
           if (field === 'newSkill') {
-            updatedCategorySkills.push(value);
+            updatedCategorySkills.push(''); // Add an empty string as a new skill
           } else if (field === 'deleteSkill') {
-            updatedCategorySkills.splice(index, 1);
-          } else {
-            updatedCategorySkills[index] = value;
+            updatedCategorySkills.splice(index!, 1);
+          } else if (field === 'skill') {
+            updatedCategorySkills[index!] = value;
           }
           updatedSkills[category] = updatedCategorySkills;
         } else if (field === 'newCategory') {
           updatedSkills[value] = [];
-        } else {
-          updatedSkills[category!] = value;
+        } else if (field === 'category') {
+          const oldCategory = Object.keys(updatedSkills)[index!];
+          updatedSkills[value] = updatedSkills[oldCategory];
+          delete updatedSkills[oldCategory];
         }
         return { ...prevData, skills: updatedSkills };
       } else if (typeof prevData[section] === 'object' && prevData[section] !== null) {
@@ -334,53 +336,54 @@ export default function Editor() {
               </div>
             )}
             {activeSection === 'Skills' && (
-              <div className="mt-8">
-                <h2 className="text-2xl font-semibold">Skills</h2>
-                {Object.keys(resumeData.skills).map((category, index) => (
-                  <div key={index} className="mt-4">
-                    <Label htmlFor={`category-${index}`}>Category</Label>
-                    <Input
-                      id={`category-${index}`}
-                      value={category}
-                      onChange={(e) => handleInputChange('skills', 'category', e.target.value, index, undefined, category)}
-                      placeholder="Category"
-                    />
-                    {Array.isArray(resumeData.skills[category]) && resumeData.skills[category].map((skill, subIndex) => (
-                      <div key={subIndex} className="flex items-center mt-2">
-                        <Input
-                          value={skill}
-                          onChange={(e) => handleInputChange('skills', 'skill', e.target.value, subIndex, undefined, category)}
-                          placeholder="Skill"
-                        />
-                        <Button
-                          variant="destructive"
-                          onClick={() => handleInputChange('skills', 'deleteSkill', '', subIndex, undefined, category)}
-                          className="ml-2"
-                        >
-                          Delete
-                        </Button>
-                      </div>
-                    ))}
-                    <Button
-                      variant="default"
-                      onClick={() => handleInputChange('skills', 'newSkill', '', undefined, undefined, category)}
-                    >
-                      Add Skill
-                    </Button>
-                    <Button
-                      variant="destructive"
-                      onClick={() => handleDeleteField('skills', undefined, category)}
-                      className="ml-2"
-                    >
-                      Delete Category
-                    </Button>
-                  </div>
-                ))}
-                <Button variant="default" onClick={() => handleAddField('skills')}>
-                  Add Category
-                </Button>
-              </div>
-            )}
+  <div className="mt-8">
+    <h2 className="text-2xl font-semibold">Skills</h2>
+    {Object.entries(resumeData.skills).map(([category, skills], index) => (
+      <div key={index} className="mt-4">
+        <Label htmlFor={`category-${index}`}>Category</Label>
+        <Input
+          id={`category-${index}`}
+          value={category}
+          onChange={(e) => handleInputChange('skills', 'category', e.target.value, index)}
+          placeholder="Category"
+        />
+        {Array.isArray(skills) && skills.map((skill, subIndex) => (
+          <div key={subIndex} className="flex items-center mt-2">
+            <Input
+              value={skill}
+              onChange={(e) => handleInputChange('skills', 'skill', e.target.value, subIndex, undefined, category)}
+              placeholder="Skill"
+            />
+            <Button
+              variant="destructive"
+              onClick={() => handleInputChange('skills', 'deleteSkill', '', subIndex, undefined, category)}
+              className="ml-2"
+            >
+              Delete
+            </Button>
+          </div>
+        ))}
+        <Button
+          variant="default"
+          onClick={() => handleInputChange('skills', 'newSkill', '', undefined, undefined, category)}
+          className="mt-2"
+        >
+          Add Skill
+        </Button>
+        <Button
+          variant="destructive"
+          onClick={() => handleDeleteField('skills', undefined, category)}
+          className="ml-2"
+        >
+          Delete Category
+        </Button>
+      </div>
+    ))}
+    <Button variant="default" onClick={() => handleAddField('skills')} className="mt-4">
+      Add Category
+    </Button>
+  </div>
+)}
             {activeSection === 'Achievement' && (
               <div className="mt-8">
                 <h2 className="text-2xl font-semibold">Achievement</h2>
