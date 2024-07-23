@@ -1,35 +1,8 @@
+// components/Resume.tsx
 import React from 'react';
-import { htmlToText } from 'html-to-text';
-import '../app/css/resume.css';
+import { ResumeProps } from '../interfaces/ResumeProps';
 
-export interface ResumeProps {
-  name?: string;
-  title?: string;
-  contact?: {
-    website?: string;
-    email?: string;
-    phone?: string;
-  };
-  bio?: string;
-  education?: {
-    institution: string;
-    years: string;
-    degree: string;
-  }[];
-  experience?: {
-    company: string;
-    role: string;
-    duration: string;
-    responsibilities?: string[];
-  }[];
-  skills?: {
-    [category: string]: string[];
-  };
-  achievement?: {
-    title: string;
-    description: string;
-  };
-}
+import '../app/css/resume.css';
 
 export const Resume: React.FC<ResumeProps> = ({
   name = '',
@@ -95,12 +68,11 @@ export const Resume: React.FC<ResumeProps> = ({
       <section>
         <h3>Skills</h3>
         {Object.entries(skills).map(([category, skillList]) => {
-          // Check if skillList is indeed an array before joining
           const skillsText = Array.isArray(skillList) ? skillList.join(", ") : skillList;
           return (
             <div key={category}>
               <h4>{category}</h4>
-              <p>{skillsText}</p> 
+              <p>{skillsText}</p>
             </div>
           );
         })}

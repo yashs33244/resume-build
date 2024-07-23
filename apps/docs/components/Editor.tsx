@@ -3,7 +3,8 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter }
 import { Label } from "@repo/ui/components/ui/label";
 import { Input } from "@repo/ui/components/ui/input";
 import { Button } from "@repo/ui/components/ui/button";
-import Resume, { ResumeProps } from "./Resume";
+import Resume from "./Resume";
+import { ResumeProps } from "../interfaces/ResumeProps";
 import { useState, useEffect } from "react";
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
@@ -117,26 +118,26 @@ export default function Editor() {
         }
         return { ...prevData, [section]: updatedSection };
       } else if (section === 'skills') {
-        const updatedSkills = { ...prevData.skills };
-        if (category) {
-          const updatedCategorySkills = Array.isArray(updatedSkills[category]) ? [...updatedSkills[category]] : [];
-          if (field === 'newSkill') {
-            updatedCategorySkills.push(''); // Add an empty string as a new skill
-          } else if (field === 'deleteSkill') {
-            updatedCategorySkills.splice(index!, 1);
-          } else if (field === 'skill') {
-            updatedCategorySkills[index!] = value;
-          }
-          updatedSkills[category] = updatedCategorySkills;
-        } else if (field === 'newCategory') {
-          updatedSkills[value] = [];
-        } else if (field === 'category') {
-          const oldCategory = Object.keys(updatedSkills)[index!];
-          updatedSkills[value] = updatedSkills[oldCategory];
-          delete updatedSkills[oldCategory];
+      const updatedSkills = { ...prevData.skills };
+      if (category) {
+        const updatedCategorySkills = Array.isArray(updatedSkills[category]) ? [...updatedSkills[category]] : [];
+        if (field === 'newSkill') {
+          updatedCategorySkills.push(''); // Add an empty string as a new skill
+        } else if (field === 'deleteSkill') {
+          updatedCategorySkills.splice(index!, 1);
+        } else if (field === 'skill') {
+          updatedCategorySkills[index!] = value;
         }
-        return { ...prevData, skills: updatedSkills };
-      } else if (typeof prevData[section] === 'object' && prevData[section] !== null) {
+        updatedSkills[category] = updatedCategorySkills;
+      } else if (field === 'newCategory') {
+        updatedSkills[value] = [];
+      } else if (field === 'category') {
+        const oldCategory = Object.keys(updatedSkills)[index!];
+        updatedSkills[value] = updatedSkills[oldCategory];
+        delete updatedSkills[oldCategory];
+      }
+      return { ...prevData, skills: updatedSkills };
+    } else if (typeof prevData[section] === 'object' && prevData[section] !== null) {
         return {
           ...prevData,
           [section]: {
@@ -159,13 +160,14 @@ export default function Editor() {
       handleInputChange('skills', 'newCategory', 'New Category');
     } else if (section === 'experience' || section === 'education') {
       setResumeData((prevData) => {
-        const updatedSection = [...prevData[section]!, {}];
+        const updatedSection = [...prevData[section]!, { responsibilities: [] }]; // Initialize responsibilities
         return { ...prevData, [section]: updatedSection };
       });
     } else if (section === 'achievement') {
       setResumeData((prevData) => ({ ...prevData, achievement: { title: '', description: '' } }));
     }
   };
+  
 
   const handleDeleteField = (section: keyof ResumeProps, index?: number, category?: string) => {
     if (section === 'experience' || section === 'education') {
@@ -294,42 +296,43 @@ export default function Editor() {
               <div className="mt-8">
                 <h2 className="text-2xl font-semibold">Experience</h2>
                 {resumeData.experience?.map((exp, index) => (
-                  <div key={index} className="mt-4">
-                    <Label htmlFor={`company-${index}`}>Company</Label>
-                    <Input
-                      id={`company-${index}`}
-                      value={exp.company}
-                      onChange={(e) => handleInputChange('experience', 'company', e.target.value, index)}
-                      placeholder="Company"
-                    />
-                    <Label htmlFor={`role-${index}`}>Role</Label>
-                    <Input
-                      id={`role-${index}`}
-                      value={exp.role}
-                      onChange={(e) => handleInputChange('experience', 'role', e.target.value, index)}
-                      placeholder="Role"
-                    />
-                    <Label htmlFor={`duration-${index}`}>Duration</Label>
-                    <Input
-                      id={`duration-${index}`}
-                      value={exp.duration}
-                      onChange={(e) => handleInputChange('experience', 'duration', e.target.value, index)}
-                      placeholder="Duration"
-                    />
-                    <Label htmlFor={`responsibilities-${index}`}>Responsibilities</Label>
-                    <ReactQuill
-                      id={`responsibilities-${index}`}
-                      value={exp.responsibilities.join('\n')}
-                      onChange={(value) => handleInputChange('experience', 'responsibilities', value.split('\n'), index)}
-                    />
-                    <Button
-                      variant="destructive"
-                      onClick={() => handleDeleteField('experience', index)}
-                    >
-                      Delete
-                    </Button>
-                  </div>
-                ))}
+  <div key={index} className="mt-4">
+    <Label htmlFor={`company-${index}`}>Company</Label>
+    <Input
+      id={`company-${index}`}
+      value={exp.company}
+      onChange={(e) => handleInputChange('experience', 'company', e.target.value, index)}
+      placeholder="Company"
+    />
+    <Label htmlFor={`role-${index}`}>Role</Label>
+    <Input
+      id={`role-${index}`}
+      value={exp.role}
+      onChange={(e) => handleInputChange('experience', 'role', e.target.value, index)}
+      placeholder="Role"
+    />
+    <Label htmlFor={`duration-${index}`}>Duration</Label>
+    <Input
+      id={`duration-${index}`}
+      value={exp.duration}
+      onChange={(e) => handleInputChange('experience', 'duration', e.target.value, index)}
+      placeholder="Duration"
+    />
+    <Label htmlFor={`responsibilities-${index}`}>Responsibilities</Label>
+    <ReactQuill
+      id={`responsibilities-${index}`}
+      value={Array.isArray(exp.responsibilities) ? exp.responsibilities.join('\n') : ''}
+      onChange={(value) => handleInputChange('experience', 'responsibilities', value.split('\n'), index)}
+    />
+    <Button
+      variant="destructive"
+      onClick={() => handleDeleteField('experience', index)}
+    >
+      Delete
+    </Button>
+  </div>
+))}
+
                 <Button variant="default" onClick={() => handleAddField('experience')}>
                   Add Experience
                 </Button>
