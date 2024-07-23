@@ -211,7 +211,7 @@ export default function Editor() {
         <main className="flex flex-1 p-4 md:p-10">
   <div className="flex flex-col w-full gap-4 md:flex-row">
     <div className="w-full md:w-1/2">
-      <h1 className="text-3xl font-bold">Edit Resume</h1>
+      <h1 className="text-3xl font-bold">{activeSection}</h1>
       <Accordion type="single" collapsible>
         {activeSection === 'Personal Info' && (
           <AccordionItem value="personal-info">
@@ -237,21 +237,21 @@ export default function Editor() {
                   <Label htmlFor="website">Website</Label>
                   <Input
                     id="website"
-                    value={resumeData.contact.website || ''}
+                    value={resumeData.contact?.website || ''}
                     onChange={(e) => handleInputChange('contact', 'website', e.target.value)}
                     placeholder="Website"
                   />
                   <Label htmlFor="email">Email</Label>
                   <Input
                     id="email"
-                    value={resumeData.contact.email || ''}
+                    value={resumeData.contact?.email || ''}
                     onChange={(e) => handleInputChange('contact', 'email', e.target.value)}
                     placeholder="Email"
                   />
                   <Label htmlFor="phone">Phone</Label>
                   <Input
                     id="phone"
-                    value={resumeData.contact.phone || ''}
+                    value={resumeData.contact?.phone || ''}
                     onChange={(e) => handleInputChange('contact', 'phone', e.target.value)}
                     placeholder="Phone"
                   />
@@ -268,56 +268,54 @@ export default function Editor() {
         )}
         
         {activeSection === 'Education' && (
-          <AccordionItem value="education">
-            <AccordionTrigger>Education</AccordionTrigger>
-            <AccordionContent>
-              <div className="mt-8">
-                <h2 className="text-2xl font-semibold">Education</h2>
-                {resumeData.education?.map((edu, index) => (
-                  <div key={index} className="mt-4">
-                    <Label htmlFor={`institution-${index}`}>Institution</Label>
-                    <Input
-                      id={`institution-${index}`}
-                      value={edu.institution}
-                      onChange={(e) => handleInputChange('education', 'institution', e.target.value, index)}
-                      placeholder="Institution"
-                    />
-                    <Label htmlFor={`years-${index}`}>Years</Label>
-                    <Input
-                      id={`years-${index}`}
-                      value={edu.years}
-                      onChange={(e) => handleInputChange('education', 'years', e.target.value, index)}
-                      placeholder="Years"
-                    />
-                    <Label htmlFor={`degree-${index}`}>Degree</Label>
-                    <Input
-                      id={`degree-${index}`}
-                      value={edu.degree}
-                      onChange={(e) => handleInputChange('education', 'degree', e.target.value, index)}
-                      placeholder="Degree"
-                    />
-                    <Button
-                      variant="destructive"
-                      onClick={() => handleDeleteField('education', index)}
-                    >
-                      Delete
-                    </Button>
-                  </div>
-                ))}
-                <Button variant="default" onClick={() => handleAddField('education')}>
-                  Add Education
-                </Button>
-              </div>
-            </AccordionContent>
-          </AccordionItem>
-        )}
+                <>
+                  {resumeData.education?.map((edu, index) => (
+                    <AccordionItem key={index} value={`education-${index}`}>
+                      <AccordionTrigger>
+                        <Input
+                          value={edu.institution}
+                          onChange={(e) => handleInputChange('education', 'institution', e.target.value, index)}
+                          placeholder="Institution"
+                        />
+                      </AccordionTrigger>
+                      <AccordionContent>
+                        <div className="mt-4">
+                          <Label htmlFor={`years-${index}`}>Years</Label>
+                          <Input
+                            id={`years-${index}`}
+                            value={edu.years}
+                            onChange={(e) => handleInputChange('education', 'years', e.target.value, index)}
+                            placeholder="Years"
+                          />
+                          <Label htmlFor={`degree-${index}`}>Degree</Label>
+                          <Input
+                            id={`degree-${index}`}
+                            value={edu.degree}
+                            onChange={(e) => handleInputChange('education', 'degree', e.target.value, index)}
+                            placeholder="Degree"
+                          />
+                          <Button
+                            variant="destructive"
+                            onClick={() => handleDeleteField('education', index)}
+                          >
+                            Delete
+                          </Button>
+                        </div>
+                      </AccordionContent>
+                    </AccordionItem>
+                  ))}
+                  <Button variant="default" onClick={() => handleAddField('education')}>
+                    Add Education
+                  </Button>
+                </>
+              )}
 
         {activeSection === 'Experience' && (
           <Accordion type="single" collapsible>
           {activeSection === 'Experience' && (
             <>
-              {resumeData.experience.map((exp, index) => (
-                <AccordionItem key={exp.id} value={`experience-${index}`}>
+              {resumeData.experience?.map((exp, index) => (
+                <AccordionItem key={index} value={`experience-${index}`}>
                   <AccordionTrigger>
                     <Input
                       value={exp.company}
@@ -344,7 +342,7 @@ export default function Editor() {
                       <Label htmlFor={`responsibilities-${index}`}>Responsibilities</Label>
                       <ReactQuill
                         id={`responsibilities-${index}`}
-                        value={exp.responsibilities.join('\n')}
+                        value={exp.responsibilities?.join('\n')}
                         onChange={(value) => handleInputChange('experience', 'responsibilities', value.split('\n'), index)}
                       />
                       <Button
@@ -366,60 +364,58 @@ export default function Editor() {
         </Accordion>
         )}
 
-        {activeSection === 'Skills' && (
-          <AccordionItem value="skills">
-            <AccordionTrigger>Skills</AccordionTrigger>
-            <AccordionContent>
-              <div className="mt-8">
-                <h2 className="text-2xl font-semibold">Skills</h2>
-                {Object.entries(resumeData.skills).map(([category, skills], index) => (
-                  <div key={index} className="mt-4">
-                    <Label htmlFor={`category-${index}`}>Category</Label>
-                    <Input
-                      id={`category-${index}`}
-                      value={category}
-                      onChange={(e) => handleInputChange('skills', 'category', e.target.value, index)}
-                      placeholder="Category"
-                    />
-                    {Array.isArray(skills) && skills.map((skill, subIndex) => (
-                      <div key={subIndex} className="flex items-center mt-2">
+{activeSection === 'Skills' && (
+                <>
+                  {Object.entries(resumeData.skills).map(([category, skills], index) => (
+                    <AccordionItem key={category} value={`skills-${index}`}>
+                      <AccordionTrigger>
                         <Input
-                          value={skill}
-                          onChange={(e) => handleInputChange('skills', 'skill', e.target.value, subIndex, undefined, category)}
-                          placeholder="Skill"
+                          value={category}
+                          onChange={(e) => handleInputChange('skills', 'category', e.target.value, index)}
+                          placeholder="Category"
                         />
-                        <Button
-                          variant="destructive"
-                          onClick={() => handleInputChange('skills', 'deleteSkill', '', subIndex, undefined, category)}
-                          className="ml-2"
-                        >
-                          Delete
-                        </Button>
-                      </div>
-                    ))}
-                    <Button
-                      variant="default"
-                      onClick={() => handleInputChange('skills', 'newSkill', '', undefined, undefined, category)}
-                      className="mt-2"
-                    >
-                      Add Skill
-                    </Button>
-                    <Button
-                      variant="destructive"
-                      onClick={() => handleDeleteField('skills', undefined, category)}
-                      className="ml-2"
-                    >
-                      Delete Category
-                    </Button>
-                  </div>
-                ))}
-                <Button variant="default" onClick={() => handleAddField('skills')} className="mt-4">
-                  Add Category
-                </Button>
-              </div>
-            </AccordionContent>
-          </AccordionItem>
-        )}
+                      </AccordionTrigger>
+                      <AccordionContent>
+                        <div className="mt-4">
+                          {Array.isArray(skills) && skills.map((skill, subIndex) => (
+                            <div key={subIndex} className="flex items-center mt-2">
+                              <Input
+                                value={skill}
+                                onChange={(e) => handleInputChange('skills', 'skill', e.target.value, subIndex, undefined, category)}
+                                placeholder="Skill"
+                              />
+                              <Button
+                                variant="destructive"
+                                onClick={() => handleInputChange('skills', 'deleteSkill', '', subIndex, undefined, category)}
+                                className="ml-2"
+                              >
+                                Delete
+                              </Button>
+                            </div>
+                          ))}
+                          <Button
+                            variant="default"
+                            onClick={() => handleInputChange('skills', 'newSkill', '', undefined, undefined, category)}
+                            className="mt-2"
+                          >
+                            Add Skill
+                          </Button>
+                          <Button
+                            variant="destructive"
+                            onClick={() => handleDeleteField('skills', undefined, category)}
+                            className="ml-2"
+                          >
+                            Delete Category
+                          </Button>
+                        </div>
+                      </AccordionContent>
+                    </AccordionItem>
+                  ))}
+                  <Button variant="default" onClick={() => handleAddField('skills')} className="mt-4">
+                    Add Category
+                  </Button>
+                </>
+              )}
 
         {activeSection === 'Achievement' && (
           <AccordionItem value="achievement">
