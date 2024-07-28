@@ -1,28 +1,28 @@
 import { Button } from "@repo/ui/components/ui/button";
 import { Profilebutton } from "@repo/ui/components/profilebutton";
-import { authOptions } from './lib/auth';
+import { authOptions } from "./lib/auth";
 import { getServerSession } from "next-auth";
-import {LandingPage} from "../components/Landing"
+import { LandingPage } from "../components/Landing";
 
 const getUserDetails = async () => {
-  const session = await getServerSession(authOptions); 
+  const session = await getServerSession(authOptions);
   return session;
-}
+};
 
 export default async function Page() {
-  const session = await getUserDetails(); 
+  const session = await getUserDetails();
   if (session?.user) {
     return (
       <main>
         {/* <Frontpage />  */}
-        <LandingPage/>
+        <LandingPage />
       </main>
     );
   }
   return (
     <main>
       {/* <Frontpage />  */}
-      <LandingPage/>
+      <LandingPage />
       {/* not logged in */}
     </main>
   );

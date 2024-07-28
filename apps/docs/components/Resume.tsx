@@ -1,18 +1,20 @@
-// components/Resume.tsx
-import React from 'react';
-import { ResumeProps } from '../interfaces/ResumeProps';
-
-import '../app/css/resume.css';
+import React from "react";
+import { ResumeProps } from "../types/ResumeProps";
+import "../app/css/resume.css";
 
 export const Resume: React.FC<ResumeProps> = ({
-  name = '',
-  title = '',
-  contact = {},
-  bio = '',
+  personalInfo = {
+    name: "Your Name",
+    title: "Title",
+    website: "website@",
+    email: "email @",
+    phone: "+1234567890",
+    bio: "Please add a bio",
+  },
   education = [],
   experience = [],
   skills = {},
-  achievement = { title: '', description: '' }
+  achievement = { title: "", description: "" },
 }) => {
   const renderHtml = (html: string) => {
     return { __html: html };
@@ -22,19 +24,19 @@ export const Resume: React.FC<ResumeProps> = ({
     <div className="resume" id="resume">
       <header>
         <div className="header-left">
-          <h1>{name}</h1>
-          <h2>{title}</h2>
+          <h1>{personalInfo.name}</h1>
+          <h2>{personalInfo.title}</h2>
         </div>
         <div className="header-right">
-          <p>{contact.website || ''}</p>
-          <p>{contact.email || ''}</p>
-          <p>{contact.phone || ''}</p>
+          <p>{personalInfo.website || ""}</p>
+          <p>{personalInfo.email || ""}</p>
+          <p>{personalInfo.phone || ""}</p>
         </div>
       </header>
 
       <section>
         <h3>Bio</h3>
-        <div dangerouslySetInnerHTML={renderHtml(bio)} />
+        <div dangerouslySetInnerHTML={renderHtml(personalInfo.bio || "")} />
       </section>
 
       <section>
@@ -54,7 +56,9 @@ export const Resume: React.FC<ResumeProps> = ({
         <h3>Experience</h3>
         {experience.map((exp, index) => (
           <div className="experience-item" key={index}>
-            <h4>{exp.company} - {exp.role}</h4>
+            <h4>
+              {exp.company} - {exp.role}
+            </h4>
             <p>{exp.duration}</p>
             <ul>
               {(exp.responsibilities || []).map((resp, i) => (
@@ -68,7 +72,9 @@ export const Resume: React.FC<ResumeProps> = ({
       <section>
         <h3>Skills</h3>
         {Object.entries(skills).map(([category, skillList]) => {
-          const skillsText = Array.isArray(skillList) ? skillList.join(", ") : skillList;
+          const skillsText = Array.isArray(skillList)
+            ? skillList.join(", ")
+            : skillList;
           return (
             <div key={category}>
               <h4>{category}</h4>
@@ -80,8 +86,10 @@ export const Resume: React.FC<ResumeProps> = ({
 
       <section>
         <h3>Achievement</h3>
-        <h4>{achievement.title}</h4>
-        <div dangerouslySetInnerHTML={renderHtml(achievement.description)} />
+        <h4>{achievement?.title}</h4>
+        <div
+          dangerouslySetInnerHTML={renderHtml(achievement?.description || "")}
+        />
       </section>
     </div>
   );
