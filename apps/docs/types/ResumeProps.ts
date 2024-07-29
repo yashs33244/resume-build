@@ -1,5 +1,6 @@
 // types/ResumeProps.ts
 export interface ResumeProps {
+  userId: string;
   personalInfo: {
     name: string;
     title: string;

@@ -1,14 +1,15 @@
 import { ResumeProps } from '../types/ResumeProps';
 
 export const initialResumeData: ResumeProps = {
-  name: "Dianne Russell",
-  title: "UI/UX Designer",
-  contact: {
-    website: "diannerussell.art",
-    email: "hello@diannerussell.com",
-    phone: "(629) 555-0129"
+  userId: "string", 
+  personalInfo:{
+    name: "jebni",
+    title: "kjsnef",
+    website: "ksjenfks",
+    email: "string",
+    phone: "string",
+    bio: "string",
   },
-  bio: "I'm a UI/UX Designer with over 8 years of experience...",
   education: [
     {
       institution: "Liceria University",

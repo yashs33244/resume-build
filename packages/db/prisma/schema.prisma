@@ -8,16 +8,18 @@ datasource db {
 }
 
 model User {
-  id                 String              @id @default(cuid())
-  email              String              @unique
-  name               String?
-  token              String?
-  profilePhoto       String?  
-  password           String
-  createdAt          DateTime            @default(now())
-  updatedAt          DateTime            @updatedAt
-  sessions           Session[]           
+  id           String    @id @default(cuid())
+  email        String    @unique
+  name         String?
+  token        String?
+  profilePhoto String?
+  password     String
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  sessions     Session[]
+  resumes      Resume[]
 }
+
 model Session {
   id           String   @id @default(cuid())
   sessionToken String   @unique
@@ -26,3 +28,61 @@ model Session {
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
+model Resume {
+  id           String        @id @default(cuid())
+  userId       String
+  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  personalInfo PersonalInfo?
+  education    Education[]
+  experience   Experience[]
+  skills       Skill[]
+  achievements Achievement[]
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+}
+
+model PersonalInfo {
+  id       String  @id @default(cuid())
+  resumeId String  @unique
+  resume   Resume  @relation(fields: [resumeId], references: [id], onDelete: Cascade)
+  name     String
+  title    String
+  website  String?
+  email    String
+  phone    String
+}
+
+model Education {
+  id          String @id @default(cuid())
+  resumeId    String
+  resume      Resume @relation(fields: [resumeId], references: [id], onDelete: Cascade)
+  institution String
+  years       String
+  degree      String
+}
+
+model Experience {
+  id               String   @id @default(cuid())
+  resumeId         String
+  resume           Resume   @relation(fields: [resumeId], references: [id], onDelete: Cascade)
+  company          String
+  role             String
+  duration         String
+  responsibilities String[]
+}
+
+model Skill {
+  id       String   @id @default(cuid())
+  resumeId String
+  resume   Resume   @relation(fields: [resumeId], references: [id], onDelete: Cascade)
+  name     String
+  skills   String[]
+}
+
+model Achievement {
+  id          String @id @default(cuid())
+  resumeId    String
+  resume      Resume @relation(fields: [resumeId], references: [id], onDelete: Cascade)
+  title       String
+  description String
+}

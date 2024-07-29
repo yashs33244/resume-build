@@ -176,7 +176,7 @@ export default function Editor() {
       return newData;
     });
   };
-  const handleDownload = () => {
+  const handleDownload = async () => {
     const element = document.querySelector("#resume")!;
 
     html2canvas(element, {
@@ -219,6 +219,21 @@ export default function Editor() {
 
       pdf.save("resume.pdf");
     });
+    const response = await fetch("/api/saveResume", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        // Make sure to include the userId in your resumeData
+        resumeData: resumeData,
+      }),
+    });
+
+    if (!response.ok) {
+      console.error("Failed to save resume");
+    }
+    // Save resume data to the database
   };
 
   return (
