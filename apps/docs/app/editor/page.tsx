@@ -1,7 +1,5 @@
-import Editor from "../../components/Editor"
+import EditPage from "../../components/EditPage";
 
-export default function Page(){
-    return (
-        <Editor/>
-    )
-} 
+export default function Page() {
+  return <EditPage />;
+}

@@ -138,6 +138,7 @@ export const authOptions: NextAuthOptions = {
       }
       return newToken;
     },
+    //@ts-ignore
     async signIn({ user, account }) {
       if (account?.provider === 'google') {
         // Check if the user already exists

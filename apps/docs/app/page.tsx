@@ -1,5 +1,3 @@
-import { Button } from "@repo/ui/components/ui/button";
-import { Profilebutton } from "@repo/ui/components/profilebutton";
 import { authOptions } from "./lib/auth";
 import { getServerSession } from "next-auth";
 import { LandingPage } from "../components/Landing";

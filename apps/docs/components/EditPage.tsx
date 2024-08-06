@@ -1,14 +1,14 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { Button } from "@repo/ui/components/ui/button";
-import Resume from "../components/Resume";
+import Resume from "./Resume";
 import { ResumeProps } from "../types/ResumeProps";
 import { initialResumeData } from "../utils/resumeData";
-import { PersonalInfo } from "../components/Editor/PersonalInfo";
-import { Education } from "../components/Editor/Education";
-import { Experience } from "../components/Editor/Experience";
-import { Skills } from "../components/Editor/Skills";
-import { Achievement } from "../components/Editor/Achievement";
+import { PersonalInfo } from "./Editor/PersonalInfo";
+import { Education } from "./Editor/Education";
+import { Experience } from "./Editor/Experience";
+import { Skills } from "./Editor/Skills";
+import { Achievement } from "./Editor/Achievement";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 
@@ -20,7 +20,7 @@ const sections = [
   "Achievement",
 ];
 
-export default function Editor() {
+export default function EditPage() {
   const [resumeData, setResumeData] = useState<ResumeProps>(initialResumeData);
   const [activeSection, setActiveSection] = useState(sections[0]);
 
@@ -51,55 +51,69 @@ export default function Editor() {
           ...newData.personalInfo,
           [field]: value,
         };
-      } else if (section === "experience" || section === "education") {
-        if (newData[section]) {
-          newData[section] = [...(newData[section] as any[])];
-          if (index !== undefined && newData[section][index]) {
-            newData[section][index] = {
-              ...newData[section][index],
-              [field]: value,
-            };
-          }
+      } else if (section === "education") {
+        if (newData.education && Array.isArray(newData.education)) {
+          newData.education = newData.education.map((item, i) =>
+            i === index ? { ...item, [field]: value } : item,
+          );
+        }
+      } else if (section === "experience") {
+        if (newData.experience && Array.isArray(newData.experience)) {
+          newData.experience = newData.experience.map((item, i) =>
+            i === index ? { ...item, [field]: value } : item,
+          );
         }
       } else if (section === "skills") {
-        newData.skills = { ...newData.skills };
+        const updatedSkills = { ...newData.skills };
+
         if (field === "updateCategory") {
-          const { oldName, newName } = value;
-          if (oldName !== newName && newData.skills[oldName]) {
-            newData.skills[newName] = newData.skills[oldName];
-            delete newData.skills[oldName];
+          const { oldName, newName } = value as {
+            oldName: string;
+            newName: string;
+          };
+          if (oldName !== newName && updatedSkills[oldName]) {
+            updatedSkills[newName] = updatedSkills[oldName]?.slice() || [];
+            delete updatedSkills[oldName];
           }
         } else if (field === "skill" && category && subIndex !== undefined) {
-          if (Array.isArray(newData.skills[category])) {
-            newData.skills[category] = [...newData.skills[category]];
-            newData.skills[category][subIndex] = value;
+          if (!updatedSkills[category]) {
+            updatedSkills[category] = [];
           }
-        } else if (field === "skill" && category && subIndex !== undefined) {
-          if (Array.isArray(newData.skills[category])) {
-            newData.skills[category] = [...newData.skills[category]];
-            newData.skills[category][subIndex] = value;
+          const categorySkills = updatedSkills[category];
+          if (
+            categorySkills &&
+            subIndex >= 0 &&
+            subIndex < categorySkills.length
+          ) {
+            const updatedCategorySkills = [...categorySkills];
+            updatedCategorySkills[subIndex] = value;
+            updatedSkills[category] = updatedCategorySkills;
           }
         } else if (field === "newSkill" && category) {
-          if (Array.isArray(newData.skills[category])) {
-            const lastSkill =
-              newData.skills[category][newData.skills[category].length - 1];
+          if (!updatedSkills[category]) {
+            updatedSkills[category] = [];
+          }
+          const categorySkills = updatedSkills[category];
+          if (categorySkills) {
+            const lastSkill = categorySkills[categorySkills.length - 1];
             if (lastSkill === undefined || lastSkill.trim() !== "") {
-              newData.skills[category] = [...newData.skills[category], ""];
+              updatedSkills[category] = [...categorySkills, ""];
             }
-          } else {
-            newData.skills[category] = [""];
           }
         } else if (
           field === "deleteSkill" &&
           category &&
           subIndex !== undefined
         ) {
-          if (Array.isArray(newData.skills[category])) {
-            newData.skills[category] = newData.skills[category].filter(
+          const categorySkills = updatedSkills[category];
+          if (categorySkills) {
+            updatedSkills[category] = categorySkills.filter(
               (_, i) => i !== subIndex,
             );
           }
         }
+
+        newData.skills = updatedSkills;
       } else if (section === "achievement") {
         newData.achievement = {
           ...newData.achievement,
@@ -155,15 +169,17 @@ export default function Editor() {
     setResumeData((prevData) => {
       const newData = { ...prevData };
       if (section === "education" || section === "experience") {
-        newData[section] = prevData[section]!.filter((_, i) => i !== index);
+        (newData[section] as any[]) = (prevData[section] as any[]).filter(
+          (_, i) => i !== index,
+        );
       } else if (section === "skills") {
         if (category && skillIndex !== undefined) {
           // Delete a skill from a category
           newData.skills = {
             ...newData.skills,
-            [category]: newData.skills[category].filter(
-              (_, i) => i !== skillIndex,
-            ),
+            [category]:
+              newData.skills[category]?.filter((_, i) => i !== skillIndex) ||
+              [],
           };
         } else if (category) {
           // Delete an entire category
@@ -178,7 +194,7 @@ export default function Editor() {
   };
   const handleDownload = async () => {
     const element = document.querySelector("#resume")!;
-
+    //@ts-ignore
     html2canvas(element, {
       scale: 4,
       logging: false,
@@ -217,7 +233,7 @@ export default function Editor() {
         "FAST",
       );
 
-      pdf.save("resume.pdf");
+      // pdf.save("resume.pdf");
     });
     const response = await fetch("/api/saveResume", {
       method: "POST",
