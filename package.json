@@ -12,7 +12,8 @@
     "dev:docker": "pnpm run prisma:docker && pnpm run dev",
     "prisma:docker": "cd packages/db && DATABASE_URL=\"postgresql://postgres:mysecretpassword@db:5432/find-it-here?schema=public\" npx prisma generate && npx prisma migrate deploy",
     "start:web": "cd apps/web && pnpm run start",
-    "start:docs": "cd apps/docs && pnpm start"
+    "start:docs": "cd apps/docs && pnpm start",
+    "build:docs": "cd apps/docs && pnpm run build"
   },
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",

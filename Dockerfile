@@ -1,27 +1,36 @@
-# Use an official Node.js runtime as the base image
-FROM node:18-alpine
+# Build stage
+FROM node:18-alpine AS builder
 
-# Set the working directory in the container
+# Install PostgreSQL client
+RUN apk add --no-cache postgresql-client
+
 WORKDIR /app
 
-# Copy root package.json, pnpm-lock.yaml, and turborepo configuration
-COPY package.json pnpm-lock.yaml turbo.json ./
+# Copy the entire project
+COPY . .
 
-# Copy the apps and packages directories
-COPY apps ./apps
-COPY packages ./packages
-
-# Install pnpm
 RUN npm install -g pnpm
-
-# Install dependencies for all workspaces
-RUN pnpm install -r
+RUN pnpm install
 
 # Build the application
-RUN pnpm run build --filter=docs
+RUN cd apps/docs && pnpm run build
 
-# Expose the port the app runs on
+# Production stage
+FROM node:18-alpine
+
+# Install PostgreSQL client
+RUN apk add --no-cache postgresql-client
+
+WORKDIR /app
+
+# Copy necessary files from builder stage
+COPY --from=builder /app /app
+
+RUN npm install -g pnpm
+
+RUN chmod +x /app/start.sh
+
 EXPOSE 3000
 
-# Command to run the application
-CMD ["sh", "-c", "cd /app && pnpm run prisma:docker && cd /app/apps/docs && pnpm start"]
+# Use the startup script as the entrypoint
+CMD ["/app/start.sh"]
