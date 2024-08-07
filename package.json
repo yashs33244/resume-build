@@ -1,0 +1,45 @@
+{
+  "name": "turborepo-shadcn-ui",
+  "version": "1.2.1",
+  "private": true,
+  "license": "MIT",
+  "scripts": {
+    "build": "turbo build",
+    "dev": "turbo dev",
+    "lint": "turbo lint",
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "ui:add": "pnpm --filter @repo/ui ui:add",
+    "dev:docker": "pnpm run prisma:docker && pnpm run dev",
+    "prisma:docker": "cd packages/db && DATABASE_URL=\"postgresql://postgres:mysecretpassword@db:5432/find-it-here?schema=public\" npx prisma generate && npx prisma migrate deploy",
+    "start:web": "cd apps/web && pnpm run start",
+    "start:docs": "cd apps/docs && pnpm start"
+  },
+  "devDependencies": {
+    "@repo/eslint-config": "workspace:*",
+    "@repo/typescript-config": "workspace:*",
+    "prettier": "^3.3.2",
+    "turbo": "latest"
+  },
+  "packageManager": "pnpm@8.9.0",
+  "engines": {
+    "node": ">=18"
+  },
+  "pnpm": {
+    "peerDependencyRules": {
+      "ignoreMissing": ["react", "react-dom"]
+    }
+  },
+  "dependencies": {
+    "@google/generative-ai": "^0.2.1",
+    "@icons-pack/react-simple-icons": "^9.5.0",
+    "@prisma/client": "^5.15.0",
+    "@types/html-to-text": "^9.0.4",
+    "ai": "^3.3.0",
+    "html-to-text": "^9.0.5",
+    "html2canvas": "^1.4.1",
+    "jspdf": "^2.5.1",
+    "lucide-react": "^0.395.0",
+    "next-themes": "^0.3.0",
+    "react-quill": "^2.0.0"
+  }
+}

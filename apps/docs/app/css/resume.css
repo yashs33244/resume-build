@@ -1,0 +1,88 @@
+.resume {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 40px;
+    font-family: Arial, sans-serif;
+    background-color: #FFF5EE;
+    color: #333;
+  }
+  
+  header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 30px;
+  }
+  
+  .header-left h1 {
+    color: #FF6347;
+    margin: 0;
+    font-size: 2.5em;
+  }
+  
+  .header-left h2 {
+    margin: 5px 0;
+    font-weight: normal;
+    color: #666;
+  }
+  
+  .header-right {
+    text-align: right;
+  }
+  
+  .header-right p {
+    margin: 5px 0;
+  }
+  
+  h3 {
+    color: #FF6347;
+    border-bottom: 2px solid #FF6347;
+    padding-bottom: 5px;
+    margin-top: 30px;
+  }
+  
+  .education-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+  
+  .experience-item {
+    margin-bottom: 20px;
+  }
+  
+  .experience-item h4 {
+    margin-bottom: 5px;
+  }
+  
+  .experience-item p {
+    color: #666;
+    margin: 5px 0;
+  }
+  
+  ul {
+    padding-left: 20px;
+  }
+  
+  section p {
+    margin: 10px 0;
+  }
+
+  /* Your CSS styles here */
+.resume {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 40px;
+    font-family: Arial, sans-serif;
+    background-color: #FFF5EE;
+    color: #333;
+  }
+  
+  .a4-size {
+    /* Additional styling if needed */
+    @media print {
+      width: 210mm;
+      height: 297mm;
+    }
+  }
+  /* ...rest of your CSS */
+  
