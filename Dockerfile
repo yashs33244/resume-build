@@ -9,8 +9,12 @@ WORKDIR /app
 # Copy the entire project
 COPY . .
 
+# Install dependencies
 RUN npm install -g pnpm
 RUN pnpm install
+
+# Generate Prisma client
+RUN cd packages/db && pnpm prisma generate
 
 # Build the application
 RUN cd apps/docs && pnpm run build
@@ -28,9 +32,7 @@ COPY --from=builder /app /app
 
 RUN npm install -g pnpm
 
-RUN chmod +x /app/start.sh
-
 EXPOSE 3000
 
-# Use the startup script as the entrypoint
-CMD ["/app/start.sh"]
+# Start the application
+CMD ["pnpm", "start", "--filter", "apps/docs"]
