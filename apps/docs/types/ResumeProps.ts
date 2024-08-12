@@ -1,4 +1,3 @@
-// types/ResumeProps.ts
 export interface ResumeProps {
   userId: string;
   personalInfo: {
@@ -8,6 +7,7 @@ export interface ResumeProps {
     email?: string;
     phone?: string;
     bio?: string;
+    location?: string;
   };
   education: Array<{
     institution: string;
@@ -27,4 +27,9 @@ export interface ResumeProps {
     title: string;
     description: string;
   } | null;
+  projects?: Array<{
+    name: string;
+    duration: string;
+    description: string[];
+  }>;
 }

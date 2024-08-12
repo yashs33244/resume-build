@@ -14,7 +14,9 @@
     "@types/bcrypt": "^5.0.2",
     "@types/html2canvas": "^1.0.0",
     "bcrypt": "^5.1.1",
+    "clsx": "^2.1.1",
     "dotenv": "^16.4.5",
+    "framer-motion": "^11.3.24",
     "html2canvas": "^1.4.1",
     "jose": "^5.6.3",
     "jspdf": "^2.5.1",
@@ -26,9 +28,10 @@
     "react": "^18",
     "react-dom": "^18",
     "react-quill": "^2.0.0",
+    "recoil": "^0.7.7",
     "sanitize-html": "^2.13.0",
     "sonner": "^1.5.0",
-    "recoil": "^0.7.7"
+    "tailwind-merge": "^2.3.0"
   },
   "devDependencies": {
     "@next/eslint-plugin-next": "14.2.4",

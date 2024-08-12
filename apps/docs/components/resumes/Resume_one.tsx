@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
-import { ResumeProps } from "../types/ResumeProps";
-import "../app/css/resume.css";
+import { ResumeProps } from "../../types/ResumeProps";
+import styles from "./resume.module.css";
 
 export const Resume: React.FC<ResumeProps> = ({
   personalInfo = {
@@ -22,13 +22,13 @@ export const Resume: React.FC<ResumeProps> = ({
   };
 
   return (
-    <div className="resume" id="resume">
+    <div className={styles.resume} id="resume">
       <header>
-        <div className="header-left">
+        <div className={styles["header-left"]}>
           <h1>{personalInfo.name}</h1>
           <h2>{personalInfo.title}</h2>
         </div>
-        <div className="header-right">
+        <div className={styles["header-right"]}>
           <p>{personalInfo.website || ""}</p>
           <p>{personalInfo.email || ""}</p>
           <p>{personalInfo.phone || ""}</p>
