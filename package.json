@@ -27,13 +27,17 @@
   },
   "pnpm": {
     "peerDependencyRules": {
-      "ignoreMissing": ["react", "react-dom"]
+      "ignoreMissing": [
+        "react",
+        "react-dom"
+      ]
     }
   },
   "dependencies": {
     "@google/generative-ai": "^0.2.1",
     "@icons-pack/react-simple-icons": "^9.5.0",
     "@prisma/client": "^5.15.0",
+    "@tabler/icons-react": "^3.12.0",
     "@types/html-to-text": "^9.0.4",
     "ai": "^3.3.0",
     "html-to-text": "^9.0.5",

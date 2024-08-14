@@ -1,6 +1,6 @@
 "use client";
-import { ResumeTemplateSelector } from "../../components/ResumeCanvas";
+import { AppleCardsCarouselDemo } from "../../components/ResumeTemplateSelector";
 
 export default function Page() {
-  return <ResumeTemplateSelector />;
+  return <AppleCardsCarouselDemo />;
 }

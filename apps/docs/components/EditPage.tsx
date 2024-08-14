@@ -3,6 +3,7 @@ import dynamic from "next/dynamic";
 import React from "react";
 import { Button } from "@ui/components/ui/button";
 import Resume from "./resumes/Resume_one";
+import { A4Canvas } from "./A4canvas";
 
 import { Education } from "./Editor/Education";
 import { Skills } from "./Editor/Skills";
@@ -13,6 +14,11 @@ import ModernResume, { Resume2 } from "./resumes/Resume_two";
 import Resume3 from "./resumes/Resume_three";
 import { useResumeData } from "../hooks/useResumeData";
 import { useActiveSection } from "../hooks/useActiveSection";
+import {
+  Collapsible,
+  CollapsibleTrigger,
+  CollapsibleContent,
+} from "@ui/components/ui/collapsible";
 
 const PersonalInfo = dynamic(
   () => import("./Editor/PersonalInfo").then((mod) => mod.PersonalInfo),
@@ -113,7 +119,9 @@ export default function EditPage() {
       <main className="flex flex-1 p-4 md:p-10">
         <div className="flex flex-col w-full gap-4 md:flex-row">
           <div className="w-full md:w-1/2">
-            <h1 className="text-3xl font-bold">Edit Resume</h1>
+            <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl mb-6">
+              Edit Resume
+            </h2>
             {activeSection === "Personal Info" && (
               <PersonalInfo
                 resumeData={resumeData}
@@ -153,8 +161,10 @@ export default function EditPage() {
             )}
           </div>
           <div className="w-full md:w-1/2">
-            {/* <CanvasResume {...resumeData} /> */}
-            <Resume {...resumeData} />
+            <div className="w-full mx-auto">
+              <A4Canvas resumeData={resumeData} />
+            </div>
+            {/* <Resume {...resumeData} /> */}
             {/* <Resume2 {...resumeData} /> */}
             {/* <Resume3 {...resumeData} /> */}
             {/* <ModernResume {...resumeData} /> */}

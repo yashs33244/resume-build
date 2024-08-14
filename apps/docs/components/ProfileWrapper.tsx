@@ -1,19 +1,11 @@
 "use client";
 
-import { useSession, signIn, signOut } from "next-auth/react";
-import React, { useState } from "react";
+import React from "react";
+import { useProfileSession } from "../hooks/useProfileSession"; // Adjust the import path as needed
 
 export default function ProfileWrapper() {
-  const { data: session, status } = useSession();
-  const [isOpen, setIsOpen] = useState(false);
-
-  const handleSignIn = () => {
-    signIn();
-  };
-
-  const handleSignOut = () => {
-    signOut();
-  };
+  const { status, user, isOpen, setIsOpen, handleSignIn, handleSignOut } =
+    useProfileSession();
 
   if (status === "loading") {
     return <div className="text-gray-600">Loading...</div>;
@@ -29,8 +21,6 @@ export default function ProfileWrapper() {
       </button>
     );
   }
-
-  const user = session.user;
 
   return (
     <div className="relative">
