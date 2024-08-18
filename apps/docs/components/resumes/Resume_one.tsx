@@ -72,17 +72,11 @@ export const Resume: React.FC<ResumeProps> = ({
 
       <section>
         <h3>Skills</h3>
-        {Object.entries(skills).map(([category, skillList]) => {
-          const skillsText = Array.isArray(skillList)
-            ? skillList.join(", ")
-            : skillList;
-          return (
-            <div key={category}>
-              <h4>{category}</h4>
-              <p>{skillsText}</p>
-            </div>
-          );
-        })}
+        {Array.isArray(skills) ? (
+          <p>{skills.join(", ")}</p>
+        ) : (
+          <p>No skills listed</p>
+        )}
       </section>
 
       <section>

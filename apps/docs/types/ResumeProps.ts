@@ -20,9 +20,7 @@ export interface ResumeProps {
     duration: string;
     responsibilities: string[];
   }>;
-  skills: {
-    [category: string]: string[];
-  };
+  skills: string[];
   achievement?: {
     title: string;
     description: string;

@@ -33,10 +33,10 @@ export const initialResumeData: ResumeProps = {
       ]
     }
   ],
-  skills: {
-    "UI/UX Design": ["User Research", "Wireframing", "Prototyping"],
-    "Development": ["JavaScript", "TypeScript", "React"]
-  },
+  skills: [
+    "User Research", "Wireframing", "Prototyping",
+    "Development","JavaScript", "TypeScript", "React"
+    ],
   achievement: {
     title: "Bestfolios, 2022",
     description: "Editor's Pick for Best Design Portfolio"
