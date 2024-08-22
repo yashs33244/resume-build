@@ -1,0 +1,33 @@
+.skills-container {
+    background-color: #29252E;
+    padding: 1.5rem;
+    border-radius: 16px;
+    .core-skills {
+        .list-container {
+            margin-top: 12px;
+
+            .list-item {
+                opacity: 0.9;
+                // background-color: #1B191F;
+                background-color: rgba(0,0,0,0.8);
+                color: rgba(255,255,255,0.9);
+                border: 0.5px solid rgba(255,255,255,0.4);
+                list-style-type: none;
+            }
+        }
+    }
+
+    .tech-skills {
+        .list-container {
+            margin-top: 12px;
+
+            .list-item {
+                opacity: 0.9;
+                background-color: rgba(0,0,0,0.8);
+                color: rgba(255,255,255,0.9);
+                border: 0.5px solid rgba(255,255,255,0.4);
+                list-style-type: none;
+            }
+        }
+    }
+}

@@ -15,8 +15,11 @@ export const useResumeData = () => {
           window.localStorage.getItem("resumeData") : null;
       if(saveData){
           const parsedData = JSON.parse(saveData);
-          if (!Array.isArray(parsedData.skills)) {
-              parsedData.skills = [];
+          if (!Array.isArray(parsedData.coreSkills)) {
+              parsedData.coreSkills = [];
+          }
+          if (!Array.isArray(parsedData.techSkills)) {
+            parsedData.techSkills = [];
           }
           setResumeData(parsedData);    
       }
@@ -56,8 +59,8 @@ export const useResumeData = () => {
                 }
             } else if (section === "skills") {
                 if (field === "skill" && index !== undefined) {
-                    const currentSkills = Array.isArray(newData.skills) ? newData.skills : [];
-                    newData.skills = [
+                    const currentSkills = Array.isArray(newData.coreSkills) ? newData.coreSkills : [];
+                    newData.coreSkills = [
                         ...currentSkills.slice(0, index),
                         value,
                         ...currentSkills.slice(index + 1)

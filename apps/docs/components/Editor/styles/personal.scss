@@ -1,0 +1,28 @@
+.personal-container {
+
+
+    .form-container {
+        background-color: #29252E;
+        border-radius: 16px;
+        padding: 2rem 2rem 2.2rem 2rem;
+        margin-top: 1rem;
+
+        .form-row {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+
+            .row-form-field {
+                width: 47%;
+            }
+
+            .form-field {
+                width: 100%;
+            }
+        }
+
+        .first {
+            margin-top: 0;
+        }
+    }
+}

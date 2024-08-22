@@ -3,12 +3,12 @@ import { ResumeProps } from '../types/ResumeProps';
 export const initialResumeData: ResumeProps = {
   userId: "string", 
   personalInfo:{
-    name: "jebni",
-    title: "kjsnef",
-    website: "ksjenfks",
-    email: "string",
-    phone: "string",
-    bio: "string",
+    name: "",
+    title: "",
+    website: "",
+    email: "",
+    phone: "",
+    bio: "",
   },
   education: [
     {
