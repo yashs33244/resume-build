@@ -14,7 +14,7 @@
         justify-content: center;
 
         .nav-container {
-            height: 82%;
+            height: 590px;
             width: 50%;
             border: 0.5px solid rgba(255,255,255,0.1);
             box-shadow: 2px 0px 8px 0px #101010;
@@ -71,7 +71,14 @@
                 font-weight: 700;
                 color: rgba(255,255,255,0.8);
                 
-            }                      
+            } 
+            
+            .move-container {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                opacity: 0.9;
+            }
         }
 
         .tips-container {
@@ -96,10 +103,14 @@
         }
 
         .material-container {
-            height: calc(100vh - 250px);
+            height: calc(100vh - 180px);
             overflow-y: auto;
             margin-top: 16px;
         }
+
+        div::-webkit-scrollbar {
+            display: none; /* for Chrome, Safari, and Opera */
+          }
 
         .movement {
             display: flex;

@@ -42,7 +42,7 @@ export const Skills: React.FC<SkillsProps> = ({
   const addCoreSkill = (skill: string) => {
     if (skill.trim()) {
       handleAddField("coreSkills");
-      handleInputChange("coreSkills", "coreSkill", skill, resumeData.coreSkills.length);
+      handleInputChange("skills", "coreSkill", skill, resumeData.coreSkills.length);
       setCoreSkill("");
       setSuggestions((prevSuggestions) =>
         prevSuggestions.filter((s) => s !== skill),
@@ -53,7 +53,7 @@ export const Skills: React.FC<SkillsProps> = ({
   const addTechSkill = (skill: string) => {
     if (skill.trim()) {
       handleAddField("techSkills");
-      handleInputChange("techSkills", "techSkill", skill, resumeData.techSkills.length);
+      handleInputChange("skills", "techSkill", skill, resumeData.techSkills.length);
       setTechSkill("");
       setSuggestions((prevSuggestions) =>
         prevSuggestions.filter((s) => s !== skill),
@@ -117,11 +117,11 @@ export const Skills: React.FC<SkillsProps> = ({
         {resumeData.coreSkills.map((skill, index) => (
           <div
             key={index}
-            className="list-item inline-flex items-center bg-gray-100 rounded-full px-3 py-1 text-sm font-semibold text-gray-700"
+            className="list-item inline-flex items-center bg-gray-100 rounded-full px-5 py-2 text-sm font-semibold text-gray-700"
           >
             {skill}
             <button
-              onClick={() => handleDeleteField("skills", index)}
+              onClick={() => handleDeleteField("skills", "coreSkill", index)}
               className="ml-2 focus:outline-none"
             >
               ×
@@ -138,11 +138,11 @@ export const Skills: React.FC<SkillsProps> = ({
         {resumeData.techSkills.map((skill, index) => (
           <div
             key={index}
-            className="list-item inline-flex items-center bg-gray-100 rounded-full px-3 py-1 text-sm font-semibold text-gray-700"
+            className="list-item inline-flex items-center bg-gray-100 rounded-full px-5 py-2 text-sm font-semibold text-gray-700"
           >
             {skill}
             <button
-              onClick={() => handleDeleteField("skills", index)}
+              onClick={() => handleDeleteField("skills", "techSkill", index)}
               className="ml-2 focus:outline-none"
             >
               ×
@@ -188,7 +188,7 @@ export const Skills: React.FC<SkillsProps> = ({
           />
         </div>
         <div className="mb-4">{renderCoreSkillTags()}</div>
-        <h3 className="text-xl font-semibold mb-2">Recommended for your role</h3>
+        <div className="text-xl font-semibold mb-2 recommend">Recommended for your role</div>
 
         {renderAISuggestedSkills()}
       </div>
@@ -209,7 +209,7 @@ export const Skills: React.FC<SkillsProps> = ({
           />
         </div>
         <div className="mb-4">{renderTechSkillTags()}</div>
-        <h3 className="text-xl font-semibold mb-2">Recommended for your role</h3>
+        <div className="text-xl font-semibold mb-2 recommend">Recommended for your role</div>
 
         {renderAISuggestedSkills()}
       </div>

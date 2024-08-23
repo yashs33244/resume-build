@@ -30,6 +30,8 @@ import { AiFillProject } from "react-icons/ai";
 import { FaFileDownload } from "react-icons/fa";
 import { IoMdDownload } from "react-icons/io";
 import { FaTools } from "react-icons/fa";
+import { CiCircleChevLeft } from "react-icons/ci";
+import { PiCaretCircleRightFill } from "react-icons/pi";
 import { PiCertificateFill } from "react-icons/pi";
 import { FaLanguage } from "react-icons/fa6";
 import { FcIdea } from "react-icons/fc";
@@ -46,6 +48,10 @@ const Experience = dynamic(
   () => import("./Editor/Experience").then((mod) => mod.Experience),
   { ssr: false },
 );
+const Project = dynamic(
+    () => import("./Editor/Project").then((mod) => mod.Project),
+    { ssr: false },
+  );
 const Achievement = dynamic(
   () => import("./Editor/Achievement").then((mod) => mod.Achievement),
   { ssr: false },
@@ -156,12 +162,16 @@ export default function EditPage() {
         <div className="editor">
             <div className="section-header">
                 <div className="section-title">{getSectionTitle(activeSection)}</div>
-                <div className="tips-container">
+                <div className="move-container">
+                    <CiCircleChevLeft style={{marginRight: '50px', width: '40px', height: '40px', cursor: 'pointer'}} />
+                    <PiCaretCircleRightFill style={{width: '40px', height: '40px', cursor: 'pointer'}} />
+                </div>
+                {/* <div className="tips-container">
                     <div className="tips">
                         <MdTipsAndUpdates />
                         <div>Best Practices</div>
                     </div>
-                </div>
+                </div> */}
                 {/* <div className="movement">
                     <div className="prev-container">
                         <FaChevronCircleLeft />
@@ -210,8 +220,16 @@ export default function EditPage() {
                         handleDeleteField={handleDeleteField}
                     />
                 )}
+                {activeSection === "Project" && (
+                    <Project
+                        resumeData={resumeData}
+                        handleInputChange={handleInputChange}
+                        handleAddField={handleAddField}
+                        handleDeleteField={handleDeleteField}
+                    />
+                )}
             </div>
-            <div className="movement">
+            {/* <div className="movement">
                 <div className="prev-container">
                     <FaChevronCircleLeft />
                     <div>Prev</div>
@@ -220,7 +238,7 @@ export default function EditPage() {
                     <div>Next</div>
                     <FaChevronCircleRight />
                 </div>
-            </div>   
+            </div>    */}
         </div>
         <div className="preview">
             <div className="tools">

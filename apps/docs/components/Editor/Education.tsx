@@ -46,7 +46,7 @@ export const Education: React.FC<EducationProps> = ({
                   <div className="subtitle">{edu.degree && edu.major ? `${edu.degree} | ${edu.major}` : null}</div>
                 </div>
               </div>
-              <div className="delete-cta" onClick={() => handleDeleteField("education", index)}>
+              <div className="delete-cta" onClick={() => handleDeleteField("education", "", index)}>
                 <FaTrashAlt />
               </div>                      
               {/* <ChevronDownIcon className="h-5 w-5 transition-transform" /> */}
