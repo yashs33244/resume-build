@@ -1,5 +1,5 @@
-.project-container {
-    .project-list {
+.certificate-container {
+    .certificate-list {
         .collapse-comp {
             background-color: #29252E;
             border-radius: 16px;
@@ -12,7 +12,7 @@
                 justify-content: space-between;
                 align-items: center;
 
-                .proj-note {
+                .cert-note {
                     display: flex;
                     align-items: center;
                 }
@@ -21,7 +21,7 @@
                     opacity: 0.4;
                 }
 
-                .project-details {
+                .certificate-details {
                     .title {
                         text-align: left;
                         margin-left: 8px;

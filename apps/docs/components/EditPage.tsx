@@ -7,8 +7,12 @@ import Resume from "./resumes/Resume_one";
 import { A4Canvas } from "./A4canvas";
 import "./EditPage.scss";
 import { Education } from "./Editor/Education";
+import { Template1 } from "./Editor/templates/Template1";
 import { Skills } from "./Editor/Skills";
+import { Language } from "./Editor/Language";
 import jsPDF from "jspdf";
+import logo_short from "./logo_short.svg";
+import logo from "./logo.svg";
 import html2canvas from "html2canvas";
 import CanvasResume from "./resumes/CanvasResume";
 import ModernResume, { Resume2 } from "./resumes/Resume_two";
@@ -48,6 +52,10 @@ const Experience = dynamic(
   () => import("./Editor/Experience").then((mod) => mod.Experience),
   { ssr: false },
 );
+const Certificate = dynamic(
+    () => import("./Editor/Certificate").then((mod) => mod.Certificate),
+    { ssr: false },
+  );
 const Project = dynamic(
     () => import("./Editor/Project").then((mod) => mod.Project),
     { ssr: false },
@@ -140,6 +148,12 @@ export default function EditPage() {
         case "Skills":
             return "Add Skills";
             break;
+        case "Certificate":
+            return "Add Certificates";
+            break;
+        case "Language":
+            return "Add Languages";
+            break;
         default: return;
             break;
     }
@@ -147,16 +161,27 @@ export default function EditPage() {
 
   return (
     <div className="flex flex-col w-full min-h-screen bg-background text-foreground dark:bg-[#1a1b1e] dark:text-white">
+      {/* <div className="branding-container">
+        <div className="logo">
+            <Image alt="logo" src={logo} width={100} height={100} />
+        </div>
+      </div> */}
       <div className="editor-container">
         <div className="navigation">
+            <div className="login-container">
+                <div className="login-cta">Login</div>
+            </div>
             <div className="nav-container">
                 <div onClick={() => setActiveSection('Personal Info')} className={`icon-container ${activeSection === 'Personal Info' ? 'border' : ''}`}><FaUserTie className={`icon ${activeSection === 'Personal Info' ? 'selected' : ''}`} /></div>
                 <div onClick={() => setActiveSection('Education')} className={`icon-container ${activeSection === 'Education' ? 'border' : ''}`}><IoSchool className={`icon ${activeSection === 'Education' ? 'selected' : ''}`} /></div>
                 <div onClick={() => setActiveSection('Experience')} className={`icon-container ${activeSection === 'Experience' ? 'border' : ''}`}><FaSuitcase className={`icon ${activeSection === 'Experience' ? 'selected' : ''}`} /></div>
                 <div onClick={() => setActiveSection('Project')} className={`icon-container ${activeSection === 'Project' ? 'border' : ''}`}><AiFillProject className={`icon ${activeSection === 'Project' ? 'selected' : ''}`} /></div>
                 <div onClick={() => setActiveSection('Skills')} className={`icon-container ${activeSection === 'Skills' ? 'border' : ''}`}><FaTools className={`icon ${activeSection === 'Skills' ? 'selected' : ''}`} /></div>
-                <div className="icon-container"><PiCertificateFill className="icon" /></div>
-                <div className="icon-container"><FaLanguage className="icon" /></div>
+                <div onClick={() => setActiveSection('Certificate')} className={`icon-container ${activeSection === 'Certificate' ? 'border' : ''}`}><PiCertificateFill className={`icon ${activeSection === 'Certificate' ? 'selected' : ''}`} /></div>
+                <div onClick={() => setActiveSection('Language')} className={`icon-container ${activeSection === 'Language' ? 'border' : ''}`}><FaLanguage className={`icon ${activeSection === 'Language' ? 'selected' : ''}`} /></div>
+            </div>
+            <div className="branding-container">
+                <Image alt="logo" src={logo} />
             </div>
         </div>
         <div className="editor">
@@ -165,30 +190,8 @@ export default function EditPage() {
                 <div className="move-container">
                     <CiCircleChevLeft style={{marginRight: '50px', width: '40px', height: '40px', cursor: 'pointer'}} />
                     <PiCaretCircleRightFill style={{width: '40px', height: '40px', cursor: 'pointer'}} />
-                </div>
-                {/* <div className="tips-container">
-                    <div className="tips">
-                        <MdTipsAndUpdates />
-                        <div>Best Practices</div>
-                    </div>
-                </div> */}
-                {/* <div className="movement">
-                    <div className="prev-container">
-                        <FaChevronCircleLeft />
-                        <div>Prev</div>
-                    </div>
-                    <div className="next-container">                        
-                        <div>Next</div>
-                        <FaChevronCircleRight />
-                    </div>
-                </div>                 */}
-            </div>
-            {/* <div className="tips-container">
-                <div className="tips">
-                    <MdTipsAndUpdates />
-                    <div>Best Practices</div>
-                </div>
-            </div> */}
+                </div>                
+            </div>           
             <div className="material-container">
                 {activeSection === "Personal Info" && (
                     <PersonalInfo
@@ -222,6 +225,22 @@ export default function EditPage() {
                 )}
                 {activeSection === "Project" && (
                     <Project
+                        resumeData={resumeData}
+                        handleInputChange={handleInputChange}
+                        handleAddField={handleAddField}
+                        handleDeleteField={handleDeleteField}
+                    />
+                )}
+                {activeSection === "Certificate" && (
+                    <Certificate
+                        resumeData={resumeData}
+                        handleInputChange={handleInputChange}
+                        handleAddField={handleAddField}
+                        handleDeleteField={handleDeleteField}
+                    />
+                )}
+                {activeSection === "Language" && (
+                    <Language
                         resumeData={resumeData}
                         handleInputChange={handleInputChange}
                         handleAddField={handleAddField}
@@ -267,7 +286,8 @@ export default function EditPage() {
                 </div>
             </div>
             <div className="preview-container">
-                <Image alt="template" src={template}  />
+                <Template1 />
+                {/* <Image alt="template" src={template}  /> */}
             </div>
             {/* <div className="preview-container">                
                 <Image alt="template" src={template}  />

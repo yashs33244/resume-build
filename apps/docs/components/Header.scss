@@ -4,9 +4,11 @@
     height: 70px;
     align-items: center;
     justify-content: space-between;
+    background : linear-gradient(180deg, black, #1D1B20);    
+    // background-color: #101010;
 
     .logo-container {
-        opacity: 0.8;
+        // opacity: 0.8;
     }
 
     .login-cta {

@@ -1,0 +1,20 @@
+.template-container {
+background-color: #ffffff; // Background color for Div2
+//   width: 60%; // Start with full width of Div1
+//   min-width: 70%;
+height: 98%;
+//   max-width: 75%;
+  aspect-ratio: 1 / 1.408;
+//   height: auto; // Let height adjust based on aspect ratio
+//   max-height: 100%; // Ensure Div2 does not exceed Div1's height
+//   aspect-ratio: 1 / 1.414; // Maintain portrait aspect ratio (width:height)
+
+  // Responsive scaling
+//   max-width: calc(100% - 40px); // Ensure Div2 respects padding inside Div1
+//   max-height: calc(100% - 40px);
+
+// @media (min-width: 1441px ) {
+//     width: 75%;
+//   }
+
+}

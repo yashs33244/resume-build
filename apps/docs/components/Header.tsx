@@ -28,7 +28,7 @@ export default function Header() {
   return (
     <div className="header-container">
       <div className="logo-container">
-        <Image alt="logo" src={logo} width={120} />
+        <Image alt="logo" src={logo} width={100} />
       </div>
       <div className="login-cta">Login</div>
     </div>
