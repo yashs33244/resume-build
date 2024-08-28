@@ -117,12 +117,12 @@ export const useResumeData = () => {
           if (section === "education") {
               newData.education = [
                   ...(prevData.education || []),
-                  { institution: "", years: "", degree: "" },
+                  { institution: "", start: "", end: "", degree: "" },
               ];
           } else if (section === "experience") {
               newData.experience = [
                   ...(prevData.experience || []),
-                  { company: "", role: "", duration: "", responsibilities: [] },
+                  { company: "", role: "", start: "", end: "", responsibilities: [] },
               ];
           } else if (section === "project") {
             newData.project = [

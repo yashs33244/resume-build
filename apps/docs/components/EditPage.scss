@@ -1,8 +1,27 @@
+.help-container {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    background-color: #29252E;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    border-radius: 50%;
+
+    svg {
+        fill: #F0E68C;
+    }
+}
+
 .editor-container {
     width: 100%;
     height: 100vh;
     display: flex;
-    background-color: #1d1b20;
+    // background-color: #1d1b20;
+    background-color: #1e2026;
 
     .navigation {
         width: 10%;
@@ -36,12 +55,13 @@
             height: 540px;
             width: 50%;
             border: 0.5px solid rgba(255,255,255,0.1);
-            box-shadow: 2px 0px 8px 0px #101010;
+            // box-shadow: 2px 0px 8px 0px #101010;
             // background-color: rgba(255,255,255,0.3);
             margin-left: 25%;
-            background-color: #29252E;
+            // background-color: #29252E;
+            background-color: #262936;
             border-radius: 16px;
-            margin-top: 44px;
+            margin-top: 40px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -333,7 +353,8 @@
 
     .preview {
         width: 50%;
-        background-color: rgba(0,0,0,0.9);
+        // background-color: rgba(0,0,0,0.9);
+        background-color: #181a1e;
         // background : linear-gradient(90deg, #1D1B20 black);
         padding-top: 12px;
 
@@ -393,7 +414,7 @@
                         color: white;
                         border-radius: 18px; /*1*/
                         // border: 1px solid white; /*2*/
-                        background: #2B3EFA;
+                        background: #3B5BFF;
 
 
                         div {

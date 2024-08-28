@@ -2,7 +2,8 @@
 
 
     .form-container {
-        background-color: #29252E;
+        // background-color: #29252E;
+        background-color: #262936;
         border-radius: 16px;
         padding: 2rem 2rem 2.2rem 2rem;
         margin-top: 1rem;
@@ -18,6 +19,58 @@
 
             .form-field {
                 width: 100%;
+            }
+        }
+
+        .single-form-row {
+            margin-top: 28px;
+
+            .form-field {
+                .text-editor-container {
+                    margin-top: 8px;
+                    .text-editor {
+                        .ql-toolbar {
+                            border-left: 0.5px solid rgba(255,255,255,0.4);
+                            border-right: 0.5px solid rgba(255,255,255,0.4);
+                            border-top: 0.5px solid rgba(255,255,255,0.4);
+                            border-bottom: none;
+                        }
+
+                        button:hover .ql-stroke,
+                            .ql-picker-label:hover .ql-stroke {
+                            fill: none;
+                            stroke: rgba(255,255,255,0.7) !important;
+                            }
+
+                            .ql-active .ql-stroke {
+                            fill: none;
+                            stroke: rgba(255,255,255,0.7) !important;
+                            }
+
+                            button:hover .ql-fill,
+                            .ql-picker-label:hover .ql-fill {
+                            fill: rgba(255,255,255,0.7) !important;
+                            stroke: none;
+                            }
+
+                            .ql-active .ql-fill {
+                            fill: rgba(255,255,255,0.7) !important;
+                            stroke: none;
+                            }
+
+                        .ql-container {
+                            border: 0.5px solid rgba(255,255,255,0.4);
+                            height: 100px;
+                        }
+                    }
+                }
+            }
+
+            .ai-container {                            
+                .ai-chip {
+                    background: linear-gradient(to right, #777777, #444444);
+                    font-weight: 500;
+                }
             }
         }
 

@@ -6,9 +6,11 @@ import { Button } from "@ui/components/ui/button";
 import Resume from "./resumes/Resume_one";
 import { A4Canvas } from "./A4canvas";
 import "./EditPage.scss";
+import generatePDF, { Resolution, Margin, Options } from "react-to-pdf";
 import { Education } from "./Editor/Education";
 import { Template1 } from "./Editor/templates/Template1";
 import { Skills } from "./Editor/Skills";
+import Tips from "./Tips";
 import { Language } from "./Editor/Language";
 import jsPDF from "jspdf";
 import logo_short from "./logo_short.svg";
@@ -27,6 +29,8 @@ import {
 } from "@ui/components/ui/collapsible";
 
 import { FaUserTie } from "react-icons/fa";
+import { FaRegLightbulb } from "react-icons/fa";
+import { FaLightbulb } from "react-icons/fa";
 import { MdWidgets } from "react-icons/md";
 import { IoSchool } from "react-icons/io5";
 import { FaSuitcase } from "react-icons/fa";
@@ -70,6 +74,8 @@ export default function EditPage() {
     useResumeData();
   const { activeSection, handleSectionChange, sections, setActiveSection } =
     useActiveSection();
+
+//   const { toPDF, targetRef } = usePDF({filename: 'finalCV.pdf'});
 
   const handleDownload = async () => {
     const element = document.querySelector("#resume")!;
@@ -159,8 +165,52 @@ export default function EditPage() {
     }
   }
 
+  const options: Options = {
+    filename: "advanced-example.pdf",
+    // default is `save`
+    method: "save",
+    // default is Resolution.MEDIUM = 3, which should be enough, higher values
+    // increases the image quality but also the size of the PDF, so be careful
+    // using values higher than 10 when having multiple pages generated, it
+    // might cause the page to crash or hang.
+    resolution: Resolution.HIGH,
+    page: {
+      // margin is in MM, default is Margin.NONE = 0
+      margin: Margin.NONE,
+      // default is 'A4'
+      format: "A4",
+      // default is 'portrait'
+      orientation: "portrait",
+    },
+    canvas: {
+      // default is 'image/jpeg' for better size performance
+      mimeType: "image/jpeg",
+      qualityRatio: 1,
+    },
+    // customize any value passed to the jsPDF instance and html2canvas
+    // function
+    overrides: {
+      // see https://artskydj.github.io/jsPDF/docs/jsPDF.html for more options
+      pdf: {
+        compress: true,
+      },
+      // see https://html2canvas.hertzen.com/configuration for more options
+      canvas: {
+        useCORS: true,
+      },
+    },
+  };
+
+  const openPDF = () => {
+    generatePDF(() => document.getElementById("wrapper"), options);
+  };
+
   return (
     <div className="flex flex-col w-full min-h-screen bg-background text-foreground dark:bg-[#1a1b1e] dark:text-white">
+        <Tips activeSection={activeSection} />
+        {/* <div className="help-container">
+            <FaLightbulb style={{width: '26px', height: '26px'}} />
+        </div> */}
       {/* <div className="branding-container">
         <div className="logo">
             <Image alt="logo" src={logo} width={100} height={100} />
@@ -278,7 +328,7 @@ export default function EditPage() {
                         </div>                                        
                     </div>
                     <div className="download-container">
-                        <div className="download">
+                        <div className="download" onClick={openPDF}>
                             <IoMdDownload />
                             <div>Download</div>
                         </div>
@@ -286,7 +336,7 @@ export default function EditPage() {
                 </div>
             </div>
             <div className="preview-container">
-                <Template1 />
+                <Template1 resumeData={resumeData} id="wrapper" />
                 {/* <Image alt="template" src={template}  /> */}
             </div>
             {/* <div className="preview-container">                

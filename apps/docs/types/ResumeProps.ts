@@ -7,6 +7,7 @@ export interface ResumeProps {
     email?: string;
     phone?: string;
     bio?: string;
+    linkedin?: string;
     location?: string;
   };
   education: Array<{

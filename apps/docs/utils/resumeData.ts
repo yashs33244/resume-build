@@ -8,6 +8,7 @@ export const initialResumeData: ResumeProps = {
     website: "",
     email: "",
     phone: "",
+    linkedin: "",
     bio: "",
   },
   education: [

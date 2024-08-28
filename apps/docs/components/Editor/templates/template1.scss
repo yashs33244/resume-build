@@ -1,20 +1,154 @@
 .template-container {
-background-color: #ffffff; // Background color for Div2
-//   width: 60%; // Start with full width of Div1
-//   min-width: 70%;
-height: 98%;
-//   max-width: 75%;
-  aspect-ratio: 1 / 1.408;
-//   height: auto; // Let height adjust based on aspect ratio
-//   max-height: 100%; // Ensure Div2 does not exceed Div1's height
-//   aspect-ratio: 1 / 1.414; // Maintain portrait aspect ratio (width:height)
+    background-color: #ffffff;
+    height: 95%;
+    aspect-ratio: 1 / 1.29;
 
-  // Responsive scaling
-//   max-width: calc(100% - 40px); // Ensure Div2 respects padding inside Div1
-//   max-height: calc(100% - 40px);
+    .large {
+        padding: 2rem 3.5rem;
+        
+        .primary-info {
+            .name {
+                color: #323336;
+                font-weight: 700;            
+            }
+    
+            .position {
+                color: #323336;
+                font-size: 0.56rem;
+                margin-top: 0.3rem;
+            }
+    
+            .information {
+                color: #707678;
+                font-size: 0.5rem;
+                margin-top: 0.15rem;
+            }
+    
+            .summary {
+                color: #707678;
+                font-size: 0.5rem;
+                margin-top: 0.15rem;
+            }
+        }
 
-// @media (min-width: 1441px ) {
-//     width: 75%;
-//   }
+        .experience {
+            margin-top: 1.12rem;
+            .section-title {
+                color: #A6AAAD;
+                font-size: 0.5rem;
+                font-weight: 600;
+                // margin-bottom: 0.8rem;
+            }
 
+            .exp-container {
+                margin-top: 0.56rem;
+                .company-name {
+                    color: #323336;
+                    font-size: 0.56rem;
+                    font-weight: 500;
+                }
+
+                .role-duration {
+                    color: #707678;
+                    font-size: 0.52rem;
+                }
+
+                .responsibilities {
+                    color: #323336;
+                    font-size: 0.5rem;
+
+                    ul {
+                        list-style: disc;
+                        padding: 0 1rem;
+                    }
+                }
+            }
+        }
+
+        .education {
+            margin-top: 1.12rem;
+            .section-title {
+                color: #A6AAAD;
+                font-size: 0.5rem;
+                font-weight: 600;
+                // margin-bottom: 0.8rem;
+            }
+
+            .edu-container {
+                margin-top: 0.56rem;
+                .college-name {
+                    color: #323336;
+                    font-size: 0.56rem;
+                    font-weight: 500;
+                }
+
+                .degree-major {
+                    color: #707678;
+                    font-size: 0.52rem;
+                }
+
+                // .responsibilities {
+                //     color: #323336;
+                //     font-size: 0.5rem;
+
+                //     ul {
+                //         list-style: disc;
+                //         padding: 0 1rem;
+                //     }
+                // }
+            }
+        }
+
+        .skills {
+            margin-top: 1.12rem;
+            .section-title {
+                color: #A6AAAD;
+                font-size: 0.5rem;
+                font-weight: 600;
+                // margin-bottom: 0.8rem;
+            }
+
+            .core-skills {
+                display: flex;
+                margin-top: 0.56rem;
+
+                .skill-container {
+                    padding: 0.2rem 0.4rem;
+                    background-color: #F1F5F7;
+                    border-radius: 2px;
+                    color: #323336;
+                    margin-left: 4px;
+    
+                    .skill {
+                        font-size: 0.5rem;
+                    }
+                }
+
+                .first {
+                    margin-left: 0;
+                }
+            }
+            
+            .tech-skills {
+                display: flex;
+                margin-top: 0.2rem;
+    
+                .skill-container {
+                    padding: 0.2rem 0.4rem;
+                    background-color: #F1F5F7;
+                    border-radius: 2px;
+                    color: #323336;
+                    margin-left: 4px;
+    
+                    .skill {
+                        font-size: 0.5rem;
+                    }
+                }
+
+                .first {
+                    margin-left: 0;
+                }
+            }
+        }
+    }
 }

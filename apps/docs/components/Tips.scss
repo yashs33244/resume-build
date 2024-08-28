@@ -1,0 +1,147 @@
+.tips-cta-container {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+}
+
+.tips-cta-button {
+    background-color: #29252E;
+    padding: 10px;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease;
+    outline: 2px solid rgb(255, 255, 143, 0.6);
+    opacity: 0.8;
+
+    svg {
+        fill: rgb(255, 255, 143);
+    }
+
+    &:hover {
+        transform: scale(1.1);
+        opacity: 1;
+    }
+}
+
+.tips-popover {
+    position: fixed;
+    bottom: 84px; // Adjust this to position the popover properly
+    right: 40px;
+    width: 32vw;
+    height: 70vh;
+    background-color: #0f0f11;
+    border-radius: 24px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+    overflow: auto;
+    animation: popoverFadeIn 0.5s ease forwards;
+    z-index: 1000;
+
+    .tips-popover-content {
+        padding: 20px;
+        height: 100%;
+        
+        // display: flex;
+        // flex-direction: column;
+        // justify-content: space-between;
+
+        .tips-header {
+            font-weight: 600;
+            font-size: 20px;
+            color: rgba(255,255,255,0.8);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+        }
+
+        .collapse-comp {
+            width: 100%;
+            .collapse-trigger {
+                color: rgba(255,255,255,0.6);
+                font-weight: 500;
+                width: 100%;
+                text-align: left;
+                padding: 16px 0;
+                display: flex;
+                align-items: center;
+                border-top: 0.1px solid rgba(255,255,255,0.2);
+
+                div {
+                    margin-left: 8px;
+                }
+            }
+
+            .first {
+                border-top: none;
+            }
+
+            .collapse-content {
+                color: rgba(255,255,255,0.5);
+                margin-bottom: 16px;
+                font-size: 14px;
+            }
+
+            .collapse-content {
+                overflow: auto;
+              }
+              .collapse-content[data-state='open'] {
+                animation: slideDown 150ms ease-out;
+              }
+              .collapse-content[data-state='closed'] {
+                animation: slideUp 150ms ease-out;
+              }
+              
+              @keyframes slideDown {
+                from {
+                  height: 0;
+                }
+                to {
+                  height: var(--radix-collapsible-content-height);
+                }
+              }
+              
+              @keyframes slideUp {
+                from {
+                  height: var(--radix-collapsible-content-height);
+                }
+                to {
+                  height: 0;
+                }
+              }
+        }
+
+        .first {
+            margin-top: 16px;
+        }
+
+        .close-button {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            align-self: flex-end;
+            margin-top: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease;
+
+            &:hover {
+                transform: scale(1.05);
+            }
+        }
+    }
+}
+
+@keyframes popoverFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
