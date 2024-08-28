@@ -35,6 +35,7 @@ export default function Header() {
           <Link href="/api/auth/signin">Sign in</Link>
         </button>
       </div>
+      {/* <ModeToggle /> */}
     </header>
   );
 }

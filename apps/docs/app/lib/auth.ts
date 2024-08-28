@@ -1,6 +1,7 @@
 import { db } from "../db";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
+import LinkedInProvider from "next-auth/providers/linkedin";
 import bcrypt from "bcrypt";
 import { NextAuthOptions } from "next-auth";
 import { JWT } from "next-auth/jwt";
@@ -118,6 +119,22 @@ export const authOptions: NextAuthOptions = {
       clientId: process.env.GOOGLE_CLIENT_ID as string,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
     }),
+    LinkedInProvider({
+      clientId: process.env.LINKEDIN_CLIENT_ID as string,
+      clientSecret: process.env.LINKEDIN_CLIENT_SECRET as string,
+      authorization: {
+        params: { scope: "yashs33244@gmail.com" },
+      },
+      profile(profile) {
+        return {
+          id: profile.sub,
+          name: profile.name,
+          email: profile.email,
+          image: profile.picture,
+        };
+      },
+    }),
+
   ],
   secret: process.env.NEXTAUTH_SECRET || "secr3t",
   callbacks: {
@@ -185,5 +202,11 @@ export const authOptions: NextAuthOptions = {
 
       return true; // Allow sign-in if not using Google provider
     },
+    async redirect({ url, baseUrl }) {
+      return baseUrl + '/'; // or wherever you want to redirect
+    },
+  },
+  pages: {
+    signIn: '/signin',
   },
 };

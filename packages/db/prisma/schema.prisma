@@ -7,6 +7,13 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum ResumeState {
+  NOT_DONE_YET
+  DOWNLOADING
+  SUCCESS
+  FAILED
+}
+
 model User {
   id           String    @id @default(cuid())
   email        String    @unique
@@ -17,6 +24,7 @@ model User {
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt
   sessions     Session[]
+  resumes      Resume[]
 }
 
 model Session {
@@ -25,4 +33,73 @@ model Session {
   userId       String
   expires      DateTime
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Resume {
+  id           String        @id @default(cuid())
+  userId       String
+  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  personalInfo PersonalInfo?
+  education    Education[]
+  experience   Experience[]
+  skills       Skill[]
+  achievements Achievement?
+  projects     Project[]
+  state        ResumeState   @default(NOT_DONE_YET)
+}
+
+model PersonalInfo {
+  id       String  @id @default(cuid())
+  resumeId String  @unique
+  resume   Resume  @relation(fields: [resumeId], references: [id], onDelete: Cascade)
+  name     String
+  title    String
+  website  String?
+  email    String?
+  phone    String?
+  bio      String?
+  location String?
+}
+
+model Education {
+  id          String @id @default(cuid())
+  resumeId    String
+  resume      Resume @relation(fields: [resumeId], references: [id], onDelete: Cascade)
+  institution String
+  years       String
+  degree      String
+}
+
+model Experience {
+  id               String   @id @default(cuid())
+  resumeId         String
+  resume           Resume   @relation(fields: [resumeId], references: [id], onDelete: Cascade)
+  company          String
+  role             String
+  duration         String
+  responsibilities String[]
+}
+
+model Achievement {
+  id          String @id @default(cuid())
+  resumeId    String @unique
+  resume      Resume @relation(fields: [resumeId], references: [id], onDelete: Cascade)
+  title       String
+  description String
+}
+
+model Project {
+  id          String   @id @default(cuid())
+  resumeId    String
+  resume      Resume   @relation(fields: [resumeId], references: [id], onDelete: Cascade)
+  name        String
+  duration    String
+  description String[]
+}
+
+model Skill {
+  id       String @id @default(cuid())
+  resumeId String
+  resume   Resume @relation(fields: [resumeId], references: [id], onDelete: Cascade)
+  name     String
 }
