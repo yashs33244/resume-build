@@ -1,6 +1,6 @@
 "use client";
 import dynamic from "next/dynamic";
-import React from "react";
+import React, { useEffect } from "react";
 import Image from "next/image";
 import { Button } from "@ui/components/ui/button";
 import Resume from "./resumes/Resume_one";
@@ -47,6 +47,8 @@ import { MdTipsAndUpdates } from "react-icons/md";
 
 import { FaChevronCircleRight } from "react-icons/fa";
 import { FaChevronCircleLeft } from "react-icons/fa";
+import html2pdf from 'html2pdf.js';
+
 
 const PersonalInfo = dynamic(
   () => import("./Editor/PersonalInfo").then((mod) => mod.PersonalInfo),
@@ -77,64 +79,43 @@ export default function EditPage() {
 
 //   const { toPDF, targetRef } = usePDF({filename: 'finalCV.pdf'});
 
-  const handleDownload = async () => {
-    const element = document.querySelector("#resume")!;
-    //@ts-ignore
-    html2canvas(element, {
-      scale: 4,
-      logging: false,
-      useCORS: true,
-      windowWidth: element.scrollWidth,
-      windowHeight: element.scrollHeight,
-    }).then((canvas) => {
-      const imgData = canvas.toDataURL("image/png");
-      const pdf = new jsPDF({
-        orientation: "portrait",
-        unit: "pt",
-        format: "a4",
-      });
-
-      const pageWidth = pdf.internal.pageSize.getWidth();
-      const pageHeight = pdf.internal.pageSize.getHeight();
-
-      const widthRatio = pageWidth / canvas.width;
-      const heightRatio = pageHeight / canvas.height;
-      const ratio = widthRatio > heightRatio ? heightRatio : widthRatio;
-
-      const canvasWidth = canvas.width * ratio;
-      const canvasHeight = canvas.height * ratio;
-
-      const marginX = (pageWidth - canvasWidth) / 2;
-      const marginY = (pageHeight - canvasHeight) / 2;
-
-      pdf.addImage(
-        imgData,
-        "PNG",
-        marginX,
-        marginY,
-        canvasWidth,
-        canvasHeight,
-        undefined,
-        "FAST",
-      );
-
-      pdf.save("resume.pdf");
-    });
-    const response = await fetch("/api/saveResume", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        // Make sure to include the userId in your resumeData
-        resumeData: resumeData,
-      }),
-    });
-
-    if (!response.ok) {
-      console.error("Failed to save resume");
+  useEffect(()=>{
+    function scaleContent() {
+      const container = document.getElementById('resumeParent');
+      const content = document.getElementById('wrapper');
+      const widthScale = container?.offsetWidth / content?.offsetWidth;
+      const heightScale = container?.offsetHeight / content?.offsetHeight;
+      const scale = Math.min(widthScale, heightScale);
+      if(content){
+        content.style.transform = `scale(${scale})`;
+      }
     }
-    // Save resume data to the database
+    
+    window.addEventListener('resize', scaleContent);
+    scaleContent();
+  })
+
+  const handleDownload = async () => {
+    const element = document.getElementById('wrapper')?.cloneNode(true);
+    element.style.transform = `scale(1)`;
+    const opt = {
+      margin:       0,
+      filename:     'resume.pdf',
+      image:        { type: 'jpeg', quality: 0.98 },
+      html2canvas:  { scale:4,useCORS: true ,width:595,height:742}, 
+      jsPDF:        { unit: 'px', format: [595, 742], orientation: 'portrait' },
+      enableLinks:true
+    };
+    html2pdf().set(opt).from(element).toPdf().output('blob').then(function(pdfBlob) {
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(pdfBlob);
+      link.download = 'resume.pdf';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }).catch(function(error) {
+      console.error('Error generating PDF:', error);
+    });
   };
 
   const getSectionTitle = () => {
@@ -202,7 +183,7 @@ export default function EditPage() {
   };
 
   const openPDF = () => {
-    generatePDF(() => document.getElementById("wrapper"), options);
+    generatePDF(() => document.getElementById("resumeParent"), options);
   };
 
   return (
@@ -328,14 +309,14 @@ export default function EditPage() {
                         </div>                                        
                     </div>
                     <div className="download-container">
-                        <div className="download" onClick={openPDF}>
+                        <div className="download" onClick={handleDownload}>
                             <IoMdDownload />
                             <div>Download</div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div className="preview-container">
+            <div className="preview-container" id='resumeParent'>
                 <Template1 resumeData={resumeData} id="wrapper" />
                 {/* <Image alt="template" src={template}  /> */}
             </div>
