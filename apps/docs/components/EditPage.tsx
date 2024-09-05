@@ -79,6 +79,27 @@ export default function EditPage() {
 
 //   const { toPDF, targetRef } = usePDF({filename: 'finalCV.pdf'});
 
+  const navElements = ['Personal Info', 'Education', 'Experience', 'Project', 'Skills', 'Certificate', 'Language'];
+
+  const handleLeftNav = () => {
+    const currentIndex = navElements.indexOf(activeSection);
+    if(currentIndex === 0) {
+      return;
+    }
+    
+    const newIndex = currentIndex - 1;
+    setActiveSection(navElements[newIndex]);
+  }
+
+  const handleRightNav = () => {
+    const currentIndex = navElements.indexOf(activeSection);
+    if(currentIndex === navElements.length-1) {
+      return;
+    }
+    const newIndex = currentIndex + 1;
+    setActiveSection(navElements[newIndex]);
+  }
+
   useEffect(()=>{
     function scaleContent() {
       const container = document.getElementById('resumeParent');
@@ -219,8 +240,8 @@ export default function EditPage() {
             <div className="section-header">
                 <div className="section-title">{getSectionTitle(activeSection)}</div>
                 <div className="move-container">
-                    <CiCircleChevLeft style={{marginRight: '50px', width: '40px', height: '40px', cursor: 'pointer'}} />
-                    <PiCaretCircleRightFill style={{width: '40px', height: '40px', cursor: 'pointer'}} />
+                    <CiCircleChevLeft style={{marginRight: '50px', width: '40px', height: '40px', cursor: 'pointer'}} onClick={handleLeftNav} />
+                    <PiCaretCircleRightFill style={{width: '40px', height: '40px', cursor: 'pointer'}} onClick={handleRightNav} />
                 </div>                
             </div>           
             <div className="material-container">
