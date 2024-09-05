@@ -6,7 +6,7 @@ import { Button } from "@repo/ui/components/ui/button";
 import dynamic from "next/dynamic";
 import "react-quill/dist/quill.snow.css";
 import { ResumeProps } from "../../types/ResumeProps";
-import "./styles/experience.scss";
+import "./styles/project.scss";
 import { BsStars } from "react-icons/bs";
 import { FaTrashAlt } from "react-icons/fa";
 import {
@@ -26,7 +26,7 @@ const ClientSideQuill = dynamic(() => import("react-quill"), {
   ),
 });
 
-interface ExperienceProps {
+interface ProjectProps {
   resumeData: ResumeProps;
   handleInputChange: (
     section: keyof ResumeProps,
@@ -38,13 +38,13 @@ interface ExperienceProps {
   handleDeleteField: (section: keyof ResumeProps, index?: number) => void;
 }
 
-export const Experience: React.FC<ExperienceProps> = ({
+export const Project: React.FC<ProjectProps> = ({
   resumeData,
   handleInputChange,
   handleAddField,
   handleDeleteField,
 }) => {
-  const experiences = resumeData.experience || [];
+  const projects = resumeData.project || [];
   const [isLoading, setIsLoading] = useState<{ [key: number]: boolean }>({});
 
   const handleResponsibilitiesChange = (value: string, index: number) => {
@@ -103,19 +103,19 @@ export const Experience: React.FC<ExperienceProps> = ({
   const aiPrompts = ["Make It Better", "Check Grammar", "Concise", "Elaborate"];
 
   return (
-    <div className="experience-container">      
-      <div className="experience-list">
-        {experiences.map((exp, index) => (
+    <div className="project-container">      
+      <div className="project-list">
+        {projects.map((proj, index) => (
           <Collapsible className="collapse-comp" key={index}>
             <CollapsibleTrigger className="collapse-trigger">
-              <div className="exp-note">
+              <div className="proj-note">
                   <ChevronDownIcon className="h-5 w-5 transition-transform" />
-                  <div className="company-details">
-                    <div className="title">{exp.company || `Enter Experience`}</div>
-                    <div className="subtitle">{exp.role ? exp.role : null}</div>
+                  <div className="project-details">
+                    <div className="title">{proj.name || `Enter Project`}</div>
+                    <div className="subtitle">{proj.link ? proj.link : null}</div>
                   </div>
               </div>
-              <div className="delete-cta" onClick={() => handleDeleteField("experience", "", index)}>
+              <div className="delete-cta" onClick={() => handleDeleteField("project", "", index)}>
                 <FaTrashAlt />
               </div>  
             </CollapsibleTrigger>
@@ -124,45 +124,45 @@ export const Experience: React.FC<ExperienceProps> = ({
                 <div className="form-row">
                   <div className="row-form-field">
                     <Label
-                      htmlFor={`company-${index}`}
+                      htmlFor={`project-${index}`}
                       className="field-label"
                     >
-                      Company Name
+                      Project Name
                     </Label>
                     <Input
-                      id={`company-${index}`}
-                      value={exp.company || ""}
+                      id={`project-${index}`}
+                      value={proj.name || ""}
                       onChange={(e) =>
                         handleInputChange(
-                          "experience",
-                          "company",
+                          "project",
+                          "name",
                           e.target.value,
                           index,
                         )
                       }
-                      placeholder="Amazon"
+                      placeholder="For Eg: Online Code Editor"
                       className="form-input"
                     />
                   </div>
                   <div className="row-form-field">
                     <Label
-                      htmlFor={`role-${index}`}
+                      htmlFor={`link-${index}`}
                       className="field-label"
                     >
-                      Designation
+                      Link To Project
                     </Label>
                     <Input
-                      id={`role-${index}`}
-                      value={exp.role || ""}
+                      id={`link-${index}`}
+                      value={proj.link || ""}
                       onChange={(e) =>
                         handleInputChange(
-                          "experience",
-                          "role",
+                          "project",
+                          "link",
                           e.target.value,
                           index,
                         )
                       }
-                      placeholder="Product Manager"
+                      placeholder="For Eg: herokuapp.com/pgpm/code-editor"
                       className="form-input"
                     />
                   </div>
@@ -170,18 +170,18 @@ export const Experience: React.FC<ExperienceProps> = ({
                 <div className="form-row">
                   <div className="row-form-field">
                     <Label
-                      htmlFor={`role-${index}`}
+                      htmlFor={`start-${index}`}
                       className="field-label"
                     >
                       Start Date
                     </Label>
                     <Input
                       id={`start-${index}`}
-                      value={exp.start || ""}
+                      value={proj.start || ""}
                       type="date"
                       onChange={(e) =>
                         handleInputChange(
-                          "experience",
+                          "project",
                           "start",
                           e.target.value,
                           index,
@@ -200,11 +200,11 @@ export const Experience: React.FC<ExperienceProps> = ({
                     </Label>
                     <Input
                       id={`end-${index}`}
-                      value={exp.end || ""}
+                      value={proj.end || ""}
                       type="date"
                       onChange={(e) =>
                         handleInputChange(
-                          "experience",
+                          "project",
                           "end",
                           e.target.value,
                           index,
@@ -226,7 +226,7 @@ export const Experience: React.FC<ExperienceProps> = ({
                     <div className="text-editor-container">
                       <ClientSideQuill
                         id={`responsibilities-${index}`}
-                        value={exp.responsibilities?.join("\n") || ""}                        
+                        value={proj.responsibilities?.join("\n") || ""}                        
                         onChange={(value) =>
                           handleResponsibilitiesChange(value, index)
                         }
@@ -281,10 +281,10 @@ export const Experience: React.FC<ExperienceProps> = ({
       </div>
       <Button
         variant="default"
-        onClick={() => handleAddField("experience")}
+        onClick={() => handleAddField("project")}
         className="add-cta"
       >
-       + Add Experience
+       + Add Project
       </Button>
     </div>
   );

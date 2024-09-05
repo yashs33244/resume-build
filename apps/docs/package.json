@@ -19,6 +19,7 @@
     "dotenv": "^16.4.5",
     "framer-motion": "^11.3.24",
     "html2canvas": "^1.4.1",
+    "html2pdf.js": "^0.10.2",
     "jose": "^5.6.3",
     "jspdf": "^2.5.1",
     "lucide-react": "^0.395.0",

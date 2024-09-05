@@ -1,0 +1,93 @@
+.education-container {
+    .education-list {
+        .collapse-comp {
+            background-color: #29252E;
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-top: 1rem;
+
+            .collapse-trigger {
+                display: flex;
+                width: 100%;
+                justify-content: space-between;
+                align-items: center;
+
+                .edu-note {
+                    display: flex;
+                    align-items: center;
+                }
+
+                .delete-cta {
+                    opacity: 0.4;
+                }
+
+                .college-details {
+                    .title {
+                        text-align: left;
+                        margin-left: 8px;
+                        font-weight: 600;
+                        font-size: 18px;
+                        opacity: 0.85;
+                    }
+
+                    .subtitle {
+                        margin-left: 8px;
+                        font-size: 14px;
+                        opacity: 0.7;
+                        text-align: left;
+                    }
+                }
+            }
+            .collapse-content {
+                .content-container {
+                    .form-row {
+                        display: flex;
+                        justify-content: space-between;
+                        margin-top: 28px;
+
+                        .row-form-field {
+                            width: 47%;
+                        }
+                    }
+                }
+            }
+
+            .collapse-content {
+                overflow: hidden;
+              }
+              .collapse-content[data-state='open'] {
+                animation: slideDown 300ms ease-out;
+              }
+              .collapse-content[data-state='closed'] {
+                animation: slideUp 300ms ease-out;
+              }
+              
+              @keyframes slideDown {
+                from {
+                  height: 0;
+                }
+                to {
+                  height: var(--radix-collapsible-content-height);
+                }
+              }
+              
+              @keyframes slideUp {
+                from {
+                  height: var(--radix-collapsible-content-height);
+                }
+                to {
+                  height: 0;
+                }
+              }
+        }
+    }
+
+    .add-cta {
+        background: transparent;
+        color: rgba(255,255,255,0.5);
+        width: 100%;
+        border: 1px dashed rgba(255,255,255,0.36);
+        border-radius: 12px;
+        margin-top: 20px;
+    }
+}
