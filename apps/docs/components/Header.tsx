@@ -24,7 +24,7 @@ export default function Header() {
   }
   return (
     <header className="flex items-center justify-between px-4 py-3 bg-background-dark shadow-sm">
-      <Link href="#" className="flex items-center gap-2" prefetch={false}>
+      <Link href="/" className="flex items-center gap-2" prefetch={false}>
         <BookIcon className="w-6 h-6 text-primary-foreground-dark" />
         <span className="text-xl font-bold text-primary-foreground-dark">
           Resume-maker
