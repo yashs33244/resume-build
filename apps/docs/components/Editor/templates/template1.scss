@@ -4,16 +4,34 @@
     aspect-ratio: 1 / 1.29;
     min-width: 595px;
     max-width: 595px;
-    min-height: 742px;
-    max-height: 742px;
+    min-height: 842px;
+    max-height: 842px;
 
     .large {
         padding: 2rem 3.5rem;
+
+        .tag{
+          width: fit-content;
+          background: #097969;
+          padding: 5px 8px;
+          position: absolute;
+          left: 20px;
+          top: 38px;
+          z-index: 0;
+          display: flex;
+          flex-direction: column;
+          &_value{
+            color: white;
+            font-weight: 700;
+            font-size: 10px;
+            line-height: 14px;
+          }
+        }
         
         .primary-info {
             .name {
                 color: #323336;
-                font-weight: 700;            
+                font-weight: 700;
             }
     
             .position {
