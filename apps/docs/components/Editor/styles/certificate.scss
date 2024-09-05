@@ -1,0 +1,149 @@
+.certificate-container {
+    .certificate-list {
+        .collapse-comp {
+            background-color: #29252E;
+            border-radius: 16px;
+            padding: 1.5rem 1.5rem 2rem 1.5rem;
+            margin-top: 1rem;
+
+            .collapse-trigger {
+                display: flex;
+                width: 100%;
+                justify-content: space-between;
+                align-items: center;
+
+                .cert-note {
+                    display: flex;
+                    align-items: center;
+                }
+
+                .delete-cta {
+                    opacity: 0.4;
+                }
+
+                .certificate-details {
+                    .title {
+                        text-align: left;
+                        margin-left: 8px;
+                        font-weight: 600;
+                        font-size: 18px;
+                        opacity: 0.85;
+                    }
+
+                    .subtitle {
+                        margin-left: 8px;
+                        font-size: 14px;
+                        opacity: 0.7;
+                        text-align: left;
+                    }
+                }
+            }
+            .collapse-content {
+                .content-container {
+                    .form-row {
+                        display: flex;
+                        justify-content: space-between;
+                        margin-top: 28px;
+
+                        .row-form-field {
+                            width: 47%;
+                        }
+
+                        .form-field {
+                            width: 100%;
+                        }
+                    }
+
+                    .single-form-row {
+                        margin-top: 28px;
+
+                        .form-field {
+                            .text-editor-container {
+                                margin-top: 8px;
+                                .text-editor {
+                                    .ql-toolbar {
+                                        border-left: 0.5px solid rgba(255,255,255,0.4);
+                                        border-right: 0.5px solid rgba(255,255,255,0.4);
+                                        border-top: 0.5px solid rgba(255,255,255,0.4);
+                                        border-bottom: none;
+                                    }
+
+                                    button:hover .ql-stroke,
+                                        .ql-picker-label:hover .ql-stroke {
+                                        fill: none;
+                                        stroke: rgba(255,255,255,0.7) !important;
+                                        }
+
+                                        .ql-active .ql-stroke {
+                                        fill: none;
+                                        stroke: rgba(255,255,255,0.7) !important;
+                                        }
+
+                                        button:hover .ql-fill,
+                                        .ql-picker-label:hover .ql-fill {
+                                        fill: rgba(255,255,255,0.7) !important;
+                                        stroke: none;
+                                        }
+
+                                        .ql-active .ql-fill {
+                                        fill: rgba(255,255,255,0.7) !important;
+                                        stroke: none;
+                                        }
+
+                                    .ql-container {
+                                        border: 0.5px solid rgba(255,255,255,0.4);
+                                        height: 100px;
+                                    }
+                                }
+                            }
+                        }
+
+                        .ai-container {
+                            .ai-chip {
+                                background: linear-gradient(to right, #777777, #444444);
+                                font-weight: 500;
+                            }
+                        }
+                    }
+                }
+            }
+
+            .collapse-content {
+                overflow: hidden;
+              }
+              .collapse-content[data-state='open'] {
+                animation: slideDown 300ms ease-out;
+              }
+              .collapse-content[data-state='closed'] {
+                animation: slideUp 300ms ease-out;
+              }
+              
+              @keyframes slideDown {
+                from {
+                  height: 0;
+                }
+                to {
+                  height: var(--radix-collapsible-content-height);
+                }
+              }
+              
+              @keyframes slideUp {
+                from {
+                  height: var(--radix-collapsible-content-height);
+                }
+                to {
+                  height: 0;
+                }
+              }
+        }
+    }
+
+    .add-cta {
+        background: transparent;
+        color: rgba(255,255,255,0.5);
+        width: 100%;
+        border: 1px dashed rgba(255,255,255,0.36);
+        border-radius: 12px;
+        margin-top: 20px;
+    }
+}
