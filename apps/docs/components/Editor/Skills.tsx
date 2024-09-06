@@ -14,7 +14,11 @@ interface SkillsProps {
     index?: number,
   ) => void;
   handleAddField: (section: keyof ResumeProps) => void;
-  handleDeleteField: (section: keyof ResumeProps, index: number) => void;
+  handleDeleteField: (
+    section: keyof ResumeProps,
+    field: string,
+    index?: number,
+  ) => void;
 }
 
 export const Skills: React.FC<SkillsProps> = ({
@@ -42,7 +46,12 @@ export const Skills: React.FC<SkillsProps> = ({
   const addCoreSkill = (skill: string) => {
     if (skill.trim()) {
       handleAddField("coreSkills");
-      handleInputChange("skills", "coreSkill", skill, resumeData.coreSkills.length);
+      handleInputChange(
+        "skills",
+        "coreSkill",
+        skill,
+        resumeData.coreSkills.length,
+      );
       setCoreSkill("");
       setSuggestions((prevSuggestions) =>
         prevSuggestions.filter((s) => s !== skill),
@@ -53,7 +62,12 @@ export const Skills: React.FC<SkillsProps> = ({
   const addTechSkill = (skill: string) => {
     if (skill.trim()) {
       handleAddField("techSkills");
-      handleInputChange("skills", "techSkill", skill, resumeData.techSkills.length);
+      handleInputChange(
+        "skills",
+        "techSkill",
+        skill,
+        resumeData.techSkills.length,
+      );
       setTechSkill("");
       setSuggestions((prevSuggestions) =>
         prevSuggestions.filter((s) => s !== skill),
@@ -172,10 +186,7 @@ export const Skills: React.FC<SkillsProps> = ({
   return (
     <div className="skills-container">
       <div className="core-skills">
-        <Label
-          htmlFor={`skill`}
-          className="field-label"
-        >
+        <Label htmlFor={`skill`} className="field-label">
           Core Skills
         </Label>
         <div className="core-skill-selector">
@@ -188,15 +199,14 @@ export const Skills: React.FC<SkillsProps> = ({
           />
         </div>
         <div className="mb-4">{renderCoreSkillTags()}</div>
-        <div className="text-xl font-semibold mb-2 recommend">Recommended for your role</div>
+        <div className="text-xl font-semibold mb-2 recommend">
+          Recommended for your role
+        </div>
 
         {renderAISuggestedSkills()}
       </div>
       <div className="tech-skills">
-        <Label
-          htmlFor={`tool`}
-          className="field-label"
-        >
+        <Label htmlFor={`tool`} className="field-label">
           Tools and Technologies
         </Label>
         <div className="tech-skill-selector">
@@ -209,7 +219,9 @@ export const Skills: React.FC<SkillsProps> = ({
           />
         </div>
         <div className="mb-4">{renderTechSkillTags()}</div>
-        <div className="text-xl font-semibold mb-2 recommend">Recommended for your role</div>
+        <div className="text-xl font-semibold mb-2 recommend">
+          Recommended for your role
+        </div>
 
         {renderAISuggestedSkills()}
       </div>

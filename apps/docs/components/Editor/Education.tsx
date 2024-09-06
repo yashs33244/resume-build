@@ -6,7 +6,7 @@ import { Input } from "@repo/ui/components/ui/input";
 import { Button } from "@repo/ui/components/ui/button";
 import { ResumeProps } from "../../types/ResumeProps";
 import { FaTrashAlt } from "react-icons/fa";
-import './styles/education.scss'
+import "./styles/education.scss";
 import {
   Collapsible,
   CollapsibleTrigger,
@@ -22,7 +22,11 @@ interface EducationProps {
     index?: number,
   ) => void;
   handleAddField: (section: keyof ResumeProps) => void;
-  handleDeleteField: (section: keyof ResumeProps, index?: number) => void;
+  handleDeleteField: (
+    section: keyof ResumeProps,
+    field: string,
+    index?: number,
+  ) => void;
 }
 
 export const Education: React.FC<EducationProps> = ({
@@ -31,24 +35,31 @@ export const Education: React.FC<EducationProps> = ({
   handleAddField,
   handleDeleteField,
 }) => {
-
-
   return (
     <div className="education-container">
       <div className="education-list">
-        {resumeData.education?.map((edu, index) => (
+        {resumeData.education?.map((edu, index): any => (
           <Collapsible className="collapse-comp" key={index}>
             <CollapsibleTrigger className="collapse-trigger">
               <div className="edu-note">
                 <ChevronDownIcon className="h-5 w-5 transition-transform" />
                 <div className="college-details">
-                  <div className="title">{edu.institution || `Enter Education`}</div>
-                  <div className="subtitle">{edu.degree && edu.major ? `${edu.degree} | ${edu.major}` : null}</div>
+                  <div className="title">
+                    {edu.institution || `Enter Education`}
+                  </div>
+                  <div className="subtitle">
+                    {edu.degree && edu.major
+                      ? `${edu.degree} | ${edu.major}`
+                      : null}
+                  </div>
                 </div>
               </div>
-              <div className="delete-cta" onClick={() => handleDeleteField("education", "", index)}>
+              <div
+                className="delete-cta"
+                onClick={() => handleDeleteField("education", "", index)}
+              >
                 <FaTrashAlt />
-              </div>                      
+              </div>
               {/* <ChevronDownIcon className="h-5 w-5 transition-transform" /> */}
             </CollapsibleTrigger>
             <CollapsibleContent className="collapse-content">
@@ -78,10 +89,7 @@ export const Education: React.FC<EducationProps> = ({
                     />
                   </div>
                   <div className="row-form-field">
-                    <Label
-                      htmlFor={`degree-${index}`}
-                      className="field-label"
-                    >
+                    <Label htmlFor={`degree-${index}`} className="field-label">
                       Degree Name
                     </Label>
                     <Input
@@ -102,10 +110,7 @@ export const Education: React.FC<EducationProps> = ({
                 </div>
                 <div className="form-row">
                   <div className="row-form-field">
-                    <Label
-                      htmlFor={`major-${index}`}
-                      className="field-label"
-                    >
+                    <Label htmlFor={`major-${index}`} className="field-label">
                       Field of Study
                     </Label>
                     <Input
@@ -124,10 +129,7 @@ export const Education: React.FC<EducationProps> = ({
                     />
                   </div>
                   <div className="row-form-field">
-                    <Label
-                      htmlFor={`score-${index}`}
-                      className="field-label"
-                    >
+                    <Label htmlFor={`score-${index}`} className="field-label">
                       CGPA or Percentage
                     </Label>
                     <Input
@@ -148,10 +150,7 @@ export const Education: React.FC<EducationProps> = ({
                 </div>
                 <div className="form-row">
                   <div className="row-form-field">
-                    <Label
-                      htmlFor={`major-${index}`}
-                      className="field-label"
-                    >
+                    <Label htmlFor={`major-${index}`} className="field-label">
                       Start Year
                     </Label>
                     <Input
@@ -170,10 +169,7 @@ export const Education: React.FC<EducationProps> = ({
                     />
                   </div>
                   <div className="row-form-field">
-                    <Label
-                      htmlFor={`end-${index}`}
-                      className="field-label"
-                    >
+                    <Label htmlFor={`end-${index}`} className="field-label">
                       End Year
                     </Label>
                     <Input
@@ -191,7 +187,7 @@ export const Education: React.FC<EducationProps> = ({
                       className="form-input"
                     />
                   </div>
-                </div>               
+                </div>
                 {/* <Button
                   variant="destructive"
                   onClick={() => handleDeleteField("education", index)}

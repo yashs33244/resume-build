@@ -35,18 +35,18 @@ import Typewriter from "typewriter-effect";
 import AliceCarousel, { Link } from "react-alice-carousel";
 import "react-alice-carousel/lib/alice-carousel.css";
 import "./App.scss";
-import { useSession } from "next-auth/react";
+// import { useSession } from "next-auth/react";
 
 export default function LandingPage() {
-  const { data: session, status: sessionStatus } = useSession();
+  // const { data: session, status: sessionStatus } = useSession();
   const [selectedTemplate, setSelected] = useState("classic");
-  const currentTemplate = {
+  const currentTemplate: { [key: string]: string } = {
     classic: template1.src,
     modern: template2.src,
     bold: template3.src,
     pro: template4.src,
     creative: template5.src,
-  };
+  } as { [key: string]: string };
 
   const templateClass = {
     classic: "back1",
@@ -58,27 +58,20 @@ export default function LandingPage() {
 
   return (
     <div className="App">
-      {!session?.user && (
-        <div className="top-bar">
-          <div className="logo-container">
-            <img alt="logo" src={logo.src} width="170px" height="auto" />
-          </div>
-          <div className="navbar-container">
-            <div>Cover Letter</div>
-            {session?.user && (
-              <div>
-                <Link href="/api/auth/signin">Logout</Link>
-              </div>
-            )}
-            {!session?.user && (
-              <div>
-                <Link href="/api/auth/signin">Login</Link>
-              </div>
-            )}
-            <button>Create Resume</button>
-          </div>
+      {/* <div className="top-bar">
+        <div className="logo-container">
+          <img alt="logo" src={logo.src} width="170px" height="auto" />
         </div>
-      )}
+        <div className="navbar-container">
+          <div>Cover Letter</div>
+          {session?.user ? (
+            <Link href="/api/auth/signin">Logout</Link>
+          ) : (
+            <Link href="/api/auth/signin">Login</Link>
+          )}
+          <button>Create Resume</button>
+        </div>
+      </div> */}
       <div className="legend-container">
         <div className="left-container">
           <div className="title">A no bullshit Resume</div>
@@ -194,7 +187,9 @@ export default function LandingPage() {
           </div>
         </div>
         <div className="action-cta">
-          <button>Build My Resume</button>
+          <button>
+            <Link href="/editor"> Build My Resume</Link>
+          </button>
         </div>
       </div>
       <div className="templates-container">
@@ -237,7 +232,9 @@ export default function LandingPage() {
             >
               Creative
             </div>
-            <div className="template-cta">Use This Template</div>
+            <div className="template-cta">
+              <Link href="/editor">Use This Template</Link>
+            </div>
           </div>
           <div className="image-container">
             {/* <div className='template-tagline'>Nothing flashy, just your best pitch with <span>finalCV</span></div> */}
@@ -255,7 +252,7 @@ export default function LandingPage() {
             <div className="infographic">
               <img
                 style={{ height: "40px", width: "auto" }}
-                src={imp}
+                src={imp.src}
                 alt="imp"
               />
             </div>
@@ -269,7 +266,7 @@ export default function LandingPage() {
             <div className="infographic">
               <img
                 style={{ height: "40px", width: "auto" }}
-                src={ats}
+                src={ats.src}
                 alt="ats"
               />
             </div>
@@ -283,7 +280,7 @@ export default function LandingPage() {
             <div className="infographic">
               <img
                 style={{ height: "40px", width: "auto" }}
-                src={ai}
+                src={ai.src}
                 alt="ai"
               />
             </div>
@@ -299,7 +296,7 @@ export default function LandingPage() {
             <div className="infographic">
               <img
                 style={{ height: "40px", width: "auto" }}
-                src={cover}
+                src={cover.src}
                 alt="cover"
               />
             </div>
@@ -313,7 +310,7 @@ export default function LandingPage() {
             <div className="infographic">
               <img
                 style={{ height: "40px", width: "auto" }}
-                src={job}
+                src={job.src}
                 alt="job"
               />
             </div>
@@ -326,7 +323,7 @@ export default function LandingPage() {
             <div className="infographic">
               <img
                 style={{ height: "40px", width: "auto" }}
-                src={format}
+                src={format.src}
                 alt="format"
               />
             </div>

@@ -14,7 +14,11 @@ interface LanguageProps {
     index?: number,
   ) => void;
   handleAddField: (section: keyof ResumeProps) => void;
-  handleDeleteField: (section: keyof ResumeProps, index: number) => void;
+  handleDeleteField: (
+    section: keyof ResumeProps,
+    field: string,
+    index?: number,
+  ) => void;
 }
 
 export const Language: React.FC<LanguageProps> = ({
@@ -30,8 +34,13 @@ export const Language: React.FC<LanguageProps> = ({
 
   const addLanguage = (language: string) => {
     if (language.trim()) {
-      handleAddField("language");
-      handleInputChange("language", "language", language, resumeData.languages.length);
+      handleAddField("languages");
+      handleInputChange(
+        "languages",
+        "language",
+        language,
+        resumeData.languages?.length ?? 0,
+      );
       setLanguage("");
       setSuggestions((prevSuggestions) =>
         prevSuggestions.filter((s) => s !== language),
@@ -42,14 +51,14 @@ export const Language: React.FC<LanguageProps> = ({
   const renderLanguageTags = () => {
     return (
       <div className="flex flex-wrap gap-2 list-container">
-        {resumeData.languages.map((language, index) => (
+        {resumeData.languages?.map((language, index) => (
           <div
             key={index}
             className="list-item inline-flex items-center bg-gray-100 rounded-full px-5 py-2 text-sm font-semibold text-gray-700"
           >
             {language}
             <button
-              onClick={() => handleDeleteField("language", "language", index)}
+              onClick={() => handleDeleteField("languages", "language", index)}
               className="ml-2 focus:outline-none"
             >
               ×
@@ -63,10 +72,7 @@ export const Language: React.FC<LanguageProps> = ({
   return (
     <div className="language-container">
       <div className="languages">
-        <Label
-          htmlFor={`skill`}
-          className="field-label"
-        >
+        <Label htmlFor={`skill`} className="field-label">
           Languages
         </Label>
         <div className="language-selector">

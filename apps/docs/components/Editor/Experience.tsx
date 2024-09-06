@@ -35,7 +35,11 @@ interface ExperienceProps {
     index?: number,
   ) => void;
   handleAddField: (section: keyof ResumeProps) => void;
-  handleDeleteField: (section: keyof ResumeProps, index?: number) => void;
+  handleDeleteField: (
+    section: keyof ResumeProps,
+    field: string,
+    index?: number,
+  ) => void;
 }
 
 export const Experience: React.FC<ExperienceProps> = ({
@@ -103,30 +107,32 @@ export const Experience: React.FC<ExperienceProps> = ({
   const aiPrompts = ["Make It Better", "Check Grammar", "Concise", "Elaborate"];
 
   return (
-    <div className="experience-container">      
+    <div className="experience-container">
       <div className="experience-list">
         {experiences.map((exp, index) => (
           <Collapsible className="collapse-comp" key={index}>
             <CollapsibleTrigger className="collapse-trigger">
               <div className="exp-note">
-                  <ChevronDownIcon className="h-5 w-5 transition-transform" />
-                  <div className="company-details">
-                    <div className="title">{exp.company || `Enter Experience`}</div>
-                    <div className="subtitle">{exp.role ? exp.role : null}</div>
+                <ChevronDownIcon className="h-5 w-5 transition-transform" />
+                <div className="company-details">
+                  <div className="title">
+                    {exp.company || `Enter Experience`}
                   </div>
+                  <div className="subtitle">{exp.role ? exp.role : null}</div>
+                </div>
               </div>
-              <div className="delete-cta" onClick={() => handleDeleteField("experience", "", index)}>
+              <div
+                className="delete-cta"
+                onClick={() => handleDeleteField("experience", "", index)}
+              >
                 <FaTrashAlt />
-              </div>  
+              </div>
             </CollapsibleTrigger>
             <CollapsibleContent className="collapse-content">
               <div className="content-container">
                 <div className="form-row">
                   <div className="row-form-field">
-                    <Label
-                      htmlFor={`company-${index}`}
-                      className="field-label"
-                    >
+                    <Label htmlFor={`company-${index}`} className="field-label">
                       Company Name
                     </Label>
                     <Input
@@ -145,10 +151,7 @@ export const Experience: React.FC<ExperienceProps> = ({
                     />
                   </div>
                   <div className="row-form-field">
-                    <Label
-                      htmlFor={`role-${index}`}
-                      className="field-label"
-                    >
+                    <Label htmlFor={`role-${index}`} className="field-label">
                       Designation
                     </Label>
                     <Input
@@ -169,10 +172,7 @@ export const Experience: React.FC<ExperienceProps> = ({
                 </div>
                 <div className="form-row">
                   <div className="row-form-field">
-                    <Label
-                      htmlFor={`role-${index}`}
-                      className="field-label"
-                    >
+                    <Label htmlFor={`role-${index}`} className="field-label">
                       Start Date
                     </Label>
                     <Input
@@ -192,10 +192,7 @@ export const Experience: React.FC<ExperienceProps> = ({
                     />
                   </div>
                   <div className="row-form-field">
-                    <Label
-                      htmlFor={`end-${index}`}
-                      className="field-label"
-                    >
+                    <Label htmlFor={`end-${index}`} className="field-label">
                       End Date
                     </Label>
                     <Input
@@ -226,21 +223,16 @@ export const Experience: React.FC<ExperienceProps> = ({
                     <div className="text-editor-container">
                       <ClientSideQuill
                         id={`responsibilities-${index}`}
-                        value={exp.responsibilities?.join("\n") || ""}                        
+                        value={exp.responsibilities?.join("\n") || ""}
                         onChange={(value) =>
                           handleResponsibilitiesChange(value, index)
                         }
                         className="text-editor"
                         modules={{
                           toolbar: [
-                            [
-                              "bold",
-                              "italic",
-                              "underline",
-                              "strike",                              
-                            ],
+                            ["bold", "italic", "underline", "strike"],
                             [{ list: "ordered" }, { list: "bullet" }],
-                            ["link"],                            
+                            ["link"],
                           ],
                         }}
                       />
@@ -256,7 +248,7 @@ export const Experience: React.FC<ExperienceProps> = ({
                     </div>
                   </div>
                   <div className="ai-container flex flex-wrap items-center gap-2 mt-4">
-                    <BsStars style={{width: '20px', height: '20px'}} />
+                    <BsStars style={{ width: "20px", height: "20px" }} />
                     {aiPrompts.map((prompt, promptIndex) => (
                       <button
                         key={promptIndex}
@@ -273,7 +265,7 @@ export const Experience: React.FC<ExperienceProps> = ({
                       </button>
                     ))}
                   </div>
-                </div>                
+                </div>
               </div>
             </CollapsibleContent>
           </Collapsible>
@@ -284,7 +276,7 @@ export const Experience: React.FC<ExperienceProps> = ({
         onClick={() => handleAddField("experience")}
         className="add-cta"
       >
-       + Add Experience
+        + Add Experience
       </Button>
     </div>
   );

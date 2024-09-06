@@ -60,9 +60,9 @@ export const useResumeData = () => {
                         i === index ? { ...item, [field]: value } : item
                     );
                 }
-            } else if (section === "project") {
-                if (newData.project && Array.isArray(newData.project) && index !== undefined) {
-                    newData.project = newData.project.map((item, i) =>
+            } else if (section === "projects") { // Fix this to match "projects"
+                if (newData.projects && Array.isArray(newData.projects) && index !== undefined) {
+                    newData.projects = newData.projects.map((item, i) =>
                         i === index ? { ...item, [field]: value } : item
                     );
                 }
@@ -89,8 +89,8 @@ export const useResumeData = () => {
                         ...currentSkills.slice(index + 1)
                     ];
                 }
-            } else if (section === "language") {
-                if (field === "language" && index !== undefined) {
+            } else if (section === "languages") { // Fix this to match "languages"
+                if (index !== undefined) {
                     const currentLanguages = Array.isArray(newData.languages) ? newData.languages : [];
                     newData.languages = [
                         ...currentLanguages.slice(0, index),
@@ -124,9 +124,9 @@ export const useResumeData = () => {
                   ...(prevData.experience || []),
                   { company: "", role: "", start: "", end: "", responsibilities: [] },
               ];
-          } else if (section === "project") {
-            newData.project = [
-                ...(prevData.project || []),
+          } else if (section === "projects") { // Fix this to match "projects"
+            newData.projects = [
+                ...(prevData.projects || []),
                 { name: "", link: "", start: "", end: "", responsibilities: [] },
             ];
           } else if (section === "certificate") {
@@ -138,7 +138,7 @@ export const useResumeData = () => {
               newData.skills = Array.isArray(prevData.skills) 
                   ? [...prevData.skills, ""]
                   : [""];
-          } else if (section === "language") {
+          } else if (section === "languages") {
              newData.languages = Array.isArray(prevData.languages) 
                 ? [...prevData.languages, ""]
                 : [""];
@@ -154,7 +154,7 @@ export const useResumeData = () => {
     ) => {
         setResumeData((prevData) => {
             const newData = { ...prevData };
-            if (section === "education" || section === "experience" || section === "project" || section === "certificate") {
+            if (section === "education" || section === "experience" || section === "projects" || section === "certificate") {
                 (newData[section] as any[]) = (prevData[section] as any[]).filter(
                     (_, i) => i !== index
                 );
@@ -166,7 +166,7 @@ export const useResumeData = () => {
                 newData.techSkills = Array.isArray(newData.techSkills) 
                     ? newData.techSkills.filter((_, i) => i !== index)
                     : [];
-            } else if (section === "language" && field === 'language' && index !== undefined) {
+            } else if (section === "languages" && field === 'language' && index !== undefined) {
                 newData.languages = Array.isArray(newData.languages) 
                     ? newData.languages.filter((_, i) => i !== index)
                     : [];

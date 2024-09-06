@@ -15,7 +15,6 @@ import {
   CollapsibleContent,
 } from "@repo/ui/components/ui/collapsible";
 
-
 interface CertificateProps {
   resumeData: ResumeProps;
   handleInputChange: (
@@ -25,7 +24,11 @@ interface CertificateProps {
     index?: number,
   ) => void;
   handleAddField: (section: keyof ResumeProps) => void;
-  handleDeleteField: (section: keyof ResumeProps, index?: number) => void;
+  handleDeleteField: (
+    section: keyof ResumeProps,
+    field: string,
+    index?: number,
+  ) => void;
 }
 
 export const Certificate: React.FC<CertificateProps> = ({
@@ -38,21 +41,28 @@ export const Certificate: React.FC<CertificateProps> = ({
   const [isLoading, setIsLoading] = useState<{ [key: number]: boolean }>({});
 
   return (
-    <div className="certificate-container">      
+    <div className="certificate-container">
       <div className="certificate-list">
         {certificates.map((cert, index) => (
           <Collapsible className="collapse-comp" key={index}>
             <CollapsibleTrigger className="collapse-trigger">
               <div className="cert-note">
-                  <ChevronDownIcon className="h-5 w-5 transition-transform" />
-                  <div className="certificate-details">
-                    <div className="title">{cert.name || `Enter Certificate`}</div>
-                    <div className="subtitle">{cert.issuer ? cert.issuer : null}</div>
+                <ChevronDownIcon className="h-5 w-5 transition-transform" />
+                <div className="certificate-details">
+                  <div className="title">
+                    {cert.name || `Enter Certificate`}
                   </div>
+                  <div className="subtitle">
+                    {cert.issuer ? cert.issuer : null}
+                  </div>
+                </div>
               </div>
-              <div className="delete-cta" onClick={() => handleDeleteField("certificate", "", index)}>
+              <div
+                className="delete-cta"
+                onClick={() => handleDeleteField("certificate", "", index)}
+              >
                 <FaTrashAlt />
-              </div>  
+              </div>
             </CollapsibleTrigger>
             <CollapsibleContent className="collapse-content">
               <div className="content-container">
@@ -78,14 +88,11 @@ export const Certificate: React.FC<CertificateProps> = ({
                       placeholder="For Eg: Adanced Data Analytics"
                       className="form-input"
                     />
-                  </div>                  
+                  </div>
                 </div>
                 <div className="form-row">
                   <div className="row-form-field">
-                    <Label
-                      htmlFor={`issuer-${index}`}
-                      className="field-label"
-                    >
+                    <Label htmlFor={`issuer-${index}`} className="field-label">
                       Issuing Organisation
                     </Label>
                     <Input
@@ -126,7 +133,7 @@ export const Certificate: React.FC<CertificateProps> = ({
                       className="form-input"
                     />
                   </div>
-                </div>               
+                </div>
               </div>
             </CollapsibleContent>
           </Collapsible>
@@ -137,7 +144,7 @@ export const Certificate: React.FC<CertificateProps> = ({
         onClick={() => handleAddField("certificate")}
         className="add-cta"
       >
-       + Add Certificate
+        + Add Certificate
       </Button>
     </div>
   );

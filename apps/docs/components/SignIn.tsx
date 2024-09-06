@@ -16,7 +16,7 @@ export default function SignIn() {
     <div className="flex min-h-screen bg-gradient-to-br from-purple-100 to-blue-100">
       <div className="m-auto bg-white rounded-xl shadow-lg flex flex-col md:flex-row w-full max-w-4xl">
         <div className="p-8 md:w-1/2">
-          <h2 className="text-2xl font-bold mb-6">
+          <h2 className="text-2xl font-bold mb-6 text-slate-500">
             Let's build your CV together
           </h2>
           <form onSubmit={handleSubmit}>

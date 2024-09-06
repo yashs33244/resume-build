@@ -35,7 +35,11 @@ interface ProjectProps {
     index?: number,
   ) => void;
   handleAddField: (section: keyof ResumeProps) => void;
-  handleDeleteField: (section: keyof ResumeProps, index?: number) => void;
+  handleDeleteField: (
+    section: keyof ResumeProps,
+    field: string,
+    index?: number,
+  ) => void;
 }
 
 export const Project: React.FC<ProjectProps> = ({
@@ -44,7 +48,7 @@ export const Project: React.FC<ProjectProps> = ({
   handleAddField,
   handleDeleteField,
 }) => {
-  const projects = resumeData.project || [];
+  const projects = resumeData.projects || [];
   const [isLoading, setIsLoading] = useState<{ [key: number]: boolean }>({});
 
   const handleResponsibilitiesChange = (value: string, index: number) => {
@@ -103,30 +107,30 @@ export const Project: React.FC<ProjectProps> = ({
   const aiPrompts = ["Make It Better", "Check Grammar", "Concise", "Elaborate"];
 
   return (
-    <div className="project-container">      
+    <div className="project-container">
       <div className="project-list">
-        {projects.map((proj, index) => (
+        {projects.map((proj: any, index: any) => (
           <Collapsible className="collapse-comp" key={index}>
             <CollapsibleTrigger className="collapse-trigger">
               <div className="proj-note">
-                  <ChevronDownIcon className="h-5 w-5 transition-transform" />
-                  <div className="project-details">
-                    <div className="title">{proj.name || `Enter Project`}</div>
-                    <div className="subtitle">{proj.link ? proj.link : null}</div>
-                  </div>
+                <ChevronDownIcon className="h-5 w-5 transition-transform" />
+                <div className="project-details">
+                  <div className="title">{proj.name || `Enter Project`}</div>
+                  <div className="subtitle">{proj.link ? proj.link : null}</div>
+                </div>
               </div>
-              <div className="delete-cta" onClick={() => handleDeleteField("project", "", index)}>
+              <div
+                className="delete-cta"
+                onClick={() => handleDeleteField("projects", "", index)}
+              >
                 <FaTrashAlt />
-              </div>  
+              </div>
             </CollapsibleTrigger>
             <CollapsibleContent className="collapse-content">
               <div className="content-container">
                 <div className="form-row">
                   <div className="row-form-field">
-                    <Label
-                      htmlFor={`project-${index}`}
-                      className="field-label"
-                    >
+                    <Label htmlFor={`project-${index}`} className="field-label">
                       Project Name
                     </Label>
                     <Input
@@ -134,7 +138,7 @@ export const Project: React.FC<ProjectProps> = ({
                       value={proj.name || ""}
                       onChange={(e) =>
                         handleInputChange(
-                          "project",
+                          "projects",
                           "name",
                           e.target.value,
                           index,
@@ -145,10 +149,7 @@ export const Project: React.FC<ProjectProps> = ({
                     />
                   </div>
                   <div className="row-form-field">
-                    <Label
-                      htmlFor={`link-${index}`}
-                      className="field-label"
-                    >
+                    <Label htmlFor={`link-${index}`} className="field-label">
                       Link To Project
                     </Label>
                     <Input
@@ -156,7 +157,7 @@ export const Project: React.FC<ProjectProps> = ({
                       value={proj.link || ""}
                       onChange={(e) =>
                         handleInputChange(
-                          "project",
+                          "projects",
                           "link",
                           e.target.value,
                           index,
@@ -169,10 +170,7 @@ export const Project: React.FC<ProjectProps> = ({
                 </div>
                 <div className="form-row">
                   <div className="row-form-field">
-                    <Label
-                      htmlFor={`start-${index}`}
-                      className="field-label"
-                    >
+                    <Label htmlFor={`start-${index}`} className="field-label">
                       Start Date
                     </Label>
                     <Input
@@ -181,7 +179,7 @@ export const Project: React.FC<ProjectProps> = ({
                       type="date"
                       onChange={(e) =>
                         handleInputChange(
-                          "project",
+                          "projects",
                           "start",
                           e.target.value,
                           index,
@@ -192,10 +190,7 @@ export const Project: React.FC<ProjectProps> = ({
                     />
                   </div>
                   <div className="row-form-field">
-                    <Label
-                      htmlFor={`end-${index}`}
-                      className="field-label"
-                    >
+                    <Label htmlFor={`end-${index}`} className="field-label">
                       End Date
                     </Label>
                     <Input
@@ -204,7 +199,7 @@ export const Project: React.FC<ProjectProps> = ({
                       type="date"
                       onChange={(e) =>
                         handleInputChange(
-                          "project",
+                          "projects",
                           "end",
                           e.target.value,
                           index,
@@ -226,21 +221,16 @@ export const Project: React.FC<ProjectProps> = ({
                     <div className="text-editor-container">
                       <ClientSideQuill
                         id={`responsibilities-${index}`}
-                        value={proj.responsibilities?.join("\n") || ""}                        
+                        value={proj.responsibilities?.join("\n") || ""}
                         onChange={(value) =>
                           handleResponsibilitiesChange(value, index)
                         }
                         className="text-editor"
                         modules={{
                           toolbar: [
-                            [
-                              "bold",
-                              "italic",
-                              "underline",
-                              "strike",                              
-                            ],
+                            ["bold", "italic", "underline", "strike"],
                             [{ list: "ordered" }, { list: "bullet" }],
-                            ["link"],                            
+                            ["link"],
                           ],
                         }}
                       />
@@ -256,7 +246,7 @@ export const Project: React.FC<ProjectProps> = ({
                     </div>
                   </div>
                   <div className="ai-container flex flex-wrap items-center gap-2 mt-4">
-                    <BsStars style={{width: '20px', height: '20px'}} />
+                    <BsStars style={{ width: "20px", height: "20px" }} />
                     {aiPrompts.map((prompt, promptIndex) => (
                       <button
                         key={promptIndex}
@@ -273,7 +263,7 @@ export const Project: React.FC<ProjectProps> = ({
                       </button>
                     ))}
                   </div>
-                </div>                
+                </div>
               </div>
             </CollapsibleContent>
           </Collapsible>
@@ -281,10 +271,10 @@ export const Project: React.FC<ProjectProps> = ({
       </div>
       <Button
         variant="default"
-        onClick={() => handleAddField("project")}
+        onClick={() => handleAddField("projects")}
         className="add-cta"
       >
-       + Add Project
+        + Add Project
       </Button>
     </div>
   );
