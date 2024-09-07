@@ -50,7 +50,7 @@ export const Skills: React.FC<SkillsProps> = ({
         "skills",
         "coreSkill",
         skill,
-        resumeData.coreSkills.length,
+        resumeData.coreSkills?.length,
       );
       setCoreSkill("");
       setSuggestions((prevSuggestions) =>
@@ -66,7 +66,7 @@ export const Skills: React.FC<SkillsProps> = ({
         "skills",
         "techSkill",
         skill,
-        resumeData.techSkills.length,
+        resumeData.techSkills?.length,
       );
       setTechSkill("");
       setSuggestions((prevSuggestions) =>
@@ -128,7 +128,7 @@ export const Skills: React.FC<SkillsProps> = ({
   const renderCoreSkillTags = () => {
     return (
       <div className="flex flex-wrap gap-2 list-container">
-        {resumeData.coreSkills.map((skill, index) => (
+        {resumeData.coreSkills?.map((skill, index) => (
           <div
             key={index}
             className="list-item inline-flex items-center bg-gray-100 rounded-full px-5 py-2 text-sm font-semibold text-gray-700"
@@ -149,7 +149,7 @@ export const Skills: React.FC<SkillsProps> = ({
   const renderTechSkillTags = () => {
     return (
       <div className="flex flex-wrap gap-2 list-container">
-        {resumeData.techSkills.map((skill, index) => (
+        {resumeData.techSkills?.map((skill, index) => (
           <div
             key={index}
             className="list-item inline-flex items-center bg-gray-100 rounded-full px-5 py-2 text-sm font-semibold text-gray-700"
