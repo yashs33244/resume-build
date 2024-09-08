@@ -2,14 +2,28 @@
 import { signIn } from "next-auth/react";
 import { useState } from "react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 export default function SignIn() {
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await signIn("credentials", { email, password });
+    const result = await signIn("credentials", {
+      username: username,
+      password: password,
+      redirect: false,
+    });
+
+    if (result?.error) {
+      setError("Invalid email or password");
+    } else {
+      // Redirect to select-templates page on successful sign-in
+      router.push("/select-templates");
+    }
   };
 
   return (
@@ -29,10 +43,10 @@ export default function SignIn() {
               </label>
               <input
                 type="email"
-                id="email"
+                id="username"
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
                 required
               />
             </div>

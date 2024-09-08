@@ -25,6 +25,8 @@ import { PiCertificateFill } from "react-icons/pi";
 import { FaLanguage } from "react-icons/fa6";
 //@ts-ignore
 import html2pdf from "html2pdf.js";
+import { Link } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 const PersonalInfo = dynamic(
   () => import("./Editor/PersonalInfo").then((mod) => mod.PersonalInfo),
@@ -48,6 +50,12 @@ const Achievement = dynamic(
 );
 
 export default function EditPage() {
+  const router = useRouter();
+
+  const handleRedirect = () => {
+    router.push("/");
+  };
+
   const { resumeData, handleInputChange, handleAddField, handleDeleteField } =
     useResumeData();
   const { activeSection, handleSectionChange, sections, setActiveSection } =
@@ -215,8 +223,8 @@ export default function EditPage() {
       </div> */}
       <div className="editor-container">
         <div className="navigation">
-          <div className="login-container">
-            <div className="login-cta">Login</div>
+          <div className="login-container" onClick={handleRedirect}>
+            <div className="login-cta">Home</div>
           </div>
           <div className="nav-container">
             <div

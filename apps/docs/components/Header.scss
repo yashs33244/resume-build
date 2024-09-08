@@ -1,13 +1,18 @@
 .header-container {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
     padding: 0 3rem 0 2rem;
     display: flex;
     height: 70px;
     align-items: center;
     justify-content: space-between;
-    background : linear-gradient(180deg, black, #1D1B20);    
-    // background-color: #101010;
-
+    background: linear-gradient(180deg, black, #1D1B20);
+    width: 100%;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Add subtle shadow for depth */
+    
     .logo-container {
+        /* Optional opacity setting */
         // opacity: 0.8;
     }
 

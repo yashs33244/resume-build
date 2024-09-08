@@ -35,11 +35,13 @@ import Typewriter from "typewriter-effect";
 import AliceCarousel, { Link } from "react-alice-carousel";
 import "react-alice-carousel/lib/alice-carousel.css";
 import "./App.scss";
+import { useSession } from "next-auth/react";
 // import { useSession } from "next-auth/react";
 
 export default function LandingPage() {
   // const { data: session, status: sessionStatus } = useSession();
   const [selectedTemplate, setSelected] = useState("classic");
+  const { data: session, status: sessionStatus } = useSession();
   const currentTemplate: { [key: string]: string } = {
     classic: template1.src,
     modern: template2.src,
@@ -98,7 +100,14 @@ export default function LandingPage() {
           <div className="secondary-cta">
             <FaEdit />
             <div>
-              <Link href="/editor"> Enter Details Manually</Link>
+              {session?.user ? (
+                <Link href="/select-templates/editor">
+                  {" "}
+                  Enter Details Manually
+                </Link>
+              ) : (
+                <Link href="/api/auth/signin"> Enter Details Manually</Link>
+              )}
             </div>
           </div>
         </div>
@@ -188,7 +197,12 @@ export default function LandingPage() {
         </div>
         <div className="action-cta">
           <button>
-            <Link href="/editor"> Build My Resume</Link>
+            {/* <Link href="/editor"> Build My Resume</Link> */}
+            {session?.user ? (
+              <Link href="/select-templates/editor"> Build My Resume</Link>
+            ) : (
+              <Link href="/api/auth/signin"> Build My Resume</Link>
+            )}
           </button>
         </div>
       </div>
