@@ -275,14 +275,14 @@ export default function EditPage() {
                 className={`icon ${activeSection === "Certificate" ? "selected" : ""}`}
               />
             </div>
-            <div
+            {/* <div
               onClick={() => setActiveSection("Language")}
               className={`icon-container ${activeSection === "Language" ? "border" : ""}`}
             >
               <FaLanguage
                 className={`icon ${activeSection === "Language" ? "selected" : ""}`}
               />
-            </div>
+            </div> */}
           </div>
           <div className="branding-container">
             <Image alt="logo" src={logo} />
