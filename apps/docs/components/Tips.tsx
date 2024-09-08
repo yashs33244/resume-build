@@ -8,6 +8,7 @@ import { AiFillProject } from "react-icons/ai";
 import { FaTools } from "react-icons/fa";
 import { FaLanguage } from "react-icons/fa6";
 import { PiCaretCircleRightFill } from "react-icons/pi";
+import { tipsData } from "./tipsData";
 import { PiCertificateFill } from "react-icons/pi";
 import { FaUserTie } from "react-icons/fa";
 // import ProfileWrapper from "./ProfileWrapper";
@@ -52,14 +53,9 @@ export default function Tips(props: any) {
                 <div>Personal Information</div>
               </CollapsibleTrigger>
               <CollapsibleContent className="collapse-content">
-                <div>Best Practices of personal information will go here</div>
-                <div>Best Practices of personal information will go here</div>
-                <div>Best Practices of personal information will go here</div>
-                <div>Best Practices of personal information will go here</div>
-                <div>Best Practices of personal information will go here</div>
-                <div>Best Practices of personal information will go here</div>
-                <div>Best Practices of personal information will go here</div>
-                <div>Best Practices of personal information will go here</div>
+                {tipsData && tipsData.personal.map((tip, index) => (
+                  <li style={{marginTop: '8px'}} key={index}>{tip}</li>
+                ))}
               </CollapsibleContent>
             </Collapsible>
             <Collapsible
@@ -71,7 +67,9 @@ export default function Tips(props: any) {
                 <div>Education</div>
               </CollapsibleTrigger>
               <CollapsibleContent className="collapse-content">
-                <div>Best Practices of personal information will go here</div>
+                {tipsData && tipsData.education.map((tip, index) => (
+                  <li style={{marginTop: '8px'}} key={index}>{tip}</li>
+                ))}
               </CollapsibleContent>
             </Collapsible>
             <Collapsible
@@ -83,7 +81,9 @@ export default function Tips(props: any) {
                 <div>Work Experience</div>
               </CollapsibleTrigger>
               <CollapsibleContent className="collapse-content">
-                <div>Best Practices of personal information will go here</div>
+                {tipsData && tipsData.experience.map((tip, index) => (
+                  <li style={{marginTop: '8px'}} key={index}>{tip}</li>
+                ))}
               </CollapsibleContent>
             </Collapsible>
             <Collapsible
@@ -95,7 +95,9 @@ export default function Tips(props: any) {
                 <div>Projects</div>
               </CollapsibleTrigger>
               <CollapsibleContent className="collapse-content">
-                <div>Best Practices of personal information will go here</div>
+                {tipsData && tipsData.projects.map((tip, index) => (
+                  <li style={{marginTop: '8px'}} key={index}>{tip}</li>
+                ))}
               </CollapsibleContent>
             </Collapsible>
             <Collapsible
@@ -107,7 +109,9 @@ export default function Tips(props: any) {
                 <div>Skills</div>
               </CollapsibleTrigger>
               <CollapsibleContent className="collapse-content">
-                <div>Best Practices of personal information will go here</div>
+                {tipsData && tipsData.skills.map((tip, index) => (
+                  <li style={{marginTop: '8px'}} key={index}>{tip}</li>
+                ))}
               </CollapsibleContent>
             </Collapsible>
             <Collapsible
