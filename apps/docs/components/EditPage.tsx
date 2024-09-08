@@ -1,38 +1,37 @@
 "use client";
 import dynamic from "next/dynamic";
-import React, { useEffect } from "react";
-import Image from "next/image";
+import React, { useEffect, useMemo, useState } from "react";
 import "./EditPage.scss";
-import generatePDF, { Resolution, Margin, Options } from "react-to-pdf";
 import { Education } from "./Editor/Education";
-import { Template1 } from "./Editor/templates/Template1";
 import { Skills } from "./Editor/Skills";
-import Tips from "./Tips";
 import { Language } from "./Editor/Language";
+import { MdWidgets } from "react-icons/md";
+import Image from "next/image";
+import Tips from "./Tips";
 import logo from "./logo.svg";
 import { useResumeData } from "../hooks/useResumeData";
 import { useActiveSection } from "../hooks/useActiveSection";
-import { FaUserTie } from "react-icons/fa";
-import { MdWidgets } from "react-icons/md";
+import { FaUserTie, FaSuitcase, FaTools } from "react-icons/fa";
 import { IoSchool } from "react-icons/io5";
-import { FaSuitcase } from "react-icons/fa";
 import { AiFillProject } from "react-icons/ai";
 import { IoMdDownload } from "react-icons/io";
-import { FaTools } from "react-icons/fa";
 import { CiCircleChevLeft } from "react-icons/ci";
-import { PiCaretCircleRightFill } from "react-icons/pi";
-import { PiCertificateFill } from "react-icons/pi";
+import { PiCaretCircleRightFill, PiCertificateFill } from "react-icons/pi";
 import { FaLanguage } from "react-icons/fa6";
 //@ts-ignore
-import html2pdf from "html2pdf.js";
+import html2pdf from 'html2pdf.js';
+import { Template1 } from "./Editor/templates/Template1";
+import { Template2 } from "./Editor/templates/template2";
+import { Template3 } from "./Editor/templates/template3";
+
 
 const PersonalInfo = dynamic(
-  () => import("./Editor/PersonalInfo").then((mod) => mod.PersonalInfo),
-  { ssr: false },
+    () => import("./Editor/PersonalInfo").then((mod) => mod.PersonalInfo),
+    { ssr: false },
 );
 const Experience = dynamic(
-  () => import("./Editor/Experience").then((mod) => mod.Experience),
-  { ssr: false },
+    () => import("./Editor/Experience").then((mod) => mod.Experience),
+    { ssr: false },
 );
 const Certificate = dynamic(
   () => import("./Editor/Certificate").then((mod) => mod.Certificate),
@@ -43,15 +42,14 @@ const Project = dynamic(
   { ssr: false },
 );
 const Achievement = dynamic(
-  () => import("./Editor/Achievement").then((mod) => mod.Achievement),
-  { ssr: false },
+    () => import("./Editor/Achievement").then((mod) => mod.Achievement),
+    { ssr: false },
 );
 
 export default function EditPage() {
-  const { resumeData, handleInputChange, handleAddField, handleDeleteField } =
-    useResumeData();
-  const { activeSection, handleSectionChange, sections, setActiveSection } =
-    useActiveSection();
+    const [currentTemplate, setCurrentTemplate] = useState('template1')
+    const { resumeData, handleInputChange, handleAddField, handleDeleteField } = useResumeData();
+    const { activeSection, handleSectionChange, sections, setActiveSection } = useActiveSection();
 
   //   const { toPDF, targetRef } = usePDF({filename: 'finalCV.pdf'});
 
@@ -105,33 +103,28 @@ export default function EditPage() {
   });
 
   const handleDownload = async () => {
-    const element = document.getElementById("wrapper")?.cloneNode(true);
+    const element = document.getElementById('wrapper')?.cloneNode(true);
+    //@ts-ignore
     element.style.transform = `scale(1)`;
     const opt = {
-      margin: 0,
-      filename: "resume.pdf",
-      image: { type: "jpeg", quality: 0.98 },
-      html2canvas: { scale: 4, useCORS: true, width: 595, height: 742 },
-      jsPDF: { unit: "px", format: [595, 742], orientation: "portrait" },
-      enableLinks: true,
+        margin: 0,
+        filename: 'resume.pdf',
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 4, useCORS: true, width: 595, height: 842 },
+        jsPDF: { unit: 'px', format: [595, 842], orientation: 'portrait' },
+        enableLinks: true
     };
-    html2pdf()
-      .set(opt)
-      .from(element)
-      .toPdf()
-      .output("blob")
-      .then(function (pdfBlob: any) {
-        const link = document.createElement("a");
+    html2pdf().set(opt).from(element).toPdf().output('blob').then(function (pdfBlob: any) {
+        const link = document.createElement('a');
         link.href = URL.createObjectURL(pdfBlob);
-        link.download = "resume.pdf";
+        link.download = 'resume.pdf';
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
-      })
-      .catch(function (error: any) {
-        console.error("Error generating PDF:", error);
-      });
-  };
+    }).catch(function (error: any) {
+        console.error('Error generating PDF:', error);
+    });
+};
 
   const getSectionTitle = (props: any) => {
     switch (activeSection) {
@@ -162,45 +155,22 @@ export default function EditPage() {
     }
   };
 
-  const options: Options = {
-    filename: "advanced-example.pdf",
-    // default is `save`
-    method: "save",
-    // default is Resolution.MEDIUM = 3, which should be enough, higher values
-    // increases the image quality but also the size of the PDF, so be careful
-    // using values higher than 10 when having multiple pages generated, it
-    // might cause the page to crash or hang.
-    resolution: Resolution.HIGH,
-    page: {
-      // margin is in MM, default is Margin.NONE = 0
-      margin: Margin.NONE,
-      // default is 'A4'
-      format: "A4",
-      // default is 'portrait'
-      orientation: "portrait",
-    },
-    canvas: {
-      // default is 'image/jpeg' for better size performance
-      mimeType: "image/jpeg",
-      qualityRatio: 1,
-    },
-    // customize any value passed to the jsPDF instance and html2canvas
-    // function
-    overrides: {
-      // see https://artskydj.github.io/jsPDF/docs/jsPDF.html for more options
-      pdf: {
-        compress: true,
-      },
-      // see https://html2canvas.hertzen.com/configuration for more options
-      canvas: {
-        useCORS: true,
-      },
-    },
-  };
+    const templateChangeHandler = (e: any) => {
+        setCurrentTemplate(e?.target?.value)
+    }
 
-  const openPDF = () => {
-    generatePDF(() => document.getElementById("resumeParent"), options);
-  };
+    const getTemplate = () => {
+        switch (currentTemplate) {
+            case 'template1':
+                return (<Template1 resumeData={resumeData} id="wrapper" />)
+            case 'template2':
+                return (<Template2 resumeData={resumeData} id="wrapper" />)
+            case 'template3':
+                return (<Template3 resumeData={resumeData} id="wrapper" />)
+            default:
+                return (<Template1 resumeData={resumeData} id="wrapper" />)
+        }
+    }
 
   return (
     <div className="flex flex-col w-full min-h-screen bg-background text-foreground dark:bg-[#1a1b1e] dark:text-white">
@@ -362,9 +332,12 @@ export default function EditPage() {
           <div className="tools">
             <div className="tools-container">
               <div className="widgets">
-                <div className="change-template">
-                  <MdWidgets />
-                  <div>Change Template</div>
+                <div>
+                    <select className="change-template" onChange={templateChangeHandler}>
+                        <option value='template1' selected>Template 1</option>
+                        <option value='template2'>Template 2</option>
+                        <option value='template3'>Template 3</option>
+                    </select>
                 </div>
                 <div className="input-check">
                   <input type="checkbox" /> S
@@ -385,12 +358,8 @@ export default function EditPage() {
             </div>
           </div>
           <div className="preview-container" id="resumeParent">
-            <Template1 resumeData={resumeData} id="wrapper" />
-            {/* <Image alt="template" src={template}  /> */}
-          </div>
-          {/* <div className="preview-container">                
-                <Image alt="template" src={template}  />
-            </div>             */}
+            {getTemplate()}
+          </div>         
         </div>
       </div>
     </div>
