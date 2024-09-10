@@ -1,6 +1,6 @@
 "use client";
 import dynamic from "next/dynamic";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import "./EditPage.scss";
 import generatePDF, { Resolution, Margin, Options } from "react-to-pdf";
@@ -112,35 +112,42 @@ export default function EditPage() {
     scaleContent();
   });
 
-  const handleDownload = async () => {
-    const element = document.getElementById("wrapper")?.cloneNode(true);
-    element.style.transform = `scale(1)`;
-    const opt = {
-      margin: 0,
-      filename: "resume.pdf",
-      image: { type: "jpeg", quality: 0.98 },
-      html2canvas: { scale: 4, useCORS: true, width: 595, height: 742 },
-      jsPDF: { unit: "px", format: [595, 742], orientation: "portrait" },
-      enableLinks: true,
-    };
-    html2pdf()
-      .set(opt)
-      .from(element)
-      .toPdf()
-      .output("blob")
-      .then(function (pdfBlob: any) {
-        const link = document.createElement("a");
-        link.href = URL.createObjectURL(pdfBlob);
-        link.download = "resume.pdf";
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-      })
-      .catch(function (error: any) {
-        console.error("Error generating PDF:", error);
-      });
-  };
+  const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
 
+  const handleDownload = async () => {
+    setIsGeneratingPDF(true);
+    try {
+      const element = document.getElementById("wrapper");
+      if (!element) throw new Error("Resume wrapper not found");
+
+      const htmlContent = element.outerHTML;
+
+      const response = await fetch("/api/generate-pdf", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ html: htmlContent }),
+      });
+
+      if (!response.ok) throw new Error("PDF generation failed");
+
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.style.display = "none";
+      a.href = url;
+      a.download = "resume.pdf";
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error("Error generating PDF:", error);
+      // Handle error (e.g., show an error message to the user)
+    } finally {
+      setIsGeneratingPDF(false);
+    }
+  };
   const getSectionTitle = (props: any) => {
     switch (activeSection) {
       case "Personal Info":
@@ -384,10 +391,16 @@ export default function EditPage() {
                   <input type="checkbox" /> L
                 </div>
               </div>
-              <div className="download-container">
+              <div className="download-container cursor-pointer">
                 <div className="download" onClick={handleDownload}>
-                  <IoMdDownload />
-                  <div>Download</div>
+                  {isGeneratingPDF ? (
+                    <span>Generating PDF...</span>
+                  ) : (
+                    <>
+                      <IoMdDownload />
+                      <div>Download</div>
+                    </>
+                  )}
                 </div>
               </div>
             </div>

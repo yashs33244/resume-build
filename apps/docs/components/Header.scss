@@ -7,16 +7,16 @@
     height: 70px;
     align-items: center;
     justify-content: space-between;
-    background: linear-gradient(180deg, black, #1D1B20);
-    width: 100%;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Add subtle shadow for depth */
-    
+    background: #24252D;
+    // background-color: #101010;
+
     .logo-container {
         /* Optional opacity setting */
         // opacity: 0.8;
     }
 
     .login-cta {
+        color: white;
         font-weight: 600;
     }
 }
