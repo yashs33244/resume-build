@@ -24,6 +24,8 @@ import { Template1 } from "./Editor/templates/Template1";
 import { Template2 } from "./Editor/templates/template2";
 import { Template3 } from "./Editor/templates/template3";
 
+import { Link } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 const PersonalInfo = dynamic(
     () => import("./Editor/PersonalInfo").then((mod) => mod.PersonalInfo),
@@ -48,8 +50,16 @@ const Achievement = dynamic(
 
 export default function EditPage() {
     const [currentTemplate, setCurrentTemplate] = useState('template1')
-    const { resumeData, handleInputChange, handleAddField, handleDeleteField } = useResumeData();
-    const { activeSection, handleSectionChange, sections, setActiveSection } = useActiveSection();
+  const router = useRouter();
+
+  const handleRedirect = () => {
+    router.push("/");
+  };
+
+  const { resumeData, handleInputChange, handleAddField, handleDeleteField } =
+    useResumeData();
+  const { activeSection, handleSectionChange, sections, setActiveSection } =
+    useActiveSection();
 
   //   const { toPDF, targetRef } = usePDF({filename: 'finalCV.pdf'});
 
@@ -185,8 +195,8 @@ export default function EditPage() {
       </div> */}
       <div className="editor-container">
         <div className="navigation">
-          <div className="login-container">
-            <div className="login-cta">Login</div>
+          <div className="login-container" onClick={handleRedirect}>
+            <div className="login-cta">Home</div>
           </div>
           <div className="nav-container">
             <div

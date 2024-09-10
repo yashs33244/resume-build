@@ -7,7 +7,11 @@ export default function ConditionalHeader() {
   const pathname = usePathname();
 
   // Don't render the header on the signin page
-  if (pathname === "/signin") {
+  if (
+    pathname === "/signin" ||
+    pathname === "/select-templates" ||
+    pathname === "/select-templates/editor"
+  ) {
     return null;
   }
 

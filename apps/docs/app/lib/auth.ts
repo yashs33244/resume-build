@@ -52,65 +52,79 @@ export const authOptions: NextAuthOptions = {
         password: { label: "password", type: "password", placeholder: "" },
       },
       async authorize(credentials: any) {
+        console.log("Authorize function called with:", credentials.username);
+      
         if (!credentials.username || !credentials.password) {
+          console.log("Missing username or password");
           return null;
         }
-
-        const hashedPassword = await bcrypt.hash(credentials.password, 10);
-
-        const userDb = await db.user.findFirst({
-          where: {
-            email: credentials.username,
-          },
-          select: {
-            password: true,
-            id: true,
-            name: true,
-          },
-        });
-
-        if (userDb) {
-          if (await bcrypt.compare(credentials.password, userDb.password)) {
-            const jwt = await generateJWT({
-              id: userDb.id,
+      
+        try {
+          const userDb = await db.user.findFirst({
+            where: {
+              email: credentials.username,
+            },
+            select: {
+              password: true,
+              id: true,
+              name: true,
+            },
+          });
+      
+          console.log("User found in DB:", userDb ? "Yes" : "No");
+      
+          if (userDb) {
+            // Existing user - verify password
+            const isValidPassword = await bcrypt.compare(credentials.password, userDb.password);
+            console.log("Password valid:", isValidPassword);
+      
+            if (isValidPassword) {
+              const jwt = await generateJWT({
+                id: userDb.id,
+              });
+      
+              return {
+                id: userDb.id,
+                name: userDb.name,
+                email: credentials.username,
+                token: jwt,
+              };
+            } else {
+              console.log("Invalid password");
+              return null;
+            }
+          } else {
+            // New user - create account
+            console.log("Creating new user");
+            if (credentials.username.length < 3 || credentials.password.length < 3) {
+              console.log("Username or password too short");
+              return null;
+            }
+      
+            const hashedPassword = await bcrypt.hash(credentials.password, 10);
+            const user = await db.user.create({
+              data: {
+                email: credentials.username,
+                name: credentials.username,
+                password: hashedPassword,
+              },
             });
-
+      
+            console.log("New user created:", user.id);
+      
+            const jwt = await generateJWT({
+              id: user.id,
+            });
+      
             return {
-              id: userDb.id,
-              name: userDb.name,
+              id: user.id,
+              name: credentials.username,
               email: credentials.username,
               token: jwt,
             };
-          } else {
-            return null;
           }
-        }
-
-        try {
-          // Sign up
-          if (credentials.username.length < 3 || credentials.password.length < 3) {
-            return null;
-          }
-
-          const user = await db.user.create({
-            data: {
-              email: credentials.username,
-              name: credentials.username,
-              password: hashedPassword,
-            },
-          });
-
-          const jwt = await generateJWT({
-            id: user.id,
-          });
-
-          return {
-            id: user.id,
-            name: credentials.username,
-            email: credentials.username,
-            token: jwt,
-          };
         } catch (e) {
+          console.error("Error in authorize function:", e);
           return null;
         }
       },
@@ -203,7 +217,18 @@ export const authOptions: NextAuthOptions = {
       return true; // Allow sign-in if not using Google provider
     },
     async redirect({ url, baseUrl }) {
-      return baseUrl + '/'; // or wherever you want to redirect
+      // If user is signing in, redirect them to the select-templates page
+      if (url === baseUrl + '/select-templates') {
+        return baseUrl + '/select-templates';
+      }
+  
+      // If user is logging out, redirect them to the landing page
+      if (url === baseUrl + '/api/auth/signout') {
+        return baseUrl;
+      }
+  
+      // Default behavior: Redirect to the base URL
+      return baseUrl;
     },
   },
   pages: {

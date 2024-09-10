@@ -11,7 +11,7 @@ import logo from "./logo.svg";
 export default function Header() {
   const { data: session, status: sessionStatus } = useSession();
 
-  const handleSignOut = async (e) => {
+  const handleSignOut = async (e: any) => {
     e.preventDefault();
     await signOut({ callbackUrl: "/" });
   };

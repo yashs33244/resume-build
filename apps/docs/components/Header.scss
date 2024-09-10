@@ -1,4 +1,7 @@
 .header-container {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
     padding: 0 3rem 0 2rem;
     display: flex;
     height: 70px;
@@ -8,6 +11,7 @@
     // background-color: #101010;
 
     .logo-container {
+        /* Optional opacity setting */
         // opacity: 0.8;
     }
 
