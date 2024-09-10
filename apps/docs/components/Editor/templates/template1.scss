@@ -2,132 +2,146 @@
     background-color: #ffffff;
     height: 95%;
     aspect-ratio: 1 / 1.29;
-    min-width: 540px;
-    max-width: 540px;
-    min-height: 742px;
-    max-height: 742px;
+    min-width: 595px;
+    max-width: 595px;
+    min-height: 842px;
+    max-height: 842px;
 
-    .large {        
-        padding: 2vh 3.5vh;
-        width: 100%;
-        height: 100%;
+    .large {
+        padding: 2rem 3.5rem;
+        .tag{
+          width: fit-content;
+          background: #097969;
+          padding: 5px 8px;
+          position: absolute;
+          left: 20px;
+          top: 38px;
+          z-index: 0;
+          display: flex;
+          flex-direction: column;
+          &_value{
+            color: white;
+            font-weight: 700;
+            font-size: 10px;
+            line-height: 14px;
+          }
+        }
         
         .primary-info {
             .name {
                 color: #323336;
                 font-weight: 700;
-                font-size: 2vh;         
             }
     
             .position {
                 color: #323336;
-                font-size: 1.5vh;
-                margin-top: 0.3vh;
+                font-size: 0.56rem;
+                margin-top: 0.3rem;
             }
     
             .information {
                 color: #707678;
-                font-size: 1vh;
-                margin-top: 0.15vh;
+                font-size: 0.5rem;
+                margin-top: 0.15rem;
             }
     
             .summary {
                 color: #707678;
-                font-size: 1vh;
-                margin-top: 0.15vh;
+                font-size: 0.5rem;
+                margin-top: 0.15rem;
             }
         }
 
         .experience {
-            margin-top: 1.12vh;
+            margin-top: 1.12rem;
             .section-title {
                 color: #A6AAAD;
-                font-size: 1vh;
+                font-size: 0.5rem;
                 font-weight: 600;
-                // margin-bottom: 0.8vh;
+                // margin-bottom: 0.8rem;
             }
 
             .exp-container {
-                margin-top: 0.56vh;
+                margin-top: 0.56rem;
                 .company-name {
                     color: #323336;
-                    font-size: 1.2vh;
+                    font-size: 0.56rem;
                     font-weight: 500;
                 }
 
                 .role-duration {
                     color: #707678;
-                    font-size: 1vh;
+                    font-size: 0.52rem;
                 }
 
                 .responsibilities {
                     color: #323336;
-                    font-size: 1vh;
+                    font-size: 0.5rem;
 
                     ul {
                         list-style: disc;
-                        padding: 0 1vh;
+                        padding: 0 1rem;
                     }
                 }
             }
         }
 
         .education {
-            margin-top: 1.12vh;
+            margin-top: 1.12rem;
             .section-title {
                 color: #A6AAAD;
-                font-size: 1vh;
+                font-size: 0.5rem;
                 font-weight: 600;
-                // margin-bottom: 0.8vh;
+                // margin-bottom: 0.8rem;
             }
 
             .edu-container {
-                margin-top: 0.56vh;
+                margin-top: 0.56rem;
                 .college-name {
                     color: #323336;
-                    font-size: 1.2vh;
+                    font-size: 0.56rem;
                     font-weight: 500;
                 }
 
                 .degree-major {
                     color: #707678;
-                    font-size: 1vh;
+                    font-size: 0.52rem;
                 }
 
                 // .responsibilities {
                 //     color: #323336;
-                //     font-size: 0.5vh;
+                //     font-size: 0.5rem;
 
                 //     ul {
                 //         list-style: disc;
-                //         padding: 0 1vh;
+                //         padding: 0 1rem;
                 //     }
                 // }
             }
         }
 
         .skills {
-            margin-top: 1.12vh;
+            margin-top: 1.12rem;
             .section-title {
                 color: #A6AAAD;
-                font-size: 1vh;
+                font-size: 0.5rem;
                 font-weight: 600;
-                // margin-bottom: 0.8vh;
+                // margin-bottom: 0.8rem;
             }
 
             .core-skills {
                 display: flex;
-                margin-top: 0.56vh;
+                margin-top: 0.56rem;
 
                 .skill-container {
-                    padding: 0.2vh 0.4vh;
+                    padding: 0.2rem 0.4rem;
                     background-color: #F1F5F7;
                     border-radius: 2px;
                     color: #323336;
                     margin-left: 4px;
     
                     .skill {
-                        font-size: 1vh;
+                        font-size: 0.5rem;
                     }
                 }
 
@@ -138,17 +152,17 @@
             
             .tech-skills {
                 display: flex;
-                margin-top: 0.2vh;
+                margin-top: 0.2rem;
     
                 .skill-container {
-                    padding: 0.2vh 0.4vh;
+                    padding: 0.2rem 0.4rem;
                     background-color: #F1F5F7;
                     border-radius: 2px;
                     color: #323336;
                     margin-left: 4px;
     
                     .skill {
-                        font-size: 1vh;
+                        font-size: 0.5rem;
                     }
                 }
 

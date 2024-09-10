@@ -120,7 +120,9 @@ export default function EditPage() {
       const element = document.getElementById("wrapper");
       if (!element) throw new Error("Resume wrapper not found");
 
-      const htmlContent = element.outerHTML;
+      // Add the CSS link directly in the HTML content
+      const cssLink = `<link rel="stylesheet" href="http://localhost:3000/_next/static/css/app/(pages)/select-templates/editor/page.css">`;
+      const htmlContent = cssLink + element.outerHTML;
 
       const response = await fetch("/api/generate-pdf", {
         method: "POST",
@@ -143,11 +145,11 @@ export default function EditPage() {
       window.URL.revokeObjectURL(url);
     } catch (error) {
       console.error("Error generating PDF:", error);
-      // Handle error (e.g., show an error message to the user)
     } finally {
       setIsGeneratingPDF(false);
     }
   };
+
   const getSectionTitle = (props: any) => {
     switch (activeSection) {
       case "Personal Info":

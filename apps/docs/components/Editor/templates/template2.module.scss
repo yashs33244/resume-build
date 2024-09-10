@@ -1,0 +1,222 @@
+$primary-color:#CC5500;
+$secondary-color:#808080;
+
+.template-container {
+    background-color: #ffffff;
+    height: 95%;
+    aspect-ratio: 1 / 1.29;
+    min-width: 595px;
+    max-width: 595px;
+    min-height: 842px;
+    max-height: 842px;
+    background-color: white;
+    color: black;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    overflow-y: hidden;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    &_left_part {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        &_name {
+            font-size: 18px;
+            font-weight: 700;
+            color: $primary-color;
+        }
+
+        &_role {
+            font-size: 15px;
+            color:$secondary-color;
+            font-weight: 550;
+        }
+    }
+
+    &_right_part {
+        &_url{
+            font-size: 10px;
+        }
+        &_email{
+            font-size: 10px;
+        }
+        &_phone{
+            font-size: 10px;
+        }
+    }
+
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+
+    &_container{
+        display: flex;
+        hanging-punctuation: 10px;
+    }
+    &_left_part {
+        width: 130px;
+    }
+    &_right_part {
+        flex:1
+    }
+
+    &_bio_div {
+        &_label {
+            font-size: 16px;
+            font-weight: 700;
+            color: $primary-color;
+        }
+        &_value {
+            font-size: 10px;
+            color: $secondary-color;
+            line-height: normal;
+        }
+    }
+    
+    &_education_div {
+        &_label {
+            font-size: 16px;
+            font-weight: 700;
+            color: $primary-color;
+        }
+        &_value {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: space-between;
+            &_section {
+                display: flex;
+                flex-direction: column;
+                gap: 5px;
+                width: calc(50% - 10px);
+                &_name {
+                    font-size: 10px;
+                    font-weight: 700;
+                    line-height: normal;
+                }
+                &_year {
+                    font-size: 10px;
+                    color: $secondary-color;
+                    line-height: normal;
+                }
+                &_field {
+                    font-size: 10px;
+                    color: $secondary-color;
+                    line-height: normal;
+                }     
+            }
+        }
+        
+    }
+    
+    &_experience_div {
+        &_label {
+            font-size: 16px;
+            font-weight: 700;
+            color: $primary-color;
+        }
+        &_value {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            &_section {
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+                &_name {
+                    font-size: 10px;
+                    font-weight: 700;
+                    line-height: normal;
+                }
+                &_year {
+                    font-size: 10px;
+                    color: $secondary-color;
+                    line-height: normal;
+                }
+                &_work {
+                    font-size: 10px;
+                    color: $secondary-color;
+                    line-height: normal;
+                    display: flex;
+                    flex-direction: column;
+                    gap: 5px;
+
+                    & ul{
+                        list-style: disc;
+                        list-style-position: inside;
+                    }
+
+                    & ol{
+                        list-style: decimal;
+                        list-style-position: inside;
+                    }
+                }
+            }
+        }
+    }
+
+    &_skill_div {
+        &_label {
+            font-size: 16px;
+            font-weight: 700;
+            color: $primary-color;
+        }
+        &_value {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            &_section {
+                display: flex;
+                flex-direction: column;
+                gap: 5px;
+                &_category {
+                    font-size: 10px;
+                    font-weight: 700;
+                    line-height: normal;
+                }
+                &_skills {
+                    font-size: 10px;
+                    color: $secondary-color;
+                    line-height: normal;
+                }
+            }
+        }
+    }
+    
+
+    &_acheivement_div {
+        &_label {
+            font-size: 16px;
+            font-weight: 700;
+            color: $primary-color;
+        }
+        &_value {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            &_section {
+                display: flex;
+                flex-direction: column;
+                gap: 5px;
+                &_title {
+                    font-size: 10px;
+                    font-weight: 700;
+                    line-height: normal;
+                }
+                &_remarks {
+                    font-size: 10px;
+                    color: $secondary-color;
+                    line-height: normal;
+                }
+            }
+        }
+    }
+}

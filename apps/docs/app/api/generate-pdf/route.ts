@@ -1,20 +1,20 @@
 import wkhtmltopdf from 'wkhtmltopdf';
-const pathToBinary = '/usr/local/bin/wkhtmltopdf';
 import { NextRequest, NextResponse } from 'next/server';
 import { Readable } from 'stream';
 
 interface WkhtmltopdfOptions {
-  pageSize: string;
+  pageHeight: string;
+  pageWidth: string;
+  // pageSize: string;
   marginTop: number;
   marginBottom: number;
   marginLeft: number;
   marginRight: number;
+  'enable-local-file-access'?: boolean;  // Add this option to allow local file access
 }
 
-// Named export for handling POST requests
 export async function POST(req: NextRequest) {
   try {
-    // Parse the JSON body
     const { html } = await req.json() as { html: string };
 
     if (!html) {
@@ -24,11 +24,14 @@ export async function POST(req: NextRequest) {
     // Generate the PDF buffer
     const buffer: Buffer = await new Promise((resolve, reject) => {
       const options: WkhtmltopdfOptions = {
-        pageSize: 'A4',
+        // pageSize: 'A4',
+        pageHeight: '842px',
+        pageWidth: '595px',
         marginTop: 0,
         marginBottom: 0,
         marginLeft: 0,
         marginRight: 0,
+        'enable-local-file-access': true,  // Enable local file access
       };
 
       wkhtmltopdf(html, options, (err: Error | null, stream: Readable | undefined) => {
@@ -43,14 +46,13 @@ export async function POST(req: NextRequest) {
       });
     });
 
-    // Set response headers and return the PDF as a file
+    // Return the PDF
     return new NextResponse(buffer, {
       headers: {
         'Content-Type': 'application/pdf',
         'Content-Disposition': 'attachment; filename=resume.pdf',
       },
     });
-
   } catch (error) {
     console.error('PDF generation error:', error);
     return NextResponse.json({ error: 'PDF generation failed', message: error.message }, { status: 500 });
