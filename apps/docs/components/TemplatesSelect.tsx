@@ -2,6 +2,11 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import template1 from './template1.png';
+import template2 from './template2.png';
+import template3 from './template3.png';
+import logo from './logo.svg';
+import './TemplatesSelect.scss';
 import { Check } from "lucide-react";
 
 const templates = [
@@ -34,64 +39,33 @@ const TemplatesSelect = () => {
   };
 
   return (
-    <div className="bg-gray-900 min-h-screen flex flex-col items-center justify-center p-4">
-      <h1 className="text-3xl font-bold text-white mb-8">
-        Choose your final CV template
-      </h1>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl">
-        {templates.map((template) => (
-          <div
-            key={template.id}
-            className={`bg-gray-800 rounded-lg p-4 flex flex-col items-center cursor-pointer transition-all ${
-              selectedTemplate === template.id ? "ring-2 ring-blue-500" : ""
-            }`}
-            onClick={() => handleTemplateSelect(template.id)}
-          >
-            <h2 className="text-xl font-semibold text-white mb-2">
-              {template.name}
-            </h2>
-            <div className="relative w-full aspect-[3/4]">
-              <Image
-                src={template.image}
-                alt={template.name}
-                layout="fill"
-                objectFit="cover"
-                className="rounded"
-              />
-              {selectedTemplate === template.id && (
-                <div className="absolute top-2 right-2 bg-blue-500 rounded-full p-1">
-                  <Check className="w-4 h-4 text-white" />
-                </div>
-              )}
-            </div>
-            <p className="text-sm text-gray-400 mt-2 text-center">
-              {template.description}
-            </p>
-            {template.id === "fresher" && (
-              <Link href={`select-templates/editor`} passHref>
-                <button className="mt-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors">
-                  Select Template
-                </button>
-              </Link>
-            )}
-          </div>
-        ))}
+    <div className="template-select-container">
+      <div className="container-title">
+        Select your final CV template
       </div>
-      <div className="mt-8 flex items-center">
+      <div className="templates-wrapper">
+        <div className="template">
+          <div className="template-name">Fresher</div>
+          <Image src={template1} alt="template1" />
+          <div className="template-desc">Ideal for young professionals with 0 to 3 years experience</div>
+        </div>
+        <div className="template">
+          <div className="template-name selected">Experienced</div>
+          <Image src={template2} alt="template2" />
+          <div className="template-desc">Perfect if you have 3+ work experiences to write about</div>
+        </div>
+        <div className="template">
+          <div className="template-name">Appealing</div>
+          <Image src={template3} alt="template3" />
+          <div className="template-desc">Stand out in manual screening by hiring managers or recruiters</div>
+        </div>
+      </div>
+      <div className="logo-wrapper">
         <Image
-          src="/finalCV-logo.png"
-          alt="finalCV logo"
-          width={96}
-          height={48}
-          className="mr-4"
+          src={logo}
+          // width="120"
+          alt="logo"
         />
-        {selectedTemplate && (
-          <Link href={`select-templates/editor`} passHref>
-            <button className="bg-blue-500 text-white px-6 py-2 rounded hover:bg-blue-600 transition-colors">
-              Continue to Editor
-            </button>
-          </Link>
-        )}
       </div>
     </div>
   );

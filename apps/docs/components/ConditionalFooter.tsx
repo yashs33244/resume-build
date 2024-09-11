@@ -7,9 +7,10 @@ export default function ConditionalFooter() {
   const pathname = usePathname();
 
   // Don't render the header on the signin page
-  if (pathname === "/signin") {
+  if (pathname === "/") {
+    return  <Footer />;
+  } else {
     return null;
   }
-
-  return <Footer />;
+  
 }
