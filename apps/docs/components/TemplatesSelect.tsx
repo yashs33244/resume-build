@@ -33,10 +33,13 @@ const templates = [
 
 const TemplatesSelect = () => {
   const [selectedTemplate, setSelectedTemplate] = useState(null);
+  const [activeTemplate, setTemplate] = useState(2);
 
   const handleTemplateSelect = (templateId: any) => {
     setSelectedTemplate(templateId);
   };
+
+  const setActiveTemplate = () => {}
 
   return (
     <div className="template-select-container">
@@ -44,19 +47,22 @@ const TemplatesSelect = () => {
         Select your final CV template
       </div>
       <div className="templates-wrapper">
-        <div className="template">
-          <div className="template-name">Fresher</div>
-          <Image src={template1} alt="template1" />
+        <div className="template" onMouseOver={() => setTemplate(1)}>
+          <div className={`template-name ${activeTemplate === 1 ? 'selected' : ''}`}>Fresher</div>
+          <Image src={template1} alt="template1" className={activeTemplate === 1 ? 'active' : ''} />
+          <div className={`select-cta ${activeTemplate === 1 ? 'open' : ''}`}>Select Template</div>
           <div className="template-desc">Ideal for young professionals with 0 to 3 years experience</div>
         </div>
-        <div className="template">
-          <div className="template-name selected">Experienced</div>
-          <Image src={template2} alt="template2" />
+        <div className="template" onMouseOver={() => setTemplate(2)}>
+          <div className={`template-name ${activeTemplate === 2 ? 'selected' : ''}`}>Experienced</div>
+          <Image src={template2} alt="template2" className={activeTemplate === 2 ? 'active' : ''} />
+          <div className={`select-cta ${activeTemplate === 2 ? 'open' : ''}`}>Select Template</div>
           <div className="template-desc">Perfect if you have 3+ work experiences to write about</div>
         </div>
-        <div className="template">
-          <div className="template-name">Appealing</div>
-          <Image src={template3} alt="template3" />
+        <div className="template" onMouseOver={() => setTemplate(3)}>
+          <div className={`template-name ${activeTemplate === 3 ? 'selected' : ''}`}>Appealing</div>
+          <Image src={template3} alt="template3" className={activeTemplate === 3 ? 'active' : ''} />
+          <div className={`select-cta ${activeTemplate === 3 ? 'open' : ''}`}>Select Template</div>
           <div className="template-desc">Stand out in manual screening by hiring managers or recruiters</div>
         </div>
       </div>
