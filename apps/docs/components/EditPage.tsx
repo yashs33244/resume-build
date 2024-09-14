@@ -157,6 +157,7 @@ export default function EditPage() {
     try {
       const element = document.getElementById("wrapper");
       if (!element) throw new Error("Resume wrapper not found");
+      element.style.transform = "scale(1)";
 
       // Add the CSS link directly in the HTML content
       const cssLink = `<link rel="stylesheet" href="http://localhost:3000/_next/static/css/app/(pages)/select-templates/editor/page.css">`;

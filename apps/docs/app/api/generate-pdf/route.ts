@@ -1,56 +1,57 @@
-import wkhtmltopdf from 'wkhtmltopdf';
 import { NextRequest, NextResponse } from 'next/server';
-import { Readable } from 'stream';
-
-interface WkhtmltopdfOptions {
-  pageHeight: string;
-  pageWidth: string;
-  // pageSize: string;
-  marginTop: number;
-  marginBottom: number;
-  marginLeft: number;
-  marginRight: number;
-  'enable-local-file-access'?: boolean;  // Add this option to allow local file access
-}
+import puppeteer from 'puppeteer';
 
 export async function POST(req: NextRequest) {
   try {
-    const { html } = await req.json() as { html: string };
-
+    const { html } = await req.json();
+    
     if (!html) {
       return NextResponse.json({ error: 'No HTML content provided' }, { status: 400 });
     }
 
-    // Generate the PDF buffer
-    const buffer: Buffer = await new Promise((resolve, reject) => {
-      const options: WkhtmltopdfOptions = {
-        // pageSize: 'A4',
-        pageHeight: '842px',
-        pageWidth: '595px',
-        marginTop: 0,
-        marginBottom: 0,
-        marginLeft: 0,
-        marginRight: 0,
-        'enable-local-file-access': true,  // Enable local file access
-      };
+    // Launch a browser instance
+    const browser = await puppeteer.launch();
+    const page = await browser.newPage();
 
-      wkhtmltopdf(html, options, (err: Error | null, stream: Readable | undefined) => {
-        if (err) return reject(err);
-        if (stream) {
-          const chunks: Buffer[] = [];
-          stream.on('data', (chunk: Buffer) => chunks.push(chunk));
-          stream.on('end', () => resolve(Buffer.concat(chunks)));
-        } else {
-          reject(new Error('PDF stream is undefined'));
+    // Set the content of the page to the provided HTML
+    await page.setContent(html, { waitUntil: 'networkidle0' });
+
+    // Generate the PDF
+
+    
+    await page.evaluate(() => {
+      const style = document.createElement('style');
+      style.textContent = `
+        @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap');
+        
+        @page { 
+          margin: 0 !important; 
         }
-      });
+        
+        body {
+          font-family: 'CustomFont', sans-serif;
+          margin: 0 !important;
+          padding: 0 !important;
+          width: 100% !important;
+        }
+      `;
+      document.head.appendChild(style);
     });
+    const pdfBuffer = await page.pdf({
+      preferCSSPageSize: true,
+      width: '595px',
+      height: '842px',
+      printBackground: true,
+      margin: { top: 0, bottom: 0, left: 0, right: 0 }, // Remove margins
+    });
+    await browser.close();
+    
 
     // Return the PDF
-    return new NextResponse(buffer, {
+    return new NextResponse(pdfBuffer, {
       headers: {
         'Content-Type': 'application/pdf',
-        'Content-Disposition': 'attachment; filename=resume.pdf',
+        'Content-Disposition': 'attachment; filename=document.pdf',
       },
     });
   } catch (error) {
