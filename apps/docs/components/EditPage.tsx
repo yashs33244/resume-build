@@ -25,8 +25,11 @@ import { PiCertificateFill } from "react-icons/pi";
 import { FaLanguage } from "react-icons/fa6";
 //@ts-ignore
 import html2pdf from "html2pdf.js";
-import { Link } from "lucide-react";
+// import { Link } from "lucide-react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { Template2 } from "./Editor/templates/template2";
+import { Template3 } from "./Editor/templates/template3";
 
 const PersonalInfo = dynamic(
   () => import("./Editor/PersonalInfo").then((mod) => mod.PersonalInfo),
@@ -51,9 +54,44 @@ const Achievement = dynamic(
 
 export default function EditPage() {
   const router = useRouter();
+  const [template, setTemplate] = useState<string | null>(null);
+
+  useEffect(() => {
+    // Check if the window is available (runs only on client-side)
+    if (typeof window !== "undefined") {
+      // Try to get the template from the URL first
+      const searchParams = new URLSearchParams(window.location.search);
+      let templateParam = searchParams.get("template");
+
+      // If no template was selected via URL, try localStorage
+      if (!templateParam) {
+        const storedTemplate = localStorage.getItem("selectedTemplate");
+        templateParam = storedTemplate || "fresher"; // Default to "fresher" if nothing in localStorage
+      }
+
+      // Set the template state
+      setTemplate(templateParam);
+
+      // Save the selected template to localStorage for future use
+      localStorage.setItem("selectedTemplate", templateParam);
+    }
+  }, []);
+
+  const renderTemplate = () => {
+    switch (template) {
+      case "fresher":
+        return <Template1 resumeData={resumeData} id="wrapper" />;
+      case "experienced":
+        return <Template2 resumeData={resumeData} id="wrapper" />;
+      case "designer":
+        return <Template3 resumeData={resumeData} id="wrapper" />;
+      default:
+        return <div>Select a template from the template selection page</div>;
+    }
+  };
 
   const handleRedirect = () => {
-    router.push("/");
+    router.push("/dashboard");
   };
 
   const { resumeData, handleInputChange, handleAddField, handleDeleteField } =
@@ -381,7 +419,9 @@ export default function EditPage() {
               <div className="widgets">
                 <div className="change-template">
                   <MdWidgets />
-                  <div>Change Template</div>
+                  <div>
+                    <Link href="/select-templates">Change Template</Link>
+                  </div>
                 </div>
                 <div className="input-check">
                   <input type="checkbox" /> S
@@ -408,8 +448,12 @@ export default function EditPage() {
             </div>
           </div>
           <div className="preview-container" id="resumeParent">
-            <Template1 resumeData={resumeData} id="wrapper" />
+            {/* <Template1 resumeData={resumeData} id="wrapper" />
+            <Template2 resumeData={resumeData} id="wrapper" /> */}
+            {/* <Template3 resumeData={resumeData} id="wrapper" /> */}
             {/* <Image alt="template" src={template}  /> */}
+
+            {renderTemplate()}
           </div>
           {/* <div className="preview-container">                
                 <Image alt="template" src={template}  />
