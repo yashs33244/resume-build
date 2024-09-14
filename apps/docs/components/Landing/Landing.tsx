@@ -23,12 +23,13 @@ import { FaEdit } from "react-icons/fa";
 import template1 from "./template1.png";
 import template2 from "./template2.png";
 import template3 from "./template3.png";
-import template4 from "./template4.png";
-import template5 from "./template5.png";
+import Image from "next/image";
+import lovedby from "./lovedby.svg";
 import flipkart from "./flipkart.png";
 import uber from "./uber.png";
 import olx from "./olx.png";
 import swiggy from "./swiggy1.png";
+import { MdRocketLaunch } from "react-icons/md";
 import amazon from "./amazon.png";
 import paytm from "./paytm.png";
 import Typewriter from "typewriter-effect";
@@ -45,9 +46,7 @@ export default function LandingPage() {
   const currentTemplate: { [key: string]: string } = {
     classic: template1.src,
     modern: template2.src,
-    bold: template3.src,
-    pro: template4.src,
-    creative: template5.src,
+    bold: template3.src
   } as { [key: string]: string };
 
   const templateClass = {
@@ -94,10 +93,10 @@ export default function LandingPage() {
             />
           </div>
           <div className="primary-cta">
-            <GrLinkedin />
-            <div>Import From LinkedIn</div>
+            <MdRocketLaunch />
+            <div>Get Started</div>
           </div>
-          <div className="secondary-cta">
+          {/* <div className="secondary-cta">
             <FaEdit />
             <div>
               {session?.user ? (
@@ -109,6 +108,9 @@ export default function LandingPage() {
                 <Link href="/api/auth/signin"> Enter Details Manually</Link>
               )}
             </div>
+          </div> */}
+          <div style={{marginTop: '36px'}}>
+            <Image alt="loved" src={lovedby} width="44%" />
           </div>
         </div>
         <div className="right-container">
@@ -139,18 +141,6 @@ export default function LandingPage() {
               width="100%"
               height="580px"
             />
-            <img
-              src={template4.src}
-              alt="template"
-              width="100%"
-              height="580px"
-            />
-            <img
-              src={template5.src}
-              alt="template"
-              width="100%"
-              height="580px"
-            />
           </AliceCarousel>
         </div>
       </div>
@@ -172,23 +162,23 @@ export default function LandingPage() {
           <div className="step">
             <div className="step-count">1</div>
             <div>
-              <div className="step-title">Import from Linkedin</div>
-              <div className="step-subtitle">Or start from scratch</div>
+              <div className="step-title">Choose a template</div>
+              <div className="step-subtitle">3 Hiring manager approved templates</div>
             </div>
           </div>
           <div className="step">
             <div className="step-count">2</div>
             <div>
-              <div className="step-title">Choose a template</div>
+              <div className="step-title">Enter Details</div>
               <div className="step-subtitle">
-                5 Hiring manager approved templates
+                Edit with AI and in-built best practices
               </div>
             </div>
           </div>
           <div className="step">
             <div className="step-count">3</div>
             <div>
-              <div className="step-title">Edit and share</div>
+              <div className="step-title">Download and share</div>
               <div className="step-subtitle">
                 Download resume in PDF and DOC
               </div>
@@ -220,31 +210,19 @@ export default function LandingPage() {
               className={`${selectedTemplate === "classic" ? "nav-item selected" : "nav-item"}`}
               onClick={() => setSelected("classic")}
             >
-              Classic
+              Fresher
             </div>
             <div
               className={`${selectedTemplate === "modern" ? "nav-item selected" : "nav-item"}`}
               onClick={() => setSelected("modern")}
             >
-              Modern
+              Experienced
             </div>
             <div
               className={`${selectedTemplate === "bold" ? "nav-item selected" : "nav-item"}`}
               onClick={() => setSelected("bold")}
             >
-              Bold
-            </div>
-            <div
-              className={`${selectedTemplate === "pro" ? "nav-item selected" : "nav-item"}`}
-              onClick={() => setSelected("pro")}
-            >
-              Professional
-            </div>
-            <div
-              className={`${selectedTemplate === "creative" ? "nav-item selected" : "nav-item"}`}
-              onClick={() => setSelected("creative")}
-            >
-              Creative
+              Presentable
             </div>
             <div className="template-cta">
               <Link href="/editor">Use This Template</Link>
@@ -262,7 +240,7 @@ export default function LandingPage() {
         <div className="title">Resume Builder</div>
         <div className="subtitle">Dead Simple</div>
         <div className="features1">
-          <div className="feature">
+          {/* <div className="feature">
             <div className="infographic">
               <img
                 style={{ height: "40px", width: "auto" }}
@@ -275,7 +253,7 @@ export default function LandingPage() {
               Get started effortlessly by importing all basic information from
               Linkedin directly
             </div>
-          </div>
+          </div> */}
           <div className="feature">
             <div className="infographic">
               <img
@@ -306,7 +284,7 @@ export default function LandingPage() {
           </div>
         </div>
         <div className="features1">
-          <div className="feature">
+          {/* <div className="feature">
             <div className="infographic">
               <img
                 style={{ height: "40px", width: "auto" }}
@@ -319,7 +297,7 @@ export default function LandingPage() {
               Generate your professional cover letter in one click for your
               desired job
             </div>
-          </div>
+          </div> */}
           <div className="feature">
             <div className="infographic">
               <img
@@ -358,7 +336,7 @@ export default function LandingPage() {
               <MdOutlineContentPasteSearch
                 style={{ fontSize: "5rem", marginRight: "16px" }}
               />
-              <div>You finalCV is viewed by Recruiters</div>
+              <div>You finalCV is shared with Recruiters</div>
             </div>
             <div className="left-subtitle">
               We automatically share your resume for relevant roles with top
