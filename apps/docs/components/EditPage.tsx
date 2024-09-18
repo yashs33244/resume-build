@@ -56,6 +56,7 @@ export default function EditPage() {
     const [currentTemplate, setCurrentTemplate] = useState('template1')
   const router = useRouter();
   const [template, setTemplate] = useState<string | null>(null);
+  const [resumeSize, setResumeSize] = useState('M');
 
   useEffect(() => {
     // Check if the window is available (runs only on client-side)
@@ -410,13 +411,13 @@ export default function EditPage() {
                   </div>
                 </div>
                 <div className="input-check">
-                  <input type="checkbox" /> S
+                  <input name="size" type="radio" checked={resumeSize === 'S' ? true : false} onChange={() => setResumeSize('S')} /> S
                 </div>
                 <div className="input-check">
-                  <input type="checkbox" checked /> M
+                  <input name="size" type="radio" checked={resumeSize === 'M' ? true : false} onChange={() => setResumeSize('M')} /> M
                 </div>
                 <div className="input-check">
-                  <input type="checkbox" /> L
+                  <input name="size" type="radio" checked={resumeSize === 'L' ? true : false} onChange={() => setResumeSize('L')} /> L
                 </div>
               </div>
               <div className="download-container cursor-pointer">

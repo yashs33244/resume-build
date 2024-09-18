@@ -39,7 +39,7 @@ export const Education: React.FC<EducationProps> = ({
     <div className="education-container">
       <div className="education-list">
         {resumeData.education?.map((edu, index): any => (
-          <Collapsible className="collapse-comp" key={index}>
+          <Collapsible className={index === 0 ? 'collapse-comp first' : 'collapse-comp'} key={index}>
             <CollapsibleTrigger className="collapse-trigger">
               <div className="edu-note">
                 <ChevronDownIcon className="h-5 w-5 transition-transform" />

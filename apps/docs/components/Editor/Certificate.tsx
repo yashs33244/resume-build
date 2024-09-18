@@ -44,7 +44,7 @@ export const Certificate: React.FC<CertificateProps> = ({
     <div className="certificate-container">
       <div className="certificate-list">
         {certificates.map((cert, index) => (
-          <Collapsible className="collapse-comp" key={index}>
+          <Collapsible className={index === 0 ? 'collapse-comp first' : 'collapse-comp'} key={index}>
             <CollapsibleTrigger className="collapse-trigger">
               <div className="cert-note">
                 <ChevronDownIcon className="h-5 w-5 transition-transform" />

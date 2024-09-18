@@ -104,13 +104,13 @@ export const Experience: React.FC<ExperienceProps> = ({
     }
   };
 
-  const aiPrompts = ["Make It Better", "Check Grammar", "Concise", "Elaborate"];
+  const aiPrompts = ["Make It Impressive", "Fix Grammar", "Shorten", "Elaborate"];
 
   return (
     <div className="experience-container">
       <div className="experience-list">
         {experiences.map((exp, index) => (
-          <Collapsible className="collapse-comp" key={index}>
+          <Collapsible className={index === 0 ? 'collapse-comp first' : 'collapse-comp'} key={index}>
             <CollapsibleTrigger className="collapse-trigger">
               <div className="exp-note">
                 <ChevronDownIcon className="h-5 w-5 transition-transform" />

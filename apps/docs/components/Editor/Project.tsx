@@ -110,7 +110,7 @@ export const Project: React.FC<ProjectProps> = ({
     <div className="project-container">
       <div className="project-list">
         {projects.map((proj: any, index: any) => (
-          <Collapsible className="collapse-comp" key={index}>
+          <Collapsible className={index === 0 ? 'collapse-comp first' : 'collapse-comp'} key={index}>
             <CollapsibleTrigger className="collapse-trigger">
               <div className="proj-note">
                 <ChevronDownIcon className="h-5 w-5 transition-transform" />
