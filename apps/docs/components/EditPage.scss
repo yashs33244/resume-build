@@ -21,7 +21,7 @@
     height: 100vh;
     display: flex;
     // background-color: #1d1b20;
-    background-color: #1e2026;
+    background-color: #121420;
 
     .navigation {
         width: 10%;
@@ -48,7 +48,7 @@
             
             .login-cta {
                 padding: 8px 16px;
-                background-color: #262936;
+                background-color: #1B2432;
                 border: 1px solid rgba(255,255,255,0.2);
                 border-radius: 8px;
                 display: flex;
@@ -64,9 +64,9 @@
         .nav-container {
             height: 540px;
             width: 50%;
-            border: 0.5px solid rgba(255,255,255,0.1);
+            border: 0.5px solid #403F4C;
             margin-left: 25%;
-            background-color: #262936;
+            background-color: #1B2432;
             border-radius: 16px;
             margin-top: 35px;
             display: flex;
@@ -81,7 +81,7 @@
                 display: flex;
                 justify-content: center;
                 align-items: center;
-                background-color: #1A1C25;
+                background-color: #121420;
             }
 
             .icon-container {
@@ -91,7 +91,7 @@
                 display: flex;
                 justify-content: center;
                 align-items: center;
-                background-color: rgba(0,0,0,0.32);
+                background-color: #121420;
                 border-radius: 50%;
                 margin-top: 24px;
 
@@ -107,7 +107,7 @@
             }
 
             .border {
-                border: 1px solid rgba(255,255,255,0.8);
+                border: 1px solid #403F4C;
             }
         }
 
@@ -142,7 +142,7 @@
             .section-title {
                 font-size: 1.6rem;
                 font-weight: 700;
-                color: rgba(255,255,255,0.8);
+                color: rgba(255,255,255,0.85);
                 
             } 
             
@@ -375,7 +375,7 @@
     .preview {
         width: 50%;
         // background-color: rgba(0,0,0,0.9);
-        background-color: #181a1e;
+        background-color: #1B2432;
         // background : linear-gradient(90deg, #1D1B20 black);
         padding-top: 12px;
 
@@ -396,7 +396,7 @@
                     font-size: 14px;
                     .change-template {
                         display: flex;
-                        border: 1px solid rgba(255,255,255,0.7);
+                        border: 1px solid rgba(255,255,255,0.6);
                         justify-content: space-between;
                         padding: 4px 16px;
                         opacity: 0.75;
@@ -441,7 +441,8 @@
                         color: white;
                         border-radius: 18px; /*1*/
                         // border: 1px solid white; /*2*/
-                        background: #3B5BFF;
+                        // background: #49DCB1;
+                        background-color: #3B5BFF;
 
 
                         div {

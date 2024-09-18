@@ -2,3 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
+input, select, textarea {
+    font-size: 90%;
+    color: rgba(255,255,255,0.85);
+}
