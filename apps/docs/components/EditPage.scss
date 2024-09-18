@@ -124,7 +124,7 @@
     }
 
     .editor {
-        width: 40%;
+        width: 45%;
         padding: 36px 2rem 24px 0;
         box-sizing: border-box;
         height: 100%;
@@ -136,13 +136,15 @@
             justify-content: space-between;
             align-items: center;
             padding-top: 2px;
+            width: 94%;
+            margin-left: 3%;
             padding-bottom: 1.4rem;
             // margin-top: 48px;
     
             .section-title {
                 font-size: 1.6rem;
                 font-weight: 700;
-                color: rgba(255,255,255,0.85);
+                color: rgba(255,255,255,0.9);
                 
             } 
             
@@ -178,6 +180,8 @@
         .material-container {
             height: calc(100vh - 136px);
             // height: 100vh;
+            width: 94%;
+            margin-left: 3%;
             overflow-y: auto;
             margin-top: 16px;
         }
@@ -226,154 +230,11 @@
                     font-size: 14px;
                 }
             }
-        }  
-
-        // .primary-title {
-        //     font-size: 1.8rem;
-        //     font-weight: bold;
-        //     color: rgba(255,255,255,0.8);
-        // }
-
-        // .section-header {
-        //     display: flex;
-        //     justify-content: space-between;
-        //     align-items: center;
-        //     .section-title {
-        //         font-size: 1.8rem;
-        //         font-weight: bold;
-        //         color: rgba(255,255,255,0.8);
-        //     }
-
-        //     .tips {
-        //         display: flex;
-        //         align-items: center;
-        //         border: 1px solid rgba(255,255,255,0.6);
-        //         padding: 8px 20px;
-        //         border-radius: 12px;
-        //         opacity: 0.9;
-        //         cursor: pointer;
-        //         .tips-cta {
-        //             font-size: 14px;
-        //             font-weight: 600;
-        //             margin-left: 12px;
-        //         }
-        //     }
-        // }
-
-        // .fields {
-        //     margin-top: 3rem;
-        //     padding: 2rem 2rem 2.2rem 2rem;
-        //     background-color: #29252E;
-        //     box-sizing: border-box;
-        //     border-radius: 16px;
-
-        //     .row-container {
-        //         display: flex;
-        //         justify-content: space-between;      
-        //         margin-top: 1.6rem;   
-                
-        //         .field-container {
-        //             width: 48%;
-
-        //             .label {
-        //                 margin-bottom: 8px;                        
-        //                 color: rgba(255,255,255,0.8);
-        //                 font-size: 14px;
-        //             }
-
-        //             input {
-        //                 background: transparent;
-        //                 border: 0.5px solid rgba(255,255,255,0.4);
-        //                 width: 100%;
-        //                 padding: 12px 16px;
-        //                 border-radius: 8px;
-        //             }                    
-
-        //             input::placeholder {
-        //                 color: rgba(255,255,255,0.32);                        
-        //             }                 
-        //         }
-
-                
-        //     }
-
-        //     .first {
-        //         margin-top: 0;
-        //     }
-
-        //     .linkedin {
-        //         margin-top: 1.6rem;
-
-        //         .label {
-        //             margin-bottom: 8px;
-        //             font-size: 14px;
-        //             color: rgba(255,255,255,0.8);
-        //         }
-
-        //         input {
-        //             background: transparent;
-        //             border: 0.5px solid rgba(255,255,255,0.4);
-        //             padding: 12px 16px;
-        //             border-radius: 8px; 
-        //             width: 100%;
-        //         }
-
-        //         input::placeholder {
-        //             color: rgba(255,255,255,0.32);
-        //         }
-        //     }
-
-        //     .urls {
-        //         margin-top: 1.6rem;
-
-        //         .label {
-        //             margin-bottom: 8px;
-        //             color: rgba(255,255,255,0.8);
-        //             font-size: 14px;
-        //         }
-
-        //         input {
-        //             width: 100%;
-        //             background: transparent;
-        //             border: 0.5px solid rgba(255,255,255,0.4);
-        //             padding: 12px 16px;
-        //             border-radius: 8px; 
-        //         } 
-
-        //         input::placeholder {
-        //             color: rgba(255,255,255,0.32);
-        //         }
-        //     }
-        // }
-
-        // .cta-container {
-        //     width: 100%;
-        //     display: flex;
-        //     justify-content: right;
-        //     margin-top: 2rem;
-        //     .next-cta {
-        //         color: white;
-        //         background-color: #2F44FF;
-        //         padding: 10px 24px;
-        //         cursor: pointer;
-        //         width: 25%;
-        //         border-radius: 16px;
-        //         font-weight: 700;
-        //         text-align: center;
-        //         font-size: 1rem;
-        //         display: flex;
-        //         justify-content: center;
-        //         align-items: center;
-
-        //         div {
-        //             font-size: 18px;
-        //         }
-        //     }
-        // }
+        }         
     }
 
     .preview {
-        width: 50%;
+        width: 45%;
         // background-color: rgba(0,0,0,0.9);
         background-color: #1B2432;
         // background : linear-gradient(90deg, #1D1B20 black);
@@ -415,7 +276,7 @@
                         align-items: center;
                         cursor: pointer;
                         font-weight: 500;
-                        font-size: 18px;
+                        font-size: 16px;
 
                         input {
                             margin-right: 8px;
