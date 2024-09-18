@@ -1,0 +1,161 @@
+$primary-color:#CC5500;
+$secondary-color:#808080;
+
+.template-container {
+    background-color: #ffffff;
+    height: 95%;
+    aspect-ratio: 1 / 1.29;
+    min-width: 595px;
+    max-width: 595px;
+    min-height: 842px;
+    max-height: 842px;
+    background-color: white;
+    color: black;
+    display: flex;
+    overflow-y: scroll;
+    font-family: ui-serif;
+}
+
+.lp {
+    min-width: 180px;
+    max-width: 180px;
+    display: flex;
+    flex-direction: column;
+    background-color: #E5E4E2;
+    padding: 20px;
+    gap: 10px;
+
+    &_personalInfo {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        gap: 5px;
+        &_name {
+            font-size: 20px;
+            font-weight: 700;
+            line-height: 20px;
+        }
+
+        &_role {
+            font-size: 15px;
+            font-weight: 500;
+        }
+    }
+
+    &_add_info {
+        display: flex;
+        flex-direction: column;
+        &_value{
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 10px;
+        }
+    }
+
+    &_container{
+        &_header{
+            font-size: 12px;
+            font-weight: 700;
+        }
+    }
+
+    &_education_div {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        &_value {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            justify-content: space-between;
+            &_section {
+                display: flex;
+                flex-direction: column;
+                gap: 3px;
+                &_name {
+                    font-size: 10px;
+                    font-weight: 700;
+                    line-height: normal;
+                }
+                &_year {
+                    font-size: 8px;
+                    line-height: normal;
+                }
+            }
+        }
+        
+    }
+
+    &_skill_div {
+        &_value {
+            display: flex;
+            flex-direction: column;
+            &_item{
+                font-size: 10px;
+            }
+        }
+    }
+}
+
+.rp {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    padding: 20px;
+    
+    &_container{
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        &_header{
+            font-size: 14px;
+            font-weight: 700;
+        }
+    }
+
+    &_bio_div {
+        &_value {
+            font-size: 10px;    
+            line-height: normal;
+        }
+    }
+    
+    &_experience_div {
+        &_value {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            &_section {
+                display: flex;
+                flex-direction: column;
+                &_name {
+                    font-size: 10px;
+                    font-weight: 700;
+                    line-height: normal;
+                }
+                &_year {
+                    font-size: 10px;
+                    line-height: normal;
+                }
+                &_work {
+                    font-size: 10px;
+                    line-height: normal;
+                    display: flex;
+                    flex-direction: column;
+                    gap: 5px;
+
+                    & ul{
+                        list-style: disc;
+                        list-style-position: inside;
+                    }
+
+                    & ol{
+                        list-style: decimal;
+                        list-style-position: inside;
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,43 +1,43 @@
 "use client";
 import dynamic from "next/dynamic";
-import React, { useEffect, useState } from "react";
 import Image from "next/image";
+import React, { useEffect, useMemo, useState } from "react";
 import "./EditPage.scss";
-import generatePDF, { Resolution, Margin, Options } from "react-to-pdf";
 import { Education } from "./Editor/Education";
-import { Template1 } from "./Editor/templates/Template1";
 import { Skills } from "./Editor/Skills";
-import Tips from "./Tips";
 import { Language } from "./Editor/Language";
+import { MdWidgets } from "react-icons/md";
+import { SlGrid } from "react-icons/sl";
+import Tips from "./Tips";
 import logo from "./logo.svg";
 import { useResumeData } from "../hooks/useResumeData";
 import { useActiveSection } from "../hooks/useActiveSection";
-import { FaUserTie } from "react-icons/fa";
-import { MdWidgets } from "react-icons/md";
+import { FaUserTie, FaSuitcase, FaTools } from "react-icons/fa";
 import { IoSchool } from "react-icons/io5";
-import { FaSuitcase } from "react-icons/fa";
 import { AiFillProject } from "react-icons/ai";
+import short_logo from "./short_logo.svg";
 import { IoMdDownload } from "react-icons/io";
-import { FaTools } from "react-icons/fa";
 import { CiCircleChevLeft } from "react-icons/ci";
-import { PiCaretCircleRightFill } from "react-icons/pi";
-import { PiCertificateFill } from "react-icons/pi";
+import { PiCaretCircleRightFill, PiCertificateFill } from "react-icons/pi";
 import { FaLanguage } from "react-icons/fa6";
+import { TbGridDots } from "react-icons/tb";
 //@ts-ignore
-import html2pdf from "html2pdf.js";
 // import { Link } from "lucide-react";
-import { useRouter } from "next/navigation";
-import Link from "next/link";
+import { Template1 } from "./Editor/templates/Template1";
 import { Template2 } from "./Editor/templates/template2";
 import { Template3 } from "./Editor/templates/template3";
 
+// import { Link } from "lucide-react";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+
 const PersonalInfo = dynamic(
-  () => import("./Editor/PersonalInfo").then((mod) => mod.PersonalInfo),
-  { ssr: false },
+    () => import("./Editor/PersonalInfo").then((mod) => mod.PersonalInfo),
+    { ssr: false },
 );
 const Experience = dynamic(
-  () => import("./Editor/Experience").then((mod) => mod.Experience),
-  { ssr: false },
+    () => import("./Editor/Experience").then((mod) => mod.Experience),
+    { ssr: false },
 );
 const Certificate = dynamic(
   () => import("./Editor/Certificate").then((mod) => mod.Certificate),
@@ -48,11 +48,12 @@ const Project = dynamic(
   { ssr: false },
 );
 const Achievement = dynamic(
-  () => import("./Editor/Achievement").then((mod) => mod.Achievement),
-  { ssr: false },
+    () => import("./Editor/Achievement").then((mod) => mod.Achievement),
+    { ssr: false },
 );
 
 export default function EditPage() {
+    const [currentTemplate, setCurrentTemplate] = useState('template1')
   const router = useRouter();
   const [template, setTemplate] = useState<string | null>(null);
 
@@ -218,45 +219,22 @@ export default function EditPage() {
     }
   };
 
-  const options: Options = {
-    filename: "advanced-example.pdf",
-    // default is `save`
-    method: "save",
-    // default is Resolution.MEDIUM = 3, which should be enough, higher values
-    // increases the image quality but also the size of the PDF, so be careful
-    // using values higher than 10 when having multiple pages generated, it
-    // might cause the page to crash or hang.
-    resolution: Resolution.HIGH,
-    page: {
-      // margin is in MM, default is Margin.NONE = 0
-      margin: Margin.NONE,
-      // default is 'A4'
-      format: "A4",
-      // default is 'portrait'
-      orientation: "portrait",
-    },
-    canvas: {
-      // default is 'image/jpeg' for better size performance
-      mimeType: "image/jpeg",
-      qualityRatio: 1,
-    },
-    // customize any value passed to the jsPDF instance and html2canvas
-    // function
-    overrides: {
-      // see https://artskydj.github.io/jsPDF/docs/jsPDF.html for more options
-      pdf: {
-        compress: true,
-      },
-      // see https://html2canvas.hertzen.com/configuration for more options
-      canvas: {
-        useCORS: true,
-      },
-    },
-  };
+    const templateChangeHandler = (e: any) => {
+        setCurrentTemplate(e?.target?.value)
+    }
 
-  const openPDF = () => {
-    generatePDF(() => document.getElementById("resumeParent"), options);
-  };
+    const getTemplate = () => {
+        switch (currentTemplate) {
+            case 'template1':
+                return (<Template1 resumeData={resumeData} id="wrapper" />)
+            case 'template2':
+                return (<Template2 resumeData={resumeData} id="wrapper" />)
+            case 'template3':
+                return (<Template3 resumeData={resumeData} id="wrapper" />)
+            default:
+                return (<Template1 resumeData={resumeData} id="wrapper" />)
+        }
+    }
 
   return (
     <div className="flex flex-col w-full min-h-screen bg-background text-foreground dark:bg-[#1a1b1e] dark:text-white">
@@ -272,9 +250,16 @@ export default function EditPage() {
       <div className="editor-container">
         <div className="navigation">
           <div className="login-container" onClick={handleRedirect}>
-            <div className="login-cta">Home</div>
+            <div className="login-cta">
+              <TbGridDots />
+              <div>PG</div>
+            </div>
+            {/* <Image alt="logo" src={logo} /> */}
           </div>
           <div className="nav-container">
+            <div className="logo-placement">
+              <Image alt="short_logo" src={short_logo} width={50} height={50} />
+            </div>
             <div
               onClick={() => setActiveSection("Personal Info")}
               className={`icon-container ${activeSection === "Personal Info" ? "border" : ""}`}
@@ -323,18 +308,18 @@ export default function EditPage() {
                 className={`icon ${activeSection === "Certificate" ? "selected" : ""}`}
               />
             </div>
-            <div
+            {/* <div
               onClick={() => setActiveSection("Language")}
               className={`icon-container ${activeSection === "Language" ? "border" : ""}`}
             >
               <FaLanguage
                 className={`icon ${activeSection === "Language" ? "selected" : ""}`}
               />
-            </div>
+            </div> */}
           </div>
-          <div className="branding-container">
+          {/* <div className="branding-container">
             <Image alt="logo" src={logo} />
-          </div>
+          </div> */}
         </div>
         <div className="editor">
           <div className="section-header">
@@ -419,7 +404,7 @@ export default function EditPage() {
             <div className="tools-container">
               <div className="widgets">
                 <div className="change-template">
-                  <MdWidgets />
+                  <SlGrid />
                   <div>
                     <Link href="/select-templates">Change Template</Link>
                   </div>

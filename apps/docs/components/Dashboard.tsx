@@ -2,11 +2,22 @@
 import React, { useState, useEffect } from "react";
 import { Edit, Download, Trash2, RefreshCcw, PlusCircle } from "lucide-react";
 import { useRecoilValue } from "recoil";
+import "./Dashboard.scss";
 
 import { isGeneratingPDFAtom } from "../store/pdfgenerating";
 import useResumeDownload from "../hooks/useResumeDownload";
 import { initialResumeData } from "../utils/resumeData";
+import template1 from "./template1.png";
+import template2 from "./template2.png";
+import Image from "next/image";
 import Link from "next/link";
+
+import { CiEdit } from "react-icons/ci";
+import { MdOutlineFileDownload } from "react-icons/md";
+import { RiDeleteBinLine } from "react-icons/ri";
+import { ImMagicWand } from "react-icons/im";
+import { VscDebugRestart } from "react-icons/vsc";
+import { IoAddCircleOutline } from "react-icons/io5";
 
 const Dashboard = () => {
   const { handleDownload } = useResumeDownload();
@@ -22,52 +33,54 @@ const Dashboard = () => {
   }, []);
 
   return (
-    <div className="p-6 bg-gray-900 text-white min-h-screen">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold">My Resumes</h1>
-        <button className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded flex items-center">
-          <PlusCircle className="mr-2 h-4 w-4" />
-          <Link href="/select-templates">Create New</Link>
-        </button>
+    <div className="dashboard-container">
+      <div className="top-section">
+        <div className="dash-title">My Resumes</div>
+        <div className="create-cta">
+            <IoAddCircleOutline className="create-icon" />
+            <div>Create New</div>
+        </div>
       </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="bg-gray-800 p-4 rounded-lg">
-          <div className="text-sm text-gray-400 mb-2">20 days left</div>
-          <div className="flex">
-            <div className="w-1/4 pr-4">
-              <img
-                src="resume1.png"
-                alt="Resume Preview"
-                className="w-full rounded-lg shadow-lg"
-              />
+      <div className="resume-container">
+        <div className="first-resume">
+            <div className="timer">
+                20 days left
             </div>
-            <div className="w-1/4 flex flex-col justify-center">
-              <button className="flex items-center text-white hover:bg-gray-700 py-2 px-4 rounded mb-2">
-                <Edit className="mr-2 h-4 w-4" />{" "}
-                <Link href="/select-templates/editor">Edit</Link>
-              </button>
-              <button
-                className="flex items-center text-white hover:bg-gray-700 py-2 px-4 rounded mb-2"
-                onClick={() => handleDownload("resume-id")}
-                disabled={isGeneratingPDF}
-              >
-                {isGeneratingPDF ? (
-                  "Generating..."
-                ) : (
-                  <>
-                    <Download className="mr-2 h-4 w-4" /> Download
-                  </>
-                )}
-              </button>
-              <button className="flex items-center text-white hover:bg-gray-700 py-2 px-4 rounded mb-2">
-                <Trash2 className="mr-2 h-4 w-4" /> Delete
-              </button>
-              <button className="flex items-center text-white hover:bg-gray-700 py-2 px-4 rounded">
-                <RefreshCcw className="mr-2 h-4 w-4" /> Tailor to a Job
-              </button>
+            <div className="resume-section">
+                <Image alt="resume" src={template1} />
+                <div className="action-toolbar">
+                    <div className="edit">
+                        <CiEdit className="cta-icon" />
+                        <div>Edit</div>
+                    </div>
+                    <div className="download">
+                        <MdOutlineFileDownload className="cta-icon" />
+                        <div>Download</div>
+                    </div>
+                    <div className="delete">
+                        <RiDeleteBinLine className="cta-icon" />
+                        <div>Delete</div>
+                    </div>
+                    <div className="tailor">
+                        <ImMagicWand className="cta-icon" />
+                        <div>Tailor to a Job</div>
+                    </div>
+                </div>
             </div>
-          </div>
+        </div>
+        <div className="second-resume">
+            <div className="timer expired">
+                Expired
+            </div>
+            <div className="resume-section">
+                <Image alt="resume" src={template2} />
+                <div className="action-toolbar">
+                    <div className="renew">
+                        <VscDebugRestart className="cta-icon" />
+                        <div>Renew to Edit</div>
+                    </div>
+                </div>
+            </div>
         </div>
       </div>
     </div>

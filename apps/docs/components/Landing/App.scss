@@ -1,5 +1,5 @@
 .App {
-    background-color: #1e2025;
+    background-color: #24252D;
     width: 100%;
     box-sizing: border-box;
     .top-bar {
@@ -55,18 +55,18 @@
 
         .left-container {
             width: 65%;
-            margin-top: 6rem;
+            margin-top: 4rem;
             .title {
                 width: 90%;
-                font-size: 4rem;
+                font-size: 4.2rem;
                 color: white;
                 font-weight: 600;
             }
 
             .title-two {
                 width: 90%;
-                font-size: 4rem;
-                margin-top: 12px;
+                font-size: 4.2rem;
+                // margin-top: 12px;
                 color: white;
                 font-weight: 600;
             }
@@ -76,7 +76,7 @@
                 -webkit-background-clip: text;
                 -webkit-text-fill-color: transparent;
                 font-weight: 600;
-                font-size: 2.7rem;
+                font-size: 2.8rem;
                 margin-top: 24px;
             }
 
@@ -124,9 +124,9 @@
                 border: none;
                 color: white;
                 font-weight: 600;
-                font-size: 1.2rem;
+                font-size: 1.4rem;
                 border-radius: 8px;
-                margin-top: 80px;
+                margin-top: 50px;
                 display: flex;
                 justify-content: center;
                 cursor: pointer;
@@ -161,13 +161,16 @@
         }
 
         .right-container {
-            margin-top: 4rem;
-            opacity: 0.9;
+            margin-top: 1.2rem;
+            // opacity: 0.9;
             width: 35%;
             display: flex;
 
             img {
-                border-radius: 10px;                
+                border-radius: 10px;
+                width: 100%;
+                height: auto;
+                aspect-ratio: 1/1.4;        
             }
         }
     }
@@ -325,7 +328,7 @@
 
                 .nav-item {
                     color: rgba(255,255,255,0.6);
-                    line-height: 1.8;
+                    line-height: 2.2;
                     font-size: 2.5rem;
                     font-weight: 700;
                     cursor: pointer;
@@ -340,11 +343,11 @@
                     border: 1px solid white;
                     border-radius: 8px;
                     font-size: 16px;
-                    width: 40%;
+                    width: 70%;
                     text-align: center;
-                    padding: 18px 24px;
+                    padding: 14px 24px;
                     margin-top: 30px;
-                    font-weight: 500;
+                    font-weight: 600;
                     cursor: pointer;
                 }
             }
@@ -420,11 +423,11 @@
 
         .features1 {
             display: flex;
-            justify-content: space-between;
+            justify-content: space-evenly;
             margin-top: 3rem;
 
             .feature {
-                width: 320px;
+                width: 400px;
                 height: 180px;
                 // padding: 20px 16px;
                 border: 1px solid rgba(255,255,255,0.2);
@@ -495,7 +498,7 @@
                     color: white;
                     font-weight: 700;
                     text-align: left;
-                    margin-top: 4rem;
+                    margin-top: 3.2rem;
                     display: flex;
                     align-items: center;
                 }
@@ -511,12 +514,12 @@
                 .left-cta {
                     color: white;
                     border: 1px solid rgba(255,255,255,0.7);
-                    width: 40%;
-                    padding: 20px 28px;
+                    width: 50%;
+                    padding: 12px 28px;
                     text-align: center;
                     font-weight: 500;
                     font-size: 1.3rem;
-                    border-radius: 16px;
+                    border-radius: 12px;
                     margin-top: 3rem;
                     margin-left: 4.5rem;
                 }

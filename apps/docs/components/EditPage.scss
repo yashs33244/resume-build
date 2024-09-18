@@ -35,20 +35,29 @@
         // justify-content: center;
 
         .login-container {
+            
             width: 50%;
             display: flex;
             align-items: center;
             // justify-content: center;
-            margin-left: 25%;
-            margin-top: 44px;
-            font-weight: 500;
-            font-size: 16px;
+            margin-left: 25.8%;
+            margin-top: 42px;
+            font-size: 14px;
             cursor: pointer;
+            opacity: 0.9;
             
-            div {
-                padding: 4px 16px;
-                border: 1px solid rgba(255,255,255,0.6);
+            .login-cta {
+                padding: 8px 16px;
+                background-color: #262936;
+                border: 1px solid rgba(255,255,255,0.2);
                 border-radius: 8px;
+                display: flex;
+                font-weight: 600;
+                align-items: center;
+
+                div {
+                    margin-left: 4px;
+                }
             }
         }
 
@@ -56,16 +65,24 @@
             height: 540px;
             width: 50%;
             border: 0.5px solid rgba(255,255,255,0.1);
-            // box-shadow: 2px 0px 8px 0px #101010;
-            // background-color: rgba(255,255,255,0.3);
             margin-left: 25%;
-            // background-color: #29252E;
             background-color: #262936;
             border-radius: 16px;
-            margin-top: 40px;
+            margin-top: 35px;
             display: flex;
             flex-direction: column;
             align-items: center;
+
+            .logo-placement {
+                width: 70px;
+                height: 70px;
+                border-top-left-radius: 16px;
+                border-top-right-radius: 16px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                background-color: #1A1C25;
+            }
 
             .icon-container {
                 width: 50px;
@@ -157,7 +174,8 @@
         }
 
         .material-container {
-            height: calc(100vh - 180px);
+            height: calc(100vh - 136px);
+            // height: 100vh;
             overflow-y: auto;
             margin-top: 16px;
         }
@@ -405,6 +423,7 @@
                     display: flex;
                     justify-content: right;
                     align-items: center;
+                    cursor: pointer;
                     .download {
                         display: flex;
                         justify-content: center;
@@ -431,7 +450,7 @@
             justify-content: center;
             align-items: center;
             height: calc(100vh - 122px);
-            box-sizing: border-box;   
+            box-sizing: border-box;
 
             img {
                 width: auto;

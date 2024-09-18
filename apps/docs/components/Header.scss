@@ -2,9 +2,9 @@
     position: sticky;
     top: 0;
     z-index: 1000;
-    padding: 0 3rem 0 2rem;
+    padding: 0 4rem;
     display: flex;
-    height: 70px;
+    height: 100px;
     align-items: center;
     justify-content: space-between;
     background: #24252D;
@@ -19,4 +19,22 @@
         color: white;
         font-weight: 600;
     }
+    .action-container {
+
+        display: flex;
+        align-items: center;
+
+        .create-cta {
+            background-color: #2B3EFA;
+            font-weight: 700;
+            border-radius: 12px;
+            padding: 12px 18px;
+        }
+
+        .login-cta {
+            font-weight: 700;
+            margin-right: 50px;
+        }
+    }
+    
 }
