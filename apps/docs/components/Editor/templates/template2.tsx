@@ -55,23 +55,39 @@ export const Template2 = (props: any) => {
             <div
               className={`${"content_education_div_value"} ${"content_right_part"}`}
             >
-              {resumeData.education?.map((edu: any) => {
-                return (
-                  <div className={"content_education_div_value_section"}>
-                    <div className={"content_education_div_value_section_name"}>
-                      {edu?.institution}
-                    </div>
-                    <div className={"content_education_div_value_section_year"}>
-                      {edu?.start + " - " + edu?.end}
-                    </div>
+              {Array.isArray(resumeData.education) &&
+              resumeData.education.length > 0 ? (
+                resumeData.education.map((edu: any, index: number) => {
+                  return (
                     <div
-                      className={"content_education_div_value_section_field"}
+                      className={"content_education_div_value_section"}
+                      key={index}
                     >
-                      {edu?.degree + " - " + edu?.major}
+                      <div
+                        className={"content_education_div_value_section_name"}
+                      >
+                        {edu?.institution || "Institution Name"}
+                      </div>
+                      <div
+                        className={"content_education_div_value_section_year"}
+                      >
+                        {edu?.start && edu?.end
+                          ? `${edu.start} - ${edu.end}`
+                          : "Dates not available"}
+                      </div>
+                      <div
+                        className={"content_education_div_value_section_field"}
+                      >
+                        {edu?.degree && edu?.major
+                          ? `${edu.degree} - ${edu.major}`
+                          : "Degree/Major not available"}
+                      </div>
                     </div>
-                  </div>
-                );
-              })}
+                  );
+                })
+              ) : (
+                <div>No education details available</div>
+              )}
             </div>
           </div>
           <div className={`${"content_experience_div"} ${"content_container"}`}>
@@ -108,28 +124,34 @@ export const Template2 = (props: any) => {
             </div>
           </div>
           <div className={`${"content_skill_div"} ${"content_container"}`}>
-            <div
-              className={`${"content_skill_div_label"} ${"content_left_part"}`}
-            >
-              Skill
-            </div>
-            <div
-              className={`${"content_skill_div_value"} ${"content_right_part"}`}
-            >
-              <div className={"content_skill_div_value_section"}>
-                <div className={"content_skill_div_value_section_category"}>
-                  Core Skills
-                </div>
-                <div className={"content_skill_div_value_section_skills"}>
-                  {resumeData?.coreSkills?.join(", ")}
-                </div>
+            <div className={`${"content_skill_div"} ${"content_container"}`}>
+              <div
+                className={`${"content_skill_div_label"} ${"content_left_part"}`}
+              >
+                Skill
               </div>
-              <div className={"content_skill_div_value_section"}>
-                <div className={"content_skill_div_value_section_category"}>
-                  Tools and Technologies
+              <div
+                className={`${"content_skill_div_value"} ${"content_right_part"}`}
+              >
+                <div className={"content_skill_div_value_section"}>
+                  <div className={"content_skill_div_value_section_category"}>
+                    Core Skills
+                  </div>
+                  <div className={"content_skill_div_value_section_skills"}>
+                    {Array.isArray(resumeData?.coreSkills)
+                      ? resumeData.coreSkills.join(", ")
+                      : "No core skills listed"}
+                  </div>
                 </div>
-                <div className={"content_skill_div_value_section_skills"}>
-                  {resumeData?.techSkills?.join(", ")}
+                <div className={"content_skill_div_value_section"}>
+                  <div className={"content_skill_div_value_section_category"}>
+                    Tools and Technologies
+                  </div>
+                  <div className={"content_skill_div_value_section_skills"}>
+                    {Array.isArray(resumeData?.techSkills)
+                      ? resumeData.techSkills.join(", ")
+                      : "No tech skills listed"}
+                  </div>
                 </div>
               </div>
             </div>

@@ -33,7 +33,8 @@ import { MdRocketLaunch } from "react-icons/md";
 import amazon from "./amazon.png";
 import paytm from "./paytm.png";
 import Typewriter from "typewriter-effect";
-import AliceCarousel, { Link } from "react-alice-carousel";
+import AliceCarousel from "react-alice-carousel";
+import Link from "next/link";
 import "react-alice-carousel/lib/alice-carousel.css";
 import "./App.scss";
 import { useSession } from "next-auth/react";
@@ -46,7 +47,7 @@ export default function LandingPage() {
   const currentTemplate: { [key: string]: string } = {
     classic: template1.src,
     modern: template2.src,
-    bold: template3.src
+    bold: template3.src,
   } as { [key: string]: string };
 
   const templateClass = {
@@ -94,7 +95,13 @@ export default function LandingPage() {
           </div>
           <div className="primary-cta">
             <MdRocketLaunch />
-            <div>Get Started</div>
+            <div>
+              {session?.user ? (
+                <Link href="/select-templates/editor"> Get Started</Link>
+              ) : (
+                <Link href="/api/auth/signin"> Get Started</Link>
+              )}
+            </div>
           </div>
           {/* <div className="secondary-cta">
             <FaEdit />
@@ -109,7 +116,7 @@ export default function LandingPage() {
               )}
             </div>
           </div> */}
-          <div style={{marginTop: '36px'}}>
+          <div style={{ marginTop: "36px" }}>
             <Image alt="loved" src={lovedby} width="44%" />
           </div>
         </div>
@@ -163,7 +170,9 @@ export default function LandingPage() {
             <div className="step-count">1</div>
             <div>
               <div className="step-title">Choose a template</div>
-              <div className="step-subtitle">3 Hiring manager approved templates</div>
+              <div className="step-subtitle">
+                3 Hiring manager approved templates
+              </div>
             </div>
           </div>
           <div className="step">

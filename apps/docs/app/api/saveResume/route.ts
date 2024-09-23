@@ -1,98 +1,103 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { PrismaClient } from '@prisma/client';
-import { getServerSession } from "next-auth/next";
-import { authOptions } from '../../lib/auth';
+import { NextResponse } from 'next/server';
+import { db } from '../../../app/db';
+import { ResumeState } from '@prisma/client';
 
-const prisma = new PrismaClient();
+export async function POST(request: Request) {
+  const { userId, resumeData, template } = await request.json();
 
-export async function POST(req: NextRequest) {
+  if (!userId || !resumeData || !template) {
+    return NextResponse.json({ message: 'Invalid input' }, { status: 400 });
+  }
+
   try {
-    console.log("API route hit");
-    const session = await getServerSession(authOptions);
-    
-    if (!session || !session.user) {
-      return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
+    // Check if the user exists
+    const userExists = await db.user.findUnique({
+      where: { id: userId },
+    });
+
+    if (!userExists) {
+      return NextResponse.json({ message: 'User does not exist' }, { status: 404 });
     }
 
-    const { resumeData } = await req.json();
-    console.log("Received data:", JSON.stringify(resumeData, null, 2));
-
-    const email = session.user.email || resumeData.personalInfo.email;
-
-    // Find or create user
-    let user = await prisma.user.upsert({
-      where: { email: email },
-      update: {
-        name: session.user.name || resumeData.personalInfo.name,
-      },
-      create: {
-        id: session.user.id,
-        email: email,
-        name: session.user.name || resumeData.personalInfo.name,
-        password: 'temporary-password', // Note: Implement proper password handling
-      },
+    // Find an existing resume for the user
+    const existingResume = await db.resume.findFirst({
+      where: { userId },
     });
 
-    console.log("User upserted:", user);
-
-    console.log("Upserting resume");
-    // Find existing resume for the user
-    const existingResume = await prisma.resume.findFirst({
-      where: { userId: user.id }
-    });
-
-    // Create or update resume
-    const resume = await prisma.resume.upsert({
-      where: { id: existingResume?.id},
-      // when the user is created for the first time, resume should have some id 
-      update: {
-        personalInfo: {
-          upsert: {
-            create: resumeData.personalInfo,
-            update: resumeData.personalInfo,
-          },
+    // Create or update resume based on existence
+    const resumeDataToSave = {
+      state: ResumeState.EDITING,
+      templateId: template,
+      personalInfo: {
+        upsert: {
+          create: resumeData.personalInfo ?? { name: '', title: '' },
+          update: resumeData.personalInfo ?? { name: '', title: '' },
         },
-        education: {
-          deleteMany: {},
-          create: resumeData.education,
-        },
-        experience: {
-          deleteMany: {},
-          create: resumeData.experience,
-        },
-        skills: {
-          deleteMany: {},
-          create: resumeData.skills.map((skill: string) => ({ name: skill })),
-        },
-        achievements: resumeData.achievement ? {
-          upsert: {
-            create: resumeData.achievement,
-            update: resumeData.achievement,
-          },
-        } : undefined,
-        projects: {
-          deleteMany: {},
-          create: resumeData.projects || [],
-        },
-        state: 'NOT_DONE_YET',
       },
-      create: {
-        userId: user.id,
-        personalInfo: { create: resumeData.personalInfo },
-        education: { create: resumeData.education },
-        experience: { create: resumeData.experience },
-        skills: { create: resumeData.skills.map((skill: string) => ({ name: skill })) },
-        achievements: resumeData.achievement ? { create: resumeData.achievement } : undefined,
-        projects: { create: resumeData.projects || [] },
-        state: 'NOT_DONE_YET',
+      education: {
+        deleteMany: {},
+        create: resumeData.education,
       },
-    });
+      experience: {
+        deleteMany: {},
+        create: resumeData.experience,
+      },
+      skills: {
+        deleteMany: {},
+        create: resumeData.skills.map((skill: string) => ({ name: skill })),
+      },
+      coreSkills: {
+        deleteMany: {},
+        create: (resumeData.coreSkills ?? []).map((skill: string) => ({ name: skill })),
+      },
+      techSkills: {
+        deleteMany: {},
+        create: (resumeData.techSkills ?? []).map((skill: string) => ({ name: skill })),
+      },
+      languages: {
+        deleteMany: {},
+        create: (resumeData.languages ?? []).map((language: string) => ({ name: language })),
+      },
+      projects: {
+        deleteMany: {},
+        create: resumeData.projects,
+      },
+      certificates: {
+        deleteMany: {},
+        create: resumeData.certificates,
+      },
+      achievement: resumeData.achievement
+        ? {
+            upsert: {
+              create: resumeData.achievement,
+              update: resumeData.achievement,
+            },
+          }
+        : undefined,
+      user: {
+        connect: { id: userId },
+      },
+    };
 
-    console.log("Resume upserted successfully");
-    return NextResponse.json({ message: 'Resume saved successfully', resume });
-  } catch (error: any) {
-    console.error("Error in saveResume API:", error);
-    console.error("Error stack:", error.stack);
-    return NextResponse.json({ message: 'Error saving resume', error: error.message, stack: error.stack }, { status: 500 });
+    if (existingResume) {
+      // Update existing resume
+      await db.resume.update({
+        where: { id: existingResume.id },
+        data: resumeDataToSave,
+      });
+    } else {
+      // Create a new resume
+      await db.resume.create({
+        data: {
+          userId,
+          ...resumeDataToSave,
+        },
+      });
+    }
+
+    return NextResponse.json({ message: 'Resume saved successfully' }, { status: 200 });
+  } catch (error) {
+    console.error('Error saving resume:', error);
+    return NextResponse.json({ message: 'Error saving resume', error }, { status: 500 });
   }
 }
