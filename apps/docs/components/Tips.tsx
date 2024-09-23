@@ -21,19 +21,19 @@ import {
 } from "@repo/ui/components/ui/collapsible";
 
 export default function Tips(props: any) {
-  const [isOpen, setIsOpen] = useState(false);
-  const { activeSection } = props;
+  // const [isOpen, setIsOpen] = useState(false);
+  const { activeSection, open, setTipsOpen } = props;
 
   const togglePopover = () => {
-    setIsOpen(!isOpen);
+    setTipsOpen(false);
   };
 
   return (
     <div className="tips-cta-container">
-      <div className="tips-cta-button" onClick={togglePopover}>
+      {/* <div className="tips-cta-button" onClick={togglePopover}>
         <FaLightbulb style={{ width: "26px", height: "26px" }} />
-      </div>
-      {isOpen && (
+      </div> */}
+      {open && (
         <div className="tips-popover">
           <div className="tips-popover-content">
             {/* Content goes here */}
@@ -121,18 +121,6 @@ export default function Tips(props: any) {
               <CollapsibleTrigger className="collapse-trigger">
                 <PiCertificateFill />
                 <div>Certificate</div>
-              </CollapsibleTrigger>
-              <CollapsibleContent className="collapse-content">
-                <div>Best Practices of personal information will go here</div>
-              </CollapsibleContent>
-            </Collapsible>
-            <Collapsible
-              className="collapse-comp"
-              defaultOpen={activeSection === "Language" ? true : false}
-            >
-              <CollapsibleTrigger className="collapse-trigger">
-                <FaLanguage />
-                <div>Languages</div>
               </CollapsibleTrigger>
               <CollapsibleContent className="collapse-content">
                 <div>Best Practices of personal information will go here</div>

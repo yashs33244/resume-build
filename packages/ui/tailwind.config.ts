@@ -24,7 +24,7 @@ const config: Config = {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
-        background: "#24252D",  // Set the default background to fixed-dark
+        background: "#1B2432",  // Set the default background to fixed-dark
         foreground: "hsl(var(--foreground))",
         primary: {
           DEFAULT: "hsl(var(--primary))",
@@ -54,7 +54,7 @@ const config: Config = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        'fixed-dark': '#24252D', // Define your custom fixed-dark color
+        'fixed-dark': '#1B2432', // Define your custom fixed-dark color
       },
       borderRadius: {
         lg: "var(--radius)",

@@ -1,12 +1,12 @@
 .template-select-container {
     width: 100vw;
     height: 100vh;
-    background-color: #24252D;
+    background-color:  #1B2432;
 
     .container-title {
         font-size: 1.8rem;
         font-weight: 700;
-        opacity: 0.8;
+        opacity: 0.9;
         text-align: center;
         padding-top: 2.5rem;
     }
@@ -18,7 +18,7 @@
         padding: 2.5rem 4rem;
         margin-top: 1.8rem;
         // box-sizing: border-box;
-        background: linear-gradient(180deg, #000000, #24252D);
+        background: linear-gradient(180deg,  #121420,#1B2432);
 
         display: flex;
         justify-content: space-between;

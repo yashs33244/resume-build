@@ -29,7 +29,7 @@ export default function SignIn() {
   };
 
   return (
-    <div style={{background: 'linear-gradient(135deg, black, #555555)'}} className="flex min-h-screen bg-gradient-to-br from-purple-100">
+    <div style={{background: 'linear-gradient(135deg, #121420, #403F4C)'}} className="flex min-h-screen bg-gradient-to-br from-purple-100">
       <div className="m-auto bg-white rounded-xl shadow-lg flex flex-col md:flex-row w-full max-w-4xl">
         <Image alt="logo" src={logo} width={140} style={{position: 'fixed', bottom: '2rem', left: '4rem'}} />
         <div className="p-8 md:w-1/2">
@@ -116,7 +116,7 @@ export default function SignIn() {
             </div>
           </div>
         </div>
-        <div style={{backgroundColor: '#2B3EFA'}} className="md:w-1/2 bg-gradient-to-br from-purple-400 text-white rounded-r-xl p-8 hidden md:block">
+        <div style={{backgroundColor: '#1B2432'}} className="md:w-1/2 text-white rounded-r-xl p-8 hidden md:block">
           <h2 className="text-2xl font-bold mb-4">Build your impressive Resume..</h2>
           <p style={{fontWeight: '500', opacity: '0.8'}}>
             Simple and ATS friendly like Google Docs, elegant like Canva and powerful like GPT-4o

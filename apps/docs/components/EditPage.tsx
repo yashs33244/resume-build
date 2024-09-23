@@ -19,6 +19,7 @@ import short_logo from "./short_logo.svg";
 import { IoMdDownload } from "react-icons/io";
 import { CiCircleChevLeft } from "react-icons/ci";
 import { PiCaretCircleRightFill, PiCertificateFill } from "react-icons/pi";
+import { MdTipsAndUpdates } from "react-icons/md";
 import { FaLanguage } from "react-icons/fa6";
 import { TbGridDots } from "react-icons/tb";
 //@ts-ignore
@@ -153,6 +154,7 @@ export default function EditPage() {
   });
 
   const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
+  const [tipsOpen, setTipsOpen] = useState(false);
 
   const handleDownload = async () => {
     setIsGeneratingPDF(true);
@@ -239,7 +241,7 @@ export default function EditPage() {
 
   return (
     <div className="flex flex-col w-full min-h-screen bg-background text-foreground dark:bg-[#1a1b1e] dark:text-white">
-      <Tips activeSection={activeSection} />
+      <Tips activeSection={activeSection} open={tipsOpen} setTipsOpen={(val) => setTipsOpen(val)} />
       {/* <div className="help-container">
             <FaLightbulb style={{width: '26px', height: '26px'}} />
         </div> */}
@@ -326,7 +328,17 @@ export default function EditPage() {
           <div className="section-header">
             <div className="section-title">
               {getSectionTitle(activeSection)}
+              <div className="tips" onClick={() => setTipsOpen(!tipsOpen)}>
+                <MdTipsAndUpdates />
+                <div>Tips</div>
+              </div>
             </div>
+            {/* <div className="tips-container">
+              <div className="tips">
+                <MdTipsAndUpdates />
+                <div>Tips</div>
+              </div>              
+            </div> */}
             <div className="move-container">
               <CiCircleChevLeft
                 style={{

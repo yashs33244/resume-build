@@ -48,7 +48,7 @@
             
             .login-cta {
                 padding: 8px 16px;
-                background-color: #1B2432;
+                background-color: #403F4C;
                 border: 1px solid rgba(255,255,255,0.2);
                 border-radius: 8px;
                 display: flex;
@@ -144,7 +144,35 @@
             .section-title {
                 font-size: 1.6rem;
                 font-weight: 700;
+                display: flex;
+                align-items: center;
                 color: rgba(255,255,255,0.9);
+
+                .tips {
+                    display: flex;
+                    cursor: pointer;
+                    height: 2rem;
+                    font-size: 1rem;
+                    justify-content: center;
+                    align-items: center;
+                    margin-left: 16px;
+                    font-weight: 500;
+                    padding: 0 16px;
+                    background-color: #403F4C;
+                    border-radius: 10px;
+                    border: 0.5px solid rgba(255,255,255,0.2);
+                    color: rgba(255,255,255,0.8);
+
+                    svg {
+                        fill: #FAFF81;
+                    }
+        
+                    div {
+                        margin-left: 8px;
+                        font-size: 14px;
+                    }
+        
+                }
                 
             } 
             
@@ -157,17 +185,18 @@
         }
 
         .tips-container {
-            width: 30%;
+            // width: 30%;
             // margin-top: 3.4rem;
             .tips {
                 display: flex;
                 justify-content: center;
                 align-items: center;
                 font-weight: 600;
-                padding: 8px 16px;
+                padding: 4px 16px;
+                background-color: #1B2432;
                 border-radius: 10px;
-                border: 0.5px solid rgba(255,255,255,0.6);
-                color: rgba(255,255,255,0.7);
+                border: 0.5px solid #403F4C;
+                color: rgba(255,255,255,0.8);
     
                 div {
                     margin-left: 8px;
@@ -178,10 +207,11 @@
         }
 
         .material-container {
-            height: calc(100vh - 136px);
+            height: calc(100vh - 118px);
             // height: 100vh;
             width: 94%;
             margin-left: 3%;
+            padding-bottom: 40px;
             overflow-y: auto;
             margin-top: 16px;
         }

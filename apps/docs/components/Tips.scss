@@ -28,11 +28,11 @@
 
 .tips-popover {
     position: fixed;
-    bottom: 84px; // Adjust this to position the popover properly
-    right: 40px;
+    bottom: 0px; // Adjust this to position the popover properly
+    right: 0px;
     width: 32vw;
-    height: 70vh;
-    background-color: #0f0f11;
+    height: 100vh;
+    background-color: #121420;
     border-radius: 24px;
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
     overflow: auto;
@@ -60,9 +60,10 @@
         .collapse-comp {
             width: 100%;
             .collapse-trigger {
-                color: rgba(255,255,255,0.6);
+                color: rgba(255,255,255,0.75);
                 font-weight: 500;
                 width: 100%;
+                font-weight: 600;
                 text-align: left;
                 padding: 16px 0;
                 display: flex;
@@ -79,7 +80,7 @@
             }
 
             .collapse-content {
-                color: rgba(255,255,255,0.5);
+                color: rgba(255,255,255,0.7);
                 margin-bottom: 16px;
                 font-size: 14px;
             }
@@ -139,10 +140,10 @@
 @keyframes popoverFadeIn {
     from {
         opacity: 0;
-        transform: translateY(20px);
+        transform: translateX(20px);
     }
     to {
         opacity: 1;
-        transform: translateY(0);
+        transform: translateX(0);
     }
 }
