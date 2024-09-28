@@ -53,6 +53,8 @@ model Resume {
   certificates Certificate[]
   state        ResumeState   @default(NOT_STARTED)
   templateId   String
+  updatedAt    DateTime?     @updatedAt
+  createdAt    DateTime?
 }
 
 model PersonalInfo {
@@ -88,6 +90,7 @@ model Experience {
   start            String
   end              String
   responsibilities String[]
+  current          Boolean? @default(false)
 }
 
 model Skill {

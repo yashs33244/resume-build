@@ -118,6 +118,7 @@ export const Template2 = (props: any) => {
                         __html: DOMPurify.sanitize(exp.responsibilities),
                       }}
                     ></div>
+                    <div>{exp.current == true ? "currently working" : ""}</div>
                   </div>
                 );
               })}

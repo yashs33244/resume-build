@@ -4,6 +4,13 @@ import { Label } from "@repo/ui/components/ui/label";
 import { Button } from "@repo/ui/components/ui/button";
 import { ResumeProps } from "../../types/ResumeProps";
 import "./styles/skills.scss";
+import { useRecoilState } from "recoil";
+import {
+  coreSkillState,
+  techSkillState,
+  suggestionsState,
+} from "../../store/skillatoms";
+import useAiSuggestion from "../../hooks/useAiSuggestions";
 
 interface SkillsProps {
   resumeData: ResumeProps;
@@ -27,10 +34,11 @@ export const Skills: React.FC<SkillsProps> = ({
   handleAddField,
   handleDeleteField,
 }) => {
-  const [coreSkill, setCoreSkill] = useState("");
-  const [techSkill, setTechSkill] = useState("");
-  const [suggestions, setSuggestions] = useState<string[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [coreSkill, setCoreSkill] = useRecoilState(coreSkillState);
+  const [techSkill, setTechSkill] = useRecoilState(techSkillState);
+
+  const { handleAiSuggestion, suggestions, isLoading, setSuggestions } =
+    useAiSuggestion();
 
   useEffect(() => {
     const savedSuggestions = localStorage.getItem("skillSuggestions");
@@ -75,55 +83,55 @@ export const Skills: React.FC<SkillsProps> = ({
     }
   };
 
-  const handleAiSuggestion = async () => {
-    setIsLoading(true);
-    try {
-      const prompt = `Based on the following resume information, suggest 5 relevant skills that would enhance this person's profile:
-  
-      Education: ${resumeData.education
-        .map((edu) => `${edu.degree} from ${edu.institution}`)
-        .join(", ")}
-      Experience: ${resumeData.experience
-        .map((exp) => `${exp.role} at ${exp.company}`)
-        .join(", ")}
-      Current Skills: ${resumeData.skills.join(", ")}
-      Bio: ${resumeData.personalInfo.bio}
-  
-      Please provide 5 skill suggestions, each on a new line.`;
+  // const handleAiSuggestion = async () => {
+  //   setIsLoading(true);
+  //   try {
+  //     const prompt = `Based on the following resume information, suggest 5 relevant skills that would enhance this person's profile:
 
-      const response = await fetch("/api/generate", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ prompt }),
-      });
+  //     Education: ${resumeData.education
+  //       .map((edu) => `${edu.degree} from ${edu.institution}`)
+  //       .join(", ")}
+  //     Experience: ${resumeData.experience
+  //       .map((exp) => `${exp.role} at ${exp.company}`)
+  //       .join(", ")}
+  //     Current Skills: ${resumeData.skills.join(", ")}
+  //     Bio: ${resumeData.personalInfo?.bio ?? ""}
 
-      if (!response.ok) {
-        throw new Error("Failed to generate content");
-      }
+  //     Please provide 5 skill suggestions, each on a new line.`;
 
-      // Fetch response as text
-      const text = await response.text();
-      console.log("API Response:", text);
+  //     const response = await fetch("/api/generate", {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify({ prompt }),
+  //     });
 
-      // Process the text response
-      const newSuggestions = text
-        .split("\n")
-        .map((skill) => skill.trim())
-        .filter(Boolean)
-        .map((skill) => skill.replace(/^[*-]\s*/, "")) // Remove leading *, - or any other unwanted characters
-        .filter(Boolean); // Remove empty strings
+  //     if (!response.ok) {
+  //       throw new Error("Failed to generate content");
+  //     }
 
-      setSuggestions((prevSuggestions) => [
-        ...new Set([...prevSuggestions, ...newSuggestions]),
-      ]);
-    } catch (error) {
-      console.error("Failed to get suggestions", error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  //     // Fetch response as text
+  //     const text = await response.text();
+  //     console.log("API Response:", text);
+
+  //     // Process the text response
+  //     const newSuggestions = text
+  //       .split("\n")
+  //       .map((skill) => skill.trim())
+  //       .filter(Boolean)
+  //       .map((skill) => skill.replace(/^[*-]\s*/, "")) // Remove leading *, - or any other unwanted characters
+  //       .filter(Boolean); // Remove empty strings
+
+  //     setSuggestions((prevSuggestions) => [
+  //       ...new Set([...prevSuggestions, ...newSuggestions]),
+  //     ]);
+  //   } catch (error) {
+  //     console.error("Failed to get suggestions", error);
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
 
   const renderCoreSkillTags = () => {
     return (
@@ -173,8 +181,8 @@ export const Skills: React.FC<SkillsProps> = ({
         {suggestions.map((skill, index) => (
           <button
             key={index}
-            className="text-gray-800 text-sm font-medium p-2 py-1 rounded-full border border-blue-600 hover:bg-blue-100 transition-colors transition-shadow"
-            onClick={() => addSkill(skill)}
+            className="text-white text-sm font-medium p-2 py-1 rounded-full border border-blue-600 hover:bg-slate-700 transition-colors transition-shadow"
+            onClick={() => addCoreSkill(skill)}
           >
             {skill}
           </button>

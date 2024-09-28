@@ -4,6 +4,7 @@ import { initialResumeData } from "../utils/resumeData";
 
 export const useResumeData = () => {
     const [resumeData, setResumeData] = useState<ResumeProps>(initialResumeData);
+    const [selectedTemplate, setSelectedTemplate] = useState<string>("fresher");
     const [isClient, setIsClient] = useState<boolean>(false);   
 
     useEffect(() => {
@@ -11,28 +12,36 @@ export const useResumeData = () => {
     },[]);
 
     useEffect(() => {
-      const saveData = isClient ?
-          window.localStorage.getItem("resumeData") : null;
-      if(saveData){
-          const parsedData = JSON.parse(saveData);
-          if (!Array.isArray(parsedData.coreSkills)) {
-              parsedData.coreSkills = [];
-          }
-          if (!Array.isArray(parsedData.techSkills)) {
-            parsedData.techSkills = [];
-          }
-          if (!Array.isArray(parsedData.languages)) {
-            parsedData.languages = [];
-          }
-          setResumeData(parsedData);    
-      }
-    },[isClient]);
-
-    useEffect(()=>{
-        if(isClient){
-            window.localStorage.setItem("resumeData", JSON.stringify(resumeData));
+        if (isClient) {
+            const savedData = window.localStorage.getItem("resumeData");
+            const savedTemplate = window.localStorage.getItem("selectedTemplate");
+            
+            if (savedData) {
+                const parsedData = JSON.parse(savedData);
+                if (!Array.isArray(parsedData.coreSkills)) {
+                    parsedData.coreSkills = [];
+                }
+                if (!Array.isArray(parsedData.techSkills)) {
+                    parsedData.techSkills = [];
+                }
+                if (!Array.isArray(parsedData.languages)) {
+                    parsedData.languages = [];
+                }
+                setResumeData(parsedData);    
+            }
+            
+            if (savedTemplate) {
+                setSelectedTemplate(savedTemplate);
+            }
         }
-    },[resumeData,isClient]);
+    }, [isClient]);
+
+    useEffect(() => {
+        if (isClient) {
+            window.localStorage.setItem("resumeData", JSON.stringify(resumeData));
+            window.localStorage.setItem("selectedTemplate", selectedTemplate);
+        }
+    }, [resumeData, selectedTemplate, isClient]);
 
     const handleInputChange = (
         section: keyof ResumeProps,
@@ -44,6 +53,7 @@ export const useResumeData = () => {
             const newData = { ...prevData } as ResumeProps;
 
             if (section === "personalInfo") {
+                //@ts-ignore
                 newData.personalInfo = {
                     ...newData.personalInfo,
                     [field]: value,
@@ -59,6 +69,12 @@ export const useResumeData = () => {
                     newData.experience = newData.experience.map((item, i) =>
                         i === index ? { ...item, [field]: value } : item
                     );
+                    // change current 
+                    if (field === "current") {
+                        newData.experience = newData.experience.map((item, i) =>
+                            i === index ? { ...item, end: value ? "Present" : "" } : item
+                        );
+                    }
                 }
             } else if (section === "projects") { // Fix this to match "projects"
                 if (newData.projects && Array.isArray(newData.projects) && index !== undefined) {
@@ -66,9 +82,9 @@ export const useResumeData = () => {
                         i === index ? { ...item, [field]: value } : item
                     );
                 }
-            } else if (section === "certificate") {
-                if (newData.certificate && Array.isArray(newData.certificate) && index !== undefined) {
-                    newData.certificate = newData.certificate.map((item, i) =>
+            } else if (section === "certificates") {
+                if (newData.certificates && Array.isArray(newData.certificates) && index !== undefined) {
+                    newData.certificates = newData.certificates.map((item, i) =>
                         i === index ? { ...item, [field]: value } : item
                     );
                 }
@@ -117,21 +133,21 @@ export const useResumeData = () => {
           if (section === "education") {
               newData.education = [
                   ...(prevData.education || []),
-                  { institution: "", start: "", end: "", degree: "" },
+                  { institution: "", start: "", end: "", degree: "" , major: "" },
               ];
           } else if (section === "experience") {
               newData.experience = [
                   ...(prevData.experience || []),
-                  { company: "", role: "", start: "", end: "", responsibilities: [] },
+                  { company: "", role: "", start: "", end: "", responsibilities: [] , current: false },
               ];
           } else if (section === "projects") { // Fix this to match "projects"
             newData.projects = [
                 ...(prevData.projects || []),
                 { name: "", link: "", start: "", end: "", responsibilities: [] },
             ];
-          } else if (section === "certificate") {
-            newData.certificate = [
-                ...(prevData.certificate || []),
+          } else if (section === "certificates") {
+            newData.certificates = [
+                ...(prevData.certificates || []),
                 { name: "", issuer: "", issuedOn: "" },
             ];
           } else if (section === "skills") {
@@ -154,10 +170,11 @@ export const useResumeData = () => {
     ) => {
         setResumeData((prevData) => {
             const newData = { ...prevData };
-            if (section === "education" || section === "experience" || section === "projects" || section === "certificate") {
+            if (section === "education" || section === "experience" || section === "projects" || section === "certificates") {
                 (newData[section] as any[]) = (prevData[section] as any[]).filter(
                     (_, i) => i !== index
                 );
+                
             } else if (section === "skills" && field === 'coreSkill' && index !== undefined) {
                 newData.coreSkills = Array.isArray(newData.coreSkills) 
                     ? newData.coreSkills.filter((_, i) => i !== index)
@@ -176,11 +193,17 @@ export const useResumeData = () => {
             return newData;
         });
     };
+    const setTemplate = (template: string) => {
+        setSelectedTemplate(template);
+    };
+
 
     return {
         resumeData,
+        selectedTemplate,
         handleInputChange,
         handleAddField,
         handleDeleteField,
+        setTemplate,
     };
 };

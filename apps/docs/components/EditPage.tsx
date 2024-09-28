@@ -35,6 +35,9 @@ import { Download } from "lucide-react";
 import ChanegTemplate from "./changeTemplate/ChangeTemplate";
 import { db } from "../app/db";
 import { useSaveResume } from "../hooks/useSaveResume";
+import useAiSuggestion from "../hooks/useAiSuggestions";
+import { ResumeProps } from "../types/ResumeProps";
+import { useSession } from "next-auth/react";
 
 const PersonalInfo = dynamic(
   () => import("./Editor/PersonalInfo").then((mod) => mod.PersonalInfo),
@@ -64,6 +67,14 @@ export default function EditPage() {
   const [resumeSize, setResumeSize] = useState("M");
   const [isModelOpen, setIsModelOpen] = useState(false);
   const { saveResume, isSaving } = useSaveResume();
+  const { handleAiSuggestion, isLoading, suggestions, error } =
+    useAiSuggestion();
+  const { data: session, status: sessionStatus } = useSession();
+
+  const { resumeData, handleInputChange, handleAddField, handleDeleteField } =
+    useResumeData();
+  const { activeSection, handleSectionChange, sections, setActiveSection } =
+    useActiveSection();
 
   const openModel = () => {
     setIsModelOpen(true);
@@ -115,11 +126,6 @@ export default function EditPage() {
       console.log("Error", error);
     }
   };
-
-  const { resumeData, handleInputChange, handleAddField, handleDeleteField } =
-    useResumeData();
-  const { activeSection, handleSectionChange, sections, setActiveSection } =
-    useActiveSection();
 
   const navElements = [
     "Personal Info",
@@ -239,6 +245,10 @@ export default function EditPage() {
         break;
     }
   };
+  const handleSkillsSelect = (resumeData: ResumeProps) => {
+    setActiveSection("Skills");
+    handleAiSuggestion(resumeData);
+  };
 
   const templateChangeHandler = (e: any) => {
     setCurrentTemplate(e?.target?.value);
@@ -250,10 +260,20 @@ export default function EditPage() {
       <div className="editor-container">
         <div className="navigation">
           <div className="login-container">
-            <div className="login-cta" onClick={handleRedirect}>
-              <TbGridDots />
-              <div>PG</div>
-            </div>
+            {session?.user ? (
+              <div className="login-cta" onClick={handleRedirect}>
+                <TbGridDots />
+                <div>PG</div>
+              </div>
+            ) : (
+              <div className="login-cta">
+                <TbGridDots />
+                <div>
+                  <Link href="/">PG</Link>
+                </div>
+              </div>
+            )}
+
             {/* <Image alt="logo" src={logo} /> */}
           </div>
           <div className="nav-container">
@@ -293,7 +313,7 @@ export default function EditPage() {
               />
             </div>
             <div
-              onClick={() => setActiveSection("Skills")}
+              onClick={() => handleSkillsSelect(resumeData)}
               className={`icon-container ${activeSection === "Skills" ? "border" : ""}`}
             >
               <FaTools
@@ -393,10 +413,17 @@ export default function EditPage() {
             <div className="tools-container">
               <ChanegTemplate />
               <div className="download-container cursor-pointer">
-                <div className="download" onClick={openModel}>
-                  <IoMdDownload />
-                  <div>Download</div>
-                </div>
+                {session?.user ? (
+                  <div className="download" onClick={openModel}>
+                    <IoMdDownload />
+                    <div>Download</div>
+                  </div>
+                ) : (
+                  <div className="download">
+                    {" "}
+                    <Link href="/api/auth/signin">Login to download</Link>
+                  </div>
+                )}
               </div>
             </div>
           </div>

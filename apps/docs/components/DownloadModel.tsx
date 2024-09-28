@@ -7,6 +7,7 @@ import { Template1 } from "./Editor/templates/Template1";
 import { Template2 } from "./Editor/templates/template2";
 import { Template3 } from "./Editor/templates/template3";
 import { ResumeProps } from "../types/ResumeProps";
+import { useSaveResume } from "../hooks/useSaveResume";
 
 type DownloadModalProps = {
   isOpen: boolean;
@@ -29,6 +30,7 @@ const DownloadModal: React.FC<DownloadModalProps> = ({
     useState<ResumeProps | null>(null);
   const [showComparison, setShowComparison] = useState(false);
   const [isTailoring, setIsTailoring] = useState(false);
+  const { saveResume, isSaving } = useSaveResume();
 
   const renderTemplate = useCallback(
     (data: ResumeProps) => {
@@ -70,35 +72,44 @@ const DownloadModal: React.FC<DownloadModalProps> = ({
     async (data: ResumeProps) => {
       setIsGeneratingPDF(true);
       try {
-        const element = document.getElementById("wrapper");
-        if (!element) throw new Error("Resume wrapper not found");
+        // const element = document.getElementById("wrapper");
 
-        element.style.transform = "scale(1)";
+        // if (!element) {
+        //   throw new Error("Resume wrapper not found");
+        // }
 
-        const cssLink = `<link rel="stylesheet" href="http://localhost:3000/_next/static/css/app/(pages)/select-templates/editor/page.css">`;
-        const htmlContent = cssLink + element.outerHTML;
+        // // Create a deep clone of the element
+        // const clone = element.cloneNode(true) as HTMLElement;
 
-        const response = await fetch("/api/generate-pdf", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ html: htmlContent }),
-        });
+        // // Apply the scale transformation to the clone, not the original element
+        // clone.style.transform = "scale(1)";
 
-        if (!response.ok) throw new Error("PDF generation failed");
+        // // Get the HTML content to send, including the styles and the clone's content
+        // const cssLink = `<link rel="stylesheet" href="http://localhost:3000/_next/static/css/app/(pages)/select-templates/editor/page.css">`;
+        // const htmlContent = cssLink + clone.outerHTML;
 
-        const blob = await response.blob();
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement("a");
-        a.style.display = "none";
-        a.href = url;
-        a.download = "resume.pdf";
-        document.body.appendChild(a);
-        a.click();
-        window.URL.revokeObjectURL(url);
+        // // Send the HTML content to the backend
+        // const response = await fetch("/api/generate-pdf", {
+        //   method: "POST",
+        //   headers: {
+        //     "Content-Type": "application/json",
+        //   },
+        //   body: JSON.stringify({ html: htmlContent }),
+        // });
 
-        updateResumeTime(templateId);
+        // if (!response.ok) throw new Error("PDF generation failed");
+
+        // const blob = await response.blob();
+        // const url = window.URL.createObjectURL(blob);
+        // const a = document.createElement("a");
+        // a.style.display = "none";
+        // a.href = url;
+        // a.download = "resume.pdf";
+        // document.body.appendChild(a);
+        // a.click();
+        // window.URL.revokeObjectURL(url);
+        // updateResumeTime(templateId);
+        saveResume(resumeData, templateId);
       } catch (error) {
         console.error("Error generating PDF:", error);
       } finally {
