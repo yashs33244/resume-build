@@ -57,7 +57,9 @@ const Dashboard = () => {
       <div className="resume-container">
         <div className="first-resume">
           <div className="timer">
-            {resumeState == "DOWNLOAD_SUCCESS" && <div>{createDate}</div>}
+            {resumeState == "DOWNLOAD_SUCCESS" && (
+              <div className="text-white"> {daysLeft} days left</div>
+            )}
           </div>
           <div
             className="resume-section"

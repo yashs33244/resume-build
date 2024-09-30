@@ -4,7 +4,6 @@ import { ResumeState } from '@prisma/client';
 import { getServerSession } from "next-auth/next";
 import { authOptions } from '../../../lib/auth';
 
-
 export async function POST(request: Request) {
   const session = await getServerSession(authOptions);
   const { resumeData, template } = await request.json();
@@ -24,18 +23,21 @@ export async function POST(request: Request) {
 
     const existingResume = await db.resume.findFirst({
       where: { userId: user.id },
-      include: { personalInfo: true , 
-        education:true,
-        experience:true,
-        skills:true,
-        coreSkills:true,
-        techSkills:true,
-        languages:true,
-        achievement:true,
-        projects:true,
-        certificates:true,
+      include: {
+        personalInfo: true,
+        education: true,
+        experience: true,
+        skills: true,
+        coreSkills: true,
+        techSkills: true,
+        languages: true,
+        achievement: true,
+        projects: true,
+        certificates: true,
       },
     });
+
+    const now = new Date();
 
     let resume;
     if (existingResume) {
@@ -45,6 +47,7 @@ export async function POST(request: Request) {
         data: {
           state: ResumeState.DOWNLOAD_SUCCESS,
           templateId: template,
+          updatedAt: now,
           education: {
             deleteMany: {},
             create: resumeData.education,
@@ -118,6 +121,8 @@ export async function POST(request: Request) {
           userId: user.id,
           state: ResumeState.DOWNLOAD_SUCCESS,
           templateId: template,
+          createdAt: now,
+          updatedAt: now,
           education: {
             create: resumeData.education,
           },

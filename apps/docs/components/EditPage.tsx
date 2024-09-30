@@ -29,7 +29,7 @@ import { Template2 } from "./Editor/templates/template2";
 import { Template3 } from "./Editor/templates/template3";
 
 // import { Link } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import Link from "next/link";
 import { Download } from "lucide-react";
 import ChanegTemplate from "./changeTemplate/ChangeTemplate";
@@ -119,9 +119,8 @@ export default function EditPage() {
 
   const handleRedirect = async () => {
     try {
-      console.log("request sent");
-      await saveResume(resumeData, template || "");
-      console.log("recieved response");
+      // saveResume(resumeData, template || "");
+      redirect("/dashboard");
     } catch (error: any) {
       console.log("Error", error);
     }
