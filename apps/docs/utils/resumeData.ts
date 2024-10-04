@@ -16,13 +16,15 @@ export const initialResumeData: ResumeProps = {
       institution: "Liceria University",
       start: "2009",
       end: "2012",
-      degree: "Bachelor of Computer Technology"
+      degree: "Bachelor of Computer Technology",
+      major: "Information Technology"
     },
     {
       institution: "Oxford University",
       start: "2012",
       end: "2015",
-      degree: "Master of Computer Science - Software Engineering"
+      degree: "Master of Computer Science - Software Engineering",
+      major: "Information Technology"
     }
   ],
   experience: [
@@ -49,5 +51,5 @@ export const initialResumeData: ResumeProps = {
     description: "Editor's Pick for Best Design Portfolio"
   },
   languages: [], // Optional: You can populate this later
-  certificate: [] // Optional: You can populate this later
+  certificates: [] // Optional: You can populate this later
 };

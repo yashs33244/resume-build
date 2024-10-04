@@ -30,11 +30,13 @@ export default function Header() {
           </a>
         </div>
       ) : (
-        <div className="action-container">          
+        <div className="action-container">
           <div className="login-cta">
             <Link href="/api/auth/signin">Login</Link>
           </div>
-          <div className="create-cta">Create Resume</div>
+          <div className="create-cta">
+            <Link href={"/select-templates"}>Create Resume</Link>
+          </div>
         </div>
       )}
     </div>

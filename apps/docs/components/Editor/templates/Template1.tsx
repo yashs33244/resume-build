@@ -73,6 +73,9 @@ export const Template1 = (props: any) => {
                   __html: DOMPurify.sanitize(exp.responsibilities),
                 }}
               />
+              <div className="text-black">
+                {exp.current == true ? "Currently working" : ""}
+              </div>
             </div>
           ))}
         </div>

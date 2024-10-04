@@ -1,13 +1,12 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Edit, Download, Trash2, RefreshCcw, PlusCircle } from "lucide-react";
 import { useRecoilValue } from "recoil";
 import "./Dashboard.scss";
 
 import { isGeneratingPDFAtom } from "../store/pdfgenerating";
 import useResumeDownload from "../hooks/useResumeDownload";
-import { initialResumeData } from "../utils/resumeData";
-import template1 from "./template1.png";
+import { useResumeData } from "../hooks/useResumeData";
 import template2 from "./template2.png";
 import Image from "next/image";
 import Link from "next/link";
@@ -19,18 +18,30 @@ import { ImMagicWand } from "react-icons/im";
 import { VscDebugRestart } from "react-icons/vsc";
 import { IoAddCircleOutline } from "react-icons/io5";
 
+// Import your template components
+import { Template1 } from "./Editor/templates/Template1";
+import { Template2 } from "./Editor/templates/template2";
+import { Template3 } from "./Editor/templates/template3";
+import { useResumeState } from "../hooks/useResumeState";
+
 const Dashboard = () => {
   const { handleDownload } = useResumeDownload();
   const isGeneratingPDF = useRecoilValue(isGeneratingPDFAtom);
-  const [resumeData, setResumeData] = useState(initialResumeData);
+  const { resumeData, selectedTemplate } = useResumeData();
+  const { resumeState, daysLeft, createDate } = useResumeState();
 
-  useEffect(() => {
-    // Load resume data from localStorage when component mounts
-    const savedData = localStorage.getItem("resumeData");
-    if (savedData) {
-      setResumeData(JSON.parse(savedData));
+  const renderTemplate = () => {
+    switch (selectedTemplate) {
+      case "fresher":
+        return <Template1 resumeData={resumeData} />;
+      case "experienced":
+        return <Template2 resumeData={resumeData} />;
+      case "designer":
+        return <Template3 resumeData={resumeData} />;
+      default:
+        return <div>Select a template from the template selection page</div>;
     }
-  }, []);
+  };
 
   return (
     <div className="dashboard-container">
@@ -45,16 +56,25 @@ const Dashboard = () => {
       </div>
       <div className="resume-container">
         <div className="first-resume">
-          <div className="timer">20 days left</div>
-          <div className="resume-section">
-            <Image alt="resume" src={template1} />
+          <div className="timer">
+            {resumeState == "DOWNLOAD_SUCCESS" && (
+              <div className="text-white"> {daysLeft} days left</div>
+            )}
+          </div>
+          <div
+            className="resume-section"
+            style={{ transform: "scale(0.5)", transformOrigin: "top left" }}
+          >
+            <div className="resume-preview">{renderTemplate()}</div>
             <div className="action-toolbar">
-              <div className="edit">
-                <CiEdit className="cta-icon" />
-                <div>
-                  <Link href={"/select-templates/editor"}>Edit</Link>
+              <Link
+                href={`/select-templates/editor?template=${selectedTemplate}`}
+              >
+                <div className="edit">
+                  <CiEdit className="cta-icon" />
+                  <div>Edit</div>
                 </div>
-              </div>
+              </Link>
               <div className="download">
                 <MdOutlineFileDownload className="cta-icon" />
                 <div>Download</div>

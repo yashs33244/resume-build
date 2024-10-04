@@ -12,9 +12,11 @@ export interface ResumeProps {
   } | null; // Optional based on the Prisma schema
   education: Array<{
     institution: string;
+    major: string;
     start: string;
     end: string;
     degree: string;
+
   }>;
   experience: Array<{
     company: string;
@@ -22,6 +24,7 @@ export interface ResumeProps {
     start: string;
     end: string;
     responsibilities: string[]; // Array of strings
+    current: boolean;
   }>;
   skills: string[]; // General skills list
   coreSkills?: string[]; // Optional core skills

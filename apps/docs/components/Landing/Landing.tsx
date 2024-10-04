@@ -358,7 +358,14 @@ export default function LandingPage() {
               We automatically share your resume for relevant roles with top
               companies
             </div>
-            <div className="left-cta">Build Now</div>
+            <div className="left-cta">
+              {" "}
+              {session?.user ? (
+                <Link href="/select-templates/editor"> Build Now</Link>
+              ) : (
+                <Link href="/api/auth/signin"> Build Now</Link>
+              )}
+            </div>
           </div>
           <div className="right">
             <div className="fang">

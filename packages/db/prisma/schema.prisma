@@ -53,6 +53,8 @@ model Resume {
   certificates Certificate[]
   state        ResumeState   @default(NOT_STARTED)
   templateId   String
+  updatedAt    DateTime?     @updatedAt
+  createdAt    DateTime?
 }
 
 model PersonalInfo {
@@ -70,10 +72,11 @@ model PersonalInfo {
 }
 
 model Education {
-  id          String @id @default(cuid())
+  id          String  @id @default(cuid())
   resumeId    String
-  resume      Resume @relation(fields: [resumeId], references: [id], onDelete: Cascade)
+  resume      Resume  @relation(fields: [resumeId], references: [id], onDelete: Cascade)
   institution String
+  major       String?
   start       String
   end         String
   degree      String
@@ -88,6 +91,7 @@ model Experience {
   start            String
   end              String
   responsibilities String[]
+  current          Boolean? @default(false)
 }
 
 model Skill {

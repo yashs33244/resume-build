@@ -10,6 +10,7 @@ import { ResumeProps } from "../types/ResumeProps";
 import { IoMdDownload } from "react-icons/io";
 import { Modal } from 'react-responsive-modal';
 import "./DownloadModel.scss";
+import { useSaveResume } from "../hooks/useSaveResume";
 
 type DownloadModalProps = {
   isOpen: boolean;
@@ -32,6 +33,7 @@ const DownloadModal: React.FC<DownloadModalProps> = ({
     useState<ResumeProps | null>(null);
   const [showComparison, setShowComparison] = useState(false);
   const [isTailoring, setIsTailoring] = useState(false);
+  const { saveResume, isSaving } = useSaveResume();
 
   const renderTemplate = useCallback(
     (data: ResumeProps) => {
@@ -74,13 +76,22 @@ const DownloadModal: React.FC<DownloadModalProps> = ({
       setIsGeneratingPDF(true);
       try {
         const element = document.getElementById("wrapper");
-        if (!element) throw new Error("Resume wrapper not found");
 
-        element.style.transform = "scale(1)";
+        if (!element) {
+          throw new Error("Resume wrapper not found");
+        }
 
+        // Create a deep clone of the element
+        const clone = element.cloneNode(true) as HTMLElement;
+
+        // Apply the scale transformation to the clone, not the original element
+        clone.style.transform = "scale(1)";
+
+        // Get the HTML content to send, including the styles and the clone's content
         const cssLink = `<link rel="stylesheet" href="http://localhost:3000/_next/static/css/app/(pages)/select-templates/editor/page.css">`;
-        const htmlContent = cssLink + element.outerHTML;
+        const htmlContent = cssLink + clone.outerHTML;
 
+        // Send the HTML content to the backend
         const response = await fetch("/api/generate-pdf", {
           method: "POST",
           headers: {
@@ -100,8 +111,8 @@ const DownloadModal: React.FC<DownloadModalProps> = ({
         document.body.appendChild(a);
         a.click();
         window.URL.revokeObjectURL(url);
-
         updateResumeTime(templateId);
+        saveResume(resumeData, templateId);
       } catch (error) {
         console.error("Error generating PDF:", error);
       } finally {

@@ -14,6 +14,9 @@ import {
   CollapsibleTrigger,
   CollapsibleContent,
 } from "@repo/ui/components/ui/collapsible";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import CustomDatePicker from "./CustomDatePicker";
 
 const ClientSideQuill = dynamic(() => import("react-quill"), {
   ssr: false,
@@ -110,7 +113,10 @@ export const Project: React.FC<ProjectProps> = ({
     <div className="project-container">
       <div className="project-list">
         {projects.map((proj: any, index: any) => (
-          <Collapsible className={index === 0 ? 'collapse-comp first' : 'collapse-comp'} key={index}>
+          <Collapsible
+            className={index === 0 ? "collapse-comp first" : "collapse-comp"}
+            key={index}
+          >
             <CollapsibleTrigger className="collapse-trigger">
               <div className="proj-note">
                 <ChevronDownIcon className="h-5 w-5 transition-transform" />
@@ -170,44 +176,30 @@ export const Project: React.FC<ProjectProps> = ({
                 </div>
                 <div className="form-row">
                   <div className="row-form-field">
-                    <Label htmlFor={`start-${index}`} className="field-label">
-                      Start Date
-                    </Label>
-                    <Input
-                      id={`start-${index}`}
-                      value={proj.start || ""}
-                      type="date"
-                      onChange={(e) =>
-                        handleInputChange(
-                          "projects",
-                          "start",
-                          e.target.value,
-                          index,
-                        )
-                      }
-                      placeholder=""
-                      className="form-input"
-                    />
+                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                      <CustomDatePicker
+                        id={`start-${index}`}
+                        value={proj.start || ""}
+                        onChange={handleInputChange}
+                        index={index}
+                        className="text-white"
+                        field="start"
+                        category="projects" // Passing the category as 'projects'
+                      />
+                    </LocalizationProvider>
                   </div>
                   <div className="row-form-field">
-                    <Label htmlFor={`end-${index}`} className="field-label">
-                      End Date
-                    </Label>
-                    <Input
-                      id={`end-${index}`}
-                      value={proj.end || ""}
-                      type="date"
-                      onChange={(e) =>
-                        handleInputChange(
-                          "projects",
-                          "end",
-                          e.target.value,
-                          index,
-                        )
-                      }
-                      placeholder=""
-                      className="form-input"
-                    />
+                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                      <CustomDatePicker
+                        id={`end-${index}`}
+                        value={proj.end || ""}
+                        onChange={handleInputChange}
+                        index={index}
+                        className="text-white"
+                        field="end"
+                        category="projects" // Passing the category as 'projects'
+                      />
+                    </LocalizationProvider>
                   </div>
                 </div>
                 <div className="single-form-row">
