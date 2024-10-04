@@ -14,6 +14,7 @@ import {
   CollapsibleTrigger,
   CollapsibleContent,
 } from "@repo/ui/components/ui/collapsible";
+import loading from "../../public/loading.gif";
 
 const ClientSideQuill = dynamic(() => import("react-quill"), {
   ssr: false,
@@ -104,13 +105,21 @@ export const Experience: React.FC<ExperienceProps> = ({
     }
   };
 
-  const aiPrompts = ["Make It Impressive", "Fix Grammar", "Shorten", "Elaborate"];
+  const aiPrompts = [
+    "Make It Impressive",
+    "Fix Grammar",
+    "Shorten",
+    "Elaborate",
+  ];
 
   return (
     <div className="experience-container">
       <div className="experience-list">
         {experiences.map((exp, index) => (
-          <Collapsible className={index === 0 ? 'collapse-comp first' : 'collapse-comp'} key={index}>
+          <Collapsible
+            className={index === 0 ? "collapse-comp first" : "collapse-comp"}
+            key={index}
+          >
             <CollapsibleTrigger className="collapse-trigger">
               <div className="exp-note">
                 <ChevronDownIcon className="h-5 w-5 transition-transform" />
@@ -188,9 +197,12 @@ export const Experience: React.FC<ExperienceProps> = ({
                         )
                       }
                       placeholder=""
-                      className="form-input"
+                      className={`form-input ${
+                        exp.start ? "text-white" : "text-gray-500"
+                      }`}
                     />
                   </div>
+
                   <div className="row-form-field">
                     <Label htmlFor={`end-${index}`} className="field-label">
                       End Date
@@ -208,7 +220,9 @@ export const Experience: React.FC<ExperienceProps> = ({
                         )
                       }
                       placeholder=""
-                      className="form-input"
+                      className={`form-input ${
+                        exp.end ? "text-white" : "text-gray-500"
+                      }`}
                     />
                   </div>
                 </div>
@@ -236,19 +250,18 @@ export const Experience: React.FC<ExperienceProps> = ({
                           ],
                         }}
                       />
-                      {isLoading[index] && (
-                        <div className="absolute inset-0 flex items-center justify-center bg-gray-100 bg-opacity-75">
-                          <div className="flex space-x-2 animate-pulse">
-                            <div className="w-3 h-3 bg-gray-500 rounded-full"></div>
-                            <div className="w-3 h-3 bg-gray-500 rounded-full"></div>
-                            <div className="w-3 h-3 bg-gray-500 rounded-full"></div>
-                          </div>
-                        </div>
-                      )}
                     </div>
                   </div>
                   <div className="ai-container flex flex-wrap items-center gap-2 mt-4">
-                    <BsStars style={{ width: "20px", height: "20px" }} />
+                    {!isLoading[index] ? (
+                      <BsStars style={{ width: "20px", height: "20px" }} />
+                    ) : (
+                      <img
+                        src={loading.src}
+                        alt="loading..."
+                        style={{ width: "20px", height: "20px" }}
+                      />
+                    )}
                     {aiPrompts.map((prompt, promptIndex) => (
                       <button
                         key={promptIndex}

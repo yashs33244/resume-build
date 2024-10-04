@@ -6,6 +6,7 @@ import "./template3.css";
 import { IoMail } from "react-icons/io5";
 import { FaPhoneAlt } from "react-icons/fa";
 import { FaLinkedin } from "react-icons/fa";
+import { ResumeProps } from "../../../types/ResumeProps";
 
 export const Template3 = (props: any) => {
   const { resumeData, id } = props;
@@ -68,12 +69,11 @@ export const Template3 = (props: any) => {
               Skill
             </div>
             <div className={`${"lp_skill_div_value"}`}>
-              {resumeData?.coreSkills?.map((item: any) => {
-                return <div className={"lp_skill_div_value_item"}>{item}</div>;
-              })}
-              {resumeData?.coreSkills?.map((item: any) => {
-                return <div className={"lp_skill_div_value_item"}>{item}</div>;
-              })}
+              {resumeData?.coreSkills?.map((item: any, index: number) => (
+                <div key={index} className={"lp_skill_div_value_item"}>
+                  {item}
+                </div>
+              ))}{" "}
             </div>
           </div>
         </div>

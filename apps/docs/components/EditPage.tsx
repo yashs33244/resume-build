@@ -22,23 +22,31 @@ import { PiCaretCircleRightFill, PiCertificateFill } from "react-icons/pi";
 import { MdTipsAndUpdates } from "react-icons/md";
 import { FaLanguage } from "react-icons/fa6";
 import { TbGridDots } from "react-icons/tb";
+import DownloadModel from "./DownloadModel";
 //@ts-ignore
 // import { Link } from "lucide-react";
 import { Template1 } from "./Editor/templates/Template1";
 import { Template2 } from "./Editor/templates/template2";
 import { Template3 } from "./Editor/templates/template3";
 
+import { Modal } from 'react-responsive-modal';
+import 'react-responsive-modal/styles.css';
+
 // import { Link } from "lucide-react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { Download } from "lucide-react";
+import ChanegTemplate from "./changeTemplate/ChangeTemplate";
+import { db } from "../app/db";
+import { useSaveResume } from "../hooks/useSaveResume";
 
 const PersonalInfo = dynamic(
-    () => import("./Editor/PersonalInfo").then((mod) => mod.PersonalInfo),
-    { ssr: false },
+  () => import("./Editor/PersonalInfo").then((mod) => mod.PersonalInfo),
+  { ssr: false },
 );
 const Experience = dynamic(
-    () => import("./Editor/Experience").then((mod) => mod.Experience),
-    { ssr: false },
+  () => import("./Editor/Experience").then((mod) => mod.Experience),
+  { ssr: false },
 );
 const Certificate = dynamic(
   () => import("./Editor/Certificate").then((mod) => mod.Certificate),
@@ -49,16 +57,25 @@ const Project = dynamic(
   { ssr: false },
 );
 const Achievement = dynamic(
-    () => import("./Editor/Achievement").then((mod) => mod.Achievement),
-    { ssr: false },
+  () => import("./Editor/Achievement").then((mod) => mod.Achievement),
+  { ssr: false },
 );
 
 export default function EditPage() {
-    const [currentTemplate, setCurrentTemplate] = useState('template1')
+  const [currentTemplate, setCurrentTemplate] = useState("template1");
   const router = useRouter();
   const [template, setTemplate] = useState<string | null>(null);
-  const [resumeSize, setResumeSize] = useState('M');
+  const [resumeSize, setResumeSize] = useState("M");
+  const [isModelOpen, setIsModelOpen] = useState(false);
+  const { saveResume, isSaving } = useSaveResume();
 
+  const openModel = () => {
+    setIsModelOpen(true);
+  };
+
+  const closeModel = () => {
+    setIsModelOpen(false);
+  };
   useEffect(() => {
     // Check if the window is available (runs only on client-side)
     if (typeof window !== "undefined") {
@@ -93,16 +110,20 @@ export default function EditPage() {
     }
   };
 
-  const handleRedirect = () => {
-    router.push("/dashboard");
+  const handleRedirect = async () => {
+    try {
+      console.log("request sent");
+      await saveResume(resumeData, template || "");
+      console.log("recieved response");
+    } catch (error: any) {
+      console.log("Error", error);
+    }
   };
 
   const { resumeData, handleInputChange, handleAddField, handleDeleteField } =
     useResumeData();
   const { activeSection, handleSectionChange, sections, setActiveSection } =
     useActiveSection();
-
-  //   const { toPDF, targetRef } = usePDF({filename: 'finalCV.pdf'});
 
   const navElements = [
     "Personal Info",
@@ -141,7 +162,9 @@ export default function EditPage() {
     function scaleContent() {
       const container = document.getElementById("resumeParent");
       const content = document.getElementById("wrapper");
+      // @ts-ignore
       const widthScale = container?.offsetWidth / content?.offsetWidth;
+      // @ts-ignore
       const heightScale = container?.offsetHeight / content?.offsetHeight;
       const scale = Math.min(widthScale, heightScale);
       if (content) {
@@ -155,6 +178,7 @@ export default function EditPage() {
 
   const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
   const [tipsOpen, setTipsOpen] = useState(false);
+  const [showDownloadModal, setDownloadModal] = useState(false);
 
   const handleDownload = async () => {
     setIsGeneratingPDF(true);
@@ -222,26 +246,49 @@ export default function EditPage() {
     }
   };
 
-    const templateChangeHandler = (e: any) => {
-        setCurrentTemplate(e?.target?.value)
-    }
-
-    const getTemplate = () => {
-        switch (currentTemplate) {
-            case 'template1':
-                return (<Template1 resumeData={resumeData} id="wrapper" />)
-            case 'template2':
-                return (<Template2 resumeData={resumeData} id="wrapper" />)
-            case 'template3':
-                return (<Template3 resumeData={resumeData} id="wrapper" />)
-            default:
-                return (<Template1 resumeData={resumeData} id="wrapper" />)
-        }
-    }
+  const templateChangeHandler = (e: any) => {
+    setCurrentTemplate(e?.target?.value);
+  };
 
   return (
-    <div className="flex flex-col w-full min-h-screen bg-background text-foreground dark:bg-[#1a1b1e] dark:text-white">
+    <div className="flex flex-col w-full min-h-screen bg-background text-foreground dark:bg-[#1a1b1e] dark:text-white">     
       <Tips activeSection={activeSection} open={tipsOpen} setTipsOpen={(val) => setTipsOpen(val)} />
+      {/* <Modal classNames={{modal: 'download-modal'}} open={isModelOpen} onClose={closeModel} center>
+        <div className="modal-content">
+          <div className="jd-tailor">
+            <div className="left">
+              <div>
+                <div className="heading">Tailor your CV to a specific JD?</div>
+                <textarea
+                  id="job-description"
+                  className="form-input"
+                  // type="text"
+                  placeholder="Paste the exact job description here.."
+                  rows="6"
+                  value={resumeData.personalInfo?.bio || ""}
+                  onChange={(e) =>
+                    console.log()
+                  }
+                />
+                <div className="modify-cta">
+                  Customize
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="download-container">
+            <div className="right">
+              <div>
+                <div className="heading">Continue to Download</div>
+                <div className="download-button">
+                  <IoMdDownload />
+                  <div>Download Final-CV.pdf</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </Modal> */}
       {/* <div className="help-container">
             <FaLightbulb style={{width: '26px', height: '26px'}} />
         </div> */}
@@ -252,8 +299,8 @@ export default function EditPage() {
       </div> */}
       <div className="editor-container">
         <div className="navigation">
-          <div className="login-container" onClick={handleRedirect}>
-            <div className="login-cta">
+          <div className="login-container">
+            <div className="login-cta" onClick={handleRedirect}>
               <TbGridDots />
               <div>PG</div>
             </div>
@@ -311,18 +358,7 @@ export default function EditPage() {
                 className={`icon ${activeSection === "Certificate" ? "selected" : ""}`}
               />
             </div>
-            {/* <div
-              onClick={() => setActiveSection("Language")}
-              className={`icon-container ${activeSection === "Language" ? "border" : ""}`}
-            >
-              <FaLanguage
-                className={`icon ${activeSection === "Language" ? "selected" : ""}`}
-              />
-            </div> */}
           </div>
-          {/* <div className="branding-container">
-            <Image alt="logo" src={logo} />
-          </div> */}
         </div>
         <div className="editor">
           <div className="section-header">
@@ -415,49 +451,26 @@ export default function EditPage() {
         <div className="preview">
           <div className="tools">
             <div className="tools-container">
-              <div className="widgets">
-                <div className="change-template">
-                  <SlGrid />
-                  <div>
-                    <Link href="/select-templates">Change Template</Link>
-                  </div>
-                </div>
-                <div className="input-check">
-                  <input name="size" type="radio" checked={resumeSize === 'S' ? true : false} onChange={() => setResumeSize('S')} /> S
-                </div>
-                <div className="input-check">
-                  <input name="size" type="radio" checked={resumeSize === 'M' ? true : false} onChange={() => setResumeSize('M')} /> M
-                </div>
-                <div className="input-check">
-                  <input name="size" type="radio" checked={resumeSize === 'L' ? true : false} onChange={() => setResumeSize('L')} /> L
-                </div>
-              </div>
+              <ChanegTemplate />
               <div className="download-container cursor-pointer">
-                <div className="download" onClick={handleDownload}>
-                  {isGeneratingPDF ? (
-                    <span>Generating PDF...</span>
-                  ) : (
-                    <>
-                      <IoMdDownload />
-                      <div>Download</div>
-                    </>
-                  )}
+                <div className="download" onClick={openModel}>
+                  <IoMdDownload />
+                  <div>Download</div>
                 </div>
               </div>
             </div>
           </div>
           <div className="preview-container" id="resumeParent">
-            {/* <Template1 resumeData={resumeData} id="wrapper" />
-            <Template2 resumeData={resumeData} id="wrapper" /> */}
-            {/* <Template3 resumeData={resumeData} id="wrapper" /> */}
-            {/* <Image alt="template" src={template}  /> */}
-
             {renderTemplate()}
           </div>
-          {/* <div className="preview-container">                
-                <Image alt="template" src={template}  />
-            </div>             */}
         </div>
+        <DownloadModel
+          isOpen={isModelOpen}
+          onClose={closeModel}
+          resumeData={resumeData}
+          templateId={template || ""}
+          renderTemplate={renderTemplate}
+        />
       </div>
     </div>
   );

@@ -37,50 +37,50 @@ const Dashboard = () => {
       <div className="top-section">
         <div className="dash-title">My Resumes</div>
         <div className="create-cta">
-            <IoAddCircleOutline className="create-icon" />
-            <div>Create New</div>
+          <IoAddCircleOutline className="create-icon" />
+          <div>
+            <Link href={"/select-templates"}>Create New</Link>
+          </div>
         </div>
       </div>
       <div className="resume-container">
         <div className="first-resume">
-            <div className="timer">
-                20 days left
-            </div>
-            <div className="resume-section">
-                <Image alt="resume" src={template1} />
-                <div className="action-toolbar">
-                    <div className="edit">
-                        <CiEdit className="cta-icon" />
-                        <div>Edit</div>
-                    </div>
-                    <div className="download">
-                        <MdOutlineFileDownload className="cta-icon" />
-                        <div>Download</div>
-                    </div>
-                    <div className="delete">
-                        <RiDeleteBinLine className="cta-icon" />
-                        <div>Delete</div>
-                    </div>
-                    <div className="tailor">
-                        <ImMagicWand className="cta-icon" />
-                        <div>Tailor to a Job</div>
-                    </div>
+          <div className="timer">20 days left</div>
+          <div className="resume-section">
+            <Image alt="resume" src={template1} />
+            <div className="action-toolbar">
+              <div className="edit">
+                <CiEdit className="cta-icon" />
+                <div>
+                  <Link href={"/select-templates/editor"}>Edit</Link>
                 </div>
+              </div>
+              <div className="download">
+                <MdOutlineFileDownload className="cta-icon" />
+                <div>Download</div>
+              </div>
+              <div className="delete">
+                <RiDeleteBinLine className="cta-icon" />
+                <div>Delete</div>
+              </div>
+              <div className="tailor">
+                <ImMagicWand className="cta-icon" />
+                <div>Tailor to a Job</div>
+              </div>
             </div>
+          </div>
         </div>
         <div className="second-resume">
-            <div className="timer expired">
-                Expired
+          <div className="timer expired">Expired</div>
+          <div className="resume-section">
+            <Image alt="resume" src={template2} />
+            <div className="action-toolbar">
+              <div className="renew">
+                <VscDebugRestart className="cta-icon" />
+                <div>Renew to Edit</div>
+              </div>
             </div>
-            <div className="resume-section">
-                <Image alt="resume" src={template2} />
-                <div className="action-toolbar">
-                    <div className="renew">
-                        <VscDebugRestart className="cta-icon" />
-                        <div>Renew to Edit</div>
-                    </div>
-                </div>
-            </div>
+          </div>
         </div>
       </div>
     </div>

@@ -3,9 +3,15 @@ import React from "react";
 //@ts-ignore
 import DOMPurify from "dompurify";
 import "./template1.css";
+import { ResumeProps } from "../../../types/ResumeProps";
+
+type Template1Props = {
+  resumeData: ResumeProps;
+  id: string;
+};
 
 export const Template1 = (props: any) => {
-  const { resumeData = {}, id } = props;
+  const { resumeData, id } = props;
 
   // Fallback for undefined properties to prevent errors
   const personalInfo = resumeData.personalInfo || {};
@@ -55,7 +61,7 @@ export const Template1 = (props: any) => {
         </div>
         <div className="experience">
           <div className="section-title">WORK EXPERIENCE</div>
-          {experience?.map((exp, index) => (
+          {experience?.map((exp: any, index: any) => (
             <div className="exp-container" key={index}>
               <div className="company-name">{exp.company}</div>
               <div className="role-duration">
@@ -72,7 +78,7 @@ export const Template1 = (props: any) => {
         </div>
         <div className="education">
           <div className="section-title">EDUCATION</div>
-          {education?.map((edu, index) => (
+          {education?.map((edu: any, index: any) => (
             <div className="edu-container" key={index}>
               <div className="college-name">{edu.institution}</div>
               <div className="degree-major">{`${edu.degree} - ${edu.major}`}</div>
@@ -80,9 +86,9 @@ export const Template1 = (props: any) => {
           ))}
         </div>
         <div className="skills">
-          {!!coreSkills?.length && <div className="section-title">SKILLS</div>}
+          {!!coreSkills.length && <div className="section-title">SKILLS</div>}
           <div className="core-skills">
-            {coreSkills?.map((skill, index) => (
+            {coreSkills.map((skill: any, index: any) => (
               <div
                 className={`skill-container ${index === 0 ? "first" : ""}`}
                 key={index}
@@ -92,7 +98,7 @@ export const Template1 = (props: any) => {
             ))}
           </div>
           <div className="tech-skills">
-            {techSkills?.map((skill, index) => (
+            {techSkills.map((skill: any, index: any) => (
               <div
                 className={`skill-container ${index === 0 ? "first" : ""}`}
                 key={index}

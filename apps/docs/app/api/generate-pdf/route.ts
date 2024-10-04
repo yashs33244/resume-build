@@ -6,7 +6,7 @@ export async function POST(req: NextRequest) {
     const { html } = await req.json();
     
     if (!html) {
-      return NextResponse.json({ error: 'No HTML content provided' }, { status: 400 });
+      return NextResponse.json({ error: 'No HTML contpent provided' }, { status: 400 });
     }
 
     // Launch a browser instance
@@ -54,7 +54,7 @@ export async function POST(req: NextRequest) {
         'Content-Disposition': 'attachment; filename=document.pdf',
       },
     });
-  } catch (error) {
+  } catch (error:any) {
     console.error('PDF generation error:', error);
     return NextResponse.json({ error: 'PDF generation failed', message: error.message }, { status: 500 });
   }
