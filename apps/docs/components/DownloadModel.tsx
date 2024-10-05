@@ -7,9 +7,6 @@ import { Template1 } from "./Editor/templates/Template1";
 import { Template2 } from "./Editor/templates/template2";
 import { Template3 } from "./Editor/templates/template3";
 import { ResumeProps } from "../types/ResumeProps";
-import { IoMdDownload } from "react-icons/io";
-import { Modal } from 'react-responsive-modal';
-import "./DownloadModel.scss";
 import { useSaveResume } from "../hooks/useSaveResume";
 
 type DownloadModalProps = {
@@ -171,44 +168,66 @@ const DownloadModal: React.FC<DownloadModalProps> = ({
   if (!isOpen) return null;
 
   return (
-    <Modal classNames={{modal: 'download-modal'}} open={isOpen} onClose={onClose} center>
-        {!showComparison ?  ( <div className="modal-content">
-          <div className="jd-tailor">
-            <div className="left">
-              <div>
-                <div className="heading">Tailor your CV to a specific JD?</div>
+    <div
+      className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+      onClick={handleOverlayClick}
+    >
+      <div className="bg-white rounded-lg p-8 max-w-7xl w-full h-5/6 flex flex-col relative overflow-hidden">
+        <button
+          onClick={onClose}
+          className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
+        >
+          <X className="w-6 h-6" />
+        </button>
+
+        {!showComparison ? (
+          <div className="flex h-full">
+            <div className="flex-1 pr-4 border-r border-gray-300">
+              <h2 className="text-2xl font-semibold text-gray-800 mb-6">
+                Tailor Resume for a specific job
+              </h2>
+              <div className="flex flex-col mb-6">
                 <textarea
-                  id="job-description"
-                  className="form-input"
-                  // type="text"
-                  placeholder="Paste the exact job description here.."
-                  rows="6"
+                  placeholder="Paste the job description here to tailor your resume"
+                  className="flex-grow border rounded-lg px-4 py-2 text-gray-700 bg-gray-100 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-600 mb-2"
                   value={jobDescription}
                   onChange={(e) => setJobDescription(e.target.value)}
+                  rows={10}
                 />
-                <button 
+                <button
+                  className="bg-gray-700 text-white px-4 py-2 rounded-lg hover:bg-gray-600"
                   onClick={handleTailor}
-                  disabled={isTailoring} 
-                  className="modify-cta"
+                  disabled={isTailoring}
                 >
-                  {isTailoring ? "Processing..." : "Customize"}
+                  {isTailoring ? "Tailoring..." : "Tailor Resume"}
+                </button>
+              </div>
+            </div>
+            <div className="flex-1 pl-4">
+              <h3 className="text-xl font-semibold text-gray-800 mb-6">
+                Continue to download
+              </h3>
+              <div className="space-y-4 py-8">
+                <button
+                  className="w-full bg-blue-600 text-white px-4 py-3 rounded-lg hover:bg-blue-700 flex items-center"
+                  onClick={() => handleDownload(resumeData)}
+                  disabled={isGeneratingPDF}
+                >
+                  <Download className="w-5 h-5 mr-3" />
+                  <span className="flex-grow text-left">
+                    {isGeneratingPDF
+                      ? "Generating PDF..."
+                      : "Great for sending personally"}
+                  </span>
+                  <span className="text-sm bg-blue-700 px-2 py-1 rounded">
+                    {isGeneratingPDF ? "Please wait" : "Download"}
+                  </span>
                 </button>
               </div>
             </div>
           </div>
-          <div className="download-container">
-            <div className="right">
-              <div>
-                <div className="heading">Continue to Download</div>
-                <div className="download-button">
-                  <IoMdDownload />
-                  <div>Download Final-CV.pdf</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>) : (
-        <div className="flex flex-col h-full">
+        ) : (
+          <div className="flex flex-col h-full">
             <div className="flex items-center mb-4">
               <button
                 onClick={handleBackToEdit}
@@ -253,7 +272,8 @@ const DownloadModal: React.FC<DownloadModalProps> = ({
             </div>
           </div>
         )}
-      </Modal>
+      </div>
+    </div>
   );
 };
 

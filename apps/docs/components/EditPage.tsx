@@ -28,8 +28,6 @@ import DownloadModel from "./DownloadModel";
 import { Template1 } from "./Editor/templates/Template1";
 import { Template2 } from "./Editor/templates/template2";
 import { Template3 } from "./Editor/templates/template3";
-
-import { Modal } from "react-responsive-modal";
 import "react-responsive-modal/styles.css";
 
 // import { Link } from "lucide-react";
