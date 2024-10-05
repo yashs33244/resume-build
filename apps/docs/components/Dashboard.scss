@@ -1,11 +1,10 @@
 .dashboard-container {
-    background: linear-gradient(180deg, #000000, #24252D);
+    background: linear-gradient(180deg,  #121420,#1B2432);
 
     // padding: 3rem 4rem;
     width: calc(100% - 8rem);
     margin-left: 4rem;
-    margin-top: 10px;
-    height: calc(100vh - 110px);
+    height: calc(100vh - 100px);
     border-radius: 28px;
 
     .top-section {
@@ -38,7 +37,7 @@
 
             div {
                 margin-left: 8px;
-                font-size: 1.2rem;
+                font-size: 1rem;
             }
         }
     }

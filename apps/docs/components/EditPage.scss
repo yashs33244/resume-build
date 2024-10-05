@@ -16,6 +16,93 @@
     }
 }
 
+.download-modal {
+    background-color: rgba(232,232,233) !important;
+    width: 100%;
+    border-radius: 16px;
+    color: black;
+    max-width: 1100px !important;
+
+    .modal-content {
+        display: flex;
+        
+
+        .jd-tailor {
+            width: 50%;
+            border-right: 1px solid gray;
+            display: flex;
+            justify-content: center;
+            .left {
+                width: 80%;
+                
+
+                .heading {
+                    font-size: 1.8rem;
+                    font-weight: 600;
+                    color: rgba(0,0,0,0.8);
+                    text-align: center;
+                }
+
+                textarea {
+                    border: 1px solid rgba(0,0,0,0.3);
+                    margin-top: 2rem;
+                    resize: none;
+                    color: rgba(0,0,0,0.8);
+                }
+
+                .modify-cta {
+                    background-color: #484351;
+                    color: rgba(255,255,255,0.8);
+                    padding: 10px 20px;
+                    width: 50%;
+                    margin-left: 25%;
+                    margin-top: 1.2rem;
+                    font-size: 18px;
+                    font-weight: 600;
+                    border-radius: 12px;
+                    text-align: center;
+                }
+            }            
+        }
+
+        .download-container {
+            width: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            .right {
+                width: 80%;
+                
+                .heading {
+                    font-size: 1.8rem;
+                    font-weight: 600;
+                    color: rgba(0,0,0,0.8);
+                    text-align: center;
+                }
+
+                .download-button {
+                    background-color: #3B5BFF;
+                    color: white;
+                    padding: 10px 20px;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    margin-top: 1.2rem;
+                    font-size: 18px;
+                    font-weight: 600;
+                    border-radius: 12px;
+                    text-align: center;
+
+                    div {
+                        margin-left: 8px;
+                    }
+                }
+            }
+        }
+    }
+}
+
 .editor-container {
     width: 100%;
     height: 100vh;
@@ -48,7 +135,7 @@
             
             .login-cta {
                 padding: 8px 16px;
-                background-color: #1B2432;
+                background-color: #403F4C;
                 border: 1px solid rgba(255,255,255,0.2);
                 border-radius: 8px;
                 display: flex;
@@ -144,7 +231,35 @@
             .section-title {
                 font-size: 1.6rem;
                 font-weight: 700;
+                display: flex;
+                align-items: center;
                 color: rgba(255,255,255,0.9);
+
+                .tips {
+                    display: flex;
+                    cursor: pointer;
+                    height: 2rem;
+                    font-size: 1rem;
+                    justify-content: center;
+                    align-items: center;
+                    margin-left: 16px;
+                    font-weight: 500;
+                    padding: 0 16px;
+                    background-color: #403F4C;
+                    border-radius: 10px;
+                    border: 0.5px solid rgba(255,255,255,0.2);
+                    color: rgba(255,255,255,0.8);
+
+                    svg {
+                        fill: #FAFF81;
+                    }
+        
+                    div {
+                        margin-left: 8px;
+                        font-size: 14px;
+                    }
+        
+                }
                 
             } 
             
@@ -157,17 +272,18 @@
         }
 
         .tips-container {
-            width: 30%;
+            // width: 30%;
             // margin-top: 3.4rem;
             .tips {
                 display: flex;
                 justify-content: center;
                 align-items: center;
                 font-weight: 600;
-                padding: 8px 16px;
+                padding: 4px 16px;
+                background-color: #1B2432;
                 border-radius: 10px;
-                border: 0.5px solid rgba(255,255,255,0.6);
-                color: rgba(255,255,255,0.7);
+                border: 0.5px solid #403F4C;
+                color: rgba(255,255,255,0.8);
     
                 div {
                     margin-left: 8px;
@@ -178,10 +294,11 @@
         }
 
         .material-container {
-            height: calc(100vh - 136px);
+            height: calc(100vh - 118px);
             // height: 100vh;
             width: 94%;
             margin-left: 3%;
+            padding-bottom: 40px;
             overflow-y: auto;
             margin-top: 16px;
         }

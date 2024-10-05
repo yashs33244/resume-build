@@ -19,6 +19,7 @@ import short_logo from "./short_logo.svg";
 import { IoMdDownload } from "react-icons/io";
 import { CiCircleChevLeft } from "react-icons/ci";
 import { PiCaretCircleRightFill, PiCertificateFill } from "react-icons/pi";
+import { MdTipsAndUpdates } from "react-icons/md";
 import { FaLanguage } from "react-icons/fa6";
 import { TbGridDots } from "react-icons/tb";
 import DownloadModel from "./DownloadModel";
@@ -28,11 +29,15 @@ import { Template1 } from "./Editor/templates/Template1";
 import { Template2 } from "./Editor/templates/template2";
 import { Template3 } from "./Editor/templates/template3";
 
+import { Modal } from "react-responsive-modal";
+import "react-responsive-modal/styles.css";
+
 // import { Link } from "lucide-react";
-import { redirect, useRouter } from "next/navigation";
+import { redirect } from "next/navigation";
 import Link from "next/link";
 import { Download } from "lucide-react";
 import ChanegTemplate from "./changeTemplate/ChangeTemplate";
+import { useRouter } from "next/navigation";
 import { db } from "../app/db";
 import { useSaveResume } from "../hooks/useSaveResume";
 import useAiSuggestion from "../hooks/useAiSuggestions";
@@ -120,7 +125,7 @@ export default function EditPage() {
   const handleRedirect = async () => {
     try {
       // saveResume(resumeData, template || "");
-      router.push("/dashboard");
+      redirect("/dashboard");
     } catch (error: any) {
       console.log("Error", error);
     }
@@ -178,6 +183,8 @@ export default function EditPage() {
   });
 
   const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
+  const [tipsOpen, setTipsOpen] = useState(false);
+  const [showDownloadModal, setDownloadModal] = useState(false);
 
   const handleDownload = async () => {
     setIsGeneratingPDF(true);
@@ -255,7 +262,55 @@ export default function EditPage() {
 
   return (
     <div className="flex flex-col w-full min-h-screen bg-background text-foreground dark:bg-[#1a1b1e] dark:text-white">
-      <Tips activeSection={activeSection} />
+      <Tips
+        activeSection={activeSection}
+        open={tipsOpen}
+        setTipsOpen={(val) => setTipsOpen(val)}
+      />
+      {/* <Modal classNames={{modal: 'download-modal'}} open={isModelOpen} onClose={closeModel} center>
+        <div className="modal-content">
+          <div className="jd-tailor">
+            <div className="left">
+              <div>
+                <div className="heading">Tailor your CV to a specific JD?</div>
+                <textarea
+                  id="job-description"
+                  className="form-input"
+                  // type="text"
+                  placeholder="Paste the exact job description here.."
+                  rows="6"
+                  value={resumeData.personalInfo?.bio || ""}
+                  onChange={(e) =>
+                    console.log()
+                  }
+                />
+                <div className="modify-cta">
+                  Customize
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="download-container">
+            <div className="right">
+              <div>
+                <div className="heading">Continue to Download</div>
+                <div className="download-button">
+                  <IoMdDownload />
+                  <div>Download Final-CV.pdf</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </Modal> */}
+      {/* <div className="help-container">
+            <FaLightbulb style={{width: '26px', height: '26px'}} />
+        </div> */}
+      {/* <div className="branding-container">
+        <div className="logo">
+            <Image alt="logo" src={logo} width={100} height={100} />
+        </div>
+      </div> */}
       <div className="editor-container">
         <div className="navigation">
           <div className="login-container">
@@ -333,7 +388,17 @@ export default function EditPage() {
           <div className="section-header">
             <div className="section-title">
               {getSectionTitle(activeSection)}
+              <div className="tips" onClick={() => setTipsOpen(!tipsOpen)}>
+                <MdTipsAndUpdates />
+                <div>Tips</div>
+              </div>
             </div>
+            {/* <div className="tips-container">
+              <div className="tips">
+                <MdTipsAndUpdates />
+                <div>Tips</div>
+              </div>              
+            </div> */}
             <div className="move-container">
               <CiCircleChevLeft
                 style={{

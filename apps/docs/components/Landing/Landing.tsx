@@ -33,6 +33,13 @@ import { MdRocketLaunch } from "react-icons/md";
 import amazon from "./amazon.png";
 import paytm from "./paytm.png";
 import Typewriter from "typewriter-effect";
+import stars from "./stars.svg";
+import apoorv from "./apoorv.jpeg";
+import apoorva from "./apoorva.jpeg";
+import yash from "./yash.jpeg";
+import vega from "./vega.jpeg";
+import parth from "./parth.jpeg";
+import medha from "./medha.jpeg";
 import AliceCarousel from "react-alice-carousel";
 import Link from "next/link";
 import "react-alice-carousel/lib/alice-carousel.css";
@@ -412,6 +419,120 @@ export default function LandingPage() {
                 <img src={ycom.src} alt="ycom" width="60%" height="auto" />
               </div>
               <div className="startup-text">+50 Startups</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className="testimonial-container">
+        <div className="title">In The Buzz</div>
+        <div className="subtitle">Our Users &#10084; us</div>
+        <div className="testimonials">
+          <div className="testimony first">
+            <div className="header">
+              <Image alt="logo" src={apoorv} />
+              <div className="primary-info">
+                <div className="name">Apoorv J.</div>
+                <div className="profile">Product</div>
+              </div>
+            </div>
+            <div className="star-rating">
+              <Image src={stars} alt="stars" />
+            </div>
+            <div className="content">
+            "The only resume building platform which also gives you job interviews. That’s what mattered for me the most."
+            </div>
+            <div className="timestamp">
+              Jan 3, 2024
+            </div>
+          </div>
+          <div className="testimony">
+            <div className="header">
+              <Image alt="logo" src={vega} />
+              <div className="primary-info">
+                <div className="name">Vega V.</div>
+                <div className="profile">Marketing</div>
+              </div>
+            </div>
+            <div className="star-rating">
+              <Image src={stars} alt="stars" />
+            </div>
+            <div className="content">
+              "There custom AI prompts and tips were truly a live saver. I could finally write my experiences professionally."
+            </div>
+            <div className="timestamp">
+              Jan 19, 2024
+            </div>
+          </div>
+          <div className="testimony">
+            <div className="header">
+              <Image alt="logo" src={yash} />
+              <div className="primary-info">
+                <div className="name">Yash M.</div>
+                <div className="profile">Engineer</div>
+              </div>
+            </div>
+            <div className="star-rating">
+              <Image src={stars} alt="stars" />
+            </div>
+            <div className="content">
+              "Super satisfied. You don’t need fancy templates. My ATS friendly resume gets screened and attention easily."
+            </div>
+            <div className="timestamp">
+              Mar 12, 2024
+            </div>
+          </div>
+          <div className="testimony first second">
+            <div className="header">
+              <Image alt="logo" src={parth} />
+              <div className="primary-info">
+                <div className="name">Parth A.</div>
+                <div className="profile">Engineer</div>
+              </div>
+            </div>
+            <div className="star-rating">
+              <Image src={stars} alt="stars" />
+            </div>
+            <div className="content">
+              "This is game changer. I could build my impressive resume from scratch in just a few minutes. Totally worth it."
+            </div>
+            <div className="timestamp">
+              May 21, 2024
+            </div>
+          </div>
+          <div className="testimony second">
+            <div className="header">
+              <Image alt="logo" src={apoorva} />
+              <div className="primary-info">
+                <div className="name">Apoorva G.</div>
+                <div className="profile">Consultant</div>
+              </div>
+            </div>
+            <div className="star-rating">
+              <Image src={stars} alt="stars" />
+            </div>
+            <div className="content">
+              "Tailoring your resume for every job profile in this market is like mandatory. I’m glad I landed on FinalCV."
+            </div>
+            <div className="timestamp">
+              May 28, 2024
+            </div>
+          </div>
+          <div className="testimony second">
+            <div className="header">
+              <Image alt="logo" src={medha} />
+              <div className="primary-info">
+                <div className="name">Medha A.</div>
+                <div className="profile">Designer</div>
+              </div>
+            </div>
+            <div className="star-rating">
+              <Image src={stars} alt="stars" />
+            </div>
+            <div className="content">
+              "What an honest product. It removes all noise and irrelavant stuff to focus only on building your resume that works."
+            </div>
+            <div className="timestamp">
+              Jul 7, 2024
             </div>
           </div>
         </div>
