@@ -1,0 +1,143 @@
+.template-container {
+  background-color: #fff;
+  height: 95%;
+  aspect-ratio: 0.71;
+  min-width: 595px;
+  max-width: 595px;
+  min-height: 842px;
+  max-height: 842px;
+}
+.template-container .large {
+  padding: 2rem 3.5rem;
+}
+.template-container .large .tag {
+  width: fit-content;
+  background: #097969;
+  padding: 5px 8px;
+  position: absolute;
+  left: 20px;
+  top: 38px;
+  z-index: 0;
+  display: flex;
+  flex-direction: column;
+}
+.template-container .large .tag_value {
+  color: white;
+  font-weight: 700;
+  font-size: 10px;
+  line-height: 14px;
+}
+.template-container .large .primary-info .name {
+  color: #323336;
+  font-weight: 700;
+}
+.template-container .large .primary-info .position {
+  color: #323336;
+  font-size: 0.56rem;
+  margin-top: 0.3rem;
+}
+.template-container .large .primary-info .information {
+  color: #707678;
+  font-size: 0.5rem;
+  margin-top: 0.15rem;
+}
+
+.template-container .large .primary-info .information a , .template-container .large .primary-info .information a:hover, .template-container .large .primary-info .information a:hover{
+  color: inherit;
+  text-decoration: none;
+}
+.template-container .large .primary-info .summary {
+  color: #707678;
+  font-size: 0.5rem;
+  margin-top: 0.15rem;
+}
+.template-container .large .experience {
+  margin-top: 1.12rem;
+}
+.template-container .large .experience .section-title {
+  color: #a6aaad;
+  font-size: 0.5rem;
+  font-weight: 600;
+}
+.template-container .large .experience .exp-container {
+  margin-top: 0.56rem;
+}
+.template-container .large .experience .exp-container .company-name {
+  color: #323336;
+  font-size: 0.56rem;
+  font-weight: 500;
+}
+.template-container .large .experience .exp-container .role-duration {
+  color: #707678;
+  font-size: 0.52rem;
+}
+.template-container .large .experience .exp-container .responsibilities {
+  color: #323336;
+  font-size: 0.5rem;
+}
+.template-container .large .experience .exp-container .responsibilities ul {
+  list-style: disc;
+  padding: 0 1rem;
+}
+.template-container .large .education {
+  margin-top: 1.12rem;
+}
+.template-container .large .education .section-title {
+  color: #a6aaad;
+  font-size: 0.5rem;
+  font-weight: 600;
+}
+.template-container .large .education .edu-container {
+  margin-top: 0.56rem;
+}
+.template-container .large .education .edu-container .college-name {
+  color: #323336;
+  font-size: 0.56rem;
+  font-weight: 500;
+}
+.template-container .large .education .edu-container .degree-major {
+  color: #707678;
+  font-size: 0.52rem;
+}
+.template-container .large .skills {
+  margin-top: 1.12rem;
+}
+.template-container .large .skills .section-title {
+  color: #a6aaad;
+  font-size: 0.5rem;
+  font-weight: 600;
+}
+.template-container .large .skills .core-skills {
+  display: flex;
+  margin-top: 0.56rem;
+}
+.template-container .large .skills .core-skills .skill-container {
+  padding: 0.2rem 0.4rem;
+  background-color: #f1f5f7;
+  border-radius: 2px;
+  color: #323336;
+  margin-left: 4px;
+}
+.template-container .large .skills .core-skills .skill-container .skill {
+  font-size: 0.5rem;
+}
+.template-container .large .skills .core-skills .first {
+  margin-left: 0;
+}
+.template-container .large .skills .tech-skills {
+  display: flex;
+  margin-top: 0.2rem;
+}
+.template-container .large .skills .tech-skills .skill-container {
+  padding: 0.2rem 0.4rem;
+  background-color: #f1f5f7;
+  border-radius: 2px;
+  color: #323336;
+  margin-left: 4px;
+}
+.template-container .large .skills .tech-skills .skill-container .skill {
+  font-size: 0.5rem;
+}
+.template-container .large .skills .tech-skills .first {
+  margin-left: 0;
+}

@@ -1,0 +1,700 @@
+.App {
+    background-color: #1B2432;
+    width: 100%;
+    box-sizing: border-box;
+    .top-bar {
+        padding: 1.4rem 6rem;
+        position: sticky;
+        background-color: #1B2432;
+        z-index: 1000;
+        top: 0;
+        display: flex;
+        // margin-top: 1.6rem;
+        align-items: center;
+
+        .logo-container {
+            width: 70%;
+            img {
+                opacity: 0.75;
+            }
+        }
+
+        .navbar-container {
+            width: 30%;
+            display: flex;
+            font-size: 15px;
+            color: white;
+            font-weight: 700;
+            justify-content: space-between;
+            align-items: center;
+
+            div {
+                cursor: pointer;
+            }
+
+            button {
+                background-color: #3B5BFF;
+                color: white;
+                padding: 14px 16px;
+                cursor: pointer;
+                font-size: 15px;
+                border-radius: 8px;
+                border: none;
+                font-weight: 700;
+                font-family: Inter,-apple-system,BlinkMacSystemFont,'Segoe UI','Roboto','Oxygen','Ubuntu','Cantarell','Fira Sans','Droid Sans','Helvetica Neue',sans-serif;
+            }
+        }
+    }
+
+    .legend-container {
+        // margin-top: 5rem;
+        padding: 0 6rem;
+        display: flex;
+        box-sizing: border-box;
+        justify-content: space-between;
+
+        .left-container {
+            width: 65%;
+            margin-top: 4rem;
+            .title {
+                width: 90%;
+                font-size: 4.2rem;
+                color: white;
+                font-weight: 600;
+            }
+
+            .title-two {
+                width: 90%;
+                font-size: 4.2rem;
+                // margin-top: 12px;
+                color: white;
+                font-weight: 600;
+            }
+
+            .typewriter {
+                background: linear-gradient(88.28deg, #0094FF 10%, #FF33DE 40%, #FF60E6 60%);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                font-weight: 600;
+                font-size: 2.8rem;
+                margin-top: 24px;
+            }
+
+            .form-container {
+                width: 70%;
+                background-color: rgb(10, 10, 1, 0.4);
+                padding: 28px 20px;
+                box-sizing: border-box;
+                border-radius: 12px;
+                margin-top: 2.5rem;
+
+                .name {
+                    display: flex;
+                    justify-content: space-around;
+
+                    input {
+                        width: 40%;
+                        background: transparent;
+                        border: 1px solid rgb(255, 255, 255, 0.6);
+                        padding: 12px;
+                        border-radius: 8px;
+                        color: #fafafa;
+                    }
+                }
+
+                .contact {
+                    margin-top: 28px;
+                    display: flex;
+                    justify-content: space-around;
+
+                    input {
+                        width: 40%;
+                        background: transparent;
+                        border: 1px solid rgb(255, 255, 255, 0.6);
+                        padding: 12px;
+                        border-radius: 8px;
+                        color: #fafafa;
+                    }
+                }
+            }
+
+            .primary-cta {
+                background: linear-gradient(to right, #3B5BFF, #FF33DE);
+                padding: 16px;
+                border: none;
+                color: white;
+                font-weight: 600;
+                font-size: 1.4rem;
+                border-radius: 8px;
+                margin-top: 50px;
+                display: flex;
+                justify-content: center;
+                cursor: pointer;
+                width: 44%;
+                align-items: center;
+
+                div {
+                    margin-left: 16px;
+                }
+            }
+
+            .secondary-cta {
+                // background-color: #2A3FFB;
+                padding: 16px;
+                // border: 0.5px solid rgb(255, 255, 255, 0.8);
+                border: 1px solid rgba(255,255,255,0.6);
+                color: rgba(255,255,255,0.8);
+                font-weight: 600;
+                font-size: 1.2rem;
+                border-radius: 8px;
+                margin-top: 32px;
+                display: flex;
+                cursor: pointer;
+                justify-content: center;
+                width: 44%;
+                align-items: center;
+
+                div {
+                    margin-left: 16px;
+                }
+            }
+        }
+
+        .right-container {
+            margin-top: 1.2rem;
+            // opacity: 0.9;
+            width: 35%;
+            display: flex;
+
+            img {
+                border-radius: 10px;
+                width: 100%;
+                height: auto;
+                aspect-ratio: 1/1.4;        
+            }
+        }
+    }
+
+    .made-by-container {
+        // background-color: rgb(10, 10, 1, 0.4);
+        background-color: #121420;
+
+        padding: 2.4rem;
+        margin-top: 10rem;
+        .made-by-title {
+            background: linear-gradient(to right, #0094FF, #FF33DE);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 500;
+            font-size: 1.4rem;
+            text-align: center;
+
+            span {
+                -webkit-text-fill-color: crimson;
+            }
+        }
+
+        .company-container {
+            margin-top: 1.2rem;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+    }
+
+    .process-container {
+        padding: 0 6rem;
+        margin-top: 10rem;
+        .title {
+            background: linear-gradient(to right, #0094FF, #FF33DE);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 500;
+            font-size: 1.4rem;
+            text-align: center;            
+        }
+
+        .subtitle {
+            font-size: 2.4rem;
+            color: white;
+            font-weight: 700;
+            text-align: center;
+            margin-top: 1.3rem;
+        }
+
+        .steps-container {
+            margin-top: 3rem;
+            display: flex;
+            justify-content: space-around;
+
+            .step {
+                display: flex;
+                align-items: center;
+
+                .step-count {
+                    font-size: 1.4rem;
+                    width: 50px;
+                    height: 50px;
+                    display: flex;
+                    justify-content: center;
+                    margin-right: 16px;
+                    align-items: center;
+                    color: #41D1FF;
+                    border: 1px solid #41D1FF;
+                    border-radius: 50%;
+                }
+
+                .step-title {
+                    color: white;
+                    font-size: 1.4rem;
+                    font-weight: 600;
+                }
+
+                .step-subtitle {
+                    color: rgba(255,255,255,0.6);
+                    font-size: 1rem;
+                    margin-top: 4px;
+                }
+            }
+        }
+
+        .action-cta {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            margin-top: 4rem;
+            button {
+                display: flex;
+                justify-content: center;
+                background-color: #3B5BFF;
+                color: white;
+                padding: 14px 30px;
+                cursor: pointer;
+                font-size: 16px;
+                border-radius: 8px;
+                border: none;
+                font-weight: 700;
+                font-family: Inter,-apple-system,BlinkMacSystemFont,'Segoe UI','Roboto','Oxygen','Ubuntu','Cantarell','Fira Sans','Droid Sans','Helvetica Neue',sans-serif;
+            }
+            
+        }
+    }
+
+    .templates-container {
+        margin-top: 10rem;
+        .template-title {
+            background: linear-gradient(to right, #0094FF, #FF33DE);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 500;
+            font-size: 1.4rem;
+            text-align: center;            
+        }
+
+        .template-subtitle {
+            font-size: 2.4rem;
+            color: white;
+            font-weight: 700;
+            text-align: center;
+            margin-top: 1.3rem;
+        }
+
+        .template-text-container {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            .template-text {
+                width: 40%;
+                text-align: center;
+                color: rgba(255,255,255,0.6);
+                font-size: 1.2rem;
+                margin-top: 8px;
+            }
+        }
+
+        .templates {
+            width: 96%;
+            height: 800px;
+            margin-left: 2%;
+            background-color: #143F7B;
+            border-radius: 24px;
+            margin-top: 3rem;
+            overflow: hidden;
+            display: flex;
+
+
+
+            .nav-container {
+                width: 30%;
+                padding: 7rem 4rem;
+
+                .nav-item {
+                    color: rgba(255,255,255,0.6);
+                    line-height: 2.2;
+                    font-size: 2.5rem;
+                    font-weight: 700;
+                    cursor: pointer;
+                }
+
+                .selected {
+                    color: white;
+                }
+
+                .template-cta {
+                    color: white;
+                    border: 1px solid white;
+                    border-radius: 8px;
+                    font-size: 16px;
+                    width: 70%;
+                    text-align: center;
+                    padding: 14px 24px;
+                    margin-top: 30px;
+                    font-weight: 600;
+                    cursor: pointer;
+                }
+            }
+
+            .image-container {
+                width: 70%;
+
+                .template-tagline {
+                    font-size: 1.5rem;
+                    color: rgba(255,255,255,0.9);
+                    font-weight: 500;
+
+                    span {
+                        font-weight: 700;
+                        font-size: 1.7rem;
+                    }
+                }
+
+                .template-image {
+                    overflow: hidden;
+
+                    img {
+                        width: 80%;
+                        height: auto;
+                        margin-top: 5rem;
+                        border-radius: 4px;
+                        box-shadow: 40px 80px 150px rgba(10,10,10,0.3);
+                    }
+                }
+            }
+        }
+
+        .back1 {
+            background-color: rgb(164,101,229);
+        }
+
+        .back2 {
+            background-color: rgb(115, 19, 231);
+        }
+
+        .back3 {
+            background-color: rgb(19, 63, 123);
+        }
+
+        .back4 {
+            background-color: rgb(59, 77, 239);
+        }
+
+        .back5 {
+            background-color: cornflowerblue;
+        }
+    }
+
+    .features-container {
+        margin-top: 10rem;
+        padding: 0 6rem;
+        .title {
+            background: linear-gradient(to right, #0094FF, #FF33DE);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 500;
+            font-size: 1.4rem;
+            text-align: center;
+        }
+
+        .subtitle {
+            font-size: 2.4rem;
+            color: white;
+            font-weight: 700;
+            text-align: center;
+            margin-top: 1.3rem;
+        }
+
+        .features1 {
+            display: flex;
+            justify-content: space-evenly;
+            margin-top: 3rem;
+
+            .feature {
+                width: 400px;
+                height: 180px;
+                // padding: 20px 16px;
+                border: 1px solid rgba(255,255,255,0.2);
+                border-radius: 16px;
+                
+                .infographic {
+                    height: 55px;
+                    width: 14%;
+                    background-color: rgb(10, 10, 1, 0.6);
+                    padding: 12px 16px 0 16px;
+                    border-top-left-radius: 16px;
+                    border-bottom-right-radius: 16px;
+                }
+
+                .feature-title {
+                    padding: 0px 16px;
+                    color: white;
+                    margin-top: 24px;
+                    font-weight: 600;
+                    font-size: 1.2rem;
+                }
+
+                .feature-desc {
+                    color: rgba(255,255,255,0.6);
+                    margin-top: 8px;
+                    font-size: 0.9rem;
+                    padding: 0 16px 16px 16px;
+                }
+            }
+        }
+    }
+
+    .referral-container {
+        margin-top: 10rem;
+        padding-bottom: 10rem;
+        .title {
+            background: linear-gradient(to right, #0094FF, #FF33DE);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 500;
+            font-size: 1.4rem;
+            text-align: center;
+        }
+
+        .subtitle {
+            font-size: 2.4rem;
+            color: white;
+            font-weight: 700;
+            text-align: center;
+            margin-top: 1.3rem;
+        }
+
+        .referral {
+            margin-top: 3rem;
+            width: 96%;
+            margin-left: 2%;
+            height: 460px;
+            background: linear-gradient(90deg,#263BFF 11.12%,#AC42FF 92.73%);
+            border-radius: 24px;
+            display: flex;
+
+            .left {
+                width: 40%;
+                padding: 2rem 4rem;
+
+                .left-title {
+                    font-size: 2rem;
+                    color: white;
+                    font-weight: 700;
+                    text-align: left;
+                    margin-top: 3.2rem;
+                    display: flex;
+                    align-items: center;
+                }
+
+                .left-subtitle {
+                    color: rgba(255,255,255,0.7);
+                    font-size: 1.2rem;
+                    font-weight: 600;
+                    margin-top: 1.5rem;
+                    margin-left: 4.5rem;
+                }
+
+                .left-cta {
+                    color: white;
+                    border: 1px solid rgba(255,255,255,0.7);
+                    width: 50%;
+                    padding: 12px 28px;
+                    text-align: center;
+                    font-weight: 500;
+                    font-size: 1.3rem;
+                    border-radius: 12px;
+                    margin-top: 3rem;
+                    margin-left: 4.5rem;
+                }
+            }
+
+            .right {
+                width: 60%;
+                padding: 2rem 0rem;
+
+                .fang {
+                    width: 70%;
+                    height: 90px;
+                    background-color: rgba(255,255,255,0.6);
+                    margin-top: 2rem;
+                    border-radius: 12px;
+                    display: flex;
+                    justify-content: space-evenly;
+                    align-items: center;
+
+                    .logo-container {
+                        width: 70px;
+                        height: 70px;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        background-color: white;
+                        border-radius: 8px;
+                    }
+
+                    .fang-text {
+                        font-size: 1.5rem;
+                        font-weight: 600;
+                        color: rgba(10,10,10,0.6);  
+                    }
+                }
+
+                .unicorns {
+                    width: 90%;
+                    height: 90px;
+                    background-color: rgba(255,255,255,0.6);
+                    margin-top: 2rem;
+                    border-radius: 12px;
+                    display: flex;
+                    justify-content: space-evenly;
+                    align-items: center;
+
+                    .logo-container {
+                        width: 70px;
+                        height: 70px;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        background-color: white;
+                        border-radius: 8px;
+                    }
+
+                    .unicorns-text {
+                        font-size: 1.5rem;
+                        font-weight: 600;
+                        color: rgba(10,10,10,0.6);
+                    }
+                }
+
+                .startups {
+                    width: 70%;
+                    height: 90px;
+                    background-color: rgba(255,255,255,0.6);
+                    margin-top: 2rem;
+                    border-radius: 12px;
+                    display: flex;
+                    justify-content: space-evenly;
+                    align-items: center;
+
+                    .logo-container {
+                        width: 60%;
+                        height: 70px;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        background-color: white;
+                        border-radius: 8px;
+                    }
+
+                    .startup-text {
+                        font-size: 1.5rem;
+                        font-weight: 600;
+                        color: rgba(10,10,10,0.6);     
+                    }
+                }
+            }
+        }
+    }
+
+    .testimonial-container {
+        .title {
+            background: linear-gradient(to right, #0094FF, #FF33DE);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 500;
+            font-size: 1.4rem;
+            text-align: center;
+        }
+
+        .subtitle {
+            font-size: 2.4rem;
+            color: white;
+            font-weight: 700;
+            text-align: center;
+            margin-top: 1.3rem;
+        }
+
+        .testimonials {
+            // padding: 0 6rem;
+            width: 80%;
+            margin-left: 10%;
+            margin-top: 3rem;
+            padding-bottom: 6rem;
+
+            .testimony {
+                width: 30%;
+                background-color: #121420;
+                display: inline-block;
+                margin-left: 5%;
+                border: 0.5px solid #41D1FF;
+                border-radius: 16px;
+                padding: 28px 24px;
+                // height: 300px;
+
+                .header {
+                    display: flex;
+                    align-items: center;
+                    
+                    img {
+                        width: 60px;
+                        height: 60px;
+                        border-radius: 16px;
+                        border: 1px solid gray;
+                    }
+
+                    .primary-info {
+                        margin-left: 12px;
+
+                        .profile {
+                            color: rgba(255,255,255,0.6);
+                        }
+                    }
+                }
+
+                .star-rating {
+                    margin-top: 16px;
+                    img {
+                        width: 80px;
+                    }
+                }
+
+                .content {
+                    margin-top: 16px;
+                }
+
+                .timestamp {
+                    margin-top: 16px;
+                    font-size: 14px;
+                    color: rgba(255,255,255,0.6);
+                }
+            }
+
+            .first {
+                margin-left: 0;
+            }
+
+            .second {
+                margin-top: 2rem;
+            }
+        }
+    }
+}

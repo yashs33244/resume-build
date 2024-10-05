@@ -1,77 +1,58 @@
-import html2canvas from 'html2canvas';
-import jsPDF from 'jspdf';
-import { ResumeProps } from '../types/ResumeProps';
+import { useRecoilState } from "recoil";
+import { isGeneratingPDFAtom } from "../store/pdfgenerating";
+import { resumeTimeAtom } from "../store/expiry";
 
-export const useResumeDownload = (resumeData: ResumeProps) => {
-  const handleDownload = async () => {
-    const element = document.querySelector("#resume");
-    if (!element) {
-      console.error("Resume element not found");
-      return;
-    }
+const useResumeDownload = () => {
+  const [isGeneratingPDF, setIsGeneratingPDF] = useRecoilState(isGeneratingPDFAtom);
+  const [resumeTimes, setResumeTimes] = useRecoilState(resumeTimeAtom);
 
+  const updateResumeTime = (id) => {
+    const expirationDate = new Date();
+    expirationDate.setDate(expirationDate.getDate() + 30);
+    const timeLeft = Math.floor((expirationDate - new Date()) / (1000 * 60 * 60 * 24));
+    setResumeTimes((prev) => ({ ...prev, [id]: timeLeft }));
+  };
+
+  const handleDownload = async (id) => {
+    setIsGeneratingPDF(true);
     try {
-      console.log("Starting PDF generation");
-      const canvas = await html2canvas(element as HTMLElement, {
-        scale: 4,
-        logging: false,
-        useCORS: true,
-        windowWidth: element.scrollWidth,
-        windowHeight: element.scrollHeight,
-      });
+      const element = document.getElementById("wrapper");
+      if (!element) throw new Error("Resume wrapper not found");
+      element.style.transform = "scale(1)";
 
-      const imgData = canvas.toDataURL("image/png");
-      const pdf = new jsPDF({
-        orientation: "portrait",
-        unit: "pt",
-        format: "a4",
-      });
+      // Add the CSS link directly in the HTML content
+      const cssLink = `<link rel="stylesheet" href="http://localhost:3000/_next/static/css/app/(pages)/select-templates/editor/page.css">`;
+      const htmlContent = cssLink + element.outerHTML;
 
-      const pageWidth = pdf.internal.pageSize.getWidth();
-      const pageHeight = pdf.internal.pageSize.getHeight();
-
-      const widthRatio = pageWidth / canvas.width;
-      const heightRatio = pageHeight / canvas.height;
-      const ratio = widthRatio > heightRatio ? heightRatio : widthRatio;
-
-      const canvasWidth = canvas.width * ratio;
-      const canvasHeight = canvas.height * ratio;
-
-      const marginX = (pageWidth - canvasWidth) / 2;
-      const marginY = (pageHeight - canvasHeight) / 2;
-
-      pdf.addImage(
-        imgData,
-        "PNG",
-        marginX,
-        marginY,
-        canvasWidth,
-        canvasHeight,
-        undefined,
-        "FAST"
-      );
-
-      pdf.save("resume.pdf");
-
-      // Save resume data to the database
-      const response = await fetch("/api/saveResume", {
+      const response = await fetch("/api/generate-pdf", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          resumeData: resumeData,
-        }),
+        body: JSON.stringify({ html: htmlContent }),
       });
 
-      if (!response.ok) {
-        throw new Error("Failed to save resume");
-      }
+      if (!response.ok) throw new Error("PDF generation failed");
 
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.style.display = "none";
+      a.href = url;
+      a.download = "resume.pdf";
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+
+      updateResumeTime(id);
     } catch (error) {
-      console.error("Error in handleDownload:", error);
+      console.error("Error generating PDF:", error);
+    } finally {
+      setIsGeneratingPDF(false);
     }
   };
 
-  return handleDownload;
+  return { handleDownload, isGeneratingPDF };
 };
+
+export default useResumeDownload;

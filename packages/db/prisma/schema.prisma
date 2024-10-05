@@ -8,10 +8,12 @@ datasource db {
 }
 
 enum ResumeState {
-  NOT_DONE_YET
+  NOT_STARTED
+  EDITING
+  COMPLETED
   DOWNLOADING
-  SUCCESS
-  FAILED
+  DOWNLOAD_SUCCESS
+  DOWNLOAD_FAILED
 }
 
 model User {
@@ -43,9 +45,16 @@ model Resume {
   education    Education[]
   experience   Experience[]
   skills       Skill[]
-  achievements Achievement?
+  coreSkills   CoreSkill[]
+  techSkills   TechSkill[]
+  languages    Language[]
+  achievement  Achievement?
   projects     Project[]
-  state        ResumeState   @default(NOT_DONE_YET)
+  certificates Certificate[]
+  state        ResumeState   @default(NOT_STARTED)
+  templateId   String
+  updatedAt    DateTime?     @updatedAt
+  createdAt    DateTime?
 }
 
 model PersonalInfo {
@@ -58,15 +67,18 @@ model PersonalInfo {
   email    String?
   phone    String?
   bio      String?
+  linkedin String?
   location String?
 }
 
 model Education {
-  id          String @id @default(cuid())
+  id          String  @id @default(cuid())
   resumeId    String
-  resume      Resume @relation(fields: [resumeId], references: [id], onDelete: Cascade)
+  resume      Resume  @relation(fields: [resumeId], references: [id], onDelete: Cascade)
   institution String
-  years       String
+  major       String?
+  start       String
+  end         String
   degree      String
 }
 
@@ -76,8 +88,38 @@ model Experience {
   resume           Resume   @relation(fields: [resumeId], references: [id], onDelete: Cascade)
   company          String
   role             String
-  duration         String
+  start            String
+  end              String
   responsibilities String[]
+  current          Boolean? @default(false)
+}
+
+model Skill {
+  id       String @id @default(cuid())
+  resumeId String
+  resume   Resume @relation(fields: [resumeId], references: [id], onDelete: Cascade)
+  name     String
+}
+
+model CoreSkill {
+  id       String @id @default(cuid())
+  resumeId String
+  resume   Resume @relation(fields: [resumeId], references: [id], onDelete: Cascade)
+  name     String
+}
+
+model TechSkill {
+  id       String @id @default(cuid())
+  resumeId String
+  resume   Resume @relation(fields: [resumeId], references: [id], onDelete: Cascade)
+  name     String
+}
+
+model Language {
+  id       String @id @default(cuid())
+  resumeId String
+  resume   Resume @relation(fields: [resumeId], references: [id], onDelete: Cascade)
+  name     String
 }
 
 model Achievement {
@@ -89,17 +131,21 @@ model Achievement {
 }
 
 model Project {
-  id          String   @id @default(cuid())
-  resumeId    String
-  resume      Resume   @relation(fields: [resumeId], references: [id], onDelete: Cascade)
-  name        String
-  duration    String
-  description String[]
+  id               String   @id @default(cuid())
+  resumeId         String
+  resume           Resume   @relation(fields: [resumeId], references: [id], onDelete: Cascade)
+  name             String
+  link             String
+  start            String
+  end              String
+  responsibilities String[]
 }
 
-model Skill {
+model Certificate {
   id       String @id @default(cuid())
   resumeId String
   resume   Resume @relation(fields: [resumeId], references: [id], onDelete: Cascade)
   name     String
+  issuer   String
+  issuedOn String
 }

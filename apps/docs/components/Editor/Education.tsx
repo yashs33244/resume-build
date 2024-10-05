@@ -1,10 +1,12 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { Label } from "@repo/ui/components/ui/label";
 import { Input } from "@repo/ui/components/ui/input";
 import { Button } from "@repo/ui/components/ui/button";
 import { ResumeProps } from "../../types/ResumeProps";
+import { FaTrashAlt } from "react-icons/fa";
+import "./styles/education.scss";
 import {
   Collapsible,
   CollapsibleTrigger,
@@ -20,7 +22,11 @@ interface EducationProps {
     index?: number,
   ) => void;
   handleAddField: (section: keyof ResumeProps) => void;
-  handleDeleteField: (section: keyof ResumeProps, index?: number) => void;
+  handleDeleteField: (
+    section: keyof ResumeProps,
+    field: string,
+    index?: number,
+  ) => void;
 }
 
 export const Education: React.FC<EducationProps> = ({
@@ -30,103 +36,176 @@ export const Education: React.FC<EducationProps> = ({
   handleDeleteField,
 }) => {
   return (
-    <div className="mt-8">
-      <h2 className="text-3xl font-bold tracking-tighter sm:text-3xl md:text-3xl mb-6">
-        Education
-      </h2>
-      <div className="space-y-4">
-        {resumeData.education?.map((edu, index) => (
-          <Collapsible key={index}>
-            <CollapsibleTrigger className="flex w-full items-center justify-between rounded-md bg-muted px-4 py-3 text-left text-lg font-medium transition-colors hover:bg-muted-foreground/10 focus:outline-none focus-visible:ring focus-visible:ring-primary focus-visible:ring-opacity-75 [&[data-state=open]>svg]:rotate-180">
-              <span>{edu.institution || `Education ${index + 1}`}</span>
-              <ChevronDownIcon className="h-5 w-5 transition-transform" />
+    <div className="education-container">
+      <div className="education-list">
+        {resumeData.education?.map((edu, index): any => (
+          <Collapsible className={index === 0 ? 'collapse-comp first' : 'collapse-comp'} key={index}>
+            <CollapsibleTrigger className="collapse-trigger">
+              <div className="edu-note">
+                <ChevronDownIcon className="h-5 w-5 transition-transform" />
+                <div className="college-details">
+                  <div className="title">
+                    {edu.institution || `Enter Education`}
+                  </div>
+                  <div className="subtitle">
+                    {edu.degree && edu.major
+                      ? `${edu.degree} | ${edu.major}`
+                      : null}
+                  </div>
+                </div>
+              </div>
+              <div
+                className="delete-cta"
+                onClick={() => handleDeleteField("education", "", index)}
+              >
+                <FaTrashAlt />
+              </div>
+              {/* <ChevronDownIcon className="h-5 w-5 transition-transform" /> */}
             </CollapsibleTrigger>
-            <CollapsibleContent className="px-4 pt-4 pb-6">
-              <div className="space-y-4">
-                <div>
-                  <Label
-                    htmlFor={`institution-${index}`}
-                    className="block mb-2 font-medium text-gray-700"
-                  >
-                    Institution
-                  </Label>
-                  <Input
-                    id={`institution-${index}`}
-                    value={edu.institution}
-                    onChange={(e) =>
-                      handleInputChange(
-                        "education",
-                        "institution",
-                        e.target.value,
-                        index,
-                      )
-                    }
-                    placeholder="Institution"
-                    className="w-full border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
+            <CollapsibleContent className="collapse-content">
+              <div className="content-container">
+                <div className="form-row">
+                  <div className="row-form-field">
+                    <Label
+                      htmlFor={`institution-${index}`}
+                      className="field-label"
+                    >
+                      College Name
+                    </Label>
+                    <Input
+                      id={`institution-${index}`}
+                      value={edu.institution}
+                      className="form-input"
+                      type="text"
+                      onChange={(e) =>
+                        handleInputChange(
+                          "education",
+                          "institution",
+                          e.target.value,
+                          index,
+                        )
+                      }
+                      placeholder="For Eg : Indian School of Business"
+                    />
+                  </div>
+                  <div className="row-form-field">
+                    <Label htmlFor={`degree-${index}`} className="field-label">
+                      Degree Name
+                    </Label>
+                    <Input
+                      id={`degree-${index}`}
+                      value={edu.degree}
+                      onChange={(e) =>
+                        handleInputChange(
+                          "education",
+                          "degree",
+                          e.target.value,
+                          index,
+                        )
+                      }
+                      placeholder="For Eg: MBA"
+                      className="form-input"
+                    />
+                  </div>
                 </div>
-                <div>
-                  <Label
-                    htmlFor={`years-${index}`}
-                    className="block mb-2 font-medium text-gray-700"
-                  >
-                    Years
-                  </Label>
-                  <Input
-                    id={`years-${index}`}
-                    value={edu.years}
-                    onChange={(e) =>
-                      handleInputChange(
-                        "education",
-                        "years",
-                        e.target.value,
-                        index,
-                      )
-                    }
-                    placeholder="Years"
-                    className="w-full border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
+                <div className="form-row">
+                  <div className="row-form-field">
+                    <Label htmlFor={`major-${index}`} className="field-label">
+                      Field of Study
+                    </Label>
+                    <Input
+                      id={`degree-${index}`}
+                      value={edu.major}
+                      onChange={(e) =>
+                        handleInputChange(
+                          "education",
+                          "major",
+                          e.target.value,
+                          index,
+                        )
+                      }
+                      placeholder="For Eg: Marketing"
+                      className="form-input"
+                    />
+                  </div>
+                  <div className="row-form-field">
+                    <Label htmlFor={`score-${index}`} className="field-label">
+                      CGPA or Percentage
+                    </Label>
+                    <Input
+                      id={`score-${index}`}
+                      value={edu.score}
+                      onChange={(e) =>
+                        handleInputChange(
+                          "education",
+                          "score",
+                          e.target.value,
+                          index,
+                        )
+                      }
+                      placeholder="For Eg: 7.4 / 10"
+                      className="form-input"
+                    />
+                  </div>
                 </div>
-                <div>
-                  <Label
-                    htmlFor={`degree-${index}`}
-                    className="block mb-2 font-medium text-gray-700"
-                  >
-                    Degree
-                  </Label>
-                  <Input
-                    id={`degree-${index}`}
-                    value={edu.degree}
-                    onChange={(e) =>
-                      handleInputChange(
-                        "education",
-                        "degree",
-                        e.target.value,
-                        index,
-                      )
-                    }
-                    placeholder="Degree"
-                    className="w-full border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
+                <div className="form-row">
+                  <div className="row-form-field">
+                    <Label htmlFor={`major-${index}`} className="field-label">
+                      Start Year
+                    </Label>
+                    <Input
+                      id={`start-${index}`}
+                      value={edu.start}
+                      onChange={(e) =>
+                        handleInputChange(
+                          "education",
+                          "start",
+                          e.target.value,
+                          index,
+                        )
+                      }
+                      placeholder="For Eg: 2014"
+                      className="form-input"
+                    />
+                  </div>
+                  <div className="row-form-field">
+                    <Label htmlFor={`end-${index}`} className="field-label">
+                      End Year
+                    </Label>
+                    <Input
+                      id={`end-${index}`}
+                      value={edu.end}
+                      onChange={(e) =>
+                        handleInputChange(
+                          "education",
+                          "end",
+                          e.target.value,
+                          index,
+                        )
+                      }
+                      placeholder="For Eg: 2018"
+                      className="form-input"
+                    />
+                  </div>
                 </div>
-                <Button
+                {/* <Button
                   variant="destructive"
                   onClick={() => handleDeleteField("education", index)}
                   className="mt-2"
                 >
                   Delete Education
-                </Button>
+                </Button> */}
               </div>
             </CollapsibleContent>
           </Collapsible>
         ))}
       </div>
       <Button
-        variant="default"
+        // variant="default"
         onClick={() => handleAddField("education")}
-        className="mt-4"
+        className="add-cta"
       >
-        Add Education
+        + Add Education
       </Button>
     </div>
   );

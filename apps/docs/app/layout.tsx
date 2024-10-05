@@ -24,7 +24,7 @@ export default async function RootLxayout({
     <html lang="en">
       <body
         className={cn(
-          "min-h-screen bg-background font-sans antialiased",
+          "min-h-screen font-sans antialiased ",
           fontSans.variable,
         )}
       >
@@ -32,7 +32,7 @@ export default async function RootLxayout({
           <ConditionalHeader />
           {/* <NextTopLoader color="#2E78C7" height={2} /> */}
           {/* this is done as to keep footer in the bottom of the page */}
-          <div className="min-h-[calc(100vh-64px)]">{children}</div>
+          <div style={{background: '#1B2432'}}>{children}</div>
           <ConditionalFooter />
           {/* <Toaster richColors /> */}
         </Providers>

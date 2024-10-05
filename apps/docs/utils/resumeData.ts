@@ -2,43 +2,54 @@ import { ResumeProps } from '../types/ResumeProps';
 
 export const initialResumeData: ResumeProps = {
   userId: "string", 
-  personalInfo:{
-    name: "jebni",
-    title: "kjsnef",
-    website: "ksjenfks",
-    email: "string",
-    phone: "string",
-    bio: "string",
+  personalInfo: {
+    name: "",
+    title: "",
+    website: "",
+    email: "",
+    phone: "",
+    linkedin: "",
+    bio: "",
   },
   education: [
     {
       institution: "Liceria University",
-      years: "2009 - 2012",
-      degree: "Bachelor of Computer Technology"
+      start: "2009",
+      end: "2012",
+      degree: "Bachelor of Computer Technology",
+      major: "Information Technology"
     },
     {
       institution: "Oxford University",
-      years: "2012 - 2015",
-      degree: "Master of Computer Science - Software Engineering"
+      start: "2012",
+      end: "2015",
+      degree: "Master of Computer Science - Software Engineering",
+      major: "Information Technology"
     }
   ],
   experience: [
     {
       company: "Facebook",
       role: "Lead UI/UX Designer",
-      duration: "SEP 2022 - PRESENT",
+      start: "SEP 2022",
+      end: "PRESENT",
       responsibilities: [
         "Led the design direction and created custom UI assets...",
         "Managed numerous cross-discipline workshops..."
       ]
     }
   ],
-  skills: [
-    "User Research", "Wireframing", "Prototyping",
-    "Development","JavaScript", "TypeScript", "React"
-    ],
+  skills: [], // Added the required 'skills' field as an empty array
+  coreSkills: [
+    "User Research", "Wireframing", "Prototyping"
+  ],
+  techSkills: [
+    "JavaScript", "TypeScript", "React"
+  ],
   achievement: {
     title: "Bestfolios, 2022",
     description: "Editor's Pick for Best Design Portfolio"
-  }
+  },
+  languages: [], // Optional: You can populate this later
+  certificates: [] // Optional: You can populate this later
 };
