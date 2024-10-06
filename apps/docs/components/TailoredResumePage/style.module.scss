@@ -1,0 +1,159 @@
+.head{
+    display: flex;
+    min-height: calc(100vh - 100px);
+    background-color: #1B2432;
+}
+
+.tailor_p1_head{
+    display: flex;
+    flex-direction: column;
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.8) -38.97%, rgba(0, 0, 0, 0) 100%);
+    width: 100%;
+    height: fit-content;
+    margin: 36px;
+    padding: 40px;
+    border-radius: 16px;
+    gap: 32px;
+
+    &_heading{
+        display: flex;
+
+        &_data{
+            font-family: Inter;
+            font-size: 32px;
+            font-weight: 700;
+            line-height: 38.73px;
+        }
+    }
+
+    &_section{
+        display: flex;
+        gap: 100px;
+
+        &_preview{
+            display: flex;
+            min-width: 253.64px;
+            max-width: 253.64px;
+            min-height: 360px;
+            max-height: 360px;
+            border-radius: 16px;
+            background-color: white;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        &_user_action{
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            width: 100%;
+
+            &_heading{
+                display: flex;
+                font-family: Inter;
+                font-size: 32px;
+                font-weight: 400;
+                line-height: 38.73px;
+                color: white;
+            }
+
+            &_input{
+                display: flex;
+                &_textarea{
+                    width: 100%;
+                    border: 1px solid #FFFFFF66;
+                    font-family: Inter;
+                    font-size: 20px;
+                    font-weight: 400;
+                    line-height: 24.2px;
+                    text-align: left;
+                    background-color: transparent;
+                    padding: 24px 32px;
+                    border-radius: 20px;
+                }
+            }
+
+            &_button{
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                min-width: 740px;
+                height: 60px;
+                border-radius: 30px;
+                display: flex;
+                background: #3B5BFF;
+                font-family: Inter;
+                font-size: 24px;
+                font-weight: 400;
+                line-height: 29.05px;
+                text-align: center;
+            }
+        }
+    }
+}
+
+.tailor_p2_head{
+    display: flex;
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.8) -38.97%, rgba(0, 0, 0, 0) 100%);
+    width: calc(100% - 72px);
+    height: fit-content;
+    margin: 36px;
+    padding: 40px;
+    border-radius: 16px;
+    gap: 32px;
+
+    &_section{
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 28px;
+        width: calc(50% - 28px);
+        overflow: hidden;
+
+        &_heading{
+            display: flex;
+            // justify-content: space-between;
+            gap: 10px;
+
+            &_data{
+                font-family: Inter;
+                font-size: 32px;
+                font-weight: 700;
+                line-height: 38.73px;
+                color: #FFFFFFCC;
+            }
+            &_button{
+                // width: 184px;
+                // height: 40px;
+                // border-radius: 8px;
+                // border: 2px;
+                // border: 2px solid #3B5BFF;
+                // font-family: Inter;
+                // font-size: 20px;
+                // font-weight: 500;
+                // line-height: 24.2px;
+                // text-align: center;
+                // color: #FFFFFFCC;
+                width: 40px;
+                height: 40px;
+                color: #FFFFFFCC;
+                cursor: pointer;
+            }
+        }
+        &_preview{
+            display: flex;
+            width: 100%;
+            align-items: center;
+            justify-content: flex-start;
+            max-height: calc(100vh - 230px);
+
+            & :global(.wrapper), & :global(.template-container){
+                border-radius: 16px;
+                transform-origin: left;
+                overflow: hidden;
+            }
+        }    
+    }
+}

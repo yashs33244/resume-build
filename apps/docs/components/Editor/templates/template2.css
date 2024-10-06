@@ -1,197 +1,195 @@
-.template2-wrapper .template-container {
-  background-color: #fff;
-  height: 95%;
-  aspect-ratio: 0.7751937984;
-  min-width: 595px;
-  max-width: 595px;
-  min-height: 842px;
-  max-height: 842px;
-  background-color: white;
-  color: black;
-  padding: 40px;
-  display: flex;
-  flex-direction: column;
-  gap: 30px;
-  overflow-y: hidden;
-}
+/* Base Template Styles */
+.template2-wrapper {
+    --font-size-base: 16px; /* Default for M */
+    --font-size-small: 0.75;
+    --font-size-large: 1.25;
+  
+    --padding-base: 40px;
+    --gap-base: 30px;
+  
+    /* Font-sizes and other dimensions */
+    --header-name-size: calc(var(--font-size-base) + 2px);
+    --header-role-size: calc(var(--font-size-base) - 1px);
+    --header-contact-size: calc(var(--font-size-base) - 6px);
+    --content-label-size: var(--font-size-base);
+    --content-value-size: calc(var(--font-size-base) - 6px);
+  
+    /* Paddings, Margins */
+    --container-padding: var(--padding-base);
+    --container-gap: var(--gap-base);
+  }
+  
+  /* Default size M */
+  .template2-wrapper.M {
+    --font-size-base: 16px;
+    --padding-base: 40px;
+    --gap-base: 30px;
+  }
+  
+  /* Size S */
+  .template2-wrapper.S {
+    --font-size-base: 12px; /* 75% of M */
+    --padding-base: 30px; /* 75% of M */
+    --gap-base: 22.5px; /* 75% of M */
+  }
+  
+  /* Size L */
+  .template2-wrapper.L {
+    --font-size-base: 20px; /* 125% of M */
+    --padding-base: 50px; /* 125% of M */
+    --gap-base: 37.5px; /* 125% of M */
+  }
+  
+  /* Template Container */
+  .template2-wrapper .template-container {
+    position: relative;
+    background-color: #fff;
+    height: 95%;
+    aspect-ratio: 0.7751937984;
+    min-width: 595px;
+    max-width: 595px;
+    min-height: 842px;
+    max-height: 842px;
+    background-color: white;
+    color: black;
+    padding: var(--container-padding);
+    display: flex;
+    flex-direction: column;
+    gap: var(--container-gap);
+    overflow-y: hidden;
+  }
+  
+  /* Header Section */
+  .template2-wrapper .header {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .template2-wrapper .header_left_part {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+  
+  .template2-wrapper .header_left_part_name {
+    font-size: var(--header-name-size);
+    font-weight: 700;
+    color: #c50;
+  }
+  
+  .template2-wrapper .header_left_part_role {
+    font-size: var(--header-role-size);
+    color: #808080;
+    font-weight: 550;
+  }
+  
+  .template2-wrapper .header_right_part_url,
+  .template2-wrapper .header_right_part_email,
+  .template2-wrapper .header_right_part_phone {
+    font-size: var(--header-contact-size);
+  }
+  
+  .template2-wrapper .header_right_part_phone a,
+  .template2-wrapper .header_right_part_phone a:focus,
+  .template2-wrapper .header_right_part_phone a:hover {
+    color: inherit;
+    text-decoration: none;
+  }
+  
+  /* Content Section */
+  .template2-wrapper .content {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .template2-wrapper .content_container {
+    display: flex;
+    hanging-punctuation: 10px;
+  }
+  
+  .template2-wrapper .content_left_part {
+    width: 130px;
+  }
+  
+  .template2-wrapper .content_right_part {
+    flex: 1;
+  }
+  
+  /* Content Labels and Values */
+  .template2-wrapper .content_bio_div_label,
+  .template2-wrapper .content_education_div_label,
+  .template2-wrapper .content_experience_div_label,
+  .template2-wrapper .content_skill_div_label,
+  .template2-wrapper .content_acheivement_div_label{
+    font-size: var(--content-label-size);
+    font-weight: 700;
+    color: #c50;
+  }
 
-.template2-wrapper .header {
-  display: flex;
-  justify-content: space-between;
-}
-.template2-wrapper .header_left_part {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-}
-.template2-wrapper .header_left_part_name {
-  font-size: 18px;
-  font-weight: 700;
-  color: #c50;
-}
-.template2-wrapper .header_left_part_role {
-  font-size: 15px;
-  color: #808080;
-  font-weight: 550;
-}
-.template2-wrapper .header_right_part_url {
-  font-size: 10px;
-}
-.template2-wrapper .header_right_part_email {
-  font-size: 10px;
-}
-.template2-wrapper .header_right_part_phone {
-  font-size: 10px;
-}
-.template2-wrapper .header_right_part_phone a,.template2-wrapper .header_right_part_phone a:focus,.template2-wrapper .header_right_part_phone a:hover {
-  color: inherit;
-  text-decoration: none;
-}
-.template2-wrapper .content {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
-.template2-wrapper .content_container {
-  display: flex;
-  hanging-punctuation: 10px;
-}
-.template2-wrapper .content_left_part {
-  width: 130px;
-}
-.template2-wrapper .content_right_part {
-  flex: 1;
-}
-.template2-wrapper .content_bio_div_label {
-  font-size: 16px;
-  font-weight: 700;
-  color: #c50;
-}
-.template2-wrapper .content_bio_div_value {
-  font-size: 10px;
-  color: #808080;
-  line-height: normal;
-}
-.template2-wrapper .content_education_div_label {
-  font-size: 16px;
-  font-weight: 700;
-  color: #c50;
-}
-.template2-wrapper .content_education_div_value {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  justify-content: space-between;
-}
-.template2-wrapper .content_education_div_value_section {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-  width: calc(50% - 10px);
-}
-.template2-wrapper .content_education_div_value_section_name {
-  font-size: 10px;
-  font-weight: 700;
-  line-height: normal;
-}
-.template2-wrapper .content_education_div_value_section_year {
-  font-size: 10px;
-  color: #808080;
-  line-height: normal;
-}
-.template2-wrapper .content_education_div_value_section_field {
-  font-size: 10px;
-  color: #808080;
-  line-height: normal;
-}
-.template2-wrapper .content_experience_div_label {
-  font-size: 16px;
-  font-weight: 700;
-  color: #c50;
-}
-.template2-wrapper .content_experience_div_value {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-.template2-wrapper .content_experience_div_value_section {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-.template2-wrapper .content_experience_div_value_section_name {
-  font-size: 10px;
-  font-weight: 700;
-  line-height: normal;
-}
-.template2-wrapper .content_experience_div_value_section_year {
-  font-size: 10px;
-  color: #808080;
-  line-height: normal;
-}
-.template2-wrapper .content_experience_div_value_section_work {
-  font-size: 10px;
-  color: #808080;
-  line-height: normal;
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-}
-.template2-wrapper .content_experience_div_value_section_work ul {
-  list-style: disc;
-  list-style-position: inside;
-}
-.template2-wrapper .content_experience_div_value_section_work ol {
-  list-style: decimal;
-  list-style-position: inside;
-}
-.template2-wrapper .content_skill_div_label {
-  font-size: 16px;
-  font-weight: 700;
-  color: #c50;
-}
-.template2-wrapper .content_skill_div_value {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
-.template2-wrapper .content_skill_div_value_section {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-}
-.template2-wrapper .content_skill_div_value_section_category {
-  font-size: 10px;
-  font-weight: 700;
-  line-height: normal;
-}
-.template2-wrapper .content_skill_div_value_section_skills {
-  font-size: 10px;
-  color: #808080;
-  line-height: normal;
-}
-.template2-wrapper .content_acheivement_div_label {
-  font-size: 16px;
-  font-weight: 700;
-  color: #c50;
-}
-.template2-wrapper .content_acheivement_div_value {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
-.template2-wrapper .content_acheivement_div_value_section {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-}
-.template2-wrapper .content_acheivement_div_value_section_title {
-  font-size: 10px;
-  font-weight: 700;
-  line-height: normal;
-}
-.template2-wrapper .content_acheivement_div_value_section_remarks {
-  font-size: 10px;
-  color: #808080;
-  line-height: normal;
-}
+  .template2-wrapper .content_education_div_value_section_name,
+  .template2-wrapper .content_experience_div_value_section_name,
+  .template2-wrapper .content_skill_div_value_section_category{
+    font-weight: 700;
+    color: black !important;
+  }
+  
+  .template2-wrapper .content_bio_div_value,
+  .template2-wrapper .content_education_div_value_section_name,
+  .template2-wrapper .content_experience_div_value_section_name,
+  .template2-wrapper .content_education_div_value_section_year,
+  .template2-wrapper .content_education_div_value_section_field,
+  .template2-wrapper .content_experience_div_value_section_year,
+  .template2-wrapper .content_experience_div_value_section_work,
+  .template2-wrapper .content_skill_div_value_section_skills,
+  .template2-wrapper .content_acheivement_div_value_section_remarks,
+  .template2-wrapper .content_skill_div_value_section_category{
+    font-size: var(--content-value-size);
+    color: #808080;
+  }
+  
+  /* Education, Experience, Skills, and Achievements Sections */
+  .template2-wrapper .content_education_div_value {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: space-between;
+  }
+  
+  .template2-wrapper .content_education_div_value_section {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    width: calc(50% - 10px);
+  }
+  
+  .template2-wrapper .content_experience_div_value {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .template2-wrapper .content_experience_div_value_section_work ul {
+    list-style: disc;
+    list-style-position: inside;
+  }
+  
+  .template2-wrapper .content_experience_div_value_section_work ol {
+    list-style: decimal;
+    list-style-position: inside;
+  }
+  
+  .template2-wrapper .content_skill_div_value,
+  .template2-wrapper .content_acheivement_div_value {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .template2-wrapper .content_skill_div_value_section,
+  .template2-wrapper .content_acheivement_div_value_section {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+  

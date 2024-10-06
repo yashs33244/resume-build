@@ -1,4 +1,4 @@
-.template-container {
+/* .template-container {
   background-color: #fff;
   height: 95%;
   aspect-ratio: 0.71;
@@ -7,10 +7,10 @@
   min-height: 842px;
   max-height: 842px;
 }
-.template-container .large {
+.template-container .M {
   padding: 2rem 3.5rem;
 }
-.template-container .large .tag {
+.template-container .M .tag {
   width: fit-content;
   background: #097969;
   padding: 5px 8px;
@@ -21,123 +21,536 @@
   display: flex;
   flex-direction: column;
 }
-.template-container .large .tag_value {
+.template-container .M .tag_value {
   color: white;
   font-weight: 700;
   font-size: 10px;
   line-height: 14px;
 }
-.template-container .large .primary-info .name {
+.template-container .M .primary-info .name {
   color: #323336;
   font-weight: 700;
 }
-.template-container .large .primary-info .position {
+.template-container .M .primary-info .position {
   color: #323336;
   font-size: 0.56rem;
   margin-top: 0.3rem;
 }
-.template-container .large .primary-info .information {
+.template-container .M .primary-info .information {
   color: #707678;
   font-size: 0.5rem;
   margin-top: 0.15rem;
 }
 
-.template-container .large .primary-info .information a , .template-container .large .primary-info .information a:hover, .template-container .large .primary-info .information a:hover{
+.template-container .M .primary-info .information a , .template-container .M .primary-info .information a:hover, .template-container .M .primary-info .information a:hover{
   color: inherit;
   text-decoration: none;
 }
-.template-container .large .primary-info .summary {
+.template-container .M .primary-info .summary {
   color: #707678;
   font-size: 0.5rem;
   margin-top: 0.15rem;
 }
-.template-container .large .experience {
+.template-container .M .experience {
   margin-top: 1.12rem;
 }
-.template-container .large .experience .section-title {
+.template-container .M .experience .section-title {
   color: #a6aaad;
   font-size: 0.5rem;
   font-weight: 600;
 }
-.template-container .large .experience .exp-container {
+.template-container .M .experience .exp-container {
   margin-top: 0.56rem;
 }
-.template-container .large .experience .exp-container .company-name {
+.template-container .M .experience .exp-container .company-name {
   color: #323336;
   font-size: 0.56rem;
   font-weight: 500;
 }
-.template-container .large .experience .exp-container .role-duration {
+.template-container .M .experience .exp-container .role-duration {
   color: #707678;
   font-size: 0.52rem;
 }
-.template-container .large .experience .exp-container .responsibilities {
+.template-container .M .experience .exp-container .responsibilities {
   color: #323336;
   font-size: 0.5rem;
 }
-.template-container .large .experience .exp-container .responsibilities ul {
+.template-container .M .experience .exp-container .responsibilities ul {
   list-style: disc;
   padding: 0 1rem;
 }
-.template-container .large .education {
+.template-container .M .education {
   margin-top: 1.12rem;
 }
-.template-container .large .education .section-title {
+.template-container .M .education .section-title {
   color: #a6aaad;
   font-size: 0.5rem;
   font-weight: 600;
 }
-.template-container .large .education .edu-container {
+.template-container .M .education .edu-container {
   margin-top: 0.56rem;
 }
-.template-container .large .education .edu-container .college-name {
+.template-container .M .education .edu-container .college-name {
   color: #323336;
   font-size: 0.56rem;
   font-weight: 500;
 }
-.template-container .large .education .edu-container .degree-major {
+.template-container .M .education .edu-container .degree-major {
   color: #707678;
   font-size: 0.52rem;
 }
-.template-container .large .skills {
+.template-container .M .skills {
   margin-top: 1.12rem;
 }
-.template-container .large .skills .section-title {
+.template-container .M .skills .section-title {
   color: #a6aaad;
   font-size: 0.5rem;
   font-weight: 600;
 }
-.template-container .large .skills .core-skills {
+.template-container .M .skills .core-skills {
   display: flex;
   margin-top: 0.56rem;
 }
-.template-container .large .skills .core-skills .skill-container {
+.template-container .M .skills .core-skills .skill-container {
   padding: 0.2rem 0.4rem;
   background-color: #f1f5f7;
   border-radius: 2px;
   color: #323336;
   margin-left: 4px;
 }
-.template-container .large .skills .core-skills .skill-container .skill {
+.template-container .M .skills .core-skills .skill-container .skill {
   font-size: 0.5rem;
 }
-.template-container .large .skills .core-skills .first {
+.template-container .M .skills .core-skills .first {
   margin-left: 0;
 }
-.template-container .large .skills .tech-skills {
+.template-container .M .skills .tech-skills {
   display: flex;
   margin-top: 0.2rem;
 }
-.template-container .large .skills .tech-skills .skill-container {
+.template-container .M .skills .tech-skills .skill-container {
   padding: 0.2rem 0.4rem;
   background-color: #f1f5f7;
   border-radius: 2px;
   color: #323336;
   margin-left: 4px;
 }
-.template-container .large .skills .tech-skills .skill-container .skill {
+.template-container .M .skills .tech-skills .skill-container .skill {
   font-size: 0.5rem;
 }
-.template-container .large .skills .tech-skills .first {
+.template-container .M .skills .tech-skills .first {
   margin-left: 0;
-}
+} */
+
+
+.template-container {
+    position: relative;
+    background-color: #fff;
+    height: 95%;
+    aspect-ratio: 0.71;
+    min-width: 595px;
+    max-width: 595px;
+    min-height: 842px;
+    max-height: 842px;
+  }
+  
+  .template-container .M {
+    padding: 2rem 3.5rem;
+  }
+  
+  .template-container .S {
+    padding: 1.5rem 2.5rem;
+  }
+  
+  .template-container .L {
+    padding: 2.5rem 4.5rem;
+  }
+  
+  .template-container .M .tag {
+    width: fit-content;
+    background: #097969;
+    padding: 5px 8px;
+    position: absolute;
+    left: 20px;
+    top: 38px;
+    z-index: 0;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .template-container .S .tag {
+    padding: 4px 6px;
+    left: 15px;
+    top: 30px;
+  }
+  
+  .template-container .L .tag {
+    padding: 6px 10px;
+    left: 25px;
+    top: 45px;
+  }
+  
+  .template-container .M .tag_value {
+    color: white;
+    font-weight: 700;
+    font-size: 10px;
+    line-height: 14px;
+  }
+  
+  .template-container .S .tag_value {
+    font-size: 8px;
+    line-height: 12px;
+  }
+  
+  .template-container .L .tag_value {
+    font-size: 12px;
+    line-height: 16px;
+  }
+  
+  .template-container .M .primary-info .name {
+    color: #323336;
+    font-weight: 700;
+    font-size: 1rem;
+  }
+  
+  .template-container .S .primary-info .name {
+    font-size: 0.75rem;
+  }
+  
+  .template-container .L .primary-info .name {
+    font-size: 1.25rem;
+  }
+  
+  .template-container .M .primary-info .position {
+    color: #323336;
+    font-size: 0.56rem;
+    margin-top: 0.3rem;
+  }
+  
+  .template-container .S .primary-info .position {
+    font-size: 0.42rem;
+  }
+  
+  .template-container .L .primary-info .position {
+    font-size: 0.7rem;
+  }
+  
+  .template-container .M .primary-info .information {
+    color: #707678;
+    font-size: 0.5rem;
+    margin-top: 0.15rem;
+  }
+  
+  .template-container .S .primary-info .information {
+    font-size: 0.38rem;
+  }
+  
+  .template-container .L .primary-info .information {
+    font-size: 0.62rem;
+  }
+  
+  .template-container .M .primary-info .information a,
+  .template-container .M .primary-info .information a:hover {
+    color: inherit;
+    text-decoration: none;
+  }
+  
+  .template-container .S .primary-info .information a,
+  .template-container .S .primary-info .information a:hover {
+    font-size: 0.38rem;
+  }
+  
+  .template-container .L .primary-info .information a,
+  .template-container .L .primary-info .information a:hover {
+    font-size: 0.62rem;
+  }
+  
+  .template-container .M .primary-info .summary {
+    color: #707678;
+    font-size: 0.5rem;
+    margin-top: 0.15rem;
+  }
+  
+  .template-container .S .primary-info .summary {
+    font-size: 0.38rem;
+  }
+  
+  .template-container .L .primary-info .summary {
+    font-size: 0.62rem;
+  }
+  
+  .template-container .M .experience {
+    margin-top: 1.12rem;
+  }
+  
+  .template-container .S .experience {
+    margin-top: 0.85rem;
+  }
+  
+  .template-container .L .experience {
+    margin-top: 1.5rem;
+  }
+  
+  .template-container .M .experience .section-title {
+    color: #a6aaad;
+    font-size: 0.5rem;
+    font-weight: 600;
+  }
+  
+  .template-container .S .experience .section-title {
+    font-size: 0.38rem;
+  }
+  
+  .template-container .L .experience .section-title {
+    font-size: 0.62rem;
+  }
+  
+  .template-container .M .experience .exp-container {
+    margin-top: 0.56rem;
+  }
+  
+  .template-container .S .experience .exp-container {
+    margin-top: 0.4rem;
+  }
+  
+  .template-container .L .experience .exp-container {
+    margin-top: 0.7rem;
+  }
+  
+  .template-container .M .experience .exp-container .company-name {
+    color: #323336;
+    font-size: 0.56rem;
+    font-weight: 500;
+  }
+  
+  .template-container .S .experience .exp-container .company-name {
+    font-size: 0.42rem;
+  }
+  
+  .template-container .L .experience .exp-container .company-name {
+    font-size: 0.7rem;
+  }
+  
+  .template-container .M .experience .exp-container .role-duration {
+    color: #707678;
+    font-size: 0.52rem;
+  }
+  
+  .template-container .S .experience .exp-container .role-duration {
+    font-size: 0.38rem;
+  }
+  
+  .template-container .L .experience .exp-container .role-duration {
+    font-size: 0.7rem;
+  }
+  
+  .template-container .M .experience .exp-container .responsibilities {
+    color: #323336;
+    font-size: 0.5rem;
+  }
+  
+  .template-container .S .experience .exp-container .responsibilities {
+    font-size: 0.38rem;
+  }
+  
+  .template-container .L .experience .exp-container .responsibilities {
+    font-size: 0.62rem;
+  }
+  
+  .template-container .M .experience .exp-container .responsibilities ul {
+    list-style: disc;
+    padding: 0 1rem;
+  }
+  
+  .template-container .S .experience .exp-container .responsibilities ul {
+    padding: 0 0.75rem;
+  }
+  
+  .template-container .L .experience .exp-container .responsibilities ul {
+    padding: 0 1.25rem;
+  }
+  
+  .template-container .M .education {
+    margin-top: 1.12rem;
+  }
+  
+  .template-container .S .education {
+    margin-top: 0.85rem;
+  }
+  
+  .template-container .L .education {
+    margin-top: 1.5rem;
+  }
+  
+  .template-container .M .education .section-title {
+    color: #a6aaad;
+    font-size: 0.5rem;
+    font-weight: 600;
+  }
+  
+  .template-container .S .education .section-title {
+    font-size: 0.38rem;
+  }
+  
+  .template-container .L .education .section-title {
+    font-size: 0.62rem;
+  }
+  
+  .template-container .M .education .edu-container {
+    margin-top: 0.56rem;
+  }
+  
+  .template-container .S .education .edu-container {
+    margin-top: 0.4rem;
+  }
+  
+  .template-container .L .education .edu-container {
+    margin-top: 0.7rem;
+  }
+  
+  .template-container .M .education .edu-container .college-name {
+    color: #323336;
+    font-size: 0.56rem;
+    font-weight: 500;
+  }
+  
+  .template-container .S .education .edu-container .college-name {
+    font-size: 0.42rem;
+  }
+  
+  .template-container .L .education .edu-container .college-name {
+    font-size: 0.7rem;
+  }
+  
+  .template-container .M .education .edu-container .degree-major {
+    color: #707678;
+    font-size: 0.52rem;
+  }
+  
+  .template-container .S .education .edu-container .degree-major {
+    font-size: 0.38rem;
+  }
+  
+  .template-container .L .education .edu-container .degree-major {
+    font-size: 0.7rem;
+  }
+  
+  .template-container .M .skills {
+    margin-top: 1.12rem;
+  }
+  
+  .template-container .S .skills {
+    margin-top: 0.85rem;
+  }
+  
+  .template-container .L .skills {
+    margin-top: 1.5rem;
+  }
+  
+  .template-container .M .skills .section-title {
+    color: #a6aaad;
+    font-size: 0.5rem;
+    font-weight: 600;
+  }
+  
+  .template-container .S .skills .section-title {
+    font-size: 0.38rem;
+  }
+  
+  .template-container .L .skills .section-title {
+    font-size: 0.62rem;
+  }
+  
+  .template-container .M .skills .core-skills {
+    display: flex;
+    margin-top: 0.56rem;
+  }
+  
+  .template-container .S .skills .core-skills {
+    margin-top: 0.4rem;
+  }
+  
+  .template-container .L .skills .core-skills {
+    margin-top: 0.7rem;
+  }
+  
+  .template-container .M .skills .core-skills .skill-container {
+    padding: 0.2rem 0.4rem;
+    background-color: #f1f5f7;
+    border-radius: 2px;
+    color: #323336;
+    margin-left: 4px;
+  }
+  
+  .template-container .S .skills .core-skills .skill-container {
+    padding: 0.15rem 0.3rem;
+    margin-left: 3px;
+  }
+  
+  .template-container .L .skills .core-skills .skill-container {
+    padding: 0.25rem 0.5rem;
+    margin-left: 5px;
+  }
+  
+  .template-container .M .skills .core-skills .skill-container .skill {
+    font-size: 0.42rem;
+  }
+  
+  .template-container .S .skills .core-skills .skill-container .skill {
+    font-size: 0.32rem;
+  }
+  
+  .template-container .L .skills .core-skills .skill-container .skill {
+    font-size: 0.52rem;
+  }
+  
+  .template-container .M .achievements {
+    margin-top: 1.12rem;
+  }
+  
+  .template-container .S .achievements {
+    margin-top: 0.85rem;
+  }
+  
+  .template-container .L .achievements {
+    margin-top: 1.5rem;
+  }
+  
+  .template-container .M .achievements .section-title {
+    color: #a6aaad;
+    font-size: 0.5rem;
+    font-weight: 600;
+  }
+  
+  .template-container .S .achievements .section-title {
+    font-size: 0.38rem;
+  }
+  
+  .template-container .L .achievements .section-title {
+    font-size: 0.62rem;
+  }
+  
+  .template-container .M .achievements .ach-container {
+    margin-top: 0.56rem;
+  }
+  
+  .template-container .S .achievements .ach-container {
+    margin-top: 0.4rem;
+  }
+  
+  .template-container .L .achievements .ach-container {
+    margin-top: 0.7rem;
+  }
+  
+  .template-container .M .achievements .ach-container .achievement {
+    font-size: 0.5rem;
+  }
+  
+  .template-container .S .achievements .ach-container .achievement {
+    font-size: 0.38rem;
+  }
+  
+  .template-container .L .achievements .ach-container .achievement {
+    font-size: 0.62rem;
+  }
+  
