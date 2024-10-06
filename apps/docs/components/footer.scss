@@ -1,0 +1,49 @@
+.company {
+    color: rgba(255,255,255,0.7);
+    .heading {
+        font-weight: 600;
+        color: rgba(255,255,255,0.8);
+    }
+
+    .link {
+        margin-top: 1rem;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+    }
+}
+
+.support {
+    color: rgba(255,255,255,0.7);
+    .heading {
+        font-weight: 600;
+        color: rgba(255,255,255,0.8);
+    }
+
+    .link {
+        margin-top: 1rem;
+        cursor: pointer;
+    }
+}
+
+.contact {
+    color: rgba(255,255,255,0.7);
+    .heading {
+        font-weight: 600;
+        color: rgba(255,255,255,0.8);
+    }
+
+    .link {
+        margin-top: 1rem;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+    }
+}
+
+.branding {
+    .copyright {
+        margin-top: 1rem;
+        color: rgba(255,255,255,0.7);        
+    }
+}

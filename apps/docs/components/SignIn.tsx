@@ -1,10 +1,15 @@
 "use client";
 import { signIn } from "next-auth/react";
 import { useState } from "react";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { PiHandWavingDuotone } from "react-icons/pi";
 import logo from "./logo.svg";
+import Image from "next/image";
+import { FaCheck } from "react-icons/fa6";
+import vector1 from "./vector1.svg";
+import vector2 from "./vector2.svg";
+import vector3 from "./vector3.svg";
+import "./Signin.scss";
 
 export default function SignIn() {
   const [username, setUsername] = useState("");
@@ -29,91 +34,52 @@ export default function SignIn() {
   };
 
   return (
-    <div
-      style={{ background: "linear-gradient(135deg, black, #555555)" }}
-      className="flex min-h-screen bg-gradient-to-br from-purple-100"
-    >
-      <div className="m-auto bg-white rounded-xl shadow-lg flex flex-col md:flex-row w-full max-w-4xl">
-        <Image
-          alt="logo"
-          src={logo}
-          width={140}
-          style={{ position: "fixed", bottom: "2rem", left: "4rem" }}
-        />
-        <div className="p-8 md:w-1/2">
-          <div
-            className="hello"
-            style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <PiHandWavingDuotone
-              style={{ width: "40px", height: "40px", fill: "#C68641" }}
-            />
-            <div
-              style={{
-                color: "slategray",
-                fontSize: "1.6rem",
-                fontWeight: "700",
-                textAlign: "center",
-                marginLeft: "12px",
-              }}
-            >
-              Hi There!
+    <div className="signin-container">
+      <div className="logo">
+        <Image src={logo} alt="logo" width={120} height={120} />
+      </div>
+      <div className="signin-box">
+        <div className="benefits">
+          <div className="benefit">
+            <div className="check">
+              <FaCheck />
+            </div>
+            <div className="text">Simple Like Canva</div>
+            <div className="infographic">
+              <Image src={vector2} alt="vector" />
             </div>
           </div>
-          <form onSubmit={handleSubmit}>
-            <div className="mb-4">
-              <label
-                htmlFor="email"
-                className="block text-gray-700 text-sm font-bold mb-2"
-              >
-                Email
-              </label>
-              <input
-                type="email"
-                id="username"
-                className="w-full px-3 py-2 border border-gray-300 text-black rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-white placeholder-opacity-75 bg-transparent"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                required
-              />
+          <div className="benefit">
+            <div className="check">
+              <FaCheck />
             </div>
-            <div className="mb-6">
-              <label
-                htmlFor="password"
-                className="block text-gray-700 text-sm font-bold mb-2"
-              >
-                Password
-              </label>
-              <input
-                type="password"
-                id="password"
-                className="w-full px-3 py-2 border border-gray-300 text-black rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-white placeholder-opacity-75 bg-transparent"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
+            <div className="text">ATS friendly like Docs</div>
+            <div className="infographic">
+              <Image src={vector3} alt="vector" />
             </div>
-            <button
-              type="submit"
-              className="w-full bg-blue-500 text-white font-bold py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
-            >
-              Sign In
-            </button>
-          </form>
+          </div>
+          <div className="benefit">
+            <div className="check">
+              <FaCheck />
+            </div>
+            <div className="text">As smart as GPT</div>
+            <div className="infographic">
+              <Image src={vector1} alt="vector" />
+            </div>
+          </div>
+        </div>
+        <div className="google-container">
+          <div className="title">Login to continue</div>
           <div className="mt-4 text-center">
             {/* <p className="text-gray-600">Or sign in with</p> */}
             <div className="flex justify-center mt-2 space-x-4">
               <button
                 onClick={() => signIn("google")}
                 style={{
-                  width: "80%",
+                  width: "72%",
                   fontWeight: "600",
                   fontSize: "1.2rem",
-                  borderRadius: "8px",
+                  borderRadius: "40px",
                   padding: "16px",
                 }}
                 className="flex items-center justify-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50"
@@ -129,18 +95,6 @@ export default function SignIn() {
               </button>
             </div>
           </div>
-        </div>
-        <div
-          style={{ backgroundColor: "#2B3EFA" }}
-          className="md:w-1/2 bg-gradient-to-br from-purple-400 text-white rounded-r-xl p-8 hidden md:block"
-        >
-          <h2 className="text-2xl font-bold mb-4">
-            Build your impressive Resume..
-          </h2>
-          <p style={{ fontWeight: "500", opacity: "0.8" }}>
-            Simple and ATS friendly like Google Docs, elegant like Canva and
-            powerful like GPT-4o
-          </p>
         </div>
       </div>
     </div>
