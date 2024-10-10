@@ -124,12 +124,45 @@ export const Template2 = (props: any) => {
               })}
             </div>
           </div>
+          <div className={`${"content_experience_div"} ${"content_container"}`}>
+            <div
+              className={`${"content_experience_div_label"} ${"content_left_part"}`}
+            >
+              Projects
+            </div>
+            <div
+              className={`${"content_experience_div_value"} ${"content_right_part"}`}
+            >
+              {resumeData.projects?.map((proj: any) => {
+                return (
+                  <div className={"content_experience_div_value_section"}>
+                    <div
+                      className={"content_experience_div_value_section_name"}
+                    >
+                      {proj?.name + " - " + proj?.link}
+                    </div>
+                    <div
+                      className={"content_experience_div_value_section_year"}
+                    >
+                      {proj?.start + " - " + proj.end}
+                    </div>
+                    <div
+                      className={"content_experience_div_value_section_work"}
+                      dangerouslySetInnerHTML={{
+                        __html: DOMPurify.sanitize(proj.responsibilities),
+                      }}
+                    ></div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
           <div className={`${"content_skill_div"} ${"content_container"}`}>
             <div className={`${"content_skill_div"} ${"content_container"}`}>
               <div
                 className={`${"content_skill_div_label"} ${"content_left_part"}`}
               >
-                Skill
+                Skills
               </div>
               <div
                 className={`${"content_skill_div_value"} ${"content_right_part"}`}
@@ -163,25 +196,25 @@ export const Template2 = (props: any) => {
             <div
               className={`${"content_acheivement_div_label"} ${"content_left_part"}`}
             >
-              Achievement
+              Certificates
             </div>
             <div
               className={`${"content_acheivement_div_value"} ${"content_right_part"}`}
             >
-              {resumeData.certificate?.map((achievements: any) => {
+              {resumeData.certificates?.map((cert: any) => {
                 return (
                   <div className={"content_acheivement_div_value_section"}>
                     <div
                       className={"content_acheivement_div_value_section_title"}
                     >
-                      {achievements?.issuer + " - " + achievements?.issuedOn}
+                      {cert?.issuer + " - " + cert?.issuedOn}
                     </div>
                     <div
                       className={
                         "content_acheivement_div_value_section_remarks"
                       }
                     >
-                      {achievements?.name}
+                      {cert?.name}
                     </div>
                   </div>
                 );

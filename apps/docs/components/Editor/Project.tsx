@@ -58,12 +58,7 @@ export const Project: React.FC<ProjectProps> = ({
     const responsibilities = value
       .split("\n")
       .filter((item) => item.trim() !== "");
-    handleInputChange(
-      "experience",
-      "responsibilities",
-      responsibilities,
-      index,
-    );
+    handleInputChange("projects", "responsibilities", responsibilities, index);
   };
 
   const handleAiGeneration = async (prompt: string, index: number) => {
@@ -245,7 +240,9 @@ export const Project: React.FC<ProjectProps> = ({
                         onClick={() => {
                           const selection = window.getSelection()?.toString();
                           const textToUse =
-                            selection || exp.responsibilities?.join("\n") || "";
+                            selection ||
+                            proj.responsibilities?.join("\n") ||
+                            "";
                           handleAiGeneration(`${prompt}: ${textToUse}`, index);
                         }}
                         className=" ai-chip px-3 py-1 bg-blue-600 text-white rounded-full text-sm hover:bg-blue-700 transition-colors duration-200 disabled:opacity-50"

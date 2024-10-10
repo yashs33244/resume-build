@@ -190,7 +190,7 @@ export const Experience: React.FC<ExperienceProps> = ({
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                       <CustomDatePicker
                         id={`start-${index}`}
-                        value={exp.start || ""}
+                        value={exp.start}
                         onChange={handleInputChange}
                         index={index}
                         className="text-white"
@@ -204,17 +204,19 @@ export const Experience: React.FC<ExperienceProps> = ({
                     {/* <Label htmlFor={`end-${index}`} className="field-label">
                       End Date
                     </Label> */}
-                    <LocalizationProvider dateAdapter={AdapterDayjs}>
-                      <CustomDatePicker
-                        id={`end-${index}`}
-                        value={exp.end || ""}
-                        onChange={handleInputChange}
-                        index={index}
-                        className="text-white"
-                        field="end"
-                        category="experience"
-                      />
-                    </LocalizationProvider>
+                    {!exp.current && (
+                      <LocalizationProvider dateAdapter={AdapterDayjs}>
+                        <CustomDatePicker
+                          id={`end-${index}`}
+                          value={exp.end}
+                          onChange={handleInputChange}
+                          index={index}
+                          className="text-white"
+                          field="end"
+                          category="experience"
+                        />
+                      </LocalizationProvider>
+                    )}
                   </div>
                 </div>
                 <div className="inline-flex items-center">

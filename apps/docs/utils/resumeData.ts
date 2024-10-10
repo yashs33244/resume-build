@@ -36,7 +36,8 @@ export const initialResumeData: ResumeProps = {
       responsibilities: [
         "Led the design direction and created custom UI assets...",
         "Managed numerous cross-discipline workshops..."
-      ]
+      ],
+      current:false
     }
   ],
   skills: [], // Added the required 'skills' field as an empty array

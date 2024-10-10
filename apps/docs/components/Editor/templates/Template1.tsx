@@ -19,6 +19,8 @@ export const Template1 = (props: any) => {
   const education = resumeData.education || [];
   const coreSkills = resumeData.coreSkills || [];
   const techSkills = resumeData.techSkills || [];
+  const projects = resumeData.projects || [];
+  const certificates = resumeData.certificates || [];
 
   const getDuration = (dateString: any) => {
     const date = new Date(dateString);
@@ -59,13 +61,17 @@ export const Template1 = (props: any) => {
           </div>
           <div className="summary">{personalInfo?.bio || "Bio goes here"}</div>
         </div>
+
+        {/* Experience Section */}
         <div className="experience">
           <div className="section-title">WORK EXPERIENCE</div>
           {experience?.map((exp: any, index: any) => (
             <div className="exp-container" key={index}>
               <div className="company-name">{exp.company}</div>
               <div className="role-duration">
-                {`${exp.role} | ${getDuration(exp.start)} - ${getDuration(exp.end)}`}
+                {`${exp.role} | ${getDuration(exp.start)} - ${
+                  (!exp.current && exp?.end) || (exp.current && "Present") || ""
+                }`}
               </div>
               <div
                 className="responsibilities"
@@ -73,12 +79,11 @@ export const Template1 = (props: any) => {
                   __html: DOMPurify.sanitize(exp.responsibilities),
                 }}
               />
-              <div className="text-black">
-                {exp.current == true ? "Currently working" : ""}
-              </div>
             </div>
           ))}
         </div>
+
+        {/* Education Section */}
         <div className="education">
           <div className="section-title">EDUCATION</div>
           {education?.map((edu: any, index: any) => (
@@ -88,6 +93,8 @@ export const Template1 = (props: any) => {
             </div>
           ))}
         </div>
+
+        {/* Skills Section */}
         <div className="skills">
           {!!coreSkills.length && <div className="section-title">SKILLS</div>}
           <div className="core-skills">
@@ -110,6 +117,41 @@ export const Template1 = (props: any) => {
               </div>
             ))}
           </div>
+        </div>
+
+        {/* Projects Section */}
+        <div className="projects">
+          <div className="section-title">PROJECTS</div>
+          {projects?.map((proj: any, index: any) => (
+            <div className="proj-container" key={index}>
+              <div className="project-name">
+                <a href={proj.link || "#"}>{proj.name}</a>
+              </div>
+              <div className="project-duration">
+                {`${getDuration(proj.start)} - ${proj.end ? getDuration(proj.end) : "Present"}`}
+              </div>
+              <div
+                className="project-description"
+                dangerouslySetInnerHTML={{
+                  __html: DOMPurify.sanitize(proj.description),
+                }}
+              />
+            </div>
+          ))}
+        </div>
+
+        {/* Certificates Section */}
+        <div className="certificates">
+          <div className="section-title">CERTIFICATES</div>
+          {certificates?.map((cert: any, index: any) => (
+            <div className="cert-container" key={index}>
+              <div className="certificate-name">{cert.name}</div>
+              <div className="certificate-issuer">{cert.issuer}</div>
+              <div className="certificate-issuedOn">
+                Issued: {getDuration(cert.issuedOn)}
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </div>

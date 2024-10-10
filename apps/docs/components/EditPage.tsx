@@ -123,7 +123,7 @@ export default function EditPage() {
   const handleRedirect = async () => {
     try {
       // saveResume(resumeData, template || "");
-      redirect("/dashboard");
+      router.push("/dashboard");
     } catch (error: any) {
       console.log("Error", error);
     }

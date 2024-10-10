@@ -110,7 +110,6 @@ export const Template3 = (props: any) => {
                         __html: DOMPurify.sanitize(exp.responsibilities),
                       }}
                     ></div>
-                    <div>{exp.current == true ? "currently working" : ""}</div>
                   </div>
                 );
               })}
@@ -120,26 +119,49 @@ export const Template3 = (props: any) => {
             <div
               className={`${"rp_experience_div_label"} ${"rp_container_header"}`}
             >
-              Experience
+              Projects
             </div>
             <div
               className={`${"rp_experience_div_value"} ${"rp_container_content"}`}
             >
-              {resumeData.experience?.map((exp: any) => {
+              {resumeData.projects?.map((proj: any) => {
                 return (
-                  <div className={"rp_experience_div_value_section"}>
-                    <div className={"rp_experience_div_value_section_name"}>
-                      {exp?.company + " - " + exp?.role}
+                  <div className={"rp_projerience_div_value_section"}>
+                    <div className={"rp_projerience_div_value_section_name"}>
+                      {proj?.name + " - " + proj?.link}
                     </div>
-                    <div className={"rp_experience_div_value_section_year"}>
-                      {exp?.duration || exp?.start + " - " + exp.end}
+                    <div className={"rp_projerience_div_value_section_year"}>
+                      {proj?.start + " - " + proj.end}
                     </div>
                     <div
-                      className={"rp_experience_div_value_section_work"}
+                      className={"rp_projerience_div_value_section_work"}
                       dangerouslySetInnerHTML={{
-                        __html: DOMPurify.sanitize(exp.responsibilities),
+                        __html: DOMPurify.sanitize(proj.responsibilities),
                       }}
                     ></div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+          <div className={`${"rp_experience_div"} ${"rp_container"}`}>
+            <div
+              className={`${"rp_experience_div_label"} ${"rp_container_header"}`}
+            >
+              Certificates
+            </div>
+            <div
+              className={`${"rp_experience_div_value"} ${"rp_container_content"}`}
+            >
+              {resumeData.certificates?.map((cert: any) => {
+                return (
+                  <div className={"rp_projerience_div_value_section"}>
+                    <div className={"rp_projerience_div_value_section_name"}>
+                      {cert?.name + " - " + cert?.issuer}
+                    </div>
+                    <div className={"rp_projerience_div_value_section_year"}>
+                      {cert?.issuedOn}
+                    </div>
                   </div>
                 );
               })}
