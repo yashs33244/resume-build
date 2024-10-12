@@ -11,6 +11,7 @@ export default function SignIn() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const router = useRouter();
+  const searchParams = new URLSearchParams(window.location.search); // Updated
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -23,8 +24,12 @@ export default function SignIn() {
     if (result?.error) {
       setError("Invalid email or password");
     } else {
-      // Redirect to select-templates page on successful sign-in
-      router.push("/select-templates");
+      const callbackUrl = searchParams.get("callbackUrl"); // Get the callbackUrl
+      if (callbackUrl && callbackUrl.startsWith("/")) {
+        router.push(callbackUrl); // Redirect to the original URL with the query parameters intact
+      } else {
+        router.push("/select-templates"); // Fallback to a default page
+      }
     }
   };
 

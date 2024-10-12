@@ -217,16 +217,23 @@ export const authOptions: NextAuthOptions = {
       return true; // Allow sign-in if not using Google provider
     },
     async redirect({ url, baseUrl }) {
-      // If user is signing in, redirect them to the select-templates page
+      // Check if the user is signing in
+      
+      if (url.startsWith(baseUrl + '/select-templates/editor')) {
+        // Redirect the user back to the specific template editor page they were on
+        return url; // This will keep the query parameters intact
+      }
+    
+      // If user is signing in from the select-templates page
       if (url === baseUrl + '/select-templates') {
         return baseUrl + '/select-templates';
       }
-  
+    
       // If user is logging out, redirect them to the landing page
       if (url === baseUrl + '/api/auth/signout') {
         return baseUrl;
       }
-  
+    
       // Default behavior: Redirect to the base URL
       return baseUrl;
     },
