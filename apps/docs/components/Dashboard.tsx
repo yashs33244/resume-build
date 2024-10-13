@@ -23,8 +23,10 @@ import { Template1 } from "./Editor/templates/Template1";
 import { Template2 } from "./Editor/templates/template2";
 import { Template3 } from "./Editor/templates/template3";
 import { useResumeState } from "../hooks/useResumeState";
+import { useSession } from "next-auth/react";
 
 const Dashboard = () => {
+  const { data: session, status: sessionStatus } = useSession();
   const { handleDownload } = useResumeDownload();
   const isGeneratingPDF = useRecoilValue(isGeneratingPDFAtom);
   const { resumeData, selectedTemplate } = useResumeData();
@@ -46,7 +48,7 @@ const Dashboard = () => {
   return (
     <div className="dashboard-container">
       <div className="top-section">
-        <div className="dash-title">My Resumes</div>
+        <div className="dash-title">Hi {session?.user.name}</div>
         <div className="create-cta">
           <IoAddCircleOutline className="create-icon" />
           <div>
