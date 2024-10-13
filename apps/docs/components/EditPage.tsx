@@ -32,6 +32,8 @@ import { ResumeProps } from "../types/ResumeProps";
 import { useSession } from "next-auth/react";
 import Modal from "react-responsive-modal";
 import { isOpacityEffect } from "html2canvas/dist/types/render/effects";
+import { resumeSizeAtom } from "../store/resumeSize";
+import { useRecoilState } from "recoil";
 
 const PersonalInfo = dynamic(
     () => import("./Editor/PersonalInfo").then((mod) => mod.PersonalInfo),
@@ -56,6 +58,7 @@ const Achievement = dynamic(
 
 export default function EditPage() {
     const [currentTemplate, setCurrentTemplate] = useState("template1");
+    const [resumeSize, setResumeSize] = useRecoilState(resumeSizeAtom);
     const [isOverflowing, setIsOverflowing] = useState(undefined);
     const router = useRouter();
     const [template, setTemplate] = useState<string | null>(null);
@@ -167,17 +170,14 @@ export default function EditPage() {
 
     useEffect(() => {
         const checkOverflow = () => {
-            if(isOverflowing == undefined){
-                const templateElement = document.querySelector(".template-container");;
-                if (templateElement) {
-                    const isOverflown = templateElement.scrollHeight > 842;
-                    if(isOverflown)
-                        setIsOverflowing(isOverflown);
-                }
+            const templateElement = document.querySelector(".template-container");;
+            if (templateElement) {
+                const isOverflown = templateElement.scrollHeight > 842;
+                setIsOverflowing(isOverflown);
             }
         };
         checkOverflow();
-    }, [resumeData]);
+    }, [resumeData,resumeSize]);
 
     const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
     const [tipsOpen, setTipsOpen] = useState(false);
@@ -257,24 +257,17 @@ export default function EditPage() {
         setCurrentTemplate(e?.target?.value);
     };
 
+    const reduceSize = () =>{
+        if(resumeSize == 'M'){
+            setResumeSize('S')
+        }
+        else if(resumeSize == 'L'){
+            setResumeSize('M')
+        }
+    }
+
     return (
         <div className="flex flex-col w-full min-h-screen bg-background text-foreground dark:bg-[#1a1b1e] dark:text-white">
-            <Modal
-                open={isOverflowing} 
-                showCloseIcon={false}
-                classNames={{ modal: "overflow_modal" }}
-            >
-                <div className="overflow_modal_div">
-                    <p className="overflow_modal_div_p1">Your content is overflowing</p>
-                    <p className="overflow_modal_div_p2">You can either reduce the content or change the size</p>
-                    <button 
-                        className="overflow_modal_div_btn" 
-                        onClick={()=>setIsOverflowing(false)}
-                    >
-                        Ok
-                    </button>
-                </div>
-            </Modal>
             <Tips activeSection={activeSection} open={tipsOpen} setTipsOpen={(val) => setTipsOpen(val)} />
             <div className="editor-container">
                 <div className="navigation">
@@ -441,6 +434,20 @@ export default function EditPage() {
                     <div className="preview-container" id="resumeParent">
                         {renderTemplate()}
                     </div>
+                    {
+                        isOverflowing &&
+                        <div className='overflow_div'>
+                            <span className='overflow_div_p1'>Your content is overflowing. You can optimize the content</span>
+                            {
+                                ['M','L'].includes(resumeSize) && 
+                                <span className='overflow_div_p1'>
+                                    &nbsp;or you can click&nbsp;
+                                    <span onClick={reduceSize} className='overflow_div_action'>here</span> 
+                                    &nbsp;to reduce the size
+                                </span>
+                            }
+                        </div>
+                    }
                 </div>
                 <DownloadModel
                     isOpen={isModelOpen}
@@ -449,6 +456,7 @@ export default function EditPage() {
                     templateId={template || ""}
                     renderTemplate={renderTemplate}
                 />
+
             </div>
         </div>
     );

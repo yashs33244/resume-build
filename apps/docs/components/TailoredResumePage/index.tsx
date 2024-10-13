@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect } from "react";
-import { Download, X, ArrowLeftCircle } from "lucide-react";
+import { IoMdDownload } from "react-icons/io";
 import { useRecoilState } from "recoil";
 import { isGeneratingPDFAtom } from "../../store/pdfgenerating";
 import { resumeTimeAtom } from "../../store/expiry";
@@ -16,40 +16,41 @@ const TailoredResumePage: React.FC = () => {
 
     const searchParams = useSearchParams()
     const { resumeData } = useResumeData();
-    const templateId = searchParams.get('template') ?? "fresher";
+    const templateId = searchParams.get('template') ?? "designer";
 
     const [jobDescription, setJobDescription] = useState("");
     const [isGeneratingPDF, setIsGeneratingPDF] = useRecoilState(isGeneratingPDFAtom);
     const [resumeTimes, setResumeTimes] = useRecoilState(resumeTimeAtom);
-    const [tailoredResumeData, setTailoredResumeData] = useState < ResumeProps | null > (null);
+    const [tailoredResumeData, setTailoredResumeData] = useState<ResumeProps | null>(null);
     const [showComparison, setShowComparison] = useState(false);
     const [isTailoring, setIsTailoring] = useState(false);
 
+    function scaleContent() {
+        const containers = document.querySelectorAll(".resumeParent");
+        containers.forEach((container) => {
+            const content = container.querySelector(".wrapper");
+            if (container && content) {
+                const widthScale = container.clientWidth / content.clientWidth;
+                const heightScale = container.clientHeight / content.clientHeight;
+                const scale = Math.min(widthScale, heightScale);
+                // @ts-ignore
+                content.style.transform = `scale(${scale})`;
+            }
+        });
+    }
+
     useEffect(() => {
-        function scaleContent() {
-            const containers = document.querySelectorAll(".resumeParent");
-            
-            containers.forEach((container) => {
-                const content = container.querySelector(".wrapper");
-                
-                if (container && content) {
-                    const widthScale = container.clientWidth / content.clientWidth;
-                    const heightScale = container.clientHeight / content.clientHeight;
-                    const scale = Math.min(widthScale, heightScale);
-                    // @ts-ignore
-                    content.style.transform = `scale(${scale})`;
-                }
-            });
-        }
-    
         window.addEventListener("resize", scaleContent);
         scaleContent();
-    
         return () => {
             window.removeEventListener("resize", scaleContent);
         };
     }, []);
-    
+
+    useEffect(()=>{
+        scaleContent()
+    },[tailoredResumeData])
+
 
     const renderTemplate = useCallback(
         (data: ResumeProps) => {
@@ -170,42 +171,44 @@ const TailoredResumePage: React.FC = () => {
     return (
         <div className={styles.head}>
             {
-                showComparison ? 
+                showComparison ?
                     <div className={styles.tailor_p2_head}>
-                        <div className={styles.tailor_p2_head_section}>    
+                        <div className={styles.tailor_p2_head_section}>
                             <div className={styles.tailor_p2_head_section_heading}>
                                 <p className={styles.tailor_p2_head_section_heading_data}>Original</p>
-                                <button
-                                    className={styles.tailor_p2_head_section_heading_button}
-                                    onClick={() => handleDownload(resumeData)}
-                                >
-                                    <Download/>
-                                </button>
                             </div>
                             <div className={`${styles.tailor_p2_head_section_preview} resumeParent`} id="resumeParent">
                                 {
                                     renderTemplate(resumeData)
                                 }
                             </div>
+                            <button
+                                className={styles.tailor_p2_head_section_heading_button}
+                                onClick={() => handleDownload(resumeData)}
+                            >
+                                <IoMdDownload/>
+                                Download
+                            </button>
                         </div>
-                        <div className={styles.tailor_p2_head_section}>    
+                        <div className={styles.tailor_p2_head_section}>
                             <div className={styles.tailor_p2_head_section_heading}>
                                 <p className={styles.tailor_p2_head_section_heading_data}>Tailored CV</p>
-                                <button
-                                    className={styles.tailor_p2_head_section_heading_button}
-                                    onClick={() => tailoredResumeData && handleDownload(tailoredResumeData)}
-                                >
-                                    <Download/>
-                                </button>
                             </div>
                             <div className={`${styles.tailor_p2_head_section_preview} resumeParent`} id="resumeParent">
                                 {
                                     tailoredResumeData && renderTemplate(tailoredResumeData)
                                 }
                             </div>
+                            <button
+                                className={styles.tailor_p2_head_section_heading_button}
+                                onClick={() => tailoredResumeData && handleDownload(tailoredResumeData)}
+                            >
+                                <IoMdDownload/>
+                                Download
+                            </button>
                         </div>
                     </div>
-                : 
+                    :
                     <div className={styles.tailor_p1_head}>
                         <div className={styles.tailor_p1_head_heading}>
                             <p className={styles.tailor_p1_head_heading_data}>Tailor Your CV</p>

@@ -435,7 +435,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            height: calc(100vh - 122px);
+            height: calc(100vh - 172px);
             box-sizing: border-box;
 
             img {
@@ -447,51 +447,22 @@
     }
 }
 
-.overflow_modal{
-    background: transparent !important;
-    color: white;
-    align-items: center;
-    display: flex !important;
-    justify-content: center;
-    max-width: 100vw !important;
-    height: 100vh;
-    backdrop-filter: blur(10px);
+.overflow_div{
+    margin: auto;
+    font-size: 10px;
+    margin-bottom: 28px;
+    opacity: 0.9;
+    font-weight: 500;
+    margin-top: 20px;
+    text-align: center;
+    &_p1{
 
-    &_div{
-        display: flex;
-        flex-direction: column;
-        background: #121420;
-        padding: 20px;
-        border-radius: 16px;
+    }
 
-        &_p1{
-            font-family: Inter;
-            font-size: 20px;
-            font-weight: 700;
-            line-height: 38.73px;
-            color: #FFFFFFCC;
-        }
-        &_p2{
-            font-family: Inter;
-            font-size: 20px;
-            font-weight: 700;
-            line-height: 38.73px;
-            color: #FFFFFFCC;
-        }
-        &_btn{
-            margin-top: 20px;
-            margin-left: auto;
-            width: 100px;
-            height: 40px;
-            border-radius: 8px;
-            border: 2px;
-            border: 2px solid #3B5BFF;
-            font-family: Inter;
-            font-size: 20px;
-            font-weight: 500;
-            line-height: 24.2px;
-            text-align: center;
-            color: #FFFFFFCC;
-        }
+    &_action{
+        font-weight: 700;
+        color: #3B5BFF;
+        text-decoration: underline;
+        cursor: pointer;
     }
 }

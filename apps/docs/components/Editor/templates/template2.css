@@ -57,6 +57,11 @@
     flex-direction: column;
     gap: var(--container-gap);
     overflow-y: hidden;
+    word-wrap: break-word;
+  }
+
+  .template2-wrapper .template-container *{
+    word-wrap: break-word;
   }
   
   /* Header Section */
@@ -109,11 +114,13 @@
   }
   
   .template2-wrapper .content_left_part {
-    width: 130px;
+    min-width: 130px;
+    max-width: 130px;
   }
   
   .template2-wrapper .content_right_part {
     flex: 1;
+    max-width: calc(100% - 130px);
   }
   
   /* Content Labels and Values */

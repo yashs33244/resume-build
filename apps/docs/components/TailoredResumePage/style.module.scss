@@ -1,7 +1,9 @@
 .head{
     display: flex;
+    max-width: 1200px;
     min-height: calc(100vh - 100px);
     background-color: #1B2432;
+    margin: auto;
 }
 
 .tailor_p1_head{
@@ -103,6 +105,7 @@
     padding: 40px;
     border-radius: 16px;
     gap: 32px;
+    max-height: calc(100vh - 150px);
 
     &_section{
         flex: 1;
@@ -111,10 +114,11 @@
         gap: 28px;
         width: calc(50% - 28px);
         overflow: hidden;
+        max-height: calc(100vh - 260px);
 
         &_heading{
             display: flex;
-            // justify-content: space-between;
+            justify-content: center;
             gap: 10px;
 
             &_data{
@@ -125,34 +129,39 @@
                 color: #FFFFFFCC;
             }
             &_button{
-                // width: 184px;
+                // width: 40px;
                 // height: 40px;
-                // border-radius: 8px;
-                // border: 2px;
-                // border: 2px solid #3B5BFF;
-                // font-family: Inter;
-                // font-size: 20px;
-                // font-weight: 500;
-                // line-height: 24.2px;
-                // text-align: center;
                 // color: #FFFFFFCC;
-                width: 40px;
+                // cursor: pointer;
+                width: 184px;
                 height: 40px;
+                font-family: Inter;
+                font-size: 20px;
+                font-weight: 500;
+                line-height: 24.2px;
+                text-align: center;
                 color: #FFFFFFCC;
-                cursor: pointer;
+                margin: auto;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 10px;
+                color: white;
+                border-radius: 18px;
+                background-color: #3B5BFF;
+                padding: 8px 24px;
             }
         }
         &_preview{
+            flex: 1;
             display: flex;
             width: 100%;
+            height: calc(100% - 140px);
             align-items: center;
-            justify-content: flex-start;
-            max-height: calc(100vh - 230px);
+            justify-content: center;
 
             & :global(.wrapper), & :global(.template-container){
                 border-radius: 16px;
-                transform-origin: left;
-                overflow: hidden;
             }
         }    
     }
