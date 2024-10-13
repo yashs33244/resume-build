@@ -33,7 +33,7 @@
             }
 
             button {
-                background-color: #3B5BFF;
+                background-color: #3b5bff;
                 color: white;
                 padding: 14px 16px;
                 cursor: pointer;
@@ -72,7 +72,8 @@
             }
 
             .typewriter {
-                background: linear-gradient(88.28deg, #0094FF 10%, #FF33DE 40%, #FF60E6 60%);
+                // background: linear-gradient(88.28deg, #0094FF 10%, #FF33DE 40%, #FF60E6 60%);
+                background: linear-gradient(to left, #ffffff, #3b5bff);
                 -webkit-background-clip: text;
                 -webkit-text-fill-color: transparent;
                 font-weight: 600;
@@ -119,7 +120,8 @@
             }
 
             .primary-cta {
-                background: linear-gradient(to right, #3B5BFF, #FF33DE);
+                // background: linear-gradient(to right, #3B5BFF, #FF33DE);
+                background: #3b5bff;
                 padding: 16px;
                 border: none;
                 color: white;
@@ -466,7 +468,8 @@
         margin-top: 10rem;
         padding-bottom: 10rem;
         .title {
-            background: linear-gradient(to right, #0094FF, #FF33DE);
+            // background: linear-gradient(to right, #0094FF, #FF33DE);
+            // background: linear-gradient(to right, #0094FF, black);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             font-weight: 500;
@@ -487,7 +490,8 @@
             width: 96%;
             margin-left: 2%;
             height: 460px;
-            background: linear-gradient(90deg,#263BFF 11.12%,#AC42FF 92.73%);
+            // background: linear-gradient(90deg,#263BFF 11.12%,#AC42FF 92.73%);
+            background: linear-gradient(to right, #121420, #3b5bff);
             border-radius: 24px;
             display: flex;
 

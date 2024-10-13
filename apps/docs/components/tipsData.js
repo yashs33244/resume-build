@@ -29,7 +29,7 @@ export const tipsData = {
     ],
     skills : [
         'Review the job posting carefully to highlight the most relevant skills for the role.',
-        'Use specific terms that are familiar to recruiters (e.g., “Proficiency in C++ and Java” instead of “good with computers”).',
+        'Use specific terms that are familiar to recruiters (e.g., “C++ and Java” instead of “Computer Science”).',
         'Emphasize hard skills like programming languages, tools, or software relevant to the job.',
         'Skip generic skills like "communication" or "teamwork" that are assumed in most roles.',
         'Do not flood your resume with too many skills. Select the most relevant ones that are your super powers and keep them concise.'

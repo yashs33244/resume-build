@@ -1,157 +1,43 @@
 import Link from "next/link";
+import Image from "next/image";
+import { FaLinkedin } from "react-icons/fa6";
+import { AiOutlineMail } from "react-icons/ai";
+import { BsTelephone } from "react-icons/bs";
+import logo from "./logo.svg";
+import "./footer.scss";
 export default function Footer() {
   return (
-    <footer className="bg-muted-dark p-6 md:py-12 w-full flex justify-center">
-      <div className="container max-w-7xl grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-8 text-sm text-primary-foreground-dark">
-        <div className="grid gap-1">
-          <h3 className="font-semibold">Company</h3>
-          <Link
-            href="#"
-            className="hover:text-primary-foreground-dark"
-            prefetch={false}
-          >
-            About Us
-          </Link>
-          <Link
-            href="#"
-            className="hover:text-primary-foreground-dark"
-            prefetch={false}
-          >
-            Our Team
-          </Link>
-          <Link
-            href="#"
-            className="hover:text-primary-foreground-dark"
-            prefetch={false}
-          >
-            Careers
-          </Link>
-          <Link
-            href="#"
-            className="hover:text-primary-foreground-dark"
-            prefetch={false}
-          >
-            News
-          </Link>
+    <footer className="bg-muted-dark md:py-12 w-full flex justify-around">
+        <div className="branding">
+          <div className="logo">
+            <Image alt="logo" src={logo} width={100} height={100} />
+          </div>
+          <div className="copyright">© Copyright 2024 - finalCV</div>
+        </div> 
+        <div className="company">
+          <div className="heading">Company</div>  
+          <div className="link">About Us</div>        
+          <div className="link">
+            <FaLinkedin />
+            <div style={{marginLeft: '8px'}}>LinkedIn</div>
+          </div>                    
         </div>
-        <div className="grid gap-1">
-          <h3 className="font-semibold">Products</h3>
-          <Link
-            href="#"
-            className="hover:text-primary-foreground-dark"
-            prefetch={false}
-          >
-            Men
-          </Link>
-          <Link
-            href="#"
-            className="hover:text-primary-foreground-dark"
-            prefetch={false}
-          >
-            Women
-          </Link>
-          <Link
-            href="#"
-            className="hover:text-primary-foreground-dark"
-            prefetch={false}
-          >
-            Kids
-          </Link>
-          <Link
-            href="#"
-            className="hover:text-primary-foreground-dark"
-            prefetch={false}
-          >
-            Accessories
-          </Link>
+        <div className="contact">
+          <div className="heading">Contact Us</div>
+          <div className="link">
+            <AiOutlineMail />
+            <div style={{marginLeft: '8px'}}>hello@finalcv.com</div>
+          </div>
+          <div className="link">
+            <BsTelephone />
+            <div style={{marginLeft: '8px'}}>+91 8630845133</div>
+          </div>               
         </div>
-        <div className="grid gap-1">
-          <h3 className="font-semibold">Resources</h3>
-          <Link
-            href="#"
-            className="hover:text-primary-foreground-dark"
-            prefetch={false}
-          >
-            Blog
-          </Link>
-          <Link
-            href="#"
-            className="hover:text-primary-foreground-dark"
-            prefetch={false}
-          >
-            Community
-          </Link>
-          <Link
-            href="#"
-            className="hover:text-primary-foreground-dark"
-            prefetch={false}
-          >
-            Support
-          </Link>
-          <Link
-            href="#"
-            className="hover:text-primary-foreground-dark"
-            prefetch={false}
-          >
-            FAQs
-          </Link>
-        </div>
-        <div className="grid gap-1">
-          <h3 className="font-semibold">Legal</h3>
-          <Link
-            href="#"
-            className="hover:text-primary-foreground-dark"
-            prefetch={false}
-          >
-            Privacy Policy
-          </Link>
-          <Link
-            href="#"
-            className="hover:text-primary-foreground-dark"
-            prefetch={false}
-          >
-            Terms of Service
-          </Link>
-          <Link
-            href="#"
-            className="hover:text-primary-foreground-dark"
-            prefetch={false}
-          >
-            Cookie Policy
-          </Link>
-        </div>
-        <div className="grid gap-1">
-          <h3 className="font-semibold">Contact</h3>
-          <Link
-            href="#"
-            className="hover:text-primary-foreground-dark"
-            prefetch={false}
-          >
-            Support
-          </Link>
-          <Link
-            href="#"
-            className="hover:text-primary-foreground-dark"
-            prefetch={false}
-          >
-            Sales
-          </Link>
-          <Link
-            href="#"
-            className="hover:text-primary-foreground-dark"
-            prefetch={false}
-          >
-            Press
-          </Link>
-          <Link
-            href="#"
-            className="hover:text-primary-foreground-dark"
-            prefetch={false}
-          >
-            Partnerships
-          </Link>
-        </div>
-      </div>
+        <div className="support">
+          <div className="heading">Support</div>          
+          <div className="link">Privacy</div>
+          <div className="link">Terms of Service</div>          
+        </div>              
     </footer>
   );
 }

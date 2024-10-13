@@ -7,6 +7,7 @@ import { Template1 } from "./Editor/templates/Template1";
 import { Template2 } from "./Editor/templates/template2";
 import { Modal } from 'react-responsive-modal';
 import { Template3 } from "./Editor/templates/template3";
+import { IoMdDownload } from "react-icons/io";
 import { ResumeProps } from "../types/ResumeProps";
 import { useSaveResume } from "../hooks/useSaveResume";
 
