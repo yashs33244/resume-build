@@ -321,6 +321,8 @@
 .template-container .M .skills .core-skills {
     display: flex;
     margin-top: 0.56rem;
+    flex-wrap: wrap;
+    gap: 5px;
 }
 
 .template-container .S .skills .core-skills {

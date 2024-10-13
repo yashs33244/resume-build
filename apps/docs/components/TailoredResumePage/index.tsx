@@ -16,7 +16,7 @@ const TailoredResumePage: React.FC = () => {
 
     const searchParams = useSearchParams()
     const { resumeData } = useResumeData();
-    const templateId = searchParams.get('template') ?? "designer";
+    const templateId = searchParams.get('template') ?? "fresher";
 
     const [jobDescription, setJobDescription] = useState("");
     const [isGeneratingPDF, setIsGeneratingPDF] = useRecoilState(isGeneratingPDFAtom);

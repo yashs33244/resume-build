@@ -28,14 +28,14 @@
   
   /* Size S */
   .template2-wrapper.S {
-    --font-size-base: 12px; /* 75% of M */
+    --font-size-base: 14px; /* 75% of M */
     --padding-base: 30px; /* 75% of M */
     --gap-base: 22.5px; /* 75% of M */
   }
   
   /* Size L */
   .template2-wrapper.L {
-    --font-size-base: 20px; /* 125% of M */
+    --font-size-base: 18px; /* 125% of M */
     --padding-base: 50px; /* 125% of M */
     --gap-base: 37.5px; /* 125% of M */
   }
