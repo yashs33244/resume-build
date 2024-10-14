@@ -58,13 +58,13 @@ export const Template1 = (props: any) => {
                         {personalInfo?.title || "Title"}
                     </div>
                     <div className="information">
-                        {`${personalInfo?.email || "Email"} | ${personalInfo?.phone || "Phone"} | `}
+                        {`${personalInfo?.email || "Email"} | ${personalInfo?.phone || "Phone"} `}
                         <a href={personalInfo?.linkedin || "#"}>
-                            {personalInfo?.linkedin || "LinkedIn"}
+                            {`${personalInfo.linkedin ? `| ${personalInfo.linkedin}` : ''}`}
                         </a>
                     </div>
                     <div className="summary">
-                        {personalInfo?.bio || "Bio goes here"}
+                        {personalInfo?.bio || ""}
                     </div>
                 </div>
                 {experience.length > 0 &&
@@ -106,7 +106,8 @@ export const Template1 = (props: any) => {
                                 }
                                 {(edu?.degree || edu?.major) &&
                                     <div className="degree-major">
-                                        {`${edu?.degree || ""} - ${edu?.major || ""}`}
+                                        {/* {`${edu?.degree || ""} - ${edu?.major || ""}`} */}
+                                        {`${edu.degree ? edu.degree : ''} ${edu.major ? `- ${edu.major}` : ''}`}
                                     </div>
                                 }
                             </div>
