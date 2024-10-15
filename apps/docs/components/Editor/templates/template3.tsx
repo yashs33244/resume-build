@@ -8,6 +8,7 @@ import { FaPhoneAlt } from "react-icons/fa";
 import { FaLinkedin } from "react-icons/fa";
 import { useRecoilState } from "recoil";
 import { resumeSizeAtom } from "../../../store/resumeSize";
+import { getDuration } from "../../../utils";
 
 export const Template3 = (props: any) => {
     const { resumeData, id } = props;
@@ -127,7 +128,7 @@ export const Template3 = (props: any) => {
                                             {
                                                 (exp?.start || exp?.end || exp?.duration) &&
                                                 <div className={"rp_experience_div_value_section_year"}>
-                                                    {exp?.duration || exp.start + " - " + (exp.current ? "Present" : exp.end)}
+                                                    {exp?.duration || getDuration(exp.start) + " - " + (exp.current ? "Present" : getDuration(exp.end))}
                                                 </div>
                                             }
                                             {

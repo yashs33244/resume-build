@@ -80,18 +80,13 @@ const DownloadModal: React.FC<DownloadModalProps> = ({
                 if (!element) {
                     throw new Error("Resume wrapper not found");
                 }
-
-                // Create a deep clone of the element
                 const clone = element.cloneNode(true) as HTMLElement;
-
-                // Apply the scale transformation to the clone, not the original element
                 clone.style.transform = "scale(1)";
 
-                // Get the HTML content to send, including the styles and the clone's content
                 const cssLink = `<link rel="stylesheet" href="http://localhost:3000/_next/static/css/app/(pages)/select-templates/editor/page.css">`;
-                const htmlContent = cssLink + clone.outerHTML;
+                const globalCSSLink = `<link rel="stylesheet" href="http://localhost:3000/_next/static/css/app/layout.css?v=1728991725867">`;
+                const htmlContent = globalCSSLink + cssLink  + clone.outerHTML;
 
-                // Send the HTML content to the backend
                 const response = await fetch("/api/generate-pdf", {
                     method: "POST",
                     headers: {

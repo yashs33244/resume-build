@@ -5,6 +5,7 @@ import "./template2.css";
 import DOMPurify from "dompurify";
 import { useRecoilState } from "recoil";
 import { resumeSizeAtom } from "../../../store/resumeSize";
+import { getDuration } from "../../../utils";
 
 export const Template2 = (props: any) => {
     const { resumeData, id } = props;
@@ -134,7 +135,7 @@ export const Template2 = (props: any) => {
                                                 <div
                                                     className={"content_experience_div_value_section_year"}
                                                 >
-                                                    {exp?.duration || exp?.start + " - " + (exp?.current ? "Present" : exp?.end)}
+                                                    {exp?.duration || getDuration(exp?.start) + " - " + (exp?.current ? "Present" : getDuration(exp?.end))}
                                                 </div>
                                             }
                                             {
