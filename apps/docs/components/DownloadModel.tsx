@@ -218,7 +218,7 @@ const DownloadModal: React.FC<DownloadModalProps> = ({
                     <div className="right">
                         <div>
                             <div className="heading">Continue to Download</div>
-                            <div className="download-button">
+                            <div className="download-button" onClick={() => handleDownload(resumeData)}>
                                 <IoMdDownload />
                                 <div>Download Final-CV.pdf</div>
                             </div>
