@@ -33,6 +33,7 @@ export async function POST(req: NextRequest) {
           margin: 0 !important;
           padding: 0 !important;
           width: 100% !important;
+          line-height: 1.6;
         }
       `;
       document.head.appendChild(style);
