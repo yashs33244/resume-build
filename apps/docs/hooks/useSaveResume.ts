@@ -10,7 +10,7 @@ export function useSaveResume() {
 
   const saveResume = async (resumeData: ResumeProps, template: string) => {
  
-
+    console.log(resumeData);
     setIsSaving(true);
 
     try {
