@@ -16,7 +16,7 @@ const TailoredResumePage: React.FC = () => {
 
     const searchParams = useSearchParams()
     const { resumeData } = useResumeData();
-    const templateId = searchParams.get('template') ?? "fresher";
+    const templateId = searchParams.get('template') ?? "experienced";
 
     const [jobDescription, setJobDescription] = useState("");
     const [isGeneratingPDF, setIsGeneratingPDF] = useRecoilState(isGeneratingPDFAtom);
@@ -56,11 +56,11 @@ const TailoredResumePage: React.FC = () => {
         (data: ResumeProps) => {
             switch (templateId) {
                 case "fresher":
-                    return <Template1 resumeData={data} className="wrapper" />;
+                    return <Template1 resumeData={data} className="wrapper" id="wrapper"/>;
                 case "experienced":
-                    return <Template2 resumeData={data} className="wrapper" />;
+                    return <Template2 resumeData={data} className="wrapper" id="wrapper"/>;
                 case "designer":
-                    return <Template3 resumeData={data} className="wrapper" />;
+                    return <Template3 resumeData={data} className="wrapper" id="wrapper"/>;
                 default:
                     return <div>Select a template from the template selection page</div>;
             }
@@ -85,13 +85,16 @@ const TailoredResumePage: React.FC = () => {
         async (data: ResumeProps) => {
             setIsGeneratingPDF(true);
             try {
-                const element = document.getElementById("wrapper");
-                if (!element) throw new Error("Resume wrapper not found");
+                const realElement = document.getElementById("wrapper");
+                if (!realElement) throw new Error("Resume wrapper not found");
+                const element = realElement.cloneNode(true)
 
                 element.style.transform = "scale(1)";
 
                 const cssLink = `<link rel="stylesheet" href="http://localhost:3000/_next/static/css/app/(pages)/select-templates/editor/page.css">`;
                 const htmlContent = cssLink + element.outerHTML;
+
+                console.log('htmlContent :>> ', htmlContent);
 
                 const response = await fetch("/api/generate-pdf", {
                     method: "POST",
@@ -171,7 +174,7 @@ const TailoredResumePage: React.FC = () => {
     return (
         <div className={styles.head}>
             {
-                showComparison ?
+                showComparison || true?
                     <div className={styles.tailor_p2_head}>
                         <div className={styles.tailor_p2_head_section}>
                             <div className={styles.tailor_p2_head_section_heading}>
