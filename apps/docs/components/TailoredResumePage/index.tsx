@@ -16,7 +16,7 @@ const TailoredResumePage: React.FC = () => {
 
     const searchParams = useSearchParams()
     const { resumeData } = useResumeData();
-    const templateId = searchParams.get('template') ?? "experienced";
+    const templateId = searchParams.get('template') ?? "fresher";
 
     const [jobDescription, setJobDescription] = useState("");
     const [isGeneratingPDF, setIsGeneratingPDF] = useRecoilState(isGeneratingPDFAtom);
@@ -92,7 +92,9 @@ const TailoredResumePage: React.FC = () => {
                 element.style.transform = "scale(1)";
 
                 const cssLink = `<link rel="stylesheet" href="http://localhost:3000/_next/static/css/app/(pages)/select-templates/editor/page.css">`;
-                const htmlContent = cssLink + element.outerHTML;
+                const globalCSSLink = `<link rel="stylesheet" href="http://localhost:3000/_next/static/css/app/layout.css?v=1728991725867">`;
+                const fontLink = `<link href='https://fonts.googleapis.com/css?family=Inter' rel='stylesheet'/>`
+                const htmlContent = cssLink+ globalCSSLink + fontLink + element.outerHTML;
 
                 console.log('htmlContent :>> ', htmlContent);
 
@@ -174,7 +176,7 @@ const TailoredResumePage: React.FC = () => {
     return (
         <div className={styles.head}>
             {
-                showComparison || true?
+                showComparison ?
                     <div className={styles.tailor_p2_head}>
                         <div className={styles.tailor_p2_head_section}>
                             <div className={styles.tailor_p2_head_section_heading}>

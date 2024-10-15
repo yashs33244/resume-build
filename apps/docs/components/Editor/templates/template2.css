@@ -1,5 +1,11 @@
 /* Base Template Styles */
+.template2-wrapper *{
+    font-family: 'Inter';
+    line-height: 1.5;
+    box-sizing: border-box;
+}
 .template2-wrapper {
+
     --font-size-base: 16px; /* Default for M */
     --font-size-small: 0.75;
     --font-size-large: 1.25;

@@ -12,6 +12,10 @@ export const Template2 = (props: any) => {
 
     return (
         <div className={`template2-wrapper ${resumeSize} wrapper`} id={id}>
+            <link
+                rel="stylesheet"
+                href="https://fonts.googleapis.com/css?family=Inter"
+            />
             <div className={"template-container"}>
                 <div className={"header"}>
                     <div className={"header_left_part"}>

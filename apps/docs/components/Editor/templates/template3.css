@@ -1,4 +1,12 @@
 /* Base Template Styles */
+
+
+.template3-wrapper *{
+    line-height: 1.5;
+    box-sizing: border-box;
+}
+
+
 .template3-wrapper {
     --font-size-base: 16px; /* Default for M */
     --font-size-small: 0.75;
@@ -61,7 +69,7 @@
     color: black;
     display: flex;
     overflow-y: hidden;
-    font-family: ui-serif;
+    font-family: ui-serif !important;
     word-wrap: break-word;
   }
 
@@ -117,6 +125,24 @@
     & span{
         max-width: calc(100% - 10px);
         line-height: 14px;
+        word-break: break-all;
+    }
+  }
+
+  .template3-wrapper.S .lp_add_info_value {
+    align-items: center;
+    & svg{
+        min-width: 7px;
+        max-width: 7px;
+        height: 7px;
+    }
+  }
+  .template3-wrapper.L .lp_add_info_value {
+    align-items: center;
+    & svg{
+        min-width: 12px;
+        max-width: 12px;
+        height:12px;
     }
   }
   

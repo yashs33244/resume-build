@@ -29,21 +29,21 @@ export const Template3 = (props: any) => {
                         {
                             resumeData?.personalInfo?.email &&
                             <div className={"lp_add_info_value"}>
-                                <IoMail />
+                                <IoMail/>
                                 <span>{resumeData.personalInfo.email}</span>
                             </div>
                         }
                         {
                             resumeData?.personalInfo?.phone &&
                             <div className={"lp_add_info_value"}>
-                                <FaPhoneAlt />
+                                <FaPhoneAlt/>
                                 <span>{resumeData.personalInfo.phone}</span>
                             </div>
                         }
                         {
                             resumeData?.personalInfo?.linkedin &&
                             <div className={"lp_add_info_value"}>
-                                <FaLinkedin />
+                                <FaLinkedin/>
                                 <a href={resumeData.personalInfo?.linkedin}>
                                     <span>{resumeData.personalInfo?.linkedin}</span>
                                 </a>

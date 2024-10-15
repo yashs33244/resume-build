@@ -39,7 +39,11 @@ export const Template1 = (props: any) => {
     const initials = getInitials(personalInfo?.name?.toUpperCase() || "");
 
     return (
-        <div className="template-container wrapper" id={id}>
+        <div className="template1-container wrapper" id={id}>
+            <link
+                rel="stylesheet"
+                href="https://fonts.googleapis.com/css?family=Inter"
+            />
             <div className={`M ${resumeSize}`}>
                 {initials && initials.length > 0 &&
                     <div className="tag">
@@ -129,7 +133,7 @@ export const Template1 = (props: any) => {
                                 </div>
                             ))}
                         </div>
-                        <div className="tech-skills">
+                        <div className="core-skills">
                             {techSkills.map((skill: any, index: any) => (
                                 <div
                                     className={`skill-container ${index === 0 ? "first" : ""}`}
