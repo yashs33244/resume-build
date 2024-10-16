@@ -6,6 +6,5 @@ export const fetchResumeState = async (resumeId: string) => {
     }
 
     const data = await res.json(); // Await the parsed JSON data
-    console.log(data); // Log the parsed data
     return data; // Return the parsed JSON data
 };

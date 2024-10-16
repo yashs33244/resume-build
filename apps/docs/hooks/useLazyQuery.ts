@@ -19,7 +19,6 @@ const useLazyQuery = (apiFunction:any) => {
             setErrorMessage(error)
         }
         setIsLoading(false);
-        console.log(response)
         return response;
     };
 

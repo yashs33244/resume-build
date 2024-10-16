@@ -12,9 +12,11 @@ import { useResumeData } from "../../hooks/useResumeData";
 import { useRouter } from "next/navigation";
 import { useSearchParams } from "next/navigation";
 import styles from "./style.module.scss";
-import useLazyQuery from "../../hooks/useLazyQuery";
+
 import { fetchResumeState } from "../../app/services";
 import { useTransformResumeData } from "../../hooks/useTransformResumeData";
+import useLazyQuery from "../../hooks/useLazyQuery";
+import { Loader, Loader2 } from "lucide-react";
 
 const TailoredResumePage: React.FC = () => {
   const searchParams = useSearchParams();
@@ -25,9 +27,7 @@ const TailoredResumePage: React.FC = () => {
     isError,
     errorMessage,
   } = useLazyQuery(fetchResumeState);
-  console.log(data, isLoading, isError, errorMessage);
   const resumeData = useTransformResumeData(data);
-  console.log(resumeData);
 
   const resumeId = searchParams.get("id");
   const router = useRouter();
@@ -72,11 +72,11 @@ const TailoredResumePage: React.FC = () => {
 
   useEffect(() => {
     scaleContent();
-  }, [tailoredResumeData]);
+  }, [tailoredResumeData, resumeData]);
 
   const renderTemplate = useCallback(
     (data: ResumeProps) => {
-      switch (resumeData?.templateId) {
+      switch (data?.templateId) {
         case "fresher":
           return (
             <Template1 resumeData={data} className="wrapper" id="wrapper" />
@@ -93,7 +93,7 @@ const TailoredResumePage: React.FC = () => {
           return <div>Select a template from the template selection page</div>;
       }
     },
-    [resumeData?.templateId],
+    [resumeData, tailoredResumeData],
   );
 
   const updateResumeTime = useCallback(
@@ -125,8 +125,6 @@ const TailoredResumePage: React.FC = () => {
         const htmlContent =
           cssLink + globalCSSLink + fontLink + element.outerHTML;
 
-        console.log("htmlContent :>> ", htmlContent);
-
         const response = await fetch("/api/generate-pdf", {
           method: "POST",
           headers: {
@@ -147,7 +145,7 @@ const TailoredResumePage: React.FC = () => {
         a.click();
         window.URL.revokeObjectURL(url);
 
-        updateResumeTime(resumeData.templateId);
+        updateResumeTime(resumeData?.templateId);
       } catch (error) {
         console.error("Error generating PDF:", error);
       } finally {
@@ -200,6 +198,8 @@ const TailoredResumePage: React.FC = () => {
     setShowComparison(false);
     setTailoredResumeData(null);
   }, []);
+  console.log(tailoredResumeData);
+  console.log(resumeData);
 
   return (
     <div className={styles.head}>
@@ -250,40 +250,56 @@ const TailoredResumePage: React.FC = () => {
         </div>
       ) : (
         <div className={styles.tailor_p1_head}>
-          <div className={styles.tailor_p1_head_heading}>
-            <p className={styles.tailor_p1_head_heading_data}>Tailor Your CV</p>
-          </div>
-          <div className={styles.tailor_p1_head_section}>
-            <div
-              className={`${styles.tailor_p1_head_section_preview} resumeParent`}
-              id="resumeParent"
-            >
-              {renderTemplate(resumeData)}
-            </div>
-            <div className={styles.tailor_p1_head_section_user_action}>
-              <p className={styles.tailor_p1_head_section_user_action_heading}>
-                Enter the job description from the job post below
-              </p>
-              <div className={styles.tailor_p1_head_section_user_action_input}>
-                <textarea
-                  placeholder="Paste the job description here to tailor your resume"
-                  className={
-                    styles.tailor_p1_head_section_user_action_input_textarea
-                  }
-                  value={jobDescription}
-                  onChange={(e) => setJobDescription(e.target.value)}
-                  rows={10}
-                />
+          {isLoading || resumeData == null ? (
+            <>
+              <Loader />
+            </>
+          ) : (
+            <>
+              <div className={styles.tailor_p1_head_heading}>
+                <p className={styles.tailor_p1_head_heading_data}>
+                  Tailor Your CV
+                </p>
               </div>
-              <button
-                className={styles.tailor_p1_head_section_user_action_button}
-                onClick={handleTailor}
-                disabled={isTailoring}
-              >
-                Tailor my CV
-              </button>
-            </div>
-          </div>
+              <div className={styles.tailor_p1_head_section}>
+                <div
+                  className={`${styles.tailor_p1_head_section_preview} resumeParent`}
+                  id="resumeParent"
+                >
+                  {renderTemplate(resumeData)}
+                </div>
+                <div className={styles.tailor_p1_head_section_user_action}>
+                  <p
+                    className={
+                      styles.tailor_p1_head_section_user_action_heading
+                    }
+                  >
+                    Enter the job description from the job post below
+                  </p>
+                  <div
+                    className={styles.tailor_p1_head_section_user_action_input}
+                  >
+                    <textarea
+                      placeholder="Paste the job description here to tailor your resume"
+                      className={
+                        styles.tailor_p1_head_section_user_action_input_textarea
+                      }
+                      value={jobDescription}
+                      onChange={(e) => setJobDescription(e.target.value)}
+                      rows={10}
+                    />
+                  </div>
+                  <button
+                    className={styles.tailor_p1_head_section_user_action_button}
+                    onClick={handleTailor}
+                    disabled={isTailoring}
+                  >
+                    Tailor my CV
+                  </button>
+                </div>
+              </div>
+            </>
+          )}
         </div>
       )}
     </div>

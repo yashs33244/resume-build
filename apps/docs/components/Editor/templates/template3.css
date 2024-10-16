@@ -195,7 +195,7 @@
   .template3-wrapper .lp_skill_div_value {
     display: flex;
     flex-direction: column;
-    gap:2px;
+    gap:4px;
   }
   
   .template3-wrapper .lp_skill_div_value_item {

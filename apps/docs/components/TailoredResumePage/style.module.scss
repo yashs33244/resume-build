@@ -1,4 +1,4 @@
- p.head{
+.head{
     display: flex;
     max-width: 1200px;
     min-height: calc(100vh - 100px);
@@ -16,6 +16,9 @@
     padding: 40px;
     border-radius: 16px;
     gap: 32px;
+    min-height: 300px;
+    justify-content: center;
+    align-items: center;
 
     &_heading{
         display: flex;
