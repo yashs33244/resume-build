@@ -192,7 +192,7 @@ export const Template2 = (props: any) => {
                             </div>
                         </div>
                     }
-                    {
+                    {/* {
                         Array.isArray(resumeData?.certificate) && resumeData?.certificate.length > 0 &&
                         <div
                             className={`${"content_acheivement_div"} ${"content_container"}`}
@@ -229,7 +229,7 @@ export const Template2 = (props: any) => {
                                 })}
                             </div>
                         </div>
-                    }
+                    } */}
                 </div>
             </div>
         </div>
