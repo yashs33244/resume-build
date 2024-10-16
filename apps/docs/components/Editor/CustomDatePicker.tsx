@@ -1,26 +1,29 @@
 import * as React from "react";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+
 import dayjs from "dayjs";
 import { styled } from "@mui/material/styles";
 
 const WhiteStyledDatePicker = styled(DatePicker)(({ theme }) => ({
   "& .MuiOutlinedInput-root": {
-    color: "white",
+    height: "44px",
+    borderRadius: '12px',
+    color: "rgba(255,255,255,0.85)",
     "& fieldset": {
-      borderColor: "white",
+      border: "0.5px solid rgba(255,255,255,0.4)",
     },
     "&:hover fieldset": {
-      borderColor: "white",
+      border: "0.5px solid rgba(255,255,255,0.4)",
     },
     "&.Mui-focused fieldset": {
-      borderColor: "white",
+      border: "0.5px solid rgba(255,255,255,0.4)",
     },
   },
   "& .MuiInputLabel-root": {
-    color: "white",
+    color: "rgba(255,255,255,0.9)",
   },
   "& .MuiSvgIcon-root": {
-    color: "white",
+    color: "rgba(255,255,255,0.85)",
   },
 }));
 
