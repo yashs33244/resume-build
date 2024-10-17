@@ -48,27 +48,55 @@
 
     .legend-container {
         // margin-top: 5rem;
-        padding: 0 6rem;
+        padding: 3rem 6rem;
         display: flex;
+        align-items: center;
         box-sizing: border-box;
         justify-content: space-between;
 
         .left-container {
-            width: 65%;
-            margin-top: 4rem;
+            width: 56%;
+            // margin-top: 3rem;
             .title {
                 width: 90%;
-                font-size: 4.2rem;
+                font-size: 4rem;
                 color: white;
                 font-weight: 600;
             }
 
             .title-two {
                 width: 90%;
-                font-size: 4.2rem;
+                font-size: 4rem;
                 // margin-top: 12px;
                 color: white;
                 font-weight: 600;
+            }
+
+            .title-three {
+                display: flex;
+                .sub-head {
+                    display: flex;
+                    align-items: center;
+                    margin-top: 0.8rem;
+                    margin-left: 32px;
+                    font-size: 1.4rem;
+                    color: rgba(255,255,255,0.8);
+
+                    div {
+                        color: rgba(255,255,255,0.6);
+                        // color: #3B5BFF;                        
+                        // background: linear-gradient(to right, #0094FF, #FF33DE);
+                        // -webkit-background-clip: text;
+                        // -webkit-text-fill-color: transparent;
+                        font-weight: 500;
+                        margin-left: 6px;
+                        
+                    }
+                }
+
+                .first {
+                    margin-left: 0;
+                }
             }
 
             .typewriter {
@@ -161,16 +189,16 @@
         }
 
         .right-container {
-            margin-top: 1.2rem;
+            // margin-top: 4.2rem;
             // opacity: 0.9;
-            width: 35%;
+            width: 44%;
             display: flex;
 
             img {
-                border-radius: 10px;
+                // border-radius: 10px;
                 width: 100%;
                 height: auto;
-                aspect-ratio: 1/1.4;        
+                aspect-ratio: 1.05;        
             }
         }
     }
@@ -180,7 +208,7 @@
         background-color: #121420;
 
         padding: 2.4rem;
-        margin-top: 10rem;
+        margin-top: 6rem;
         .made-by-title {
             background: linear-gradient(to right, #0094FF, #FF33DE);
             -webkit-background-clip: text;
