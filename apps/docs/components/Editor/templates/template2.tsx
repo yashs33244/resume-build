@@ -191,47 +191,40 @@ export const Template2 = (props: any) => {
                                 }
                             </div>
                         </div>
-                    }
-                    {/* {
-                        Array.isArray(resumeData?.certificate) && resumeData?.certificate.length > 0 &&
-                        <div
-                            className={`${"content_acheivement_div"} ${"content_container"}`}
-                        >
-                            <div
-                                className={`${"content_acheivement_div_label"} ${"content_left_part"}`}
-                            >
-                                Achievement
-                            </div>
-                            <div
-                                className={`${"content_acheivement_div_value"} ${"content_right_part"}`}
-                            >
-                                {resumeData?.certificate.map((achievements: any, index: number) => {
-                                    return (
-                                        <div className={"content_acheivement_div_value_section"} key={index}>
-                                            {
-                                                achievements?.issuer && achievements?.issuedOn &&
-                                                <div
-                                                    className={"content_acheivement_div_value_section_title"}
-                                                >
-                                                    {achievements?.issuer + " - " + achievements?.issuedOn}
-                                                </div>
-                                            }
-                                            {
-                                                achievements?.name &&
-                                                <div
-                                                    className={"content_acheivement_div_value_section_remarks"}
-                                                >
-                                                    {achievements?.name}
-                                                </div>
-                                            }
-                                        </div>
-                                    );
-                                })}
-                            </div>
-                        </div>
-                    } */}
+                    }                    
                 </div>
+            </div>          
+          <div
+            className={`${"content_acheivement_div"} ${"content_container"}`}
+          >
+            <div
+              className={`${"content_acheivement_div_label"} ${"content_left_part"}`}
+            >
+              Certificates
             </div>
+            <div
+              className={`${"content_acheivement_div_value"} ${"content_right_part"}`}
+            >
+              {resumeData.certificates?.map((cert: any) => {
+                return (
+                  <div className={"content_acheivement_div_value_section"}>
+                    <div
+                      className={"content_acheivement_div_value_section_title"}
+                    >
+                      {cert?.issuer + " - " + cert?.issuedOn}
+                    </div>
+                    <div
+                      className={
+                        "content_acheivement_div_value_section_remarks"
+                      }
+                    >
+                      {cert?.name}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
         </div>
     );
 };

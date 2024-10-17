@@ -15,12 +15,14 @@ export const Template1 = (props: any) => {
     const { resumeData, id } = props;
     const [resumeSize, setResumeSize] = useRecoilState(resumeSizeAtom);
 
-    // Fallback for undefined properties to prevent errors
-    const personalInfo = resumeData?.personalInfo || {};
-    const experience = Array.isArray(resumeData?.experience) ? resumeData.experience : [];
-    const education = Array.isArray(resumeData?.education) ? resumeData.education : [];
-    const coreSkills = Array.isArray(resumeData?.coreSkills) ? resumeData.coreSkills : [];
-    const techSkills = Array.isArray(resumeData?.techSkills) ? resumeData.techSkills : [];
+  // Fallback for undefined properties to prevent errors
+  const personalInfo = resumeData.personalInfo || {};
+  const experience = resumeData.experience || [];
+  const education = resumeData.education || [];
+  const coreSkills = resumeData.coreSkills || [];
+  const techSkills = resumeData.techSkills || [];
+  const projects = resumeData.projects || [];
+  const certificates = resumeData.certificates || [];
 
     const getDuration = (dateString: any) => {
         const date = new Date(dateString);
@@ -145,6 +147,39 @@ export const Template1 = (props: any) => {
                         </div>
                     </div>
                 }
+                <div className="projects">
+                  <div className="section-title">PROJECTS</div>
+                  {projects?.map((proj: any, index: any) => (
+                    <div className="proj-container" key={index}>
+                      <div className="project-name">
+                        <a href={proj.link || "#"}>{proj.name}</a>
+                      </div>
+                      <div className="project-duration">
+                        {`${getDuration(proj.start)} - ${proj.end ? getDuration(proj.end) : "Present"}`}
+                      </div>
+                      <div
+                        className="project-description"
+                        dangerouslySetInnerHTML={{
+                          __html: DOMPurify.sanitize(proj.description),
+                        }}
+                      />
+                    </div>
+                  ))}
+                </div>
+
+                {/* Certificates Section */}
+                <div className="certificates">
+                  <div className="section-title">CERTIFICATES</div>
+                  {certificates?.map((cert: any, index: any) => (
+                    <div className="cert-container" key={index}>
+                      <div className="certificate-name">{cert.name}</div>
+                      <div className="certificate-issuer">{cert.issuer}</div>
+                      <div className="certificate-issuedOn">
+                        Issued: {getDuration(cert.issuedOn)}
+                      </div>
+                    </div>
+                  ))}
+                </div>
             </div>
         </div>
     );

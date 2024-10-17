@@ -114,7 +114,12 @@ export default function EditPage() {
   };
 
   const handleRedirect = async () => {
-    router.push("/dashboard");
+    try {
+      // saveResume(resumeData, template || "");
+      router.push("/dashboard");
+    } catch (error: any) {
+      console.log("Error", error);
+    }
   };
 
   const navElements = [
