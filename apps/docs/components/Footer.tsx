@@ -16,15 +16,15 @@ export default function Footer() {
         </div> 
         <div className="company">
           <div className="heading">Company</div>  
-          <div className="link">About Us</div>        
-          <div className="link">
+          <div className="link" onClick={() => window.open("https://www.linkedin.com/company/final-cv/posts/?feedView=all")} >About Us</div>        
+          <div className="link" onClick={() => window.open("https://www.linkedin.com/company/final-cv/posts/?feedView=all")}>
             <FaLinkedin />
             <div style={{marginLeft: '8px'}}>LinkedIn</div>
           </div>                    
         </div>
         <div className="contact">
           <div className="heading">Contact Us</div>
-          <div className="link">
+          <div className="link" onClick={() => location.href='mailto:hello@finalcv.com'}>
             <AiOutlineMail />
             <div style={{marginLeft: '8px'}}>hello@finalcv.com</div>
           </div>
