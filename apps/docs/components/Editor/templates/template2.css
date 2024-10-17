@@ -1,5 +1,11 @@
 /* Base Template Styles */
+.template2-wrapper *{
+    font-family: 'Inter';
+    line-height: 1.5;
+    box-sizing: border-box;
+}
 .template2-wrapper {
+
     --font-size-base: 16px; /* Default for M */
     --font-size-small: 0.75;
     --font-size-large: 1.25;
@@ -28,14 +34,14 @@
   
   /* Size S */
   .template2-wrapper.S {
-    --font-size-base: 12px; /* 75% of M */
+    --font-size-base: 14px; /* 75% of M */
     --padding-base: 30px; /* 75% of M */
     --gap-base: 22.5px; /* 75% of M */
   }
   
   /* Size L */
   .template2-wrapper.L {
-    --font-size-base: 20px; /* 125% of M */
+    --font-size-base: 18px; /* 125% of M */
     --padding-base: 50px; /* 125% of M */
     --gap-base: 37.5px; /* 125% of M */
   }
@@ -57,6 +63,11 @@
     flex-direction: column;
     gap: var(--container-gap);
     overflow-y: hidden;
+    word-wrap: break-word;
+  }
+
+  .template2-wrapper .template-container *{
+    word-wrap: break-word;
   }
   
   /* Header Section */
@@ -109,11 +120,13 @@
   }
   
   .template2-wrapper .content_left_part {
-    width: 130px;
+    min-width: 130px;
+    max-width: 130px;
   }
   
   .template2-wrapper .content_right_part {
     flex: 1;
+    max-width: calc(100% - 130px);
   }
   
   /* Content Labels and Values */
@@ -130,7 +143,7 @@
   .template2-wrapper .content_education_div_value_section_name,
   .template2-wrapper .content_experience_div_value_section_name,
   .template2-wrapper .content_skill_div_value_section_category{
-    font-weight: 700;
+    font-weight: 600;
     color: black !important;
   }
   
@@ -171,7 +184,8 @@
   
   .template2-wrapper .content_experience_div_value_section_work ul {
     list-style: disc;
-    list-style-position: inside;
+    /* list-style-position: inside; */
+    padding: 0px 0px 0px 10px;
   }
   
   .template2-wrapper .content_experience_div_value_section_work ol {

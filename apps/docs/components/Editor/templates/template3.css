@@ -1,4 +1,12 @@
 /* Base Template Styles */
+
+
+.template3-wrapper *{
+    line-height: normal;
+    box-sizing: border-box;
+}
+
+
 .template3-wrapper {
     --font-size-base: 16px; /* Default for M */
     --font-size-small: 0.75;
@@ -25,6 +33,7 @@
     --lp-padding: var(--padding-base);
     --rp-padding: var(--padding-base);
     --container-gap: var(--gap-base);
+    --ul-padding : 0px 0px 0px 10px
   }
   
   /* Default size M */
@@ -39,6 +48,7 @@
     --font-size-base: 12px; /* 75% of M */
     --padding-base: 15px; /* 75% of M */
     --gap-base: 7.5px; /* 75% of M */
+    --ul-padding : 0px 0px 0px 8px
   }
   
   /* Size L */
@@ -46,7 +56,9 @@
     --font-size-base: 20px; /* 125% of M */
     --padding-base: 25px; /* 125% of M */
     --gap-base: 12.5px; /* 125% of M */
+    --ul-padding : 0px 0px 0px 12px
   }
+  
   
   /* Template Container */
   .template3-wrapper .template-container {
@@ -60,14 +72,19 @@
     max-height: 842px;
     color: black;
     display: flex;
-    overflow-y: scroll;
-    font-family: ui-serif;
+    overflow-y: hidden;
+    font-family: ui-serif !important;
+    word-wrap: break-word;
+  }
+
+  .template3-wrapper .template-container *{
+    word-wrap: break-word;
   }
   
   /* Left Panel */
   .template3-wrapper .lp {
-    min-width: 180px;
-    max-width: 180px;
+    min-width: 210px;
+    max-width: 210px;
     display: flex;
     flex-direction: column;
     background-color: #e5e4e2;
@@ -100,9 +117,37 @@
   
   .template3-wrapper .lp_add_info_value {
     display: flex;
-    align-items: center;
     gap: 5px;
     font-size: var(--add-info-value-size);
+
+    & svg{
+        min-width: 10px;
+        max-width: 10px;
+        height: 14px;
+    }
+
+    & span{
+        max-width: calc(100% - 10px);
+        line-height: 14px;
+        word-break: break-all;
+    }
+  }
+
+  .template3-wrapper.S .lp_add_info_value {
+    align-items: center;
+    & svg{
+        min-width: 7px;
+        max-width: 7px;
+        height: 7px;
+    }
+  }
+  .template3-wrapper.L .lp_add_info_value {
+    align-items: center;
+    & svg{
+        min-width: 12px;
+        max-width: 12px;
+        height:12px;
+    }
   }
   
   .template3-wrapper .lp_add_info_value a,
@@ -150,6 +195,7 @@
   .template3-wrapper .lp_skill_div_value {
     display: flex;
     flex-direction: column;
+    gap:4px;
   }
   
   .template3-wrapper .lp_skill_div_value_item {
@@ -162,6 +208,7 @@
     flex-direction: column;
     gap: 15px;
     padding: var(--rp-padding);
+    width:calc(100% - 210px);
   }
   
   .template3-wrapper .rp_container {
@@ -212,7 +259,8 @@
   
   .template3-wrapper .rp_experience_div_value_section_work ul {
     list-style: disc;
-    list-style-position: inside;
+    /* list-style-position: inside; */
+    padding: var(--ul-padding);
   }
   
   .template3-wrapper .rp_experience_div_value_section_work ol {

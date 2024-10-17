@@ -6,9 +6,9 @@ import "./template3.css";
 import { IoMail } from "react-icons/io5";
 import { FaPhoneAlt } from "react-icons/fa";
 import { FaLinkedin } from "react-icons/fa";
-import { ResumeProps } from "../../../types/ResumeProps";
 import { useRecoilState } from "recoil";
 import { resumeSizeAtom } from "../../../store/resumeSize";
+import { getDuration } from "../../../utils";
 
 export const Template3 = (props: any) => {
     const { resumeData, id } = props;
@@ -27,126 +27,125 @@ export const Template3 = (props: any) => {
                         </div>
                     </div>
                     <div className={"lp_add_info"}>
-                        <div className={"lp_add_info_value"}>
-                            <IoMail />
-                            {resumeData.personalInfo.email}
-                        </div>
-                        <div className={"lp_add_info_value"}>
-                            <FaPhoneAlt />
-                            {resumeData.personalInfo.phone}
-                        </div>
-                        <div className={"lp_add_info_value"}>
-                            <FaLinkedin />
-                            <a href={resumeData.personalInfo?.linkedin}>
-                                {resumeData.personalInfo?.linkedin}
-                            </a>
-                        </div>
+                        {
+                            resumeData?.personalInfo?.email &&
+                            <div className={"lp_add_info_value"}>
+                                <IoMail/>
+                                <span>{resumeData.personalInfo.email}</span>
+                            </div>
+                        }
+                        {
+                            resumeData?.personalInfo?.phone &&
+                            <div className={"lp_add_info_value"}>
+                                <FaPhoneAlt/>
+                                <span>{resumeData.personalInfo.phone}</span>
+                            </div>
+                        }
+                        {
+                            resumeData?.personalInfo?.linkedin &&
+                            <div className={"lp_add_info_value"}>
+                                <FaLinkedin/>
+                                <a href={resumeData.personalInfo?.linkedin}>
+                                    <span>{resumeData.personalInfo?.linkedin}</span>
+                                </a>
+                            </div>
+                        }
                     </div>
-                    <div className={`${"lp_education_div"} ${"lp_container"}`}>
-                        <div
-                            className={`${"lp_education_div_label"} ${"lp_container_header"}`}
-                        >
-                            Education
+                    {
+                        Array.isArray(resumeData?.education) && resumeData.education.length > 0 &&
+                        <div className={`${"lp_education_div"} ${"lp_container"}`}>
+                            <div
+                                className={`${"lp_education_div_label"} ${"lp_container_header"}`}
+                            >
+                                Education
+                            </div>
+                            <div className={`${"lp_education_div_value"}`}>
+                                {resumeData.education.map((edu: any, index: number) => {
+                                    return (
+                                        <div className={"lp_education_div_value_section"} key={index}>
+                                            {
+                                                edu?.degree && edu?.major && edu?.institution &&
+                                                <div className={"lp_education_div_value_section_name"}>
+                                                    {edu.degree + " - " + edu.major + ", " + edu.institution}
+                                                </div>
+                                            }
+                                            {
+                                                edu?.start && edu?.end &&
+                                                <div className={"lp_education_div_value_section_year"}>
+                                                    {edu.start + " - " + edu.end}
+                                                </div>
+                                            }
+                                        </div>
+                                    );
+                                })}
+                            </div>
                         </div>
-                        <div className={`${"lp_education_div_value"}`}>
-                            {resumeData.education?.map((edu: any) => {
-                                return (
-                                    <div className={"lp_education_div_value_section"}>
-                                        <div className={"lp_education_div_value_section_name"}>
-                                            {edu?.degree +
-                                                " - " +
-                                                edu?.major +
-                                                ", " +
-                                                edu?.institution}
-                                        </div>
-                                        <div className={"lp_education_div_value_section_year"}>
-                                            {edu?.start + " - " + edu?.end}
-                                        </div>
+                    }
+                    {
+                        Array.isArray(resumeData?.coreSkills) && resumeData.coreSkills.length > 0 &&
+                        <div className={`${"lp_skill_div"} ${"lp_container"}`}>
+                            <div className={`${"lp_skill_div_label"} ${"lp_container_header"}`}>
+                                Skill
+                            </div>
+                            <div className={`${"lp_skill_div_value"}`}>
+                                {resumeData.coreSkills.map((item: any, index: number) => (
+                                    <div key={index} className={"lp_skill_div_value_item"}>
+                                        {item}
                                     </div>
-                                );
-                            })}
+                                ))}
+                            </div>
                         </div>
-                    </div>
-                    <div className={`${"lp_skill_div"} ${"lp_container"}`}>
-                        <div className={`${"lp_skill_div_label"} ${"lp_container_header"}`}>
-                            Skill
-                        </div>
-                        <div className={`${"lp_skill_div_value"}`}>
-                            {resumeData?.coreSkills?.map((item: any, index: number) => (
-                                <div key={index} className={"lp_skill_div_value_item"}>
-                                    {item}
-                                </div>
-                            ))}{" "}
-                        </div>
-                    </div>
+                    }
                 </div>
                 <div className={"rp"}>
-                    <div className={`${"rp_bio_div"} ${"rp_container"}`}>
-                        <div className={`${"rp_bio_div_label"} ${"rp_container_header"}`}>
-                            PROFILE
+                    {
+                        resumeData?.personalInfo?.bio &&
+                        <div className={`${"rp_bio_div"} ${"rp_container"}`}>
+                            <div className={`${"rp_bio_div_label"} ${"rp_container_header"}`}>
+                                PROFILE
+                            </div>
+                            <div className={`${"rp_bio_div_value"} ${"rp_container_content"}`}>
+                                {resumeData.personalInfo.bio}
+                            </div>
                         </div>
-                        <div className={`${"rp_bio_div_value"} ${"rp_container_content"}`}>
-                            {resumeData.personalInfo.bio}
-                        </div>
-                    </div>
-                    <div className={`${"rp_experience_div"} ${"rp_container"}`}>
-                        <div
-                            className={`${"rp_experience_div_label"} ${"rp_container_header"}`}
-                        >
-                            Experience
-                        </div>
-                        <div
-                            className={`${"rp_experience_div_value"} ${"rp_container_content"}`}
-                        >
-                            {resumeData.experience?.map((exp: any) => {
-                                return (
-                                    <div className={"rp_experience_div_value_section"}>
-                                        <div className={"rp_experience_div_value_section_name"}>
-                                            {exp?.company + " - " + exp?.role}
+                    }
+                    {
+                        Array.isArray(resumeData?.experience) && resumeData.experience.length > 0 &&
+                        <div className={`${"rp_experience_div"} ${"rp_container"}`}>
+                            <div className={`${"rp_experience_div_label"} ${"rp_container_header"}`}>
+                                Experience
+                            </div>
+                            <div className={`${"rp_experience_div_value"} ${"rp_container_content"}`}>
+                                {resumeData.experience.map((exp: any, index: number) => {
+                                    return (
+                                        <div className={"rp_experience_div_value_section"} key={index}>
+                                            {
+                                                exp?.company && exp?.role &&
+                                                <div className={"rp_experience_div_value_section_name"}>
+                                                    {exp.company + " - " + exp.role}
+                                                </div>
+                                            }
+                                            {
+                                                (exp?.start || exp?.end || exp?.duration) &&
+                                                <div className={"rp_experience_div_value_section_year"}>
+                                                    {exp?.duration || getDuration(exp.start) + " - " + (exp.current ? "Present" : getDuration(exp.end))}
+                                                </div>
+                                            }
+                                            {
+                                                exp?.responsibilities &&
+                                                <div
+                                                    className={"rp_experience_div_value_section_work"}
+                                                    dangerouslySetInnerHTML={{
+                                                        __html: DOMPurify.sanitize(exp.responsibilities),
+                                                    }}
+                                                ></div>
+                                            }
                                         </div>
-                                        <div className={"rp_experience_div_value_section_year"}>
-                                            {exp?.duration || exp?.start + " - " + (exp.current == true ? "Present" : exp.end)}
-                                        </div>
-                                        <div
-                                            className={"rp_experience_div_value_section_work"}
-                                            dangerouslySetInnerHTML={{
-                                                __html: DOMPurify.sanitize(exp.responsibilities),
-                                            }}
-                                        ></div>
-                                    </div>
-                                );
-                            })}
+                                    );
+                                })}
+                            </div>
                         </div>
-                    </div>
-                    <div className={`${"rp_experience_div"} ${"rp_container"}`}>
-                        <div
-                            className={`${"rp_experience_div_label"} ${"rp_container_header"}`}
-                        >
-                            Experience
-                        </div>
-                        <div
-                            className={`${"rp_experience_div_value"} ${"rp_container_content"}`}
-                        >
-                            {resumeData.experience?.map((exp: any) => {
-                                return (
-                                    <div className={"rp_experience_div_value_section"}>
-                                        <div className={"rp_experience_div_value_section_name"}>
-                                            {exp?.company + " - " + exp?.role}
-                                        </div>
-                                        <div className={"rp_experience_div_value_section_year"}>
-                                            {exp?.duration || exp?.start + " - " + exp.end}
-                                        </div>
-                                        <div
-                                            className={"rp_experience_div_value_section_work"}
-                                            dangerouslySetInnerHTML={{
-                                                __html: DOMPurify.sanitize(exp.responsibilities),
-                                            }}
-                                        ></div>
-                                    </div>
-                                );
-                            })}
-                        </div>
-                    </div>
+                    }
                 </div>
             </div>
         </div>

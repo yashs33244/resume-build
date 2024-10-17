@@ -23,6 +23,12 @@ import { FaEdit } from "react-icons/fa";
 import template1 from "./template1.png";
 import template2 from "./template2.png";
 import template3 from "./template3.png";
+import legend1 from "./legend1.svg";
+import legend2 from "./legend2.svg";
+import legend3 from "./legend3.svg";
+import temp_resume1 from "./temp_resume1.png";
+import temp_resume2 from "./temp_resume2.png";
+import temp_resume3 from "./temp_resume3.png";
 import Image from "next/image";
 import lovedby from "./lovedby.svg";
 import flipkart from "./flipkart.png";
@@ -45,6 +51,7 @@ import Link from "next/link";
 import "react-alice-carousel/lib/alice-carousel.css";
 import "./App.scss";
 import { useSession } from "next-auth/react";
+import { FaCircleCheck } from "react-icons/fa6";
 // import { useSession } from "next-auth/react";
 
 export default function LandingPage() {
@@ -52,9 +59,9 @@ export default function LandingPage() {
   const [selectedTemplate, setSelected] = useState("classic");
   const { data: session, status: sessionStatus } = useSession();
   const currentTemplate: { [key: string]: string } = {
-    classic: template1.src,
-    modern: template2.src,
-    bold: template3.src,
+    classic: temp_resume1.src,
+    modern: temp_resume2.src,
+    bold: temp_resume3.src,
   } as { [key: string]: string };
 
   const templateClass = {
@@ -85,7 +92,21 @@ export default function LandingPage() {
         <div className="left-container">
           <div className="title">A no bullshit Resume</div>
           <div className="title-two">that gets you hired!</div>
-          <div className="typewriter">
+          <div className="title-three">
+            <div className="sub-head first">
+              <FaCircleCheck />
+              <div>ATS Friendly</div>
+            </div>
+            <div className="sub-head">
+              <FaCircleCheck />
+              <div>Clean Designs</div>
+            </div>
+            <div className="sub-head">
+              <FaCircleCheck />
+              <div>Concise Formats</div>
+            </div>
+          </div>
+          {/* <div className="typewriter">
             <Typewriter
               options={{
                 strings: [
@@ -99,7 +120,7 @@ export default function LandingPage() {
                 deleteSpeed: 10,
               }}
             />
-          </div>
+          </div> */}
           <div className="primary-cta">
             <MdRocketLaunch />
             <div>
@@ -138,22 +159,22 @@ export default function LandingPage() {
             infinite={true}
           >
             <img
-              src={template1.src}
+              src={legend2.src}
               alt="template"
-              width="100%"
-              height="580px"
+              // width="100%"
+              // height="200px"
             />
             <img
-              src={template2.src}
+              src={legend3.src}
               alt="template"
-              width="100%"
-              height="580px"
+              // width="100%"
+              // height="200px"
             />
             <img
-              src={template3.src}
+              src={legend1.src}
               alt="template"
-              width="100%"
-              height="580px"
+              // width="100%"
+              // height="200px"
             />
           </AliceCarousel>
         </div>

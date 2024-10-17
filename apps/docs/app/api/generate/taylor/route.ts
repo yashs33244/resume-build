@@ -2,53 +2,9 @@ import { NextResponse } from 'next/server';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 
 const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY || '');
+import { ResumeProps } from '../../../../types/ResumeProps';
 
-export interface ResumeProps {
-  userId: string;
-  personalInfo: {
-    name: string;
-    title: string;
-    website?: string;
-    email?: string;
-    phone?: string;
-    bio?: string;
-    linkedin?: string;
-    location?: string;
-  };
-  education: Array<{
-    institution: string;
-    start: string;
-    end: string;
-    degree: string;
-  }>;
-  experience: Array<{
-    company: string;
-    role: string;
-    start: string;
-    end: string;
-    responsibilities: string[];
-  }>;
-  skills: string[];
-  coreSkills?: string[];
-  techSkills?: string[];
-  languages?: string[];
-  achievement?: {
-    title: string;
-    description: string;
-  } | null;
-  projects?: Array<{
-    name: string;
-    link: string;
-    start: string;
-    end: string;
-    responsibilities: string[];
-  }>;
-  certificate?: Array<{
-    name: string;
-    issuer: string;
-    issuedOn: string;
-  }>;
-}
+
 
 const buildTailorResumePrompt = (jobDescription: string, sectionName: string, sectionContent: any) => ({
   contents: [
