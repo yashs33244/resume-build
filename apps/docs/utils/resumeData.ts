@@ -12,44 +12,20 @@ export const initialResumeData: ResumeProps = {
     bio: "",
   },
   education: [
-    {
-      institution: "Liceria University",
-      start: "2009",
-      end: "2012",
-      degree: "Bachelor of Computer Technology",
-      major: "Information Technology"
-    },
-    {
-      institution: "Oxford University",
-      start: "2012",
-      end: "2015",
-      degree: "Master of Computer Science - Software Engineering",
-      major: "Information Technology"
-    }
   ],
   experience: [
-    {
-      company: "Facebook",
-      role: "Lead UI/UX Designer",
-      start: "SEP 2022",
-      end: "PRESENT",
-      responsibilities: [
-        "Led the design direction and created custom UI assets...",
-        "Managed numerous cross-discipline workshops..."
-      ],
-      current:false
-    }
+    
   ],
   skills: [], // Added the required 'skills' field as an empty array
   coreSkills: [
-    "User Research", "Wireframing", "Prototyping"
+    
   ],
   techSkills: [
-    "JavaScript", "TypeScript", "React"
+    
   ],
   achievement: {
-    title: "Bestfolios, 2022",
-    description: "Editor's Pick for Best Design Portfolio"
+    title: "",
+    description: ""
   },
   languages: [], // Optional: You can populate this later
   certificates: [] // Optional: You can populate this later
