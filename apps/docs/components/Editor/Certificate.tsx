@@ -75,7 +75,7 @@ export const Certificate: React.FC<CertificateProps> = ({
                       htmlFor={`certificate-${index}`}
                       className="field-label"
                     >
-                      Certificate Name
+                      Certificate Name *
                     </Label>
                     <Input
                       id={`certificate-${index}`}

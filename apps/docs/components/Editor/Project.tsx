@@ -132,7 +132,7 @@ export const Project: React.FC<ProjectProps> = ({
                 <div className="form-row">
                   <div className="row-form-field">
                     <Label htmlFor={`project-${index}`} className="field-label">
-                      Project Name
+                      Project Name *
                     </Label>
                     <Input
                       id={`project-${index}`}

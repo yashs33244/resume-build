@@ -73,7 +73,8 @@ export default function EditPage() {
     useActiveSection();
 
   const openModel = () => {
-    setIsModelOpen(true);
+    router.push("/select-templates/checkout");
+    // setIsModelOpen(true);
   };
 
   const closeModel = () => {

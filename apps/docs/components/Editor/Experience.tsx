@@ -145,7 +145,7 @@ export const Experience: React.FC<ExperienceProps> = ({
                                 <div className="form-row">
                                     <div className="row-form-field">
                                         <Label htmlFor={`company-${index}`} className="field-label">
-                                            Company Name
+                                            Company Name *
                                         </Label>
                                         <Input
                                             id={`company-${index}`}
@@ -164,7 +164,7 @@ export const Experience: React.FC<ExperienceProps> = ({
                                     </div>
                                     <div className="row-form-field">
                                         <Label htmlFor={`role-${index}`} className="field-label">
-                                            Designation
+                                            Designation *
                                         </Label>
                                         <Input
                                             id={`role-${index}`}

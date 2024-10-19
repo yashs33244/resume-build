@@ -76,7 +76,7 @@ export const PersonalInfo: React.FC<PersonalInfoProps> = ({
         <div className="form-row first">
           <div className="row-form-field">
             <Label className="field-label" htmlFor="name">
-              Full Name
+              Full Name *
             </Label>
             <Input
               id="name"
@@ -92,7 +92,7 @@ export const PersonalInfo: React.FC<PersonalInfoProps> = ({
           </div>
           <div className="row-form-field">
             <Label className="field-label" htmlFor="title">
-              Current / Wanted Job Title
+              Job Title *
             </Label>
             <Input
               className="form-input"
@@ -109,7 +109,7 @@ export const PersonalInfo: React.FC<PersonalInfoProps> = ({
         <div className="form-row">
           <div className="row-form-field">
             <Label className="field-label" htmlFor="email">
-              Email Address
+              Email Address *
             </Label>
             <Input
               id="email"
@@ -125,7 +125,7 @@ export const PersonalInfo: React.FC<PersonalInfoProps> = ({
           </div>
           <div className="row-form-field">
             <Label className="field-label" htmlFor="phone">
-              Phone Number
+              Phone Number *
             </Label>
             <Input
               id="phone"
