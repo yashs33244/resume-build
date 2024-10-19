@@ -419,3 +419,174 @@
 .template1-container .L .achievements .ach-container .achievement {
     font-size: 0.62rem;
 }
+
+/* Projects Section */
+.template1-container .M .projects {
+    margin-top: 1.12rem;
+}
+
+.template1-container .S .projects {
+    margin-top: 0.85rem;
+}
+
+.template1-container .L .projects {
+    margin-top: 1.5rem;
+}
+
+.template1-container .M .projects .section-title {
+    color: #a6aaad;
+    font-size: 0.5rem;
+    font-weight: 600;
+}
+
+.template1-container .S .projects .section-title {
+    font-size: 0.38rem;
+}
+
+.template1-container .L .projects .section-title {
+    font-size: 0.62rem;
+}
+
+.template1-container .M .projects .exp-container {
+    margin-top: 0.56rem;
+}
+
+.template1-container .S .projects .exp-container {
+    margin-top: 0.4rem;
+}
+
+.template1-container .L .projects .exp-container {
+    margin-top: 0.7rem;
+}
+
+.template1-container .M .projects .exp-container .company-name {
+    color: #323336;
+    font-size: 0.56rem;
+    font-weight: 600;
+}
+
+.template1-container .S .projects .exp-container .company-name {
+    font-size: 0.42rem;
+}
+
+.template1-container .L .projects .exp-container .company-name {
+    font-size: 0.7rem;
+}
+
+.template1-container .M .projects .exp-container .role-duration {
+    color: #707678;
+    font-size: 0.52rem;
+}
+
+.template1-container .S .projects .exp-container .role-duration {
+    font-size: 0.38rem;
+}
+
+.template1-container .L .projects .exp-container .role-duration {
+    font-size: 0.7rem;
+}
+
+.template1-container .M .projects .exp-container .responsibilities {
+    color: #323336;
+    font-size: 0.5rem;
+}
+
+.template1-container .S .projects .exp-container .responsibilities {
+    font-size: 0.38rem;
+}
+
+.template1-container .L .projects .exp-container .responsibilities {
+    font-size: 0.62rem;
+}
+
+.template1-container .M .projects .exp-container .responsibilities ul {
+    list-style: disc;
+    padding: 0 1rem;
+}
+
+.template1-container .S .projects .exp-container .responsibilities ul {
+    padding: 0 0.75rem;
+}
+
+.template1-container .L .projects .exp-container .responsibilities ul {
+    padding: 0 1.25rem;
+}
+
+/* Certificates Section */
+.template1-container .M .certificates {
+    margin-top: 1.12rem;
+}
+
+.template1-container .S .certificates {
+    margin-top: 0.85rem;
+}
+
+.template1-container .L .certificates {
+    margin-top: 1.5rem;
+}
+
+.template1-container .M .certificates .section-title {
+    color: #a6aaad;
+    font-size: 0.5rem;
+    font-weight: 600;
+}
+
+.template1-container .S .certificates .section-title {
+    font-size: 0.38rem;
+}
+
+.template1-container .L .certificates .section-title {
+    font-size: 0.62rem;
+}
+
+.template1-container .M .certificates .cert-container {
+    margin-top: 0.56rem;
+}
+
+.template1-container .S .certificates .cert-container {
+    margin-top: 0.4rem;
+}
+
+.template1-container .L .certificates .cert-container {
+    margin-top: 0.7rem;
+}
+
+.template1-container .M .certificates .cert-container .certificate-name {
+    color: #323336;
+    font-size: 0.56rem;
+    font-weight: 600;
+}
+
+.template1-container .S .certificates .cert-container .certificate-name {
+    font-size: 0.42rem;
+}
+
+.template1-container .L .certificates .cert-container .certificate-name {
+    font-size: 0.7rem;
+}
+
+.template1-container .M .certificates .cert-container .certificate-issuer {
+    color: #707678;
+    font-size: 0.52rem;
+}
+
+.template1-container .S .certificates .cert-container .certificate-issuer {
+    font-size: 0.38rem;
+}
+
+.template1-container .L .certificates .cert-container .certificate-issuer {
+    font-size: 0.7rem;
+}
+
+.template1-container .M .certificates .cert-container .certificate-issuedOn {
+    color: #707678;
+    font-size: 0.5rem;
+}
+
+.template1-container .S .certificates .cert-container .certificate-issuedOn {
+    font-size: 0.38rem;
+}
+
+.template1-container .L .certificates .cert-container .certificate-issuedOn {
+    font-size: 0.62rem;
+}
