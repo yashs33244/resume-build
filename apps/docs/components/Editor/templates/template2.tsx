@@ -84,6 +84,15 @@ export const Template2 = (props: any) => {
                             {edu?.institution || "Institution Name"}
                           </div>
                         )}
+                        {edu?.score && (
+                          <div
+                            className={
+                              "content_education_div_value_section_field"
+                            }
+                          >
+                            {edu?.score ? `${edu.score}` : ""}
+                          </div>
+                        )}
                         {edu?.start && edu?.end && (
                           <div
                             className={

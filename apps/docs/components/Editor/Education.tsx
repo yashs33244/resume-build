@@ -12,6 +12,7 @@ import {
   CollapsibleTrigger,
   CollapsibleContent,
 } from "@repo/ui/components/ui/collapsible";
+import EducationYearPickers from "../EducationYearPicker";
 
 interface EducationProps {
   resumeData: ResumeProps;
@@ -39,7 +40,10 @@ export const Education: React.FC<EducationProps> = ({
     <div className="education-container">
       <div className="education-list">
         {resumeData.education?.map((edu, index): any => (
-          <Collapsible className={index === 0 ? 'collapse-comp first' : 'collapse-comp'} key={index}>
+          <Collapsible
+            className={index === 0 ? "collapse-comp first" : "collapse-comp"}
+            key={index}
+          >
             <CollapsibleTrigger className="collapse-trigger">
               <div className="edu-note">
                 <ChevronDownIcon className="h-5 w-5 transition-transform" />
@@ -149,44 +153,11 @@ export const Education: React.FC<EducationProps> = ({
                   </div>
                 </div>
                 <div className="form-row">
-                  <div className="row-form-field">
-                    <Label htmlFor={`major-${index}`} className="field-label">
-                      Start Year
-                    </Label>
-                    <Input
-                      id={`start-${index}`}
-                      value={edu.start}
-                      onChange={(e) =>
-                        handleInputChange(
-                          "education",
-                          "start",
-                          e.target.value,
-                          index,
-                        )
-                      }
-                      placeholder="For Eg: 2014"
-                      className="form-input"
-                    />
-                  </div>
-                  <div className="row-form-field">
-                    <Label htmlFor={`end-${index}`} className="field-label">
-                      End Year
-                    </Label>
-                    <Input
-                      id={`end-${index}`}
-                      value={edu.end}
-                      onChange={(e) =>
-                        handleInputChange(
-                          "education",
-                          "end",
-                          e.target.value,
-                          index,
-                        )
-                      }
-                      placeholder="For Eg: 2018"
-                      className="form-input"
-                    />
-                  </div>
+                  <EducationYearPickers
+                    index={index}
+                    edu={edu}
+                    handleInputChange={handleInputChange}
+                  />
                 </div>
                 {/* <Button
                   variant="destructive"

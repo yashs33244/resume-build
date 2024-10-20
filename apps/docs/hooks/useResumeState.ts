@@ -17,6 +17,7 @@ export const useResumeState = () => {
     achievement: null,
     projects: [],
     certificates: [],
+    templateId: null,
   }); // Hold all resume data with default structure
   const [template, setTemplate] = useState<string | null>(null); // Add state for template
 
@@ -45,6 +46,7 @@ export const useResumeState = () => {
           achievement: data[0].achievement,
           projects: data[0].projects,
           certificates: data[0].certificates,
+          templateId: data[0].templateId,
         });
         setTemplate(data[0].templateId); // Set template data[0]
 

@@ -16,6 +16,7 @@ export interface ResumeProps {
     start: string;
     end: string;
     degree: string;
+    score: number;  
 
   }>;
   experience: Array<{

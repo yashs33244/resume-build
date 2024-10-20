@@ -44,6 +44,17 @@ const TemplatesSelect = () => {
 
   return (
     <div className="template-select-container">
+      {/* add a back button */}
+      <div className="px-5 py-2">
+        <button className="back-button">
+          <Link
+            href="/"
+            className="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-500 dark:hover:bg-blue-600 focus:outline-none dark:focus:ring-blue-800"
+          >
+            ← Back
+          </Link>
+        </button>
+      </div>
       <div className="container-title">Select your final CV template</div>
       <div className="templates-wrapper">
         <div className="template" onMouseOver={() => setActiveTemplate(1)}>

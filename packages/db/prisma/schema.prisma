@@ -46,7 +46,6 @@ model Resume {
   experience   Experience[]
   skills       Skill[]
   coreSkills   CoreSkill[]
-  techSkills   TechSkill[]
   languages    Language[]
   achievement  Achievement?
   projects     Project[]
@@ -80,6 +79,7 @@ model Education {
   start       String
   end         String
   degree      String
+  score       Float?
 }
 
 model Experience {
@@ -102,13 +102,6 @@ model Skill {
 }
 
 model CoreSkill {
-  id       String @id @default(cuid())
-  resumeId String
-  resume   Resume @relation(fields: [resumeId], references: [id], onDelete: Cascade)
-  name     String
-}
-
-model TechSkill {
   id       String @id @default(cuid())
   resumeId String
   resume   Resume @relation(fields: [resumeId], references: [id], onDelete: Cascade)

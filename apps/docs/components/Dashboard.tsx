@@ -1,19 +1,14 @@
 "use client";
-import React, { useEffect } from "react";
-import { Edit, Download, Trash2, RefreshCcw, PlusCircle } from "lucide-react";
-import { useRecoilValue } from "recoil";
+import React, { useCallback, useEffect } from "react";
+import { useRecoilState } from "recoil";
 import "./Dashboard.scss";
 
 import { isGeneratingPDFAtom } from "../store/pdfgenerating";
-import useResumeDownload from "../hooks/useResumeDownload";
-import { useResumeData } from "../hooks/useResumeData";
-import template2 from "./template2.png";
 import Image from "next/image";
 import Link from "next/link";
 
 import { CiEdit } from "react-icons/ci";
 import { MdOutlineFileDownload } from "react-icons/md";
-import { RiDeleteBinLine } from "react-icons/ri";
 import { ImMagicWand } from "react-icons/im";
 import { VscDebugRestart } from "react-icons/vsc";
 import { IoAddCircleOutline } from "react-icons/io5";
@@ -23,13 +18,13 @@ import { Template1 } from "./Editor/templates/Template1";
 import { Template2 } from "./Editor/templates/template2";
 import { Template3 } from "./Editor/templates/template3";
 import { useResumeState } from "../hooks/useResumeState";
+import { resumeTimeAtom } from "../store/expiry";
 
 const Dashboard = () => {
-  const { handleDownload } = useResumeDownload();
-  const isGeneratingPDF = useRecoilValue(isGeneratingPDFAtom);
-  const { resumeState, daysLeft, createDate, template, resumeData } =
-    useResumeState();
-  console.log(resumeData);
+  const [isGeneratingPDF, setIsGeneratingPDF] =
+    useRecoilState(isGeneratingPDFAtom);
+  const { resumeState, daysLeft, template, resumeData } = useResumeState();
+  const [resumeTimes, setResumeTimes] = useRecoilState(resumeTimeAtom);
 
   const renderTemplate = () => {
     switch (template) {
@@ -52,11 +47,55 @@ const Dashboard = () => {
         const widthScale = container.clientWidth / content.clientWidth;
         const heightScale = container.clientHeight / content.clientHeight;
         const scale = Math.min(widthScale, heightScale);
-        // @ts-ignore
         content.style.transform = `scale(${scale})`;
       }
     });
   }
+
+  const handleDownload = useCallback(
+    async (event: React.MouseEvent<HTMLDivElement>) => {
+      setIsGeneratingPDF(true);
+      try {
+        // Find the resume wrapper directly from the rendered template
+        const realElement = document.querySelector(".resumeParent .wrapper");
+        if (!realElement) throw new Error("Resume wrapper not found");
+
+        const element = realElement.cloneNode(true) as HTMLElement;
+        element.style.transform = "scale(1)"; // Reset scaling for PDF
+
+        const cssLink = `<link rel="stylesheet" href="/_next/static/css/app/(pages)/dashboard/page.css">`;
+        const globalCSSLink = `<link rel="stylesheet" href="/_next/static/css/app/layout.css">`;
+        const fontLink = `<link href='https://fonts.googleapis.com/css?family=Inter' rel='stylesheet'/>`;
+        const htmlContent =
+          cssLink + globalCSSLink + fontLink + element.outerHTML;
+
+        const response = await fetch("/api/generate-pdf", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ html: htmlContent }),
+        });
+
+        if (!response.ok) throw new Error("PDF generation failed");
+
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.style.display = "none";
+        a.href = url;
+        a.download = "resume.pdf";
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+      } catch (error) {
+        console.error("Error generating PDF:", error);
+      } finally {
+        setIsGeneratingPDF(false);
+      }
+    },
+    [setIsGeneratingPDF],
+  );
 
   useEffect(() => {
     window.addEventListener("resize", scaleContent);
@@ -95,13 +134,9 @@ const Dashboard = () => {
                   <div>Edit</div>
                 </div>
               </Link>
-              <div className="download">
+              <div className="download" onClick={handleDownload}>
                 <MdOutlineFileDownload className="cta-icon" />
                 <div>Download</div>
-              </div>
-              <div className="delete">
-                <RiDeleteBinLine className="cta-icon" />
-                <div>Delete</div>
               </div>
               <Link href={`/tailored-resume?id=${resumeData.resumeId}`}>
                 <div className="tailor">
