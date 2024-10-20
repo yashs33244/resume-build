@@ -144,7 +144,7 @@
   .template2-wrapper .content_experience_div_value_section_name,
   .template2-wrapper .content_skill_div_value_section_category{
     font-weight: 600;
-    color: black !important;
+    color: rgba(0,0,0,0.7) !important;
   }
   
   .template2-wrapper .content_bio_div_value,

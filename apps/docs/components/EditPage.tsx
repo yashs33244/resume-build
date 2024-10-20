@@ -34,6 +34,8 @@ import Modal from "react-responsive-modal";
 import { isOpacityEffect } from "html2canvas/dist/types/render/effects";
 import { resumeSizeAtom } from "../store/resumeSize";
 import { useRecoilState } from "recoil";
+import { Tooltip as ReactTooltip } from "react-tooltip";
+import 'react-tooltip/dist/react-tooltip.css'
 
 const PersonalInfo = dynamic(
   () => import("./Editor/PersonalInfo").then((mod) => mod.PersonalInfo),
@@ -129,8 +131,7 @@ export default function EditPage() {
     "Experience",
     "Project",
     "Skills",
-    "Certificate",
-    "Language",
+    "Certificate"    
   ];
 
   const handleLeftNav = () => {
@@ -278,9 +279,63 @@ export default function EditPage() {
         open={tipsOpen}
         setTipsOpen={(val) => setTipsOpen(val)}
       />
+      <ReactTooltip
+        id="dashboard"
+        place="bottom"
+        content="Dashboard"
+        style={{zIndex: '1000', backgroundColor: '#1B2432'}}
+      />
+       <ReactTooltip
+        id="personal"
+        place="right"
+        content="Personal Details"
+        style={{zIndex: '1000', backgroundColor: '#1B2432'}}
+      />
+       <ReactTooltip
+        id="education"
+        place="right"
+        content="Education"
+        style={{zIndex: '1000', backgroundColor: '#1B2432'}}
+      />
+       <ReactTooltip
+        id="experience"
+        place="right"
+        content="Work Experience"
+        style={{zIndex: '1000', backgroundColor: '#1B2432'}}
+      />
+       <ReactTooltip
+        id="project"
+        place="right"
+        content="Projects"
+        style={{zIndex: '1000', backgroundColor: '#1B2432'}}
+      />
+       <ReactTooltip
+        id="skills"
+        place="right"
+        content="Skills"
+        style={{zIndex: '1000', backgroundColor: '#1B2432'}}
+      />
+       <ReactTooltip
+        id="certificate"
+        place="right"
+        content="Certificates"
+        style={{zIndex: '1000', backgroundColor: '#1B2432'}}
+      />
+      <ReactTooltip
+        id="left"
+        place="bottom"
+        content="Previous Section"
+        style={{zIndex: '1000', backgroundColor: '#1B2432'}}
+      />
+      <ReactTooltip
+        id="right"
+        place="bottom"
+        content="Next Section"
+        style={{zIndex: '10000', backgroundColor: '#1B2432'}}
+      />
       <div className="editor-container">
         <div className="navigation">
-          <div className="login-container">
+          <div className="login-container" data-tooltip-id="dashboard">
             {session?.user ? (
               <div className="login-cta" onClick={handleRedirect}>
                 <TbGridDots />
@@ -302,6 +357,7 @@ export default function EditPage() {
             <div
               onClick={() => setActiveSection("Personal Info")}
               className={`icon-container ${activeSection === "Personal Info" ? "border" : ""}`}
+              data-tooltip-id="personal"
             >
               <FaUserTie
                 className={`icon ${activeSection === "Personal Info" ? "selected" : ""}`}
@@ -310,6 +366,7 @@ export default function EditPage() {
             <div
               onClick={() => setActiveSection("Education")}
               className={`icon-container ${activeSection === "Education" ? "border" : ""}`}
+              data-tooltip-id="education"
             >
               <IoSchool
                 className={`icon ${activeSection === "Education" ? "selected" : ""}`}
@@ -318,6 +375,7 @@ export default function EditPage() {
             <div
               onClick={() => setActiveSection("Experience")}
               className={`icon-container ${activeSection === "Experience" ? "border" : ""}`}
+              data-tooltip-id="experience"
             >
               <FaSuitcase
                 className={`icon ${activeSection === "Experience" ? "selected" : ""}`}
@@ -326,6 +384,7 @@ export default function EditPage() {
             <div
               onClick={() => setActiveSection("Project")}
               className={`icon-container ${activeSection === "Project" ? "border" : ""}`}
+              data-tooltip-id="project"
             >
               <AiFillProject
                 className={`icon ${activeSection === "Project" ? "selected" : ""}`}
@@ -334,6 +393,7 @@ export default function EditPage() {
             <div
               onClick={() => handleSkillsSelect(resumeData)}
               className={`icon-container ${activeSection === "Skills" ? "border" : ""}`}
+              data-tooltip-id="skills"
             >
               <FaTools
                 className={`icon ${activeSection === "Skills" ? "selected" : ""}`}
@@ -342,6 +402,7 @@ export default function EditPage() {
             <div
               onClick={() => setActiveSection("Certificate")}
               className={`icon-container ${activeSection === "Certificate" ? "border" : ""}`}
+              data-tooltip-id="certificate"
             >
               <PiCertificateFill
                 className={`icon ${activeSection === "Certificate" ? "selected" : ""}`}
@@ -360,6 +421,7 @@ export default function EditPage() {
             </div>
             <div className="move-container">
               <CiCircleChevLeft
+                data-tooltip-id="left"
                 style={{
                   marginRight: "50px",
                   width: "40px",
@@ -369,6 +431,7 @@ export default function EditPage() {
                 onClick={handleLeftNav}
               />
               <PiCaretCircleRightFill
+                data-tooltip-id="right"
                 style={{ width: "40px", height: "40px", cursor: "pointer" }}
                 onClick={handleRightNav}
               />

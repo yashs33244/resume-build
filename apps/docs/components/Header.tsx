@@ -35,7 +35,7 @@ export default function Header() {
             <Link href="/api/auth/signin">Login</Link>
           </div>
           <div className="create-cta">
-            <Link href={"/select-templates"}>Create Resume</Link>
+            <Link href={"/api/auth/signin"}>Create Resume</Link>
           </div>
         </div>
       )}
