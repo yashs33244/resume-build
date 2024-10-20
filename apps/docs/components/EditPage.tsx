@@ -59,12 +59,13 @@ const Achievement = dynamic(
 export default function EditPage() {
   const [currentTemplate, setCurrentTemplate] = useState("template1");
   const [resumeSize, setResumeSize] = useRecoilState(resumeSizeAtom);
-  const [isOverflowing, setIsOverflowing] = useState(undefined);
+  const [isOverflowing, setIsOverflowing] = useState<boolean | undefined>(
+    undefined,
+  );
   const router = useRouter();
   const [template, setTemplate] = useState<string | null>(null);
   const [isModelOpen, setIsModelOpen] = useState(false);
-  const { handleAiSuggestion, isLoading, suggestions, error } =
-    useAiSuggestion();
+
   const { data: session, status: sessionStatus } = useSession();
 
   const { resumeData, handleInputChange, handleAddField, handleDeleteField } =
@@ -82,25 +83,25 @@ export default function EditPage() {
   useEffect(() => {
     // Check if the window is available (runs only on client-side)
     if (typeof window !== "undefined") {
-      // Try to get the template from the URL first
       const searchParams = new URLSearchParams(window.location.search);
       let templateParam = searchParams.get("template");
 
-      // If no template was selected via URL, try localStorage
+      // If no template is selected in the URL, check localStorage or default to "fresher"
       if (!templateParam) {
-        const storedTemplate = localStorage.getItem("selectedTemplate");
-        templateParam = storedTemplate || "fresher"; // Default to "fresher" if nothing in localStorage
+        const storedTemplate = localStorage.getItem("resumeData.templateId");
+        templateParam = storedTemplate || "fresher"; // Default to "fresher"
       }
 
-      // Set the template state
+      // Set the template state with the selected or default value
       setTemplate(templateParam);
 
-      // Save the selected template to localStorage for future use
+      // Save the selected template to localStorage
       localStorage.setItem("selectedTemplate", templateParam);
     }
   }, []);
 
   const renderTemplate = () => {
+    console.log("template", template);
     switch (template) {
       case "fresher":
         return <Template1 resumeData={resumeData} id="wrapper" />;
@@ -255,7 +256,6 @@ export default function EditPage() {
   };
   const handleSkillsSelect = (resumeData: ResumeProps) => {
     setActiveSection("Skills");
-    handleAiSuggestion(resumeData);
   };
 
   const templateChangeHandler = (e: any) => {
@@ -275,7 +275,7 @@ export default function EditPage() {
       <Tips
         activeSection={activeSection}
         open={tipsOpen}
-        setTipsOpen={(val) => setTipsOpen(val)}
+        setTipsOpen={(val: any) => setTipsOpen(val)}
       />
       <div className="editor-container">
         <div className="navigation">
@@ -474,7 +474,6 @@ export default function EditPage() {
           onClose={closeModel}
           resumeData={resumeData}
           templateId={template || ""}
-          renderTemplate={renderTemplate}
         />
       </div>
     </div>

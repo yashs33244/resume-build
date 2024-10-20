@@ -77,23 +77,23 @@ const DownloadModal: React.FC<DownloadModalProps> = ({
       try {
         const element = document.getElementById("wrapper");
 
-                if (!element) {
-                    throw new Error("Resume wrapper not found");
-                }
-                const clone = element.cloneNode(true) as HTMLElement;
-                clone.style.transform = "scale(1)";
+        if (!element) {
+          throw new Error("Resume wrapper not found");
+        }
+        const clone = element.cloneNode(true) as HTMLElement;
+        clone.style.transform = "scale(1)";
 
-                const cssLink = `<link rel="stylesheet" href="http://localhost:3000/_next/static/css/app/(pages)/select-templates/editor/page.css">`;
-                const globalCSSLink = `<link rel="stylesheet" href="http://localhost:3000/_next/static/css/app/layout.css?v=1728991725867">`;
-                const htmlContent = globalCSSLink + cssLink  + clone.outerHTML;
+        const cssLink = `<link rel="stylesheet" href="http://localhost:3000/_next/static/css/app/(pages)/select-templates/editor/page.css">`;
+        const globalCSSLink = `<link rel="stylesheet" href="http://localhost:3000/_next/static/css/app/layout.css?v=1728991725867">`;
+        const htmlContent = globalCSSLink + cssLink + clone.outerHTML;
 
-                const response = await fetch("/api/generate-pdf", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({ html: htmlContent }),
-                });
+        const response = await fetch("/api/generate-pdf", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ html: htmlContent }),
+        });
 
         if (!response.ok) throw new Error("PDF generation failed");
 
