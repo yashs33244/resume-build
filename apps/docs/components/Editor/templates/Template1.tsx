@@ -112,6 +112,48 @@ export const Template1 = (props: any) => {
             ))}
           </div>
         )}
+        {projects.length > 0 && (
+          <div className="projects">
+            <div className="section-title">PROJECTS</div>
+            {projects.map((proj: any, index: any) => (
+              <div className="proj-container" key={index}>
+                {proj?.name && (
+                  <div className="proj-name">{proj.name}</div>
+                )}
+                {(proj?.link || proj?.start || proj?.end) && (
+                  <div className="link-duration">
+                    {`${proj?.link || ""} | ${getDuration(proj?.start)} - ${proj?.current ? "Present" : getDuration(proj?.end)}`}
+                  </div>
+                )}
+                {proj?.responsibilities && (
+                  <div
+                    className="responsibilities"
+                    dangerouslySetInnerHTML={{
+                      __html: DOMPurify.sanitize(proj.responsibilities),
+                    }}
+                  />
+                )}
+              </div>
+            ))}
+          </div>
+        )}
+        {certificates.length > 0 && (
+          <div className="certificates">
+            <div className="section-title">CERTIFICATES</div>
+            {certificates.map((cert: any, index: any) => (
+              <div className="cert-container" key={index}>
+                {cert?.name && (
+                  <div className="cert-name">{cert.name}</div>
+                )}
+                {(cert?.issuedOn || cert?.issuer) && (
+                  <div className="issuing">
+                    {`${cert.issuer ? cert.issuer : ""} ${cert.issuedOn ? `- ${getDuration(cert.issuedOn)}` : ""}`}
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        )}
         {(coreSkills.length > 0 || techSkills.length > 0) && (
           <div className="skills">
             {coreSkills.length > 0 && (
@@ -139,39 +181,6 @@ export const Template1 = (props: any) => {
             </div>
           </div>
         )}
-        <div className="projects">
-          <div className="section-title">PROJECTS</div>
-          {projects?.map((proj: any, index: any) => (
-            <div className="exp-container" key={index}>
-              <div className="company-name">
-                <a href={proj.link || "#"}>{proj.name}</a>
-              </div>
-              <div className="rols-duration">
-                {`${getDuration(proj.start)} - ${proj.end ? getDuration(proj.end) : "Present"}`}
-              </div>
-              <div
-                className="responsibilities"
-                dangerouslySetInnerHTML={{
-                  __html: DOMPurify.sanitize(proj.description),
-                }}
-              />
-            </div>
-          ))}
-        </div>
-
-        {/* Certificates Section */}
-        <div className="certificates">
-          <div className="section-title">CERTIFICATES</div>
-          {certificates?.map((cert: any, index: any) => (
-            <div className="cert-container" key={index}>
-              <div className="certificate-name">{cert.name}</div>
-              <div className="certificate-issuer">{cert.issuer}</div>
-              <div className="certificate-issuedOn">
-                Issued: {getDuration(cert.issuedOn)}
-              </div>
-            </div>
-          ))}
-        </div>
       </div>
     </div>
   );
