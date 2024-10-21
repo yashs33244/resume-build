@@ -14,6 +14,7 @@ import {
   useSetTemplateAndUpdateURL,
 } from "../store/templatesState";
 import { useRecoilValue } from "recoil";
+import { useSaveResume } from "../hooks/useSaveResume";
 
 // Mapping between landing page names and actual template names
 type LandingPageTemplateType = "classic" | "modern" | "bold";
@@ -34,11 +35,14 @@ const TemplatesSelect = () => {
   const router = useRouter();
   const actualTemplate = useRecoilValue(actualTemplateSelector);
   const setTemplateAndUpdateURL = useSetTemplateAndUpdateURL();
+  const { saveResume, isSaving } = useSaveResume();
 
   // Update URL and Recoil state
   const handleSetTemplate = (template: LandingPageTemplateType) => {
     setTemplateAndUpdateURL(template); // Update Recoil state and localStorage
     const actualTemplate = reverseTemplateMapping[template];
+    const resumeData = JSON.parse(localStorage.getItem("resumeData")!);
+    saveResume(resumeData, actualTemplate);
     router.push(`/select-templates/editor?template=${actualTemplate}`); // Sync template with URL
   };
 

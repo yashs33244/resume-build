@@ -72,7 +72,7 @@ export async function POST(req: Request) {
     const tailoredResume: ResumeProps = Object.fromEntries(tailoredSections) as ResumeProps;
 
     // Ensure all required fields are present, including skills, coreSkills, and techSkills
-    const requiredFields: (keyof ResumeProps)[] = ['userId', 'personalInfo', 'education', 'experience', 'skills', 'coreSkills', 'techSkills'];
+    const requiredFields: (keyof ResumeProps)[] = ['userId', 'personalInfo', 'education', 'experience', 'skills', 'coreSkills'];
     for (const field of requiredFields) {
       if (!(field in tailoredResume)) {
         tailoredResume[field] = resumeData[field];

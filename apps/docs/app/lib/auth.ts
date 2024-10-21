@@ -218,9 +218,10 @@ export const authOptions: NextAuthOptions = {
     },
     async redirect({ url, baseUrl }) {
       // If user is signing in, redirect them to the select-templates page
-      if (url === baseUrl ) {
-        return baseUrl + '/select-templates';
+      if (url === baseUrl) {
+        return baseUrl + '/dashboard';
       }
+      
   
       // If user is logging out, redirect them to the landing page
       if (url === baseUrl + '/api/auth/signout') {

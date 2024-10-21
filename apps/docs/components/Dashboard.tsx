@@ -2,31 +2,30 @@
 import React, { useCallback, useEffect } from "react";
 import { useRecoilState } from "recoil";
 import "./Dashboard.scss";
-
 import { isGeneratingPDFAtom } from "../store/pdfgenerating";
 import Image from "next/image";
 import Link from "next/link";
-
 import { CiEdit } from "react-icons/ci";
 import { MdOutlineFileDownload } from "react-icons/md";
 import { ImMagicWand } from "react-icons/im";
 import { VscDebugRestart } from "react-icons/vsc";
 import { IoAddCircleOutline } from "react-icons/io5";
-
-// Import your template components
 import { Template1 } from "./Editor/templates/Template1";
 import { Template2 } from "./Editor/templates/template2";
 import { Template3 } from "./Editor/templates/template3";
 import { useResumeState } from "../hooks/useResumeState";
 import { resumeTimeAtom } from "../store/expiry";
+import { useRouter } from "next/navigation";
+import { ResumeProps } from "../types/ResumeProps";
 
 const Dashboard = () => {
   const [isGeneratingPDF, setIsGeneratingPDF] =
     useRecoilState(isGeneratingPDFAtom);
-  const { resumeState, daysLeft, template, resumeData } = useResumeState();
+  const resumes: ResumeProps[] = useResumeState();
   const [resumeTimes, setResumeTimes] = useRecoilState(resumeTimeAtom);
+  const router = useRouter();
 
-  const renderTemplate = () => {
+  const renderTemplate = (template, resumeData) => {
     switch (template) {
       case "fresher":
         return <Template1 resumeData={resumeData} className="wrapper" />;
@@ -39,25 +38,43 @@ const Dashboard = () => {
     }
   };
 
+  useEffect(() => {
+    console.log(resumes);
+  }, [resumes]);
+
+  // Debounce function to optimize scaling on window resize
+  function debounce(func, wait) {
+    let timeout;
+    return function (...args) {
+      const context = this;
+      clearTimeout(timeout);
+      timeout = setTimeout(() => func.apply(context, args), wait);
+    };
+  }
+
+  // Optimized scaling of content
   function scaleContent() {
     const containers = document.querySelectorAll(".resumeParent");
     containers.forEach((container) => {
       const content = container.querySelector(".wrapper");
       if (container && content) {
-        const widthScale = container.clientWidth / content.clientWidth;
-        const heightScale = container.clientHeight / content.clientHeight;
+        const widthScale =
+          container.clientWidth / (content as HTMLElement).clientWidth;
+        const heightScale =
+          container.clientHeight / (content as HTMLElement).clientHeight;
         const scale = Math.min(widthScale, heightScale);
-        content.style.transform = `scale(${scale})`;
+        (content as HTMLElement).style.transform = `scale(${scale})`;
       }
     });
   }
 
   const handleDownload = useCallback(
-    async (event: React.MouseEvent<HTMLDivElement>) => {
+    async (resumeId: string) => {
       setIsGeneratingPDF(true);
       try {
-        // Find the resume wrapper directly from the rendered template
-        const realElement = document.querySelector(".resumeParent .wrapper");
+        const realElement = document.querySelector(
+          `.resumeParent-${resumeId} .wrapper`,
+        );
         if (!realElement) throw new Error("Resume wrapper not found");
 
         const element = realElement.cloneNode(true) as HTMLElement;
@@ -90,6 +107,7 @@ const Dashboard = () => {
         window.URL.revokeObjectURL(url);
       } catch (error) {
         console.error("Error generating PDF:", error);
+        alert("Failed to generate PDF. Please try again.");
       } finally {
         setIsGeneratingPDF(false);
       }
@@ -97,13 +115,15 @@ const Dashboard = () => {
     [setIsGeneratingPDF],
   );
 
+  // Use debounced scaling to improve performance
   useEffect(() => {
-    window.addEventListener("resize", scaleContent);
+    const handleResize = debounce(scaleContent, 200);
+    window.addEventListener("resize", handleResize);
     scaleContent();
     return () => {
-      window.removeEventListener("resize", scaleContent);
+      window.removeEventListener("resize", handleResize);
     };
-  }, [resumeData]);
+  }, [resumes]);
 
   return (
     <div className="dashboard-container">
@@ -117,50 +137,64 @@ const Dashboard = () => {
         </div>
       </div>
       <div className="resume-container">
-        <div className="first-resume">
-          <div className="timer">
-            {resumeState == "DOWNLOAD_SUCCESS" && (
-              <div className="text-white"> {daysLeft} days left</div>
-            )}
-          </div>
-          <div className="resume-section">
-            <div className="resume-preview resumeParent">
-              {renderTemplate()}
+        {resumes.map((resume, index) => (
+          <div
+            key={resume.resumeData.resumeId}
+            className={`resume-item ${
+              index === 0 ? "first-resume" : "second-resume"
+            }`}
+          >
+            <div className="timer">
+              {resume.resumeState === "DOWNLOAD_SUCCESS" && (
+                <div className="text-white"> {resume.daysLeft} days left</div>
+              )}
+              {resume.resumeState !== "DOWNLOAD_SUCCESS" && (
+                <div className="text-white expired">Expired</div>
+              )}
             </div>
-            <div className="action-toolbar">
-              <Link href={`/select-templates/editor?template=${template}`}>
-                <div className="edit">
-                  <CiEdit className="cta-icon" />
-                  <div>Edit</div>
-                </div>
-              </Link>
-              <div className="download" onClick={handleDownload}>
-                <MdOutlineFileDownload className="cta-icon" />
-                <div>Download</div>
+            <div className="resume-section">
+              <div
+                className={`resume-preview resumeParent resumeParent-${resume.resumeData.resumeId}`}
+              >
+                {renderTemplate(resume.template, resume.resumeData)}
               </div>
-              <Link href={`/tailored-resume?id=${resumeData.resumeId}`}>
-                <div className="tailor">
-                  <ImMagicWand className="cta-icon" />
-                  <div>Tailor to a Job</div>
-                </div>
-              </Link>
-            </div>
-          </div>
-        </div>
-        <div className="second-resume">
-          <div className="timer expired">Expired</div>
-          <div className="resume-section">
-            <div className="resume-preview resumeParent">
-              {renderTemplate()}
-            </div>
-            <div className="action-toolbar">
-              <div className="renew">
-                <VscDebugRestart className="cta-icon" />
-                <div>Renew to Edit</div>
+              <div className="action-toolbar">
+                {resume.resumeState === "DOWNLOAD_SUCCESS" ? (
+                  <>
+                    <Link
+                      href={`/select-templates/editor?template=${resume.resumeData.templateId}`}
+                    >
+                      <div className="edit">
+                        <CiEdit className="cta-icon" />
+                        <div>Edit</div>
+                      </div>
+                    </Link>
+                    <div
+                      className="download"
+                      onClick={() => handleDownload(resume.resumeData.resumeId)}
+                    >
+                      <MdOutlineFileDownload className="cta-icon" />
+                      <div>Download</div>
+                    </div>
+                    <Link
+                      href={`/tailored-resume?id=${resume.resumeData.resumeId}`}
+                    >
+                      <div className="tailor">
+                        <ImMagicWand className="cta-icon" />
+                        <div>Tailor to a Job</div>
+                      </div>
+                    </Link>
+                  </>
+                ) : (
+                  <div className="renew">
+                    <VscDebugRestart className="cta-icon" />
+                    <div>Renew to Edit</div>
+                  </div>
+                )}
               </div>
             </div>
           </div>
-        </div>
+        ))}
       </div>
     </div>
   );

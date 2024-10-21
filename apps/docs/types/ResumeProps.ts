@@ -29,7 +29,6 @@ export interface ResumeProps {
   }>;
   skills: string[]; // General skills list
   coreSkills?: string[]; // Optional core skills
-  techSkills?: string[]; // Optional technical skills
   languages?: string[]; // Optional languages
   achievement?: {
     title: string;

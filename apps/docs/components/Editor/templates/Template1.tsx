@@ -5,6 +5,7 @@ import DOMPurify from "dompurify";
 import "./template1.css";
 import { useRecoilState } from "recoil";
 import { resumeSizeAtom } from "../../../store/resumeSize";
+import { ResumeProps } from "../../../types/ResumeProps";
 
 type Template1Props = {
   resumeData: ResumeProps;
@@ -20,7 +21,7 @@ export const Template1 = (props: any) => {
   const experience = resumeData.experience || [];
   const education = resumeData.education || [];
   const coreSkills = resumeData.coreSkills || [];
-  const techSkills = resumeData.techSkills || [];
+
   const projects = resumeData.projects || [];
   const certificates = resumeData.certificates || [];
 
@@ -112,23 +113,13 @@ export const Template1 = (props: any) => {
             ))}
           </div>
         )}
-        {(coreSkills.length > 0 || techSkills.length > 0) && (
+        {coreSkills.length > 0 && (
           <div className="skills">
             {coreSkills.length > 0 && (
               <div className="section-title">SKILLS</div>
             )}
             <div className="core-skills">
               {coreSkills.map((skill: any, index: any) => (
-                <div
-                  className={`skill-container ${index === 0 ? "first" : ""}`}
-                  key={index}
-                >
-                  <div className="skill">{skill}</div>
-                </div>
-              ))}
-            </div>
-            <div className="core-skills">
-              {techSkills.map((skill: any, index: any) => (
                 <div
                   className={`skill-container ${index === 0 ? "first" : ""}`}
                   key={index}

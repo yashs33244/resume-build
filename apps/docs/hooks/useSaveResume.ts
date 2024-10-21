@@ -31,7 +31,6 @@ export function useSaveResume() {
       }
 
       console.log("Resume saved successfully");
-      router.push("/dashboard");
     } catch (error) {
       console.error("Error saving resume:", error);
     } finally {

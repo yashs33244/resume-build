@@ -20,9 +20,6 @@ export const initialResumeData: ResumeProps = {
   coreSkills: [
     
   ],
-  techSkills: [
-    
-  ],
   achievement: {
     title: "",
     description: ""
