@@ -21,9 +21,6 @@ export const useResumeData = () => {
                 if (!Array.isArray(parsedData.coreSkills)) {
                     parsedData.coreSkills = [];
                 }
-                if (!Array.isArray(parsedData.techSkills)) {
-                    parsedData.techSkills = [];
-                }
                 if (!Array.isArray(parsedData.languages)) {
                     parsedData.languages = [];
                 }
@@ -92,14 +89,6 @@ export const useResumeData = () => {
                 if (field === "coreSkill" && index !== undefined) {
                     const currentSkills = Array.isArray(newData.coreSkills) ? newData.coreSkills : [];
                     newData.coreSkills = [
-                        ...currentSkills.slice(0, index),
-                        value,
-                        ...currentSkills.slice(index + 1)
-                    ];
-                }
-                if (field === "techSkill" && index !== undefined) {
-                    const currentSkills = Array.isArray(newData.techSkills) ? newData.techSkills : [];
-                    newData.techSkills = [
                         ...currentSkills.slice(0, index),
                         value,
                         ...currentSkills.slice(index + 1)

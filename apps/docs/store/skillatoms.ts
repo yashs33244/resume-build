@@ -6,11 +6,6 @@ export const coreSkillState = atom<string>({
   default: "", // Default value for coreSkill
 });
 
-// Atom for tech skill
-export const techSkillState = atom<string>({
-  key: "techSkillState",
-  default: "", // Default value for techSkill
-});
 
 // Atom for suggestions (array of strings)
 export const suggestionsState = atom<string[]>({
