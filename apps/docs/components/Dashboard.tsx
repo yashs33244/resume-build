@@ -16,12 +16,12 @@ import { Template3 } from "./Editor/templates/template3";
 import { useResumeState } from "../hooks/useResumeState";
 import { resumeTimeAtom } from "../store/expiry";
 import { useRouter } from "next/navigation";
-import { ResumeProps } from "../types/ResumeProps";
+import { Loader } from "lucide-react";
 
 const Dashboard = () => {
   const [isGeneratingPDF, setIsGeneratingPDF] =
     useRecoilState(isGeneratingPDFAtom);
-  const resumes: ResumeProps[] = useResumeState();
+  const { resumes, isLoading, error } = useResumeState();
   const [resumeTimes, setResumeTimes] = useRecoilState(resumeTimeAtom);
   const router = useRouter();
 
@@ -124,6 +124,13 @@ const Dashboard = () => {
       window.removeEventListener("resize", handleResize);
     };
   }, [resumes]);
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <Loader className="w-8 h-8" />
+      </div>
+    );
+  }
 
   return (
     <div className="dashboard-container">

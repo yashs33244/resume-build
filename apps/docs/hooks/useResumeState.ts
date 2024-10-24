@@ -1,8 +1,18 @@
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { ResumeProps } from '../types/ResumeProps';
 
-export const useResumeState = () => {
+interface UseResumeStateReturn {
+  resumes: ResumeProps[];
+  isLoading: boolean;
+  error: string | null;
+}
+
+export const useResumeState = (): UseResumeStateReturn => {
   const [resumes, setResumes] = useState<ResumeProps[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const router = useRouter();
 
   useEffect(() => {
     const fetchResumes = async () => {
@@ -13,7 +23,15 @@ export const useResumeState = () => {
         }
 
         const data = await res.json();
-        console.log('Resumes:', data);
+        console.log('Fetched Resumes:', data);
+
+        // Check if data is empty or null
+        if (!data || data.length === 0) {
+          console.log('No resumes found, redirecting to create-preference');
+          router.push('/create-preference');
+          setResumes([]);
+          return;
+        }
 
         const processedResumes = data.map((resume: ResumeProps) => ({
           resumeState: resume.state,
@@ -39,12 +57,14 @@ export const useResumeState = () => {
         setResumes(processedResumes);
       } catch (error) {
         console.error('Error fetching resumes:', error);
-        alert('Failed to load resumes. Please try again later.');
+        setError(error instanceof Error ? error.message : 'Failed to load resumes');
+      } finally {
+        setIsLoading(false);
       }
     };
 
     fetchResumes();
-  }, []);
+  }, [router]);
 
   const calculateDaysLeft = (resume: ResumeProps) => {
     if (resume.state === 'DOWNLOAD_SUCCESS') {
@@ -61,5 +81,5 @@ export const useResumeState = () => {
     return null;
   };
 
-  return resumes;
+  return { resumes, isLoading, error };
 };

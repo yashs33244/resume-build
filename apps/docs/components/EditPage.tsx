@@ -35,7 +35,7 @@ import { isOpacityEffect } from "html2canvas/dist/types/render/effects";
 import { resumeSizeAtom } from "../store/resumeSize";
 import { useRecoilState } from "recoil";
 import { Tooltip as ReactTooltip } from "react-tooltip";
-import 'react-tooltip/dist/react-tooltip.css'
+import "react-tooltip/dist/react-tooltip.css";
 
 const PersonalInfo = dynamic(
   () => import("./Editor/PersonalInfo").then((mod) => mod.PersonalInfo),
@@ -132,7 +132,7 @@ export default function EditPage() {
     "Experience",
     "Project",
     "Skills",
-    "Certificate"    
+    "Certificate",
   ];
 
   const handleLeftNav = () => {
@@ -283,55 +283,55 @@ export default function EditPage() {
         id="dashboard"
         place="bottom"
         content="Dashboard"
-        style={{zIndex: '1000', backgroundColor: '#1B2432'}}
+        style={{ zIndex: "1000", backgroundColor: "#1B2432" }}
       />
-       <ReactTooltip
+      <ReactTooltip
         id="personal"
         place="right"
         content="Personal Details"
-        style={{zIndex: '1000', backgroundColor: '#1B2432'}}
+        style={{ zIndex: "1000", backgroundColor: "#1B2432" }}
       />
-       <ReactTooltip
+      <ReactTooltip
         id="education"
         place="right"
         content="Education"
-        style={{zIndex: '1000', backgroundColor: '#1B2432'}}
+        style={{ zIndex: "1000", backgroundColor: "#1B2432" }}
       />
-       <ReactTooltip
+      <ReactTooltip
         id="experience"
         place="right"
         content="Work Experience"
-        style={{zIndex: '1000', backgroundColor: '#1B2432'}}
+        style={{ zIndex: "1000", backgroundColor: "#1B2432" }}
       />
-       <ReactTooltip
+      <ReactTooltip
         id="project"
         place="right"
         content="Projects"
-        style={{zIndex: '1000', backgroundColor: '#1B2432'}}
+        style={{ zIndex: "1000", backgroundColor: "#1B2432" }}
       />
-       <ReactTooltip
+      <ReactTooltip
         id="skills"
         place="right"
         content="Skills"
-        style={{zIndex: '1000', backgroundColor: '#1B2432'}}
+        style={{ zIndex: "1000", backgroundColor: "#1B2432" }}
       />
-       <ReactTooltip
+      <ReactTooltip
         id="certificate"
         place="right"
         content="Certificates"
-        style={{zIndex: '1000', backgroundColor: '#1B2432'}}
+        style={{ zIndex: "1000", backgroundColor: "#1B2432" }}
       />
       <ReactTooltip
         id="left"
         place="bottom"
         content="Previous Section"
-        style={{zIndex: '1000', backgroundColor: '#1B2432'}}
+        style={{ zIndex: "1000", backgroundColor: "#1B2432" }}
       />
       <ReactTooltip
         id="right"
         place="bottom"
         content="Next Section"
-        style={{zIndex: '10000', backgroundColor: '#1B2432'}}
+        style={{ zIndex: "10000", backgroundColor: "#1B2432" }}
       />
       <div className="editor-container">
         <div className="navigation">
