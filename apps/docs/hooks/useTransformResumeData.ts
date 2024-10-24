@@ -22,7 +22,6 @@ export const useTransformResumeData = (resumeData: any): ResumeProps | null => {
         })),
         skills: data.skills || [],
         coreSkills: data.coreSkills || [],
-        techSkills: data.techSkills || [],
         languages: data.languages || [],
         achievement: data.achievement || null,
         projects: data.projects || [],

@@ -9,6 +9,7 @@ import { getDuration } from "../../../utils";
 
 export const Template2 = (props: any) => {
   const { resumeData, id } = props;
+  console.log("Resume data = ", resumeData);
   const [resumeSize, setResumeSize] = useRecoilState(resumeSizeAtom);
 
   return (
@@ -179,74 +180,159 @@ export const Template2 = (props: any) => {
                 </div>
               </div>
             )}
-          {Array.isArray(resumeData?.coreSkills) &&
-            resumeData?.coreSkills?.length > 0 && (
-              <div className={`${"content_skill_div"} ${"content_container"}`}>
+          {Array.isArray(resumeData?.projects) &&
+            resumeData?.projects.length > 0 && (
+              <div
+                className={`${"content_projects_div"} ${"content_container"}`}
+              >
                 <div
-                  className={`${"content_skill_div_label"} ${"content_left_part"}`}
+                  className={`${"content_projects_div_label"} ${"content_left_part"}`}
                 >
-                  Skill
+                  Projects
                 </div>
                 <div
-                  className={`${"content_skill_div_value"} ${"content_right_part"}`}
+                  className={`${"content_projects_div_value"} ${"content_right_part"}`}
                 >
-                  {Array.isArray(resumeData?.coreSkills) &&
-                    resumeData?.coreSkills?.length > 0 && (
-                      <div className={"content_skill_div_value_section"}>
-                        <div
-                          className={"content_skill_div_value_section_category"}
-                        >
-                          Core Skills
-                        </div>
-                        <div
-                          className={"content_skill_div_value_section_skills"}
-                        >
-                          {resumeData?.coreSkills.join(", ")}
-                        </div>
-                      </div>
-                    )}
-                  {Array.isArray(resumeData?.techSkills) && (
-                    <div className={"content_skill_div_value_section"}>
+                  {resumeData?.projects.map((proj: any, index: number) => {
+                    return (
                       <div
-                        className={"content_skill_div_value_section_category"}
+                        className={"content_projects_div_value_section"}
+                        key={index}
                       >
-                        Tools and Technologies
+                        {proj?.name && proj?.link && (
+                          <div
+                            className={
+                              "content_projects_div_value_section_name"
+                            }
+                          >
+                            {proj?.name + " - " + proj?.link}
+                          </div>
+                        )}
+                        {(proj?.start || proj?.end || proj?.duration) && (
+                          <div
+                            className={
+                              "content_projects_div_value_section_year"
+                            }
+                          >
+                            {proj?.duration ||
+                              getDuration(proj?.start) +
+                                " - " +
+                                (proj?.current
+                                  ? "Present"
+                                  : getDuration(proj?.end))}
+                          </div>
+                        )}
+                        {proj?.responsibilities && (
+                          <div
+                            className={
+                              "content_projects_div_value_section_work"
+                            }
+                            dangerouslySetInnerHTML={{
+                              __html: DOMPurify.sanitize(proj?.responsibilities),
+                            }}
+                          ></div>
+                        )}
                       </div>
-                      {/* <div className={"content_skill_div_value_section_skills"}>
-                        {resumeData?.techSkills.join(", ")}
-                      </div> */}
-                    </div>
-                  )}
+                    );
+                  })}
                 </div>
               </div>
             )}
-        </div>
-      </div>
-      <div className={`${"content_acheivement_div"} ${"content_container"}`}>
-        <div
-          className={`${"content_acheivement_div_label"} ${"content_left_part"}`}
-        >
-          Certificates
-        </div>
-        <div
-          className={`${"content_acheivement_div_value"} ${"content_right_part"}`}
-        >
-          {resumeData.certificates?.map((cert: any) => {
-            return (
-              <div className={"content_acheivement_div_value_section"}>
-                <div className={"content_acheivement_div_value_section_title"}>
-                  {cert?.issuer + " - " + cert?.issuedOn}
+          {Array.isArray(resumeData?.certificates) &&
+            resumeData?.certificates.length > 0 && (
+              <div
+                className={`${"content_certificates_div"} ${"content_container"}`}
+              >
+                <div
+                  className={`${"content_certificates_div_label"} ${"content_left_part"}`}
+                >
+                  Certificates
                 </div>
                 <div
-                  className={"content_acheivement_div_value_section_remarks"}
+                  className={`${"content_certificates_div_value"} ${"content_right_part"}`}
                 >
-                  {cert?.name}
+                  {resumeData.certificates.map((cert: any, index: number) => {
+                    return (
+                      <div
+                        className={"content_certificates_div_value_section"}
+                        key={index}
+                      >
+                        {cert?.name && (
+                          <div
+                            className={
+                              "content_certificates_div_value_section_name"
+                            }
+                          >
+                            {cert?.name || "Certificate Name"}
+                          </div>
+                        )}
+                        {cert?.issuedOn && (
+                          <div
+                            className={
+                              "content_certificates_div_value_section_year"
+                            }
+                          >
+                            {cert?.issuedOn
+                              ? getDuration(cert.issuedOn)
+                              : "Date not available"}
+                          </div>
+                        )}
+                        {cert.issuer && (
+                          <div
+                            className={
+                              "content_certificates_div_value_section_field"
+                            }
+                          >
+                            {cert?.issuer
+                              ? cert.issuer
+                              : "Issuer not available"}
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
-            );
-          })}
+            )}
+          {(Array.isArray(resumeData?.coreSkills) &&
+                resumeData?.coreSkills?.length > 0) && (
+          <div className={`${"content_skill_div"} ${"content_container"}`}>
+            <div className={`${"content_skill_div_label"} ${"content_left_part"}`}>
+              Skills
+            </div>
+            <div className={`${"content_skill_div_value"} ${"content_right_part"}`}>
+              {Array.isArray(resumeData?.coreSkills) &&
+                resumeData?.coreSkills?.length > 0 && (
+                  <div className={"content_skill_div_value_section"}>
+                    {/* <div
+                      className={"content_skill_div_value_section_category"}
+                    >
+                      Core Skills
+                    </div> */}
+                    <div className={"content_skill_div_value_section_skills"}>
+                      {resumeData?.coreSkills.join(", ")}
+                    </div>
+                  </div>
+                )}
+              {/* Uncomment this section if you want to display tech skills */}
+              {/* {Array.isArray(resumeData?.techSkills) &&
+                resumeData?.techSkills?.length > 0 && (
+                  <div className={"content_skill_div_value_section"}>
+                    <div
+                      className={"content_skill_div_value_section_category"}
+                    >
+                      Tools and Technologies
+                    </div>
+                    <div className={"content_skill_div_value_section_skills"}>
+                      {resumeData?.techSkills.join(", ")}
+                    </div>
+                  </div>
+                )} */}
+            </div>
+          </div>
+        )}
         </div>
-      </div>
+      </div>      
     </div>
   );
 };

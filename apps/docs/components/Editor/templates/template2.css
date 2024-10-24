@@ -132,7 +132,9 @@
   /* Content Labels and Values */
   .template2-wrapper .content_bio_div_label,
   .template2-wrapper .content_education_div_label,
+  .template2-wrapper .content_certificates_div_label,
   .template2-wrapper .content_experience_div_label,
+  .template2-wrapper .content_projects_div_label,
   .template2-wrapper .content_skill_div_label,
   .template2-wrapper .content_acheivement_div_label{
     font-size: var(--content-label-size);
@@ -141,7 +143,9 @@
   }
 
   .template2-wrapper .content_education_div_value_section_name,
+  .template2-wrapper .content_certificates_div_value_section_name,
   .template2-wrapper .content_experience_div_value_section_name,
+  .template2-wrapper .content_projects_div_value_section_name,
   .template2-wrapper .content_skill_div_value_section_category{
     font-weight: 600;
     color: rgba(0,0,0,0.7) !important;
@@ -149,11 +153,17 @@
   
   .template2-wrapper .content_bio_div_value,
   .template2-wrapper .content_education_div_value_section_name,
+  .template2-wrapper .content_certificates_div_value_section_name,
   .template2-wrapper .content_experience_div_value_section_name,
+  .template2-wrapper .content_projects_div_value_section_name,
   .template2-wrapper .content_education_div_value_section_year,
+  .template2-wrapper .content_certificates_div_value_section_year,
   .template2-wrapper .content_education_div_value_section_field,
+  .template2-wrapper .content_certificates_div_value_section_field,
   .template2-wrapper .content_experience_div_value_section_year,
+  .template2-wrapper .content_projects_div_value_section_year,
   .template2-wrapper .content_experience_div_value_section_work,
+  .template2-wrapper .content_projects_div_value_section_work,
   .template2-wrapper .content_skill_div_value_section_skills,
   .template2-wrapper .content_acheivement_div_value_section_remarks,
   .template2-wrapper .content_skill_div_value_section_category{
@@ -168,8 +178,22 @@
     gap: 10px;
     justify-content: space-between;
   }
+
+  .template2-wrapper .content_certificates_div_value {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: space-between;
+  }
   
   .template2-wrapper .content_education_div_value_section {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    width: calc(50% - 10px);
+  }
+
+  .template2-wrapper .content_certificates_div_value_section {
     display: flex;
     flex-direction: column;
     gap: 5px;
@@ -181,14 +205,31 @@
     flex-direction: column;
     gap: 10px;
   }
+
+  .template2-wrapper .content_projects_div_value {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
   
   .template2-wrapper .content_experience_div_value_section_work ul {
     list-style: disc;
     /* list-style-position: inside; */
     padding: 0px 0px 0px 10px;
   }
+
+  .template2-wrapper .content_projects_div_value_section_work ul {
+    list-style: disc;
+    /* list-style-position: inside; */
+    padding: 0px 0px 0px 10px;
+  }
   
   .template2-wrapper .content_experience_div_value_section_work ol {
+    list-style: decimal;
+    list-style-position: inside;
+  }
+
+  .template2-wrapper .content_projects_div_value_section_work ol {
     list-style: decimal;
     list-style-position: inside;
   }
