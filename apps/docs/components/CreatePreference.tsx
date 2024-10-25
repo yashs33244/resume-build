@@ -15,6 +15,22 @@ export default function CreatePreference() {
   const [isLoading, setIsLoading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
 
+  const processSkills = (skills: string[]) => {
+    // Remove duplicates and empty strings
+    return Array.from(new Set(skills.filter((skill) => skill.trim())));
+  };
+
+  const formatBulletPoints = (points: string[]) => {
+    return points.map((point) => {
+      // Ensure each point starts with an action verb
+      const trimmedPoint = point.trim();
+      // Remove articles from the beginning
+      const withoutArticles = trimmedPoint.replace(/^(the|a|an)\s+/i, "");
+      // Capitalize first letter
+      return withoutArticles.charAt(0).toUpperCase() + withoutArticles.slice(1);
+    });
+  };
+
   const onDrop = useCallback(
     async (acceptedFiles: any) => {
       const file = acceptedFiles[0];
@@ -22,6 +38,7 @@ export default function CreatePreference() {
         setIsLoading(true);
         setError("");
         setUploadProgress(0);
+
         try {
           const formData = new FormData();
           formData.append("resume", file);
@@ -46,49 +63,59 @@ export default function CreatePreference() {
 
           const parsedData = await response.json();
 
-          // Transform parsed data into ResumeProps structure
+          // Transform parsed data with improved formatting
           const resumeData: ResumeProps = {
             userId: parsedData.userId || "user-id",
             personalInfo: {
-              name: parsedData.personalInfo.name || "",
-              title: parsedData.personalInfo.title || "",
-              email: parsedData.personalInfo.email || "",
-              phone: parsedData.personalInfo.phone || "",
-              location: parsedData.personalInfo.location || "",
-              linkedin: parsedData.personalInfo.linkedin || "",
-              website: parsedData.personalInfo.website || "",
-              bio: parsedData.personalInfo.bio || "",
+              name: parsedData.personalInfo?.name || "",
+              title: parsedData.personalInfo?.title || "",
+              email: parsedData.personalInfo?.email || "",
+              phone: parsedData.personalInfo?.phone || "",
+              location: parsedData.personalInfo?.location || "",
+              linkedin: parsedData.personalInfo?.linkedin || "",
+              website: parsedData.personalInfo?.website || "",
+              bio: parsedData.personalInfo?.bio || "",
             },
-            education: parsedData.education.map((edu: any) => ({
-              institution: edu.institution || "",
-              major: edu.major || "",
-              start: edu.start || "",
-              end: edu.end || "",
-              degree: edu.degree || "",
-              score: edu.score || 0,
-            })),
-            experience: parsedData.experience.map((exp: any) => ({
-              company: exp.company || "",
-              role: exp.role || "",
-              start: exp.start || "",
-              end: exp.end || "",
-              responsibilities: exp.responsibilities || [],
-              current: exp.current || false,
-            })),
-            skills: parsedData.skills || [],
-            coreSkills: parsedData.coreSkills || [],
-
-            languages: parsedData.languages || [],
-            achievement: parsedData.achievement || [],
+            education:
+              parsedData.education?.map((edu: any) => ({
+                institution: edu.institution || "",
+                major: edu.major || "",
+                start: edu.start || "",
+                end: edu.end || "",
+                degree: edu.degree || "",
+                score: edu.score || 0,
+              })) || [],
+            experience:
+              parsedData.experience?.map((exp: any) => ({
+                company: exp.company || "",
+                role: exp.role || "",
+                start: exp.start || "",
+                end: exp.end || "",
+                responsibilities: formatBulletPoints(
+                  exp.responsibilities || [],
+                ),
+                current: exp.current || false,
+              })) || [],
+            // Process and categorize skills
+            skills: processSkills(parsedData.skills || []),
+            coreSkills: processSkills(parsedData.coreSkills || []),
+            languages: processSkills(parsedData.languages || []),
             projects:
               parsedData.projects?.map((proj: any) => ({
                 name: proj.name || "",
                 link: proj.link || "",
                 start: proj.start || "",
                 end: proj.end || "",
-                responsibilities: proj.responsibilities || [], // Fixed: Now it's an array
+                responsibilities: formatBulletPoints(
+                  proj.responsibilities || [],
+                ),
               })) || [],
-            certificates: parsedData.certificates || [],
+            certificates:
+              parsedData.certificates?.map((cert: any) => ({
+                name: cert.name || "",
+                issuer: cert.issuer || "",
+                issuedOn: cert.issuedOn || "",
+              })) || [],
             state: ResumeState.EDITING,
             templateId: parsedData.templateId || "default-template",
           };

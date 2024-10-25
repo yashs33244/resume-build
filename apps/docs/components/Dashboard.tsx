@@ -166,7 +166,8 @@ const Dashboard = () => {
                 {renderTemplate(resume.template, resume.resumeData)}
               </div>
               <div className="action-toolbar">
-                {resume.resumeState === "DOWNLOAD_SUCCESS" ? (
+                {resume.resumeState === "DOWNLOAD_SUCCESS" ||
+                resume.resumeState === "EDITING" ? (
                   <>
                     <Link
                       href={`/select-templates/editor?template=${resume.resumeData.templateId}`}
