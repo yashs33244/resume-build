@@ -9,10 +9,28 @@ export default function SizeChange() {
         <input
           name="size"
           type="radio"
-          checked={resumeSize === "S" ? true : false}
-          onChange={() => setResumeSize("S")}
+          checked={resumeSize === "Smallest" ? true : false}
+          onChange={() => setResumeSize("Smallest")}
         />{" "}
-        S
+        Smallest
+      </div>
+      <div className="input-check">
+        <input
+          name="size"
+          type="radio"
+          checked={resumeSize === "Smaller" ? true : false}
+          onChange={() => setResumeSize("Smaller")}
+        />{" "}
+        Smaller
+      </div>
+      <div className="input-check">
+        <input
+          name="size"
+          type="radio"
+          checked={resumeSize === "Small" ? true : false}
+          onChange={() => setResumeSize("Small")}
+        />{" "}
+        Small
       </div>
       <div className="input-check">
         <input

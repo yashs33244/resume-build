@@ -7,8 +7,11 @@
 .template2-wrapper {
 
     --font-size-base: 16px; /* Default for M */
-    --font-size-small: 0.75;
-    --font-size-large: 1.25;
+    --font-size-small: 0.9;
+    --font-size-smaller: 0.8;
+    --font-size-smallest: 0.75;
+    --font-size-large: 1.1;
+    --font-size-larger: 1.25;
   
     --padding-base: 40px;
     --gap-base: 30px;
@@ -31,13 +34,28 @@
     --padding-base: 40px;
     --gap-base: 30px;
   }
-  
-  /* Size S */
-  .template2-wrapper.S {
-    --font-size-base: 14px; /* 75% of M */
-    --padding-base: 30px; /* 75% of M */
-    --gap-base: 22.5px; /* 75% of M */
+
+  /* Size Small */
+  .template2-wrapper.Small {
+    --font-size-base: 15px;
+    --padding-base: 36px;
+    --gap-base: 28px;
   }
+
+  /* Size Smaller */
+  .template2-wrapper.Smaller {
+    --font-size-base: 14px;
+    --padding-base: 34px;
+    --gap-base: 26px;
+  }
+
+  /* Size Smallest */
+  .template2-wrapper.Smallest {
+    --font-size-base: 12.5px;
+    --padding-base: 32px;
+    --gap-base: 24px;
+  }
+
   
   /* Size L */
   .template2-wrapper.L {
