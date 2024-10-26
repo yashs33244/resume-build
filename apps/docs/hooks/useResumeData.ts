@@ -122,7 +122,7 @@ export const useResumeData = () => {
           if (section === "education") {
               newData.education = [
                   ...(prevData.education || []),
-                  { institution: "", start: "", end: "", degree: "" , major: "" },
+                  { institution: "", start: "", end: "", degree: "" , major: "" , score:0},
               ];
           } else if (section === "experience") {
               newData.experience = [
@@ -168,11 +168,7 @@ export const useResumeData = () => {
                 newData.coreSkills = Array.isArray(newData.coreSkills) 
                     ? newData.coreSkills.filter((_, i) => i !== index)
                     : [];
-            } else if (section === "skills" && field === 'techSkill' && index !== undefined) {
-                newData.techSkills = Array.isArray(newData.techSkills) 
-                    ? newData.techSkills.filter((_, i) => i !== index)
-                    : [];
-            } else if (section === "languages" && field === 'language' && index !== undefined) {
+            }else if (section === "languages" && field === 'language' && index !== undefined) {
                 newData.languages = Array.isArray(newData.languages) 
                     ? newData.languages.filter((_, i) => i !== index)
                     : [];

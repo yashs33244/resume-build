@@ -1,46 +1,67 @@
-import { useState, useEffect } from 'react';
-import { ResumeProps } from '../types/ResumeProps';
+import { useEffect, useState } from "react";
+import { ResumeProps } from "../types/ResumeProps"; // Adjust import path as needed
 
-interface FetchResumeDataResponse {
-  data: ResumeProps | null;
-  loading: boolean;
-  error: string | null;
-}
-
-export const useFetchResumeData = (resumeId: string): FetchResumeDataResponse => {
-  const [data, setData] = useState<ResumeProps | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
+export function useFetchResumeData() {
+  const [template, setTemplate] = useState<string>("fresher");
+  const [resumeData, setResumeData] = useState<ResumeProps | null>(null);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchResume = async () => {
-      if (!resumeId) {
-        setError('No resume ID provided');
-        setLoading(false);
-        return;
-      }
-
+    const fetchResumeData = async () => {
       try {
+        // Check if window is available (client-side only)
+        if (typeof window === "undefined") return;
+
         setLoading(true);
-        const response = await fetch(`/api/resume/getResume?resumeId=${resumeId}`);
-        
-        if (!response.ok) {
-          throw new Error(`Error: ${response.status} - ${response.statusText}`);
+        const searchParams = new URLSearchParams(window.location.search);
+        const resumeId = searchParams.get("id");
+
+        if (!resumeId) {
+          setError("Resume ID is required");
+          return;
         }
 
-        const resumeData: ResumeProps = await response.json();
-        setData(resumeData);
-        setError(null);
-      } catch (err: any) {
-        setError(err.message || 'An error occurred while fetching the resume');
-        setData(null);
+        // Fetch resume data
+        const response = await fetch(`/api/resume/getResume?resumeId=${resumeId}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error(`Error fetching resume: ${response.statusText}`);
+        }
+
+        const data = await response.json();
+
+        // Set resume data
+        setResumeData(data);
+
+        // Handle template selection
+        let templateParam = data.templateId;
+        
+        if (!templateParam) {
+          // If no template in resume data, check localStorage or default to "fresher"
+          const storedTemplate = localStorage.getItem("resumeData.templateId");
+          templateParam = storedTemplate || "fresher";
+        }
+
+        // Set template state and save to localStorage
+        setTemplate(templateParam);
+        localStorage.setItem("selectedTemplate", templateParam);
+
+      } catch (err) {
+        console.error("Error fetching resume data:", err);
+        setError(err instanceof Error ? err.message : 'An error occurred while fetching resume data');
       } finally {
         setLoading(false);
       }
     };
 
-    fetchResume();
-  }, [resumeId]);
+    fetchResumeData();
+  }, []); // Empty dependency array means this runs once on mount
 
-  return { data, loading, error };
-};
+  return { resumeData, template, setTemplate, loading, error };
+}

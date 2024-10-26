@@ -26,16 +26,13 @@ import "react-responsive-modal/styles.css";
 import Link from "next/link";
 import ChanegTemplate from "./changeTemplate/ChangeTemplate";
 import { useRouter } from "next/navigation";
-import { useSaveResume } from "../hooks/useSaveResume";
-import useAiSuggestion from "../hooks/useAiSuggestions";
 import { ResumeProps } from "../types/ResumeProps";
 import { useSession } from "next-auth/react";
-import Modal from "react-responsive-modal";
-import { isOpacityEffect } from "html2canvas/dist/types/render/effects";
 import { resumeSizeAtom } from "../store/resumeSize";
 import { useRecoilState } from "recoil";
 import { Tooltip as ReactTooltip } from "react-tooltip";
 import "react-tooltip/dist/react-tooltip.css";
+import { useFetchResumeData } from "../hooks/useFetchResumeData";
 
 const PersonalInfo = dynamic(
   () => import("./Editor/PersonalInfo").then((mod) => mod.PersonalInfo),
@@ -65,7 +62,7 @@ export default function EditPage() {
     undefined,
   );
   const router = useRouter();
-  const [template, setTemplate] = useState<string | null>(null);
+
   const [isModelOpen, setIsModelOpen] = useState(false);
 
   const { data: session, status: sessionStatus } = useSession();
@@ -74,6 +71,7 @@ export default function EditPage() {
     useResumeData();
   const { activeSection, handleSectionChange, sections, setActiveSection } =
     useActiveSection();
+  const { template, setTemplate, loading, error } = useFetchResumeData();
 
   const openModel = () => {
     router.push("/select-templates/checkout");
@@ -104,7 +102,6 @@ export default function EditPage() {
   }, []);
 
   const renderTemplate = () => {
-    console.log("template", template);
     switch (template) {
       case "fresher":
         return <Template1 resumeData={resumeData} id="wrapper" />;
