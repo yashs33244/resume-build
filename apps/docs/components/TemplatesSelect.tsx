@@ -43,7 +43,7 @@ const TemplatesSelect = () => {
     const actualTemplate = reverseTemplateMapping[template];
     const resumeData = JSON.parse(localStorage.getItem("resumeData")!);
     saveResume(resumeData, actualTemplate);
-    router.push(`/select-templates/editor?template=${actualTemplate}`); // Sync template with URL
+    // router.push(`/select-templates/editor?template=${actualTemplate}`); // Sync template with URL
   };
 
   return (
