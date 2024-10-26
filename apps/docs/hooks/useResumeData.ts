@@ -1,53 +1,55 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { ResumeProps } from "../types/ResumeProps";
 import { initialResumeData } from "../utils/resumeData";
 
-export const useResumeData = () => {
+export const useResumeData = (onDataChange?: (resumeData: ResumeProps) => void) => {
     const [resumeData, setResumeData] = useState<ResumeProps>(initialResumeData);
-    const [selectedTemplate, setSelectedTemplate] = useState<string>("fresher");
-    const [isClient, setIsClient] = useState<boolean>(false);   
-
+    const [selectedTemplate, setSelectedTemplate] = useState<string>('fresher');
+    const [isClient, setIsClient] = useState<boolean>(false);
+  
     useEffect(() => {
-        setIsClient(true);
-    },[]);
-
+      setIsClient(true);
+    }, []);
+  
+    // Load initial resumeData from localStorage
     useEffect(() => {
-        if (isClient) {
-            const savedData = window.localStorage.getItem("resumeData");
-            const savedTemplate = window.localStorage.getItem("selectedTemplate");
-            
-            if (savedData) {
-                const parsedData = JSON.parse(savedData);
-                if (!Array.isArray(parsedData.coreSkills)) {
-                    parsedData.coreSkills = [];
-                }
-                if (!Array.isArray(parsedData.languages)) {
-                    parsedData.languages = [];
-                }
-                setResumeData(parsedData);    
-            }
-            
-            if (savedTemplate) {
-                setSelectedTemplate(savedTemplate);
-            }
+      if (isClient) {
+        const savedData = window.localStorage.getItem('resumeData');
+        const savedTemplate = window.localStorage.getItem('selectedTemplate');
+  
+        if (savedData) {
+          const parsedData = JSON.parse(savedData);
+          if (!Array.isArray(parsedData.coreSkills)) {
+            parsedData.coreSkills = [];
+          }
+          if (!Array.isArray(parsedData.languages)) {
+            parsedData.languages = [];
+          }
+          setResumeData(parsedData);
         }
+  
+        if (savedTemplate) {
+          setSelectedTemplate(savedTemplate);
+        }
+      }
     }, [isClient]);
-
+  
+    // Persist resumeData to localStorage and notify parent of changes
     useEffect(() => {
-        if (isClient) {
-            window.localStorage.setItem("resumeData", JSON.stringify(resumeData));
-            window.localStorage.setItem("selectedTemplate", selectedTemplate);
-        }
-    }, [resumeData, selectedTemplate, isClient]);
-
-    const handleInputChange = (
+      if (isClient) {
+        window.localStorage.setItem('resumeData', JSON.stringify(resumeData));
+        window.localStorage.setItem('selectedTemplate', selectedTemplate);
+        onDataChange?.(resumeData);
+      }
+    }, [resumeData, selectedTemplate, isClient, onDataChange]);
+    const handleInputChange = useCallback((
         section: keyof ResumeProps,
         field: string,
         value: any,
         index?: number
-    ) => {
+      ) => {
         setResumeData((prevData) => {
-            const newData = { ...prevData } as ResumeProps;
+          const newData = { ...prevData } as ResumeProps;
 
             if (section === "personalInfo") {
                 //@ts-ignore
@@ -114,10 +116,10 @@ export const useResumeData = () => {
 
             return newData;
         });
-    };
+      }, []);
 
-    const handleAddField = (section: keyof ResumeProps) => {
-      setResumeData((prevData) => {
+      const handleAddField = useCallback((section: keyof ResumeProps) => {
+        setResumeData((prevData) => {
           const newData = { ...prevData };
           if (section === "education") {
               newData.education = [
@@ -149,16 +151,16 @@ export const useResumeData = () => {
                 : [""];
           }
           return newData;
-      });
-    };
+        });
+      }, []);
 
-    const handleDeleteField = (
+      const handleDeleteField = useCallback((
         section: keyof ResumeProps,
         field: string,
         index?: number
-    ) => {
+      ) => {
         setResumeData((prevData) => {
-            const newData = { ...prevData };
+          const newData = { ...prevData };
             if (section === "education" || section === "experience" || section === "projects" || section === "certificates") {
                 (newData[section] as any[]) = (prevData[section] as any[]).filter(
                     (_, i) => i !== index
@@ -177,7 +179,7 @@ export const useResumeData = () => {
             }
             return newData;
         });
-    };
+      }, []);
     const setTemplate = (template: string) => {
         setSelectedTemplate(template);
     };
@@ -185,10 +187,11 @@ export const useResumeData = () => {
 
     return {
         resumeData,
+        setResumeData,
         selectedTemplate,
         handleInputChange,
         handleAddField,
         handleDeleteField,
-        setTemplate,
-    };
+        setTemplate: setSelectedTemplate,
+      };
 };

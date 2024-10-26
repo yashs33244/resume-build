@@ -33,6 +33,7 @@ import { useRecoilState } from "recoil";
 import { Tooltip as ReactTooltip } from "react-tooltip";
 import "react-tooltip/dist/react-tooltip.css";
 import { useFetchResumeData } from "../hooks/useFetchResumeData";
+import { useResumeDraft } from "../hooks/useResumeDraft";
 
 const PersonalInfo = dynamic(
   () => import("./Editor/PersonalInfo").then((mod) => mod.PersonalInfo),
@@ -64,15 +65,110 @@ export default function EditPage() {
   const router = useRouter();
 
   const [isModelOpen, setIsModelOpen] = useState(false);
+  const [saveStatus, setSaveStatus] = useState<"saved" | "saving" | "error">(
+    "saved",
+  );
 
   const { data: session, status: sessionStatus } = useSession();
 
-  const { resumeData, handleInputChange, handleAddField, handleDeleteField } =
-    useResumeData();
+  const { template, setTemplate, loading, error, id } = useFetchResumeData();
+
+  const resumeId = id;
+  console.log(template);
+
+  // Initialize resume data with change tracking
+  const {
+    resumeData,
+    setResumeData,
+    handleInputChange,
+    handleAddField,
+    handleDeleteField,
+  } = useResumeData((newData: ResumeProps) => {
+    setSaveStatus("saving");
+    saveDraft(newData);
+  });
+
   const { activeSection, handleSectionChange, sections, setActiveSection } =
     useActiveSection();
-  const { template, setTemplate, loading, error } = useFetchResumeData();
 
+  // Function to save draft
+  const saveDraft = async (data: ResumeProps) => {
+    if (!resumeId) {
+      console.error("No resume ID available");
+      setSaveStatus("error");
+      return;
+    }
+
+    try {
+      setSaveStatus("saving");
+      console.log("Saving resume data:", { resumeId, data });
+
+      const response = await fetch("/api/resume/saveResume/draft", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          resumeId,
+          content: {
+            ...data,
+            state: "EDITING",
+            userId: session?.user?.id || "default-user-id",
+          },
+        }),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.error || "Failed to save draft");
+      }
+
+      console.log("Save successful:", result);
+      setSaveStatus("saved");
+    } catch (error) {
+      console.error("Error saving draft:", error);
+      setSaveStatus("error");
+    }
+  };
+  // Load initial draft data
+  useEffect(() => {
+    const loadDraft = async () => {
+      if (!resumeId) return;
+
+      try {
+        const response = await fetch(
+          `/api/resume/saveResume/draft?resumeId=${resumeId}`,
+        );
+        const data = await response.json();
+
+        if (response.ok && data.draft?.content) {
+          setResumeData(data.draft.content);
+        }
+      } catch (error) {
+        console.error("Error loading draft:", error);
+        setSaveStatus("error");
+      }
+    };
+
+    loadDraft();
+  }, [resumeId]);
+
+  // Save when resume data changes
+  useEffect(() => {
+    if (resumeData) {
+      const timeoutId = setTimeout(() => {
+        saveDraft(resumeData);
+      }, 5000);
+
+      return () => clearTimeout(timeoutId);
+    }
+  }, [resumeData]);
+
+  // Initialize draft saving functionality
+  resumeData.templateId = template;
+
+  const { fetchDraft } = useResumeDraft(id, resumeData, setResumeData);
   const openModel = () => {
     router.push("/select-templates/checkout");
     // setIsModelOpen(true);
@@ -102,6 +198,7 @@ export default function EditPage() {
   }, []);
 
   const renderTemplate = () => {
+    console.log("Template", template);
     switch (template) {
       case "fresher":
         return <Template1 resumeData={resumeData} id="wrapper" />;

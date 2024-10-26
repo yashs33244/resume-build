@@ -1,84 +1,190 @@
-// app/api/resume/draft/route.ts
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from "next/server";
+import { getServerSession } from "next-auth";
+import { authOptions } from "../../../../lib/auth";
+import { db } from "../../../../db";
+import { ResumeProps } from "../../../../../types/ResumeProps";
+import { ResumeState } from "@prisma/client";
 
-import { getServerSession } from "next-auth/next";
-import { authOptions } from '../../../../lib/auth';
-import { db } from '../../../../db';
-
-
-export async function POST(request: Request) {
-  const session = await getServerSession(authOptions);
-  const { resumeId, content } = await request.json();
-
-  if (!session?.user?.email) {
-    return NextResponse.json({ message: 'Not authenticated' }, { status: 401 });
-  }
-
+export async function POST(request: NextRequest) {
   try {
-    const user = await db.user.findUnique({
-      where: { email: session.user.email },
-    });
-
-    if (!user) {
-      return NextResponse.json({ message: 'User not found' }, { status: 404 });
+    const session = await getServerSession(authOptions);
+    if (!session) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    // Upsert the draft (create if not exists, update if exists)
-    const draft = await db.resumeDraft.upsert({
-      where: {
-        userId_resumeId: {
-          userId: user.id,
-          resumeId,
+    const body = await request.json();
+    const { resumeId, content } = body;
+    console.log("Received Data:", { resumeId, content });
+
+    if (!resumeId || !content) {
+      return NextResponse.json(
+        {
+          error: "Resume ID and content are required",
+          receivedData: { resumeId, content },
         },
-      },
-      update: {
-        content,
-        updatedAt: new Date(),
-      },
-      create: {
-        userId: user.id,
-        resumeId,
-        content,
-      },
-    });
-
-    return NextResponse.json({ message: 'Draft saved successfully', draftId: draft.id });
-  } catch (error) {
-    console.error('Error saving draft:', error);
-    return NextResponse.json({ message: 'Error saving draft', error }, { status: 500 });
-  }
-}
-
-export async function GET(request: Request) {
-  const session = await getServerSession(authOptions);
-  const { searchParams } = new URL(request.url);
-  const resumeId = searchParams.get('resumeId');
-
-  if (!session?.user?.email || !resumeId) {
-    return NextResponse.json({ message: 'Invalid request' }, { status: 400 });
-  }
-
-  try {
-    const user = await db.user.findUnique({
-      where: { email: session.user.email },
-    });
-
-    if (!user) {
-      return NextResponse.json({ message: 'User not found' }, { status: 404 });
+        { status: 400 }
+      );
     }
 
-    const draft = await db.resumeDraft.findUnique({
-      where: {
-        userId_resumeId: {
-          userId: user.id,
-          resumeId,
+    const templateId = content.templateId;
+
+    // Update resume and all related data in a transaction
+    const updatedResume = await db.$transaction(async (tx) => {
+      // 1. Update or create the main resume record
+      const resume = await tx.resume.upsert({
+        where: { id: resumeId },
+        create: {
+          id: resumeId,
+          userId: session.user.id,
+          state: ResumeState.EDITING,
+          templateId: templateId,
         },
-      },
+        update: {
+          state: ResumeState.EDITING,
+          templateId: templateId,
+          updatedAt: new Date(),
+        },
+      });
+
+      // 2. Update personal info
+      if (content.personalInfo) {
+        await tx.personalInfo.upsert({
+          where: { resumeId },
+          create: {
+            resumeId,
+            ...content.personalInfo,
+          },
+          update: content.personalInfo,
+        });
+      }
+
+      // 3. Update education records
+      if (content.education?.length > 0) {
+        // Delete existing education records
+        await tx.education.deleteMany({ where: { resumeId } });
+        // Create new education records
+        await tx.education.createMany({
+          data: content.education.map(edu => ({
+            resumeId,
+            institution: edu.institution,
+            major: edu.major,
+            start: edu.start,
+            end: edu.end,
+            degree: edu.degree,
+            score: edu.score,
+          })),
+        });
+      }
+
+      // 4. Update experience records
+      if (content.experience?.length > 0) {
+        await tx.experience.deleteMany({ where: { resumeId } });
+        await tx.experience.createMany({
+          data: content.experience.map(exp => ({
+            resumeId,
+            company: exp.company,
+            role: exp.role,
+            start: exp.start,
+            end: exp.end,
+            responsibilities: exp.responsibilities,
+            current: exp.current,
+          })),
+        });
+      }
+
+      // 5. Update skills
+      if (content.skills?.length > 0) {
+        await tx.skill.deleteMany({ where: { resumeId } });
+        await tx.skill.createMany({
+          data: content.skills.map(skill => ({
+            resumeId,
+            name: skill,
+          })),
+        });
+      }
+
+      // 6. Update core skills
+      if (content.coreSkills?.length > 0) {
+        await tx.coreSkill.deleteMany({ where: { resumeId } });
+        await tx.coreSkill.createMany({
+          data: content.coreSkills.map(skill => ({
+            resumeId,
+            name: skill,
+          })),
+        });
+      }
+
+      // 7. Update languages
+      if (content.languages?.length > 0) {
+        await tx.language.deleteMany({ where: { resumeId } });
+        await tx.language.createMany({
+          data: content.languages.map(lang => ({
+            resumeId,
+            name: lang,
+          })),
+        });
+      }
+
+      // 8. Update projects
+      if (content.projects?.length > 0) {
+        await tx.project.deleteMany({ where: { resumeId } });
+        await tx.project.createMany({
+          data: content.projects.map(proj => ({
+            resumeId,
+            name: proj.name,
+            link: proj.link,
+            start: proj.start,
+            end: proj.end,
+            responsibilities: proj.responsibilities,
+          })),
+        });
+      }
+
+      // 9. Update certificates
+      if (content.certificates?.length > 0) {
+        await tx.certificate.deleteMany({ where: { resumeId } });
+        await tx.certificate.createMany({
+          data: content.certificates.map(cert => ({
+            resumeId,
+            name: cert.name,
+            issuer: cert.issuer,
+            issuedOn: cert.issuedOn,
+          })),
+        });
+      }
+
+      // Fetch the updated resume with all relations
+      return tx.resume.findUnique({
+        where: { id: resumeId },
+        include: {
+          personalInfo: true,
+          education: true,
+          experience: true,
+          skills: true,
+          coreSkills: true,
+          languages: true,
+          projects: true,
+          certificates: true,
+        },
+      });
     });
 
-    return NextResponse.json({ draft });
+    return NextResponse.json({
+      success: true,
+      draft: {
+        content: updatedResume,
+        updatedAt: updatedResume?.updatedAt,
+      },
+      message: "Resume saved successfully",
+    });
   } catch (error) {
-    console.error('Error fetching draft:', error);
-    return NextResponse.json({ message: 'Error fetching draft', error }, { status: 500 });
+    console.error("API Error:", error);
+    return NextResponse.json(
+      {
+        error: "Internal server error",
+        details: error instanceof Error ? error.message : "Unknown error",
+      },
+      { status: 500 }
+    );
   }
 }

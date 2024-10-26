@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
 import { ResumeProps } from "../types/ResumeProps"; // Adjust import path as needed
+import { initialResumeData } from "../utils/resumeData";
 
 export function useFetchResumeData() {
   const [template, setTemplate] = useState<string>("fresher");
-  const [resumeData, setResumeData] = useState<ResumeProps | null>(null);
+  const [resumeData, setResumeData] = useState<ResumeProps>(initialResumeData);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [id, setId] = useState<string | "">("");
 
   useEffect(() => {
     const fetchResumeData = async () => {
@@ -16,13 +18,17 @@ export function useFetchResumeData() {
         setLoading(true);
         const searchParams = new URLSearchParams(window.location.search);
         const resumeId = searchParams.get("id");
+        
+
 
         if (!resumeId) {
           setError("Resume ID is required");
           return;
         }
+        setId(resumeId);
 
-        // Fetch resume data
+
+        // Fetch resume resumeData
         const response = await fetch(`/api/resume/getResume?resumeId=${resumeId}`, {
           method: 'GET',
           headers: {
@@ -34,16 +40,16 @@ export function useFetchResumeData() {
           throw new Error(`Error fetching resume: ${response.statusText}`);
         }
 
-        const data = await response.json();
+        const resumeData = await response.json();
 
-        // Set resume data
-        setResumeData(data);
+        // Set resume resumeData
+        setResumeData(resumeData);
 
         // Handle template selection
-        let templateParam = data.templateId;
+        let templateParam = resumeData.templateId;
         
         if (!templateParam) {
-          // If no template in resume data, check localStorage or default to "fresher"
+          // If no template in resume resumeData, check localStorage or default to "fresher"
           const storedTemplate = localStorage.getItem("resumeData.templateId");
           templateParam = storedTemplate || "fresher";
         }
@@ -51,10 +57,12 @@ export function useFetchResumeData() {
         // Set template state and save to localStorage
         setTemplate(templateParam);
         localStorage.setItem("selectedTemplate", templateParam);
+        
+
 
       } catch (err) {
-        console.error("Error fetching resume data:", err);
-        setError(err instanceof Error ? err.message : 'An error occurred while fetching resume data');
+        console.error("Error fetching resume resumeData:", err);
+        setError(err instanceof Error ? err.message : 'An error occurred while fetching resume resumeData');
       } finally {
         setLoading(false);
       }
@@ -63,5 +71,5 @@ export function useFetchResumeData() {
     fetchResumeData();
   }, []); // Empty dependency array means this runs once on mount
 
-  return { resumeData, template, setTemplate, loading, error };
+  return { resumeData, template, setTemplate, loading, error , id};
 }
