@@ -17,6 +17,7 @@ import { useResumeState } from "../hooks/useResumeState";
 import { resumeTimeAtom } from "../store/expiry";
 import { useRouter } from "next/navigation";
 import { Loader } from "lucide-react";
+import { ResumeProps } from "../types/ResumeProps";
 
 const Dashboard = () => {
   const [isGeneratingPDF, setIsGeneratingPDF] =
@@ -25,7 +26,7 @@ const Dashboard = () => {
   const [resumeTimes, setResumeTimes] = useRecoilState(resumeTimeAtom);
   const router = useRouter();
 
-  const renderTemplate = (template, resumeData) => {
+  const renderTemplate = (template: string, resumeData: object) => {
     switch (template) {
       case "fresher":
         return <Template1 resumeData={resumeData} className="wrapper" />;
@@ -43,9 +44,10 @@ const Dashboard = () => {
   }, [resumes]);
 
   // Debounce function to optimize scaling on window resize
-  function debounce(func, wait) {
-    let timeout;
-    return function (...args) {
+  function debounce(func: any, wait: any) {
+    let timeout: any;
+    return function (...args: any) {
+      // @ts-ignore
       const context = this;
       clearTimeout(timeout);
       timeout = setTimeout(() => func.apply(context, args), wait);
@@ -139,12 +141,12 @@ const Dashboard = () => {
         <div className="create-cta">
           <IoAddCircleOutline className="create-icon" />
           <div>
-            <Link href={"/select-templates"}>Create New</Link>
+            <Link href={"/create-preference"}>Create New</Link>
           </div>
         </div>
       </div>
       <div className="resume-container">
-        {resumes.map((resume, index) => (
+        {resumes.map((resume: any, index) => (
           <div
             key={resume.resumeData.resumeId}
             className={`resume-item ${
