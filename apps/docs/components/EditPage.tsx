@@ -1,7 +1,13 @@
 "use client";
 import dynamic from "next/dynamic";
 import Image from "next/image";
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import "./EditPage.scss";
 import { Education } from "./Editor/Education";
 import { Skills } from "./Editor/Skills";
@@ -34,6 +40,7 @@ import { Tooltip as ReactTooltip } from "react-tooltip";
 import "react-tooltip/dist/react-tooltip.css";
 import { useFetchResumeData } from "../hooks/useFetchResumeData";
 import { useResumeDraft } from "../hooks/useResumeDraft";
+import debounce from "lodash/debounce";
 
 const PersonalInfo = dynamic(
   () => import("./Editor/PersonalInfo").then((mod) => mod.PersonalInfo),
@@ -70,67 +77,82 @@ export default function EditPage() {
   );
 
   const { data: session, status: sessionStatus } = useSession();
-
   const { template, setTemplate, loading, error, id } = useFetchResumeData();
-
   const resumeId = id;
-  console.log(template);
+
+  // Memoized save draft function
+  const saveDraft = useCallback(
+    async (data: ResumeProps) => {
+      if (!resumeId) {
+        console.error("No resume ID available");
+        setSaveStatus("error");
+        return;
+      }
+
+      try {
+        setSaveStatus("saving");
+        console.log("Saving resume data:", { resumeId, data });
+
+        const response = await fetch("/api/resume/saveResume/draft", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            resumeId,
+            content: {
+              ...data,
+              state: "EDITING",
+              userId: session?.user?.id || "default-user-id",
+            },
+          }),
+        });
+
+        const result = await response.json();
+
+        if (!response.ok) {
+          throw new Error(result.error || "Failed to save draft");
+        }
+
+        console.log("Save successful:", result);
+        setSaveStatus("saved");
+      } catch (error) {
+        console.error("Error saving draft:", error);
+        setSaveStatus("error");
+      }
+    },
+    [resumeId, session?.user?.id],
+  );
+
+  // Create debounced save function
+  const debouncedSave = useCallback(
+    debounce((data: ResumeProps) => {
+      saveDraft(data);
+    }, 5000),
+    [saveDraft],
+  );
 
   // Initialize resume data with change tracking
   const {
     resumeData,
     setResumeData,
-    handleInputChange,
+    handleInputChange: baseHandleInputChange,
     handleAddField,
     handleDeleteField,
   } = useResumeData((newData: ResumeProps) => {
     setSaveStatus("saving");
-    saveDraft(newData);
+    debouncedSave(newData);
   });
 
-  const { activeSection, handleSectionChange, sections, setActiveSection } =
-    useActiveSection();
-
-  // Function to save draft
-  const saveDraft = async (data: ResumeProps) => {
-    if (!resumeId) {
-      console.error("No resume ID available");
-      setSaveStatus("error");
-      return;
-    }
-
-    try {
+  // Enhanced input change handler
+  const handleInputChange = useCallback(
+    (field: any, value: any, section?: string, index?: number) => {
+      baseHandleInputChange(field, value, section, index);
       setSaveStatus("saving");
-      console.log("Saving resume data:", { resumeId, data });
+    },
+    [baseHandleInputChange],
+  );
 
-      const response = await fetch("/api/resume/saveResume/draft", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          resumeId,
-          content: {
-            ...data,
-            state: "EDITING",
-            userId: session?.user?.id || "default-user-id",
-          },
-        }),
-      });
-
-      const result = await response.json();
-
-      if (!response.ok) {
-        throw new Error(result.error || "Failed to save draft");
-      }
-
-      console.log("Save successful:", result);
-      setSaveStatus("saved");
-    } catch (error) {
-      console.error("Error saving draft:", error);
-      setSaveStatus("error");
-    }
-  };
   // Load initial draft data
   useEffect(() => {
     const loadDraft = async () => {
@@ -154,20 +176,25 @@ export default function EditPage() {
     loadDraft();
   }, [resumeId]);
 
-  // Save when resume data changes
+  // Cleanup debounced save on unmount
   useEffect(() => {
-    if (resumeData) {
-      const timeoutId = setTimeout(() => {
-        saveDraft(resumeData);
-      }, 5000);
+    return () => {
+      debouncedSave.cancel();
+    };
+  }, [debouncedSave]);
 
-      return () => clearTimeout(timeoutId);
+  // Set template ID
+  useEffect(() => {
+    if (template && resumeData) {
+      setResumeData((prev) => ({
+        ...prev,
+        templateId: template,
+      }));
     }
-  }, [resumeData]);
+  }, [template]);
 
-  // Initialize draft saving functionality
-  resumeData.templateId = template;
-
+  const { activeSection, handleSectionChange, sections, setActiveSection } =
+    useActiveSection();
   const { fetchDraft } = useResumeDraft(id, resumeData, setResumeData);
   const openModel = () => {
     router.push("/select-templates/checkout");
@@ -177,25 +204,25 @@ export default function EditPage() {
   const closeModel = () => {
     setIsModelOpen(false);
   };
-  useEffect(() => {
-    // Check if the window is available (runs only on client-side)
-    if (typeof window !== "undefined") {
-      const searchParams = new URLSearchParams(window.location.search);
-      let templateParam = searchParams.get("template");
+  // useEffect(() => {
+  //   // Check if the window is available (runs only on client-side)
+  //   if (typeof window !== "undefined") {
+  //     const searchParams = new URLSearchParams(window.location.search);
+  //     let templateParam = searchParams.get("template");
 
-      // If no template is selected in the URL, check localStorage or default to "fresher"
-      if (!templateParam) {
-        const storedTemplate = localStorage.getItem("resumeData.templateId");
-        templateParam = storedTemplate || "fresher"; // Default to "fresher"
-      }
+  //     // If no template is selected in the URL, check localStorage or default to "fresher"
+  //     if (!templateParam) {
+  //       const storedTemplate = localStorage.getItem("resumeData.templateId");
+  //       templateParam = storedTemplate || "fresher"; // Default to "fresher"
+  //     }
 
-      // Set the template state with the selected or default value
-      setTemplate(templateParam);
+  //     // Set the template state with the selected or default value
+  //     setTemplate(templateParam);
 
-      // Save the selected template to localStorage
-      localStorage.setItem("selectedTemplate", templateParam);
-    }
-  }, []);
+  //     // Save the selected template to localStorage
+  //     localStorage.setItem("selectedTemplate", templateParam);
+  //   }
+  // }, []);
 
   const renderTemplate = () => {
     console.log("Template", template);

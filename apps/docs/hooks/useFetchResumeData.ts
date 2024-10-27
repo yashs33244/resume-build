@@ -3,7 +3,7 @@ import { ResumeProps } from "../types/ResumeProps"; // Adjust import path as nee
 import { initialResumeData } from "../utils/resumeData";
 
 export function useFetchResumeData() {
-  const [template, setTemplate] = useState<string>("fresher");
+  const [template, setTemplate] = useState<string>("");
   const [resumeData, setResumeData] = useState<ResumeProps>(initialResumeData);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -51,7 +51,7 @@ export function useFetchResumeData() {
         if (!templateParam) {
           // If no template in resume resumeData, check localStorage or default to "fresher"
           const storedTemplate = localStorage.getItem("resumeData.templateId");
-          templateParam = storedTemplate || "fresher";
+          templateParam = storedTemplate ;
         }
 
         // Set template state and save to localStorage
