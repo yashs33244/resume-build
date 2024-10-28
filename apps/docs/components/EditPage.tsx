@@ -196,12 +196,13 @@ export default function EditPage() {
 
   useEffect(() => {
     if (session?.user?.name) {
-      const name = session?.user?.name.split(" ");
-      if (name.length >= 2) {
-        setInitials((name?.[0]?.[0] ?? "") + (name?.[1]?.[0] ?? ""));
-      }
+      const nameParts = session.user.name.split(" ");
+      // Get the first two initials or fallback to an empty string
+      const firstInitial = nameParts[0]?.[0] || "";
+      const secondInitial = nameParts[1]?.[0] || "";
+      setInitials(firstInitial + secondInitial);
     }
-  }, [session?.user?.name]);
+  }, [session]);
 
   const { activeSection, handleSectionChange, sections, setActiveSection } =
     useActiveSection();
