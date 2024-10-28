@@ -172,7 +172,7 @@ const Dashboard = () => {
                 resume.resumeState === "EDITING" ? (
                   <>
                     <Link
-                      href={`/select-templates/editor?template=${resume.resumeData.templateId}`}
+                      href={`/select-templates/editor?id=${resume.resumeData.resumeId}`}
                     >
                       <div className="edit">
                         <CiEdit className="cta-icon" />

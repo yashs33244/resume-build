@@ -1,6 +1,6 @@
 "use client";
-import React, { useState, useCallback } from "react";
-import { useRouter } from "next/navigation";
+import React, { useState, useCallback, useEffect } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useDropzone } from "react-dropzone";
 import Image from "next/image";
 import file_upload from "./File_Upload.png";
@@ -8,16 +8,64 @@ import file_add from "./File_Add.png";
 
 import "./CreatePreference.scss";
 import { ResumeProps, ResumeState } from "../types/ResumeProps";
+import { useSaveResume } from "../hooks/useSaveResume";
+
+type LandingPageTemplateType = "classic" | "modern" | "bold";
+type ActualTemplateType = "fresher" | "experienced" | "designer";
+
+// Correct Record definition
+const reverseTemplateMapping: Record<
+  LandingPageTemplateType,
+  ActualTemplateType
+> = {
+  classic: "fresher",
+  modern: "experienced",
+  bold: "designer",
+};
 
 export default function CreatePreference() {
   const router = useRouter();
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
+  const { saveResume, isSaving } = useSaveResume();
+  const searchParams = useSearchParams();
 
   const processSkills = (skills: string[]) => {
     // Remove duplicates and empty strings
     return Array.from(new Set(skills.filter((skill) => skill.trim())));
+  };
+
+  const template = searchParams.get("template");
+  const fromLanding = searchParams.get("fromLanding");
+
+  useEffect(() => {
+    // Store the template in localStorage when component mounts
+    if (template && fromLanding === "true") {
+      localStorage.setItem("preSelectedTemplate", template);
+      localStorage.setItem("fromLandingPage", "true");
+    }
+  }, [template, fromLanding]);
+
+  const handleUploadSuccess = async (resumeData: ResumeProps) => {
+    if (template && fromLanding === "true") {
+      // Convert landing page template name to actual template ID
+      const actualTemplate =
+        reverseTemplateMapping[template as LandingPageTemplateType];
+
+      try {
+        // Save the resume with the selected template
+        const resumeId = await saveResume(resumeData, actualTemplate);
+        // Redirect directly to editor with the new resume ID
+        router.push(`/select-templates/editor?id=${resumeId}`);
+      } catch (error) {
+        console.error("Failed to save resume:", error);
+        router.push("/select-templates");
+      }
+    } else {
+      // Normal flow - go to template selection
+      router.push("/select-templates");
+    }
   };
 
   const formatBulletPoints = (points: string[]) => {
@@ -83,7 +131,7 @@ export default function CreatePreference() {
                 start: edu.start || "",
                 end: edu.end || "",
                 degree: edu.degree || "",
-                score: edu.score || 0,
+                score: edu.score || null,
               })) || [],
             experience:
               parsedData.experience?.map((exp: any) => ({
@@ -121,7 +169,7 @@ export default function CreatePreference() {
           };
 
           localStorage.setItem("resumeData", JSON.stringify(resumeData));
-          router.push("/select-templates");
+          await handleUploadSuccess(resumeData);
         } catch (error) {
           console.error("Error in file upload:", error);
           setError(
@@ -146,7 +194,7 @@ export default function CreatePreference() {
     multiple: false,
   });
 
-  const handleStartFromScratch = () => {
+  const handleStartFromScratch = async () => {
     const emptyResumeData: ResumeProps = {
       userId: "user-id",
       personalInfo: {
@@ -168,7 +216,7 @@ export default function CreatePreference() {
       templateId: "fresher",
     };
     localStorage.setItem("resumeData", JSON.stringify(emptyResumeData));
-    router.push("/select-templates");
+    await handleUploadSuccess(emptyResumeData);
   };
 
   return (

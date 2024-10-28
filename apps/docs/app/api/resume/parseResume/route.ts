@@ -60,6 +60,9 @@ Parse into this structure:
     end: string;
     responsibilities: string[];
   }]
+
+
+  if cgpa is not present, give it as null
 }`;
 
 export async function POST(request: NextRequest) {
