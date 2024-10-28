@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useCallback, useEffect } from "react";
+import React, { useState, useCallback, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useDropzone } from "react-dropzone";
 import Image from "next/image";
@@ -141,26 +141,30 @@ export default function CreatePreference() {
   };
 
   return (
-    <div className="preference-container">
-      <div className="content-container">
-        <div className="left" {...getRootProps()}>
-          <input {...getInputProps()} />
-          <Image alt="upload" src={file_upload} width={150} height={150} />
-          <div className="action">Upload Existing Resume</div>
-          <div className="info">Autofill details using your current resume</div>
-          <ResumeUploadProgress
-            isLoading={isLoading}
-            progress={progress}
-            progressPhase={progressPhase}
-            error={error}
-          />
-        </div>
-        <div className="right" onClick={handleStartFromScratch}>
-          <Image alt="add" src={file_add} width={150} height={150} />
-          <div className="action">Create From Scratch</div>
-          <div className="info">Craft your perfect resume from start</div>
+    <Suspense fallback={<div>Loading...</div>}>
+      <div className="preference-container">
+        <div className="content-container">
+          <div className="left" {...getRootProps()}>
+            <input {...getInputProps()} />
+            <Image alt="upload" src={file_upload} width={150} height={150} />
+            <div className="action">Upload Existing Resume</div>
+            <div className="info">
+              Autofill details using your current resume
+            </div>
+            <ResumeUploadProgress
+              isLoading={isLoading}
+              progress={progress}
+              progressPhase={progressPhase}
+              error={error}
+            />
+          </div>
+          <div className="right" onClick={handleStartFromScratch}>
+            <Image alt="add" src={file_add} width={150} height={150} />
+            <div className="action">Create From Scratch</div>
+            <div className="info">Craft your perfect resume from start</div>
+          </div>
         </div>
       </div>
-    </div>
+    </Suspense>
   );
 }

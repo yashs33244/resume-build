@@ -64,7 +64,7 @@ export async function POST(request: NextRequest) {
         await tx.education.deleteMany({ where: { resumeId } });
         // Create new education records
         await tx.education.createMany({
-          data: content.education.map(edu => ({
+          data: content.education.map((edu:any) => ({
             resumeId,
             institution: edu.institution,
             major: edu.major,
@@ -80,7 +80,7 @@ export async function POST(request: NextRequest) {
       if (content.experience?.length > 0) {
         await tx.experience.deleteMany({ where: { resumeId } });
         await tx.experience.createMany({
-          data: content.experience.map(exp => ({
+          data: content.experience.map((exp:any) => ({
             resumeId,
             company: exp.company,
             role: exp.role,
@@ -96,7 +96,7 @@ export async function POST(request: NextRequest) {
       if (content.skills?.length > 0) {
         await tx.skill.deleteMany({ where: { resumeId } });
         await tx.skill.createMany({
-          data: content.skills.map(skill => ({
+          data: content.skills.map((skill:any) => ({
             resumeId,
             name: skill,
           })),
@@ -107,7 +107,7 @@ export async function POST(request: NextRequest) {
       if (content.coreSkills?.length > 0) {
         await tx.coreSkill.deleteMany({ where: { resumeId } });
         await tx.coreSkill.createMany({
-          data: content.coreSkills.map(skill => ({
+          data: content.coreSkills.map((skill:any) => ({
             resumeId,
             name: skill,
           })),
@@ -118,7 +118,7 @@ export async function POST(request: NextRequest) {
       if (content.languages?.length > 0) {
         await tx.language.deleteMany({ where: { resumeId } });
         await tx.language.createMany({
-          data: content.languages.map(lang => ({
+          data: content.languages.map((lang:any) => ({
             resumeId,
             name: lang,
           })),
@@ -129,7 +129,7 @@ export async function POST(request: NextRequest) {
       if (content.projects?.length > 0) {
         await tx.project.deleteMany({ where: { resumeId } });
         await tx.project.createMany({
-          data: content.projects.map(proj => ({
+          data: content.projects.map((proj:any) => ({
             resumeId,
             name: proj.name,
             link: proj.link,
@@ -144,7 +144,7 @@ export async function POST(request: NextRequest) {
       if (content.certificates?.length > 0) {
         await tx.certificate.deleteMany({ where: { resumeId } });
         await tx.certificate.createMany({
-          data: content.certificates.map(cert => ({
+          data: content.certificates.map((cert:any) => ({
             resumeId,
             name: cert.name,
             issuer: cert.issuer,

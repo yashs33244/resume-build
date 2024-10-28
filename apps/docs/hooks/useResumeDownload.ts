@@ -6,14 +6,15 @@ const useResumeDownload = () => {
   const [isGeneratingPDF, setIsGeneratingPDF] = useRecoilState(isGeneratingPDFAtom);
   const [resumeTimes, setResumeTimes] = useRecoilState(resumeTimeAtom);
 
-  const updateResumeTime = (id) => {
+  const updateResumeTime = (id:any) => {
     const expirationDate = new Date();
     expirationDate.setDate(expirationDate.getDate() + 30);
-    const timeLeft = Math.floor((expirationDate - new Date()) / (1000 * 60 * 60 * 24));
+    //@ts-ignore
+    const timeLeft = Math.floor((expirationDate.getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24));
     setResumeTimes((prev) => ({ ...prev, [id]: timeLeft }));
   };
 
-  const handleDownload = async (id) => {
+  const handleDownload = async (id:any) => {
     setIsGeneratingPDF(true);
     try {
       const element = document.getElementById("wrapper");

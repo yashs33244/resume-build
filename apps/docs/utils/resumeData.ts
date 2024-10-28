@@ -25,5 +25,8 @@ export const initialResumeData: ResumeProps = {
     description: ""
   },
   languages: [], // Optional: You can populate this later
-  certificates: [] // Optional: You can populate this later
+  certificates: [], // Optional: You can populate this later
+  //@ts-ignore
+  state: "", // Added the missing 'state' field
+  templateId: "" // Added the missing 'templateId' field
 };

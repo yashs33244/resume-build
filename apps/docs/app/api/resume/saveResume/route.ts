@@ -27,9 +27,8 @@ export async function POST(request: Request) {
     const achievementData = resumeData.achievement;
     let achievementCreateData = undefined;
     if (achievementData) {
-      
       achievementCreateData = {
-        title: achievementData.title || "" ,
+        title: achievementData.title || "",
         description: achievementData.description || "", // Optional
       };
     }

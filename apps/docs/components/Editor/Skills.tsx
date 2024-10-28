@@ -154,14 +154,14 @@ export const Skills: React.FC<SkillsProps> = ({
             key={index}
             className="list-item inline-flex items-center bg-gray-100 rounded-full px-5 py-2 text-sm font-semibold text-gray-700"
           >
-            {skill}
+            {skill.name}
             <button
               onClick={() => {
                 handleDeleteField("skills", "coreSkill", index);
                 // Remove the skill from usedSuggestions when deleted
                 setUsedSuggestions((prev) => {
                   const newSet = new Set(prev);
-                  newSet.delete(skill);
+                  newSet.delete(skill.name);
                   return newSet;
                 });
               }}

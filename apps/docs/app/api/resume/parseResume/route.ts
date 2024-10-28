@@ -4,6 +4,9 @@ import { GoogleGenerativeAI } from '@google/generative-ai';
 import { promises as fs } from 'fs';
 import path from 'path';
 import os from 'os';
+export const dynamic = 'force-dynamic';
+export const runtime = 'nodejs';
+
 
 const apiKey = process.env.GOOGLE_API_KEY || '';
 
@@ -146,8 +149,3 @@ export async function POST(request: NextRequest) {
   }
 }
 
-export const config = {
-  api: {
-    bodyParser: false,
-  },
-};

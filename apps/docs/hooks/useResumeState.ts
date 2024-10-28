@@ -33,7 +33,7 @@ export const useResumeState = (): UseResumeStateReturn => {
           return;
         }
 
-        const processedResumes = data.map((resume: ResumeProps) => ({
+        const processedResumes = data.map((resume: any) => ({
           resumeState: resume.state,
           daysLeft: calculateDaysLeft(resume),
           createDate: new Date(resume.createdAt),
@@ -66,7 +66,7 @@ export const useResumeState = (): UseResumeStateReturn => {
     fetchResumes();
   }, [router]);
 
-  const calculateDaysLeft = (resume: ResumeProps) => {
+  const calculateDaysLeft = (resume: any) => {
     if (resume.state === 'DOWNLOAD_SUCCESS') {
       const createdAt = new Date(resume.createdAt);
       const updatedAt = new Date(resume.updatedAt);

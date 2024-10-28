@@ -56,7 +56,7 @@ export const Language: React.FC<LanguageProps> = ({
             key={index}
             className="list-item inline-flex items-center bg-gray-100 rounded-full px-5 py-2 text-sm font-semibold text-gray-700"
           >
-            {language}
+            {language.name}
             <button
               onClick={() => handleDeleteField("languages", "language", index)}
               className="ml-2 focus:outline-none"

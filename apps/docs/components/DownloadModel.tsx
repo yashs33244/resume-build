@@ -202,7 +202,7 @@ const DownloadModal: React.FC<DownloadModalProps> = ({
                   className="form-input"
                   // type="text"
                   placeholder="Paste the exact job description here.."
-                  rows="6"
+                  rows={6}
                   value={jobDescription}
                   onChange={(e) => setJobDescription(e.target.value)}
                 />

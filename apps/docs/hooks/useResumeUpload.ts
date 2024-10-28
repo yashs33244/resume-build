@@ -95,9 +95,13 @@ export const useResumeUpload = ({ onUploadSuccess }: UseResumeUploadProps) => {
             responsibilities: formatBulletPoints(exp.responsibilities || []),
             current: exp.current || false,
           })) || [],
-          skills: processSkills(parsedData.skills || []),
-          coreSkills: processSkills(parsedData.coreSkills || []),
-          languages: processSkills(parsedData.languages || []),
+          //@ts-ignore
+          skills: processSkills(parsedData.skills || []).map(skill => ({ name: skill })),
+          //@ts-ignore
+          coreSkills: processSkills(parsedData.coreSkills || []).map(skill => ({ name: skill })),
+          //@ts-ignore
+          languages: processSkills(parsedData.languages || []).map(skill => ({ name: skill })),
+          //@ts-ignore
           projects: parsedData.projects?.map((proj: any) => ({
             name: proj.name || '',
             link: proj.link || '',

@@ -92,7 +92,7 @@ export const useResumeData = (onDataChange?: (resumeData: ResumeProps) => void) 
                     const currentSkills = Array.isArray(newData.coreSkills) ? newData.coreSkills : [];
                     newData.coreSkills = [
                         ...currentSkills.slice(0, index),
-                        value,
+                        { name: value },
                         ...currentSkills.slice(index + 1)
                     ];
                 }
@@ -143,12 +143,12 @@ export const useResumeData = (onDataChange?: (resumeData: ResumeProps) => void) 
             ];
           } else if (section === "skills") {
               newData.skills = Array.isArray(prevData.skills) 
-                  ? [...prevData.skills, ""]
-                  : [""];
+                  ? [...prevData.skills, { name: "" }]
+                  : [{ name: "" }];
           } else if (section === "languages") {
              newData.languages = Array.isArray(prevData.languages) 
-                ? [...prevData.languages, ""]
-                : [""];
+                ? [...prevData.languages, { name: "" }]
+                : [{ name: "" }];
           }
           return newData;
         });

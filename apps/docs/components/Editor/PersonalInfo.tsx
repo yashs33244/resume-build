@@ -28,7 +28,7 @@ interface PersonalInfoProps {
   handleInputChange: (
     section: keyof ResumeProps,
     field: string,
-    value: any
+    value: any,
   ) => void;
 }
 
@@ -40,19 +40,13 @@ export const PersonalInfo: React.FC<PersonalInfoProps> = ({
   const [name, setName] = useState(resumeData.personalInfo?.name || "");
   const [email, setEmail] = useState(resumeData.personalInfo?.email || "");
   const [editorContent, setEditorContent] = useState(
-    resumeData.personalInfo?.bio || ""
+    resumeData.personalInfo?.bio || "",
   );
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSummaryChange = (value: string) => {
-    const summary = value
-      .split("\n")
-      .filter((item) => item.trim() !== "");
-    handleInputChange(
-      "personalInfo",
-      "bio",
-      summary
-    );
+    const summary = value.split("\n").filter((item) => item.trim() !== "");
+    handleInputChange("personalInfo", "bio", summary);
   };
 
   // useEffect(() => {
@@ -175,24 +169,20 @@ export const PersonalInfo: React.FC<PersonalInfoProps> = ({
         </div>
         <div className="single-form-row">
           <div className="form-field">
-            <Label
-              htmlFor={`bio`}
-              className="field-label"
-            >
+            <Label htmlFor={`bio`} className="field-label">
               Professional Summary
             </Label>
             <textarea
               id="summary"
               className="form-input"
-              // type="text"
-              rows="4"
+              rows={4}
               value={resumeData.personalInfo?.bio || ""}
               onChange={(e) =>
                 handleInputChange("personalInfo", "bio", e.target.value)
               }
             />
-          </div>          
-        </div> 
+          </div>
+        </div>
       </div>
     </div>
   );

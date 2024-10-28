@@ -9,10 +9,11 @@ export const useTransformResumeData = (resumeData: any): ResumeProps | null => {
       const data = resumeData[0]; // Assuming the data comes as an array
   
       return {
+        resumeId: data.id, // Assuming data has an id property
         userId: data.resumeId, // Assuming resumeId as userId
         personalInfo: data.personalInfo || null,
         education: data.education,
-        experience: data.experience.map(exp => ({
+        experience: data.experience.map((exp:any) => ({
           company: exp.company,
           role: exp.role,
           start: exp.start,

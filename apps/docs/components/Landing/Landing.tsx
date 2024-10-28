@@ -84,7 +84,7 @@ export default function LandingPage() {
     useState<LandingPageTemplateType>("classic");
   const { data: session, status: sessionStatus } = useSession();
   const { template, setTemplateAndUpdateURL } = useTemplateSync();
-  const templateClass = useRecoilValue(templateClassSelector);
+  const templateClass = useRecoilValue<any>(templateClassSelector);
   const router = useRouter();
 
   const { saveResume, isSaving } = useSaveResume();
@@ -193,7 +193,7 @@ export default function LandingPage() {
             </div>
           </div> */}
           <div style={{ marginTop: "36px" }}>
-            <Image alt="loved" src={lovedby} width="44%" />
+            <Image alt="loved" src={lovedby} style={{ width: "44%" }} />
           </div>
         </div>
         <div className="right-container">
