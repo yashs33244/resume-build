@@ -4,6 +4,7 @@
 .template3-wrapper *{
     line-height: normal;
     box-sizing: border-box;
+    font-family: 'Inter';
 }
 
 
@@ -40,7 +41,7 @@
   .template3-wrapper.M {
     --font-size-base: 16px;
     --padding-base: 20px;
-    --gap-base: 10px;
+    --gap-base: 20px;
   }
   
   /* Size S */
@@ -70,7 +71,8 @@
     max-width: 595px;
     min-height: 842px;
     max-height: 842px;
-    color: black;
+    /* color: black; */
+    color: rgba(0,0,0,0.8);
     display: flex;
     overflow-y: hidden;
     font-family: ui-serif !important;
@@ -87,8 +89,10 @@
     max-width: 210px;
     display: flex;
     flex-direction: column;
-    background-color: #e5e4e2;
+    /* background-color: #e5e4e2; */
+    background-color: #303D5D;
     padding: var(--lp-padding);
+    color: white;
     gap: var(--container-gap);
   }
   
@@ -118,6 +122,7 @@
   .template3-wrapper .lp_add_info_value {
     display: flex;
     gap: 5px;
+    margin-top: 4px;
     font-size: var(--add-info-value-size);
 
     & svg{
@@ -272,13 +277,17 @@
 .template3-wrapper .rp_projerience_div_value_section {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  /* gap: 10px; */
 }
 
 .template3-wrapper .rp_projerience_div_value_section_name {
   font-size: var(--experience-section-name-size);
-  font-weight: 700;
+  font-weight: 600;
   line-height: normal;
+}
+
+.template3-wrapper .rp_projerience_div_value_section_name .issuer {
+  font-weight: 400;
 }
 
 .template3-wrapper .rp_projerience_div_value_section_year {

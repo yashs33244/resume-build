@@ -26,6 +26,7 @@ export const Template1 = (props: any) => {
   const certificates = resumeData.certificates || [];
 
   const getDuration = (dateString: any) => {
+    console.log("Date string = ", dateString)
     const date = new Date(dateString);
     const formattedDate = date.toLocaleDateString("en-US", {
       month: "short",
@@ -106,7 +107,7 @@ export const Template1 = (props: any) => {
                 {(edu?.degree || edu?.major) && (
                   <div className="degree-major">
                     {/* {`${edu?.degree || ""} - ${edu?.major || ""}`} */}
-                    {`${edu.degree ? edu.degree : ""} ${edu.major ? `- ${edu.major}` : ""}`}
+                    {`${edu.degree ? edu.degree : ""} ${edu.major ? `- ${edu.major}` : ""} | ${edu.start} - ${edu.end}`}
                   </div>
                 )}
               </div>

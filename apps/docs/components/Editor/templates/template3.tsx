@@ -16,6 +16,10 @@ export const Template3 = (props: any) => {
 
     return (
         <div className={`template3-wrapper ${resumeSize} wrapper`} id={id}>
+            <link
+                rel="stylesheet"
+                href="https://fonts.googleapis.com/css?family=Inter"
+            />
             <div className={"template-container"}>
                 <div className={"lp"}>
                     <div className={"lp_personalInfo"}>
@@ -64,9 +68,11 @@ export const Template3 = (props: any) => {
                                     return (
                                         <div className={"lp_education_div_value_section"} key={index}>
                                             {
-                                                edu?.degree && edu?.major && edu?.institution &&
+                                                edu?.institution &&
                                                 <div className={"lp_education_div_value_section_name"}>
-                                                    {edu.degree + " - " + edu.major + ", " + edu.institution}
+                                                    <span>{edu.institution}</span>
+                                                    <span>{`${edu.degree ? ` - ${edu.degree}` : ''}`}</span>
+                                                    <span>{`${edu.major ? `, ${edu.major}` : ''}`}</span>
                                                 </div>
                                             }
                                             {
@@ -146,35 +152,35 @@ export const Template3 = (props: any) => {
                             </div>
                         </div>
                     }
-                    <div className={`${"rp_experience_div"} ${"rp_container"}`}>
-            <div
-              className={`${"rp_experience_div_label"} ${"rp_container_header"}`}
-            >
-              Projects
-            </div>
-            <div
-              className={`${"rp_experience_div_value"} ${"rp_container_content"}`}
-            >
-              {resumeData.projects?.map((proj: any) => {
-                return (
-                  <div className={"rp_projerience_div_value_section"}>
-                    <div className={"rp_projerience_div_value_section_name"}>
-                      {proj?.name + " - " + proj?.link}
-                    </div>
-                    <div className={"rp_projerience_div_value_section_year"}>
-                      {proj?.start + " - " + proj.end}
-                    </div>
-                    <div
-                      className={"rp_projerience_div_value_section_work"}
-                      dangerouslySetInnerHTML={{
-                        __html: DOMPurify.sanitize(proj.responsibilities),
-                      }}
-                    ></div>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
+                    {Array.isArray(resumeData?.projects) && resumeData.projects.length > 0 && <div className={`${"rp_experience_div"} ${"rp_container"}`}>
+                        <div
+                            className={`${"rp_experience_div_label"} ${"rp_container_header"}`}
+                        >
+                            Projects
+                        </div>
+                        <div
+                            className={`${"rp_experience_div_value"} ${"rp_container_content"}`}
+                        >
+                        {resumeData.projects?.map((proj: any) => {
+                            return (
+                            <div className={"rp_projerience_div_value_section"}>
+                                <div className={"rp_projerience_div_value_section_name"}>
+                                {proj?.name + " - " + proj?.link}
+                                </div>
+                                <div className={"rp_projerience_div_value_section_year"}>
+                                {proj?.start + " - " + proj.end}
+                                </div>
+                                <div
+                                className={"rp_projerience_div_value_section_work"}
+                                dangerouslySetInnerHTML={{
+                                    __html: DOMPurify.sanitize(proj.responsibilities),
+                                }}
+                                ></div>
+                            </div>
+                            );
+                        })}
+                        </div>
+                    </div>}
           <div className={`${"rp_experience_div"} ${"rp_container"}`}>
             <div
               className={`${"rp_experience_div_label"} ${"rp_container_header"}`}
@@ -188,7 +194,11 @@ export const Template3 = (props: any) => {
                 return (
                   <div className={"rp_projerience_div_value_section"}>
                     <div className={"rp_projerience_div_value_section_name"}>
-                      {cert?.name + " - " + cert?.issuer}
+                        <div>
+                            <span>{cert?.name}</span>
+                            <span className="issuer">{`${cert?.issuer ? `- ${cert.issuer}` : ''}`}</span>
+                        </div>
+                      {/* {cert?.name + " - " + cert?.issuer} */}
                     </div>
                     <div className={"rp_projerience_div_value_section_year"}>
                       {cert?.issuedOn}
