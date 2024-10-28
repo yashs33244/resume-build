@@ -18,6 +18,7 @@ import loading from "../../public/loading.gif";
 import CustomDatePicker from "./CustomDatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import ExperienceDatePickers from "../ExperienceDatePickers";
 
 const ClientSideQuill = dynamic(() => import("react-quill"), {
   ssr: false,
@@ -87,11 +88,6 @@ export const Experience: React.FC<ExperienceProps> = ({
       label: "Lengthen",
       value: "lengthen",
       prompt: `Act like a great {jobTitle} and elaborate on the following input. Rewrite it in a compelling manner. Don't stretch it too much though. Use your expertise to make it relevant:\n\n{content}`,
-    },
-    {
-      label: "Professional Summary",
-      value: "professional_summary",
-      prompt: `Based on the following experience details, give me a 3-4 line professional summary that will go on top of my Resume. The goal is to highlight my most impactful aspects, help me stand out, and paint a flavor of my profile to any person viewing the resume in a few seconds. It should be sharp, easy to understand, and very compelling. Don't use generic keywords or jargon. Sell me like Steve Jobs through this summary:\n\n{content}`,
     },
   ];
 
@@ -199,36 +195,16 @@ export const Experience: React.FC<ExperienceProps> = ({
                     />
                   </div>
                 </div>
-                <div className="form-row">
-                  <div className="row-form-field">
-                    <LocalizationProvider dateAdapter={AdapterDayjs}>
-                      <CustomDatePicker
-                        id={`start-${index}`}
-                        value={exp.start || ""}
-                        onChange={handleInputChange}
-                        index={index}
-                        className="text-white"
-                        field="start"
-                        category="experience"
-                      />
-                    </LocalizationProvider>
+                <div>
+                  <div className="form-row">
+                    <ExperienceDatePickers
+                      index={index}
+                      exp={exp}
+                      handleInputChange={handleInputChange}
+                    />
                   </div>
-                  {exp?.end != "Present" && (
-                    <div className="row-form-field">
-                      <LocalizationProvider dateAdapter={AdapterDayjs}>
-                        <CustomDatePicker
-                          id={`end-${index}`}
-                          value={exp.end || ""}
-                          onChange={handleInputChange}
-                          index={index}
-                          className="text-white"
-                          field="end"
-                          category="experience"
-                        />
-                      </LocalizationProvider>
-                    </div>
-                  )}
                 </div>
+
                 <div className="inline-flex items-center">
                   <label
                     className="relative flex cursor-pointer items-center rounded-full p-3"

@@ -37,7 +37,7 @@ const generateJWT = async (payload: JWTPayload) => {
   const jwt = await new SignJWT(payload)
     .setProtectedHeader({ alg: "HS256" })
     .setIssuedAt()
-    .setExpirationTime("365d")
+    .setExpirationTime("30d")
     .sign(jwk);
 
   return jwt;
@@ -226,10 +226,6 @@ export const authOptions: NextAuthOptions = {
         const callbackUrl = fullUrl.searchParams.get("callbackUrl");
         const fromLanding = fullUrl.searchParams.get("fromLanding") === "true";
         const template = fullUrl.searchParams.get("template");
-        
-        console.log("Callback URL:", callbackUrl);
-        console.log("From Landing:", fromLanding);
-        console.log("Template:", template);
         
         // Handle sign-out
         const redirectType = fullUrl.searchParams.get("redirectType");

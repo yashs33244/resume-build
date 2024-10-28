@@ -7,6 +7,11 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum UserStatus {
+  FREE
+  PAID
+}
+
 enum ResumeState {
   NOT_STARTED
   EDITING
@@ -17,14 +22,15 @@ enum ResumeState {
 }
 
 model User {
-  id           String    @id @default(cuid())
-  email        String    @unique
+  id           String     @id @default(cuid())
+  email        String     @unique
   name         String?
   token        String?
   profilePhoto String?
   password     String
-  createdAt    DateTime  @default(now())
-  updatedAt    DateTime  @updatedAt
+  status       UserStatus @default(FREE)
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
   sessions     Session[]
   resumes      Resume[]
 }

@@ -70,6 +70,7 @@ export default function EditPage() {
     undefined,
   );
   const router = useRouter();
+  const [initails, setInitials] = useState("");
 
   const [isModelOpen, setIsModelOpen] = useState(false);
   const [saveStatus, setSaveStatus] = useState<"saved" | "saving" | "error">(
@@ -192,6 +193,15 @@ export default function EditPage() {
       }));
     }
   }, [template]);
+
+  useEffect(() => {
+    if (session?.user?.name) {
+      const name = session?.user?.name.split(" ");
+      if (name.length >= 2) {
+        setInitials((name?.[0]?.[0] ?? "") + (name?.[1]?.[0] ?? ""));
+      }
+    }
+  }, [session?.user?.name]);
 
   const { activeSection, handleSectionChange, sections, setActiveSection } =
     useActiveSection();
@@ -460,13 +470,13 @@ export default function EditPage() {
             {session?.user ? (
               <div className="login-cta" onClick={handleRedirect}>
                 <TbGridDots />
-                <div>PG</div>
+                <div>{initails}</div>
               </div>
             ) : (
               <div className="login-cta">
                 <TbGridDots />
                 <div>
-                  <Link href="/">PG</Link>
+                  <Link href="/">{initails}</Link>
                 </div>
               </div>
             )}

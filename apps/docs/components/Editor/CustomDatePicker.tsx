@@ -7,7 +7,7 @@ import { styled } from "@mui/material/styles";
 const WhiteStyledDatePicker = styled(DatePicker)(({ theme }) => ({
   "& .MuiOutlinedInput-root": {
     height: "44px",
-    borderRadius: '12px',
+    borderRadius: "12px",
     color: "rgba(255,255,255,0.85)",
     "& fieldset": {
       border: "0.5px solid rgba(255,255,255,0.4)",
@@ -63,10 +63,12 @@ export default function CustomDatePicker({
           index,
         );
       }}
+      views={["year", "month"]} // Restrict the picker to only show year and month
+      // Optional: Add a minDate or maxDate prop if needed
       slotProps={{
         textField: {
           id,
-          placeholder: "MM/DD/YYYY",
+          placeholder: "MM/YYYY", // Update the placeholder to reflect the new format
           className: `form-input ${className || ""}`,
           InputLabelProps: { shrink: true },
         },
