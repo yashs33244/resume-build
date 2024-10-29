@@ -46,18 +46,32 @@
   
   /* Size S */
   .template3-wrapper.S {
-    --font-size-base: 12px; /* 75% of M */
-    --padding-base: 15px; /* 75% of M */
-    --gap-base: 7.5px; /* 75% of M */
-    --ul-padding : 0px 0px 0px 8px
+    --font-size-base: 14.4px; /* 75% of M */
+    --padding-base: 18px; /* 75% of M */
+    --gap-base: 18px; /* 75% of M */
+    --ul-padding : 0px 0px 0px 9px
+  }
+
+  .template3-wrapper.XS {
+    --font-size-base: 12.96px; /* 75% of M */
+    --padding-base: 16.2px; /* 75% of M */
+    --gap-base: 16.2px; /* 75% of M */
+    --ul-padding : 0px 0px 0px 8.1px
   }
   
   /* Size L */
   .template3-wrapper.L {
-    --font-size-base: 20px; /* 125% of M */
-    --padding-base: 25px; /* 125% of M */
-    --gap-base: 12.5px; /* 125% of M */
-    --ul-padding : 0px 0px 0px 12px
+    --font-size-base: 17.6px; /* 125% of M */
+    --padding-base: 22px; /* 125% of M */
+    --gap-base: 22px; /* 125% of M */
+    --ul-padding : 0px 0px 0px 11px
+  }
+
+  .template3-wrapper.XL {
+    --font-size-base: 19.36px; /* 125% of M */
+    --padding-base: 24.2px; /* 125% of M */
+    --gap-base: 24.2px; /* 125% of M */
+    --ul-padding : 0px 0px 0px 12.1px
   }
   
   

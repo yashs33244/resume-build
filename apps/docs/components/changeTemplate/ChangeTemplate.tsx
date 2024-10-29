@@ -6,7 +6,7 @@ import { useRecoilState } from "recoil";
 import { resumeSizeAtom } from "../../store/resumeSize";
 import SizeChange from "./SizeChange";
 
-export default function ChanegTemplate() {
+export default function ChanegTemplate(props:any) {
   return (
     <div className="widgets">
       <div className="change-template">
@@ -15,7 +15,7 @@ export default function ChanegTemplate() {
           <Link href="/select-templates">Change Template</Link>
         </div>
       </div>
-      <SizeChange />
+      <SizeChange resumeSize={props.resumeSize} />
     </div>
   );
 }

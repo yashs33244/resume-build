@@ -269,6 +269,10 @@ export default function EditPage() {
       setResumeSize("S");
     } else if (resumeSize == "L") {
       setResumeSize("M");
+    } else if (resumeSize == "XL") {
+      setResumeSize("L");
+    } else if (resumeSize == "S") {
+      setResumeSize("XS");
     }
   };
 
@@ -497,7 +501,7 @@ export default function EditPage() {
         <div className="preview">
           <div className="tools">
             <div className="tools-container">
-              <ChanegTemplate />
+              <ChanegTemplate resumeSize={resumeSize} />
               <div className="download-container cursor-pointer">
                 {session?.user ? (
                   <div className="download" onClick={openModel}>
@@ -521,7 +525,7 @@ export default function EditPage() {
               <span className="overflow_div_p1">
                 Your content is overflowing. You can optimize the content
               </span>
-              {["M", "L"].includes(resumeSize) && (
+              {["M", "L", "S", "XL"].includes(resumeSize) && (
                 <span className="overflow_div_p1">
                   &nbsp;or you can click&nbsp;
                   <span onClick={reduceSize} className="overflow_div_action">

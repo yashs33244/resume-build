@@ -6,17 +6,17 @@ import { styled } from "@mui/material/styles";
 
 const WhiteStyledDatePicker = styled(DatePicker)(({ theme }) => ({
   "& .MuiOutlinedInput-root": {
-    height: "44px",
+    height: "24px",
     borderRadius: '12px',
     color: "rgba(255,255,255,0.85)",
     "& fieldset": {
-      border: "0.5px solid rgba(255,255,255,0.4)",
+      border: "none",
     },
     "&:hover fieldset": {
-      border: "0.5px solid rgba(255,255,255,0.4)",
+      border: "none",
     },
     "&.Mui-focused fieldset": {
-      border: "0.5px solid rgba(255,255,255,0.4)",
+      border: "none",
     },
   },
   "& .MuiInputLabel-root": {
@@ -53,7 +53,7 @@ export default function CustomDatePicker({
 }: CustomDatePickerProps) {
   return (
     <WhiteStyledDatePicker
-      label={field === "start" ? "Start Date" : "End Date"}
+      // label={field === "start" ? "Start Date" : "End Date"}
       value={value ? dayjs(value) : null}
       onChange={(newValue: dayjs.Dayjs | null) => {
         onChange(

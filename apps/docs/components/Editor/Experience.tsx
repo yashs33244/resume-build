@@ -201,6 +201,9 @@ export const Experience: React.FC<ExperienceProps> = ({
                 </div>
                 <div className="form-row">
                   <div className="row-form-field">
+                    <Label htmlFor={`start-${index}`} className="field-label">
+                      Start Date
+                    </Label>
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                       <CustomDatePicker
                         id={`start-${index}`}
@@ -215,6 +218,9 @@ export const Experience: React.FC<ExperienceProps> = ({
                   </div>
                   {exp?.end != "Present" && (
                     <div className="row-form-field">
+                    <Label htmlFor={`end-${index}`} className="field-label">
+                      End Date
+                    </Label>
                       <LocalizationProvider dateAdapter={AdapterDayjs}>
                         <CustomDatePicker
                           id={`end-${index}`}

@@ -33,5 +33,11 @@ export const tipsData = {
         'Emphasize hard skills like programming languages, tools, or software relevant to the job.',
         'Skip generic skills like "communication" or "teamwork" that are assumed in most roles.',
         'Do not flood your resume with too many skills. Select the most relevant ones that are your super powers and keep them concise.'
+    ],
+    certificates : [
+        'Only include certifications that are relevant to the role or field you’re applying for. Prioritize industry-recognized certifications over general ones to show specific qualifications and expertise.',
+        'List your certifications in reverse chronological order, starting with the most recent, to highlight your most up-to-date skills and knowledge.',
+        'Limit entries to one line or two at most, unless the certification involves unique skills or achievements relevant to the role.',
+        'Use the full name of the issuing organization, as it builds credibility.'
     ]
 };

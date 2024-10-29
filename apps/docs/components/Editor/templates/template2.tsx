@@ -32,14 +32,14 @@ export const Template2 = (props: any) => {
             <div className={"header_right_part_url"}>
               {resumeData?.personalInfo?.email}
             </div>
-            <div className={"header_right_part_phone"}>
-              <a href={resumeData?.personalInfo?.linkedin}>
-                {resumeData?.personalInfo?.linkedin}
-              </a>
-            </div>
             <div className={"header_right_part_email"}>
               {resumeData?.personalInfo?.phone}
             </div>
+            <div className={"header_right_part_phone"}>
+              <a href={resumeData?.personalInfo?.linkedin}>
+                Linkedin
+              </a>
+            </div>                        
           </div>
         </div>
         <div className={"content"}>

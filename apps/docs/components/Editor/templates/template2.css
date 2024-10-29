@@ -17,11 +17,11 @@
     --gap-base: 30px;
   
     /* Font-sizes and other dimensions */
-    --header-name-size: calc(var(--font-size-base) + 2px);
-    --header-role-size: calc(var(--font-size-base) - 1px);
-    --header-contact-size: calc(var(--font-size-base) - 6px);
+    --header-name-size: calc(var(--font-size-base) + 4px);
+    --header-role-size: calc(var(--font-size-base) - 0px);
+    --header-contact-size: calc(var(--font-size-base) - 4px);
     --content-label-size: var(--font-size-base);
-    --content-value-size: calc(var(--font-size-base) - 6px);
+    --content-value-size: calc(var(--font-size-base) - 4px);
   
     /* Paddings, Margins */
     --container-padding: var(--padding-base);
@@ -35,33 +35,28 @@
     --gap-base: 30px;
   }
 
-  /* Size Small */
-  .template2-wrapper.Small {
-    --font-size-base: 15px;
+  .template2-wrapper.S {
+    --font-size-base: 14.4px;
     --padding-base: 36px;
-    --gap-base: 28px;
+    --gap-base: 27px;
   }
 
-  /* Size Smaller */
-  .template2-wrapper.Smaller {
-    --font-size-base: 14px;
-    --padding-base: 34px;
-    --gap-base: 26px;
+  .template2-wrapper.XS {
+    --font-size-base: 12.96px;
+    --padding-base: 32.4px;
+    --gap-base: 24.3px;
   }
 
-  /* Size Smallest */
-  .template2-wrapper.Smallest {
-    --font-size-base: 12.5px;
-    --padding-base: 32px;
-    --gap-base: 24px;
-  }
-
-  
-  /* Size L */
   .template2-wrapper.L {
-    --font-size-base: 18px; /* 125% of M */
-    --padding-base: 50px; /* 125% of M */
-    --gap-base: 37.5px; /* 125% of M */
+    --font-size-base: 17.6px; /* 125% of M */
+    --padding-base: 44px; /* 125% of M */
+    --gap-base: 33px; /* 125% of M */
+  }
+
+  .template2-wrapper.XL {
+    --font-size-base: 19.36px; /* 125% of M */
+    --padding-base: 48.4px; /* 125% of M */
+    --gap-base: 36.3px; /* 125% of M */
   }
   
   /* Template Container */

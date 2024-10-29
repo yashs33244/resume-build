@@ -23,6 +23,21 @@
             // font-style: italic;            
             font-weight: 600;
         }
+
+        .ai-skill-container {     
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 12px;       
+            .ai-skill-item {
+                font-size: 12px;
+                border-radius: 16px;
+                color: rgba(255,255,255,0.8);
+                padding: 8px 12px;
+                border: 1px dashed rgba(255,255,255,0.6);
+                margin-left: 4px;
+            }
+        }
     }
 
     .tech-skills {
