@@ -28,7 +28,7 @@ interface PersonalInfoProps {
   handleInputChange: (
     section: keyof ResumeProps,
     field: string,
-    value: any
+    value: any,
   ) => void;
 }
 
@@ -37,22 +37,15 @@ export const PersonalInfo: React.FC<PersonalInfoProps> = ({
   handleInputChange,
 }) => {
   const { user } = useProfileSession();
-  const [name, setName] = useState(resumeData.personalInfo?.name || "");
-  const [email, setEmail] = useState(resumeData.personalInfo?.email || "");
+
   const [editorContent, setEditorContent] = useState(
-    resumeData.personalInfo?.bio || ""
+    resumeData.personalInfo?.bio || "",
   );
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSummaryChange = (value: string) => {
-    const summary = value
-      .split("\n")
-      .filter((item) => item.trim() !== "");
-    handleInputChange(
-      "personalInfo",
-      "bio",
-      summary
-    );
+    const summary = value.split("\n").filter((item) => item.trim() !== "");
+    handleInputChange("personalInfo", "bio", summary);
   };
 
   // useEffect(() => {
@@ -81,10 +74,9 @@ export const PersonalInfo: React.FC<PersonalInfoProps> = ({
             <Input
               id="name"
               className="form-input"
-              value={name}
+              value={resumeData.personalInfo?.name || ""}
               type="text"
               onChange={(e) => {
-                setName(e.target.value);
                 handleInputChange("personalInfo", "name", e.target.value);
               }}
               placeholder="Prakhar Gupta"
@@ -115,9 +107,8 @@ export const PersonalInfo: React.FC<PersonalInfoProps> = ({
               id="email"
               className="form-input"
               type="email"
-              value={email}
+              value={resumeData.personalInfo?.email || ""}
               onChange={(e) => {
-                setEmail(e.target.value);
                 handleInputChange("personalInfo", "email", e.target.value);
               }}
               placeholder="prakhar_gupta@gmail.com"
@@ -175,10 +166,7 @@ export const PersonalInfo: React.FC<PersonalInfoProps> = ({
         </div>
         <div className="single-form-row">
           <div className="form-field">
-            <Label
-              htmlFor={`bio`}
-              className="field-label"
-            >
+            <Label htmlFor={`bio`} className="field-label">
               Professional Summary
             </Label>
             <textarea
@@ -191,8 +179,8 @@ export const PersonalInfo: React.FC<PersonalInfoProps> = ({
                 handleInputChange("personalInfo", "bio", e.target.value)
               }
             />
-          </div>          
-        </div> 
+          </div>
+        </div>
       </div>
     </div>
   );

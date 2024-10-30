@@ -6,13 +6,15 @@ import { useRecoilState } from "recoil";
 import { resumeSizeAtom } from "../../store/resumeSize";
 import SizeChange from "./SizeChange";
 
-export default function ChanegTemplate() {
+export default function ChangeTemplate({ resumeId }: { resumeId: string }) {
   return (
     <div className="widgets">
       <div className="change-template">
         <SlGrid />
         <div>
-          <Link href="/select-templates">Change Template</Link>
+          <Link href={`/select-templates/?id=${resumeId}`}>
+            Change Template
+          </Link>
         </div>
       </div>
       <SizeChange />

@@ -71,7 +71,7 @@ export async function POST(request: NextRequest) {
             start: edu.start,
             end: edu.end,
             degree: edu.degree,
-            score: edu.score,
+            score: parseFloat(edu.score)// to float,
           })),
         });
       }

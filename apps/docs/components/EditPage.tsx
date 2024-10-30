@@ -78,8 +78,18 @@ export default function EditPage() {
   );
 
   const { data: session, status: sessionStatus } = useSession();
-  const { template, setTemplate, loading, error, id } = useFetchResumeData();
-  const resumeId = id;
+  const {
+    resumeData,
+    handleInputChange: baseHandleInputChange,
+    handleAddField,
+    handleDeleteField,
+  } = useResumeData((newData: ResumeProps) => {
+    setSaveStatus("saving");
+    debouncedSave(newData);
+  });
+
+  const resumeId = resumeData.resumeId;
+  const template = resumeData.templateId;
 
   // Memoized save draft function
   const saveDraft = useCallback(
@@ -134,16 +144,6 @@ export default function EditPage() {
   );
 
   // Initialize resume data with change tracking
-  const {
-    resumeData,
-    setResumeData,
-    handleInputChange: baseHandleInputChange,
-    handleAddField,
-    handleDeleteField,
-  } = useResumeData((newData: ResumeProps) => {
-    setSaveStatus("saving");
-    debouncedSave(newData);
-  });
 
   // Enhanced input change handler
   const handleInputChange = useCallback(
@@ -154,45 +154,12 @@ export default function EditPage() {
     [baseHandleInputChange],
   );
 
-  // Load initial draft data
-  useEffect(() => {
-    const loadDraft = async () => {
-      if (!resumeId) return;
-
-      try {
-        const response = await fetch(
-          `/api/resume/saveResume/draft?resumeId=${resumeId}`,
-        );
-        const data = await response.json();
-
-        if (response.ok && data.draft?.content) {
-          setResumeData(data.draft.content);
-        }
-      } catch (error) {
-        console.error("Error loading draft:", error);
-        setSaveStatus("error");
-      }
-    };
-
-    loadDraft();
-  }, [resumeId]);
-
   // Cleanup debounced save on unmount
   useEffect(() => {
     return () => {
       debouncedSave.cancel();
     };
   }, [debouncedSave]);
-
-  // Set template ID
-  useEffect(() => {
-    if (template && resumeData) {
-      setResumeData((prev) => ({
-        ...prev,
-        templateId: template,
-      }));
-    }
-  }, [template]);
 
   useEffect(() => {
     if (session?.user?.name) {
@@ -206,7 +173,6 @@ export default function EditPage() {
 
   const { activeSection, handleSectionChange, sections, setActiveSection } =
     useActiveSection();
-  const { fetchDraft } = useResumeDraft(id, resumeData, setResumeData);
   const openModel = () => {
     router.push("/select-templates/checkout");
     // setIsModelOpen(true);
@@ -252,6 +218,7 @@ export default function EditPage() {
   const handleRedirect = async () => {
     try {
       // saveResume(resumeData, template || "");
+      localStorage.removeItem("resumeData");
       router.push("/dashboard");
     } catch (error: any) {
       console.log("Error", error);
@@ -629,7 +596,7 @@ export default function EditPage() {
         <div className="preview">
           <div className="tools">
             <div className="tools-container">
-              <ChanegTemplate />
+              <ChanegTemplate resumeId={resumeId} />
               <div className="download-container cursor-pointer">
                 {session?.user ? (
                   <div className="download" onClick={openModel}>

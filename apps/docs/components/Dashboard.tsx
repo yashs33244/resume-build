@@ -40,7 +40,7 @@ const Dashboard = () => {
   };
 
   useEffect(() => {
-    console.log(resumes);
+    console.log("Resumes", resumes);
   }, [resumes]);
 
   // Debounce function to optimize scaling on window resize
@@ -116,6 +116,14 @@ const Dashboard = () => {
     },
     [setIsGeneratingPDF],
   );
+  const handleCreateNew = () => {
+    // remove resumeData from local storage
+    localStorage.removeItem("resumeData");
+    router.push("/create-preference");
+  };
+  const handleEdit = () => {
+    localStorage.removeItem("resumeData");
+  };
 
   // Use debounced scaling to improve performance
   useEffect(() => {
@@ -126,6 +134,7 @@ const Dashboard = () => {
       window.removeEventListener("resize", handleResize);
     };
   }, [resumes]);
+
   if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
@@ -140,9 +149,7 @@ const Dashboard = () => {
         <div className="dash-title">My Resumes</div>
         <div className="create-cta">
           <IoAddCircleOutline className="create-icon" />
-          <div>
-            <Link href={"/create-preference"}>Create New</Link>
-          </div>
+          <div onClick={handleCreateNew}>Create New</div>
         </div>
       </div>
       <div className="resume-container">
@@ -174,7 +181,7 @@ const Dashboard = () => {
                     <Link
                       href={`/select-templates/editor?id=${resume.resumeData.resumeId}`}
                     >
-                      <div className="edit">
+                      <div className="edit" onClick={handleEdit}>
                         <CiEdit className="cta-icon" />
                         <div>Edit</div>
                       </div>

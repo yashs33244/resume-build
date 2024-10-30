@@ -60,7 +60,12 @@ Parse into this structure:
     end: string;
     responsibilities: string[];
   }]
-
+  certificates: [{
+    name: string;
+    issuer: string;
+    issuedOn: string;
+  }], 
+  also add certificates array
 
   if cgpa is not present, give it as null
 }`;

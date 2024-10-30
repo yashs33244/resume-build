@@ -24,6 +24,10 @@ export const initialResumeData: ResumeProps = {
     title: "",
     description: ""
   },
+  projects: [
+    
+  ],
+  
   languages: [], // Optional: You can populate this later
   certificates: [] // Optional: You can populate this later
 };

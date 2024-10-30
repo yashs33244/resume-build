@@ -11,12 +11,22 @@ import { IoMdDownload } from "react-icons/io";
 import { Modal } from "react-responsive-modal";
 import "./DownloadModel.scss";
 import { useSaveResume } from "../hooks/useSaveResume";
+import Resume from "./resumes/Resume_one";
 
 type DownloadModalProps = {
   isOpen: boolean;
   onClose: () => void;
   resumeData: ResumeProps;
   templateId: string;
+};
+
+type ResumeState = {
+  NOT_STARTED: "NOT_STARTED";
+  EDITING: "EDITING";
+  COMPLETED: "COMPLETED";
+  DOWNLOADING: "DOWNLOADING";
+  DOWNLOAD_SUCCESS: "DOWNLOAD_SUCCESS";
+  DOWNLOAD_FAILED: "DOWNLOAD_FAILED";
 };
 
 const DownloadModal: React.FC<DownloadModalProps> = ({
@@ -106,9 +116,6 @@ const DownloadModal: React.FC<DownloadModalProps> = ({
         document.body.appendChild(a);
         a.click();
         window.URL.revokeObjectURL(url);
-        updateResumeTime(templateId);
-        console.log(resumeData);
-        saveResume(resumeData, templateId);
       } catch (error) {
         console.error("Error generating PDF:", error);
       } finally {
