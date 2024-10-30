@@ -36,27 +36,27 @@
   }
 
   .template2-wrapper.S {
-    --font-size-base: 14.4px;
-    --padding-base: 36px;
-    --gap-base: 27px;
+    --font-size-base: 15.2px;
+    --padding-base: 38px;
+    --gap-base: 28.5px;
   }
 
   .template2-wrapper.XS {
-    --font-size-base: 12.96px;
-    --padding-base: 32.4px;
-    --gap-base: 24.3px;
+    --font-size-base: 14.44px;
+    --padding-base: 36.1px;
+    --gap-base: 27.07px;
   }
 
   .template2-wrapper.L {
-    --font-size-base: 17.6px; /* 125% of M */
-    --padding-base: 44px; /* 125% of M */
-    --gap-base: 33px; /* 125% of M */
+    --font-size-base: 16.8px; /* 125% of M */
+    --padding-base: 42px; /* 125% of M */
+    --gap-base: 31.5px; /* 125% of M */
   }
 
   .template2-wrapper.XL {
-    --font-size-base: 19.36px; /* 125% of M */
-    --padding-base: 48.4px; /* 125% of M */
-    --gap-base: 36.3px; /* 125% of M */
+    --font-size-base: 17.64px; /* 125% of M */
+    --padding-base: 44.1px; /* 125% of M */
+    --gap-base: 33.07px; /* 125% of M */
   }
   
   /* Template Container */

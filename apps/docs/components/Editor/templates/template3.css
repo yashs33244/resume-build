@@ -46,32 +46,32 @@
   
   /* Size S */
   .template3-wrapper.S {
-    --font-size-base: 14.4px; /* 75% of M */
-    --padding-base: 18px; /* 75% of M */
-    --gap-base: 18px; /* 75% of M */
-    --ul-padding : 0px 0px 0px 9px
+    --font-size-base: 15.2px; /* 75% of M */
+    --padding-base: 19px; /* 75% of M */
+    --gap-base: 19px; /* 75% of M */
+    --ul-padding : 0px 0px 0px 9.5px
   }
 
   .template3-wrapper.XS {
-    --font-size-base: 12.96px; /* 75% of M */
-    --padding-base: 16.2px; /* 75% of M */
-    --gap-base: 16.2px; /* 75% of M */
-    --ul-padding : 0px 0px 0px 8.1px
+    --font-size-base: 14.44px; /* 75% of M */
+    --padding-base: 18.05px; /* 75% of M */
+    --gap-base: 18.05px; /* 75% of M */
+    --ul-padding : 0px 0px 0px 9.02px
   }
   
   /* Size L */
   .template3-wrapper.L {
-    --font-size-base: 17.6px; /* 125% of M */
-    --padding-base: 22px; /* 125% of M */
-    --gap-base: 22px; /* 125% of M */
-    --ul-padding : 0px 0px 0px 11px
+    --font-size-base: 16.8px; /* 125% of M */
+    --padding-base: 21px; /* 125% of M */
+    --gap-base: 21px; /* 125% of M */
+    --ul-padding : 0px 0px 0px 10.5px
   }
 
   .template3-wrapper.XL {
-    --font-size-base: 19.36px; /* 125% of M */
-    --padding-base: 24.2px; /* 125% of M */
-    --gap-base: 24.2px; /* 125% of M */
-    --ul-padding : 0px 0px 0px 12.1px
+    --font-size-base: 17.64px; /* 125% of M */
+    --padding-base: 22.05px; /* 125% of M */
+    --gap-base: 22.05px; /* 125% of M */
+    --ul-padding : 0px 0px 0px 11.02px
   }
   
   

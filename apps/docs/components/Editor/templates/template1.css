@@ -23,19 +23,19 @@
 }
 
 .template1-container .S {
-    padding: 1.8rem 3.15rem;
+    padding: 1.9rem 3.32rem;
 }
 
 .template1-container .XS {
-    padding: 1.62rem 2.84rem;
+    padding: 1.80rem 3.15rem;
 }
 
 .template1-container .L {
-    padding: 2.2rem 3.85rem;
+    padding: 2.1rem 3.67rem;
 }
 
 .template1-container .XL {
-    padding: 2.42rem 4.24rem;
+    padding: 2.2rem 3.85rem;
 }
 
 .template1-container .M .tag {
@@ -51,27 +51,27 @@
 }
 
 .template1-container .S .tag {
-    padding: 4.5px 7.2px;
-    left: 18px;
-    top: 34.2px;
+    padding: 4.75px 7.6px;
+    left: 19px;
+    top: 36.1px;
 }
 
 .template1-container .XS .tag {
-    padding: 4.05px 6.48px;
-    left: 16.2px;
-    top: 30.78px;
+    padding: 4.51px 6.48px;
+    left: 18.05px;
+    top: 34.29px;
 }
 
 .template1-container .L .tag {
-    padding: 5.5px 8.8px;
-    left: 22px;
-    top: 41.8px;
+    padding: 5.25px 8.4px;
+    left: 21px;
+    top: 39.9px;
 }
 
 .template1-container .XL .tag {
-    padding: 6.05px 9.68px;
-    left: 24.2px;
-    top: 46px;
+    padding: 5.51px 8.82px;
+    left: 22.05px;
+    top: 41.89px;
 }
 
 .template1-container .M .tag_value {
@@ -82,23 +82,23 @@
 }
 
 .template1-container .S .tag_value {
-    font-size: 9px;
-    line-height: 12.6px;
+    font-size: 9.5px;
+    line-height: 13.3px;
 }
 
 .template1-container .XS .tag_value {
-    font-size: 8.1px;
-    line-height: 11.34px;
+    font-size: 9.02px;
+    line-height: 12.63px;
 }
 
 .template1-container .L .tag_value {
-    font-size: 11px;
-    line-height: 15.4px;
+    font-size: 10.5px;
+    line-height: 14.7px;
 }
 
 .template1-container .XL .tag_value {
-    font-size: 12.1px;
-    line-height: 16.94px;
+    font-size: 11.02px;
+    line-height: 15.43px;
 }
 
 .template1-container .M .primary-info .name {
@@ -108,19 +108,19 @@
 }
 
 .template1-container .S .primary-info .name {
-    font-size: 0.9rem;
+    font-size: 0.95rem;
 }
 
 .template1-container .XS .primary-info .name {
-    font-size: 0.81rem;
+    font-size: 0.902rem;
 }
 
 .template1-container .L .primary-info .name {
-    font-size: 1.1rem;
+    font-size: 1.05rem;
 }
 
 .template1-container .XL .primary-info .name {
-    font-size: 1.21rem;
+    font-size: 1.102rem;
 }
 
 .template1-container .M .primary-info .position {
@@ -131,28 +131,29 @@
 }
 
 .template1-container .S .primary-info .position {
-    font-size: 0.63rem;
-    margin-top: 0.18rem;
+    font-size: 0.66rem;
+    margin-top: 0.19rem;
     font-weight: 500;
 }
 
 .template1-container .XS .primary-info .position {
-    font-size: 0.567rem;
-    margin-top: 0.162rem;
+    font-size: 0.627rem;
+    margin-top: 0.18rem;
     font-weight: 500;
 }
 
 .template1-container .L .primary-info .position {
-    font-size: 0.77rem;
-    margin-top: 0.22;
+    font-size: 0.735rem;
+    margin-top: 0.21rem;
     font-weight: 500;
 }
 
 .template1-container .XL .primary-info .position {
-    font-size: 0.847rem;
-    margin-top: 0.242;
+    font-size: 0.77rem;
+    margin-top: 0.22rem;
     font-weight: 500;
 }
+
 
 .template1-container .M .primary-info .information {
     color: #707678;
@@ -161,23 +162,23 @@
 }
 
 .template1-container .S .primary-info .information {
-    font-size: 0.45rem;
-    margin-top: 0.135rem;
+    font-size: 0.475rem; /* 5% less than M */
+    margin-top: 0.1425rem; /* 5% less than M */
 }
 
 .template1-container .XS .primary-info .information {
-    font-size: 0.405rem;
-    margin-top: 0.12rem;
+    font-size: 0.45125rem; /* 5% less than S */
+    margin-top: 0.135375rem; /* 5% less than S */
 }
 
 .template1-container .L .primary-info .information {
-    font-size: 0.55rem;
-    margin-top: 0.165rem;
+    font-size: 0.525rem; /* 5% more than M */
+    margin-top: 0.1575rem; /* 5% more than M */
 }
 
 .template1-container .XL .primary-info .information {
-    font-size: 0.605rem;
-    margin-top: 0.18rem;
+    font-size: 0.55125rem; /* 5% more than L */
+    margin-top: 0.165375rem; /* 5% more than L */
 }
 
 .template1-container .M .primary-info .information a,
@@ -188,22 +189,22 @@
 
 .template1-container .S .primary-info .information a,
 .template1-container .S .primary-info .information a:hover {
-    font-size: 0.45rem;
+    font-size: 0.475rem; /* 5% less than M */
 }
 
 .template1-container .XS .primary-info .information a,
 .template1-container .XS .primary-info .information a:hover {
-    font-size: 0.405rem;
+    font-size: 0.45125rem; /* 5% less than S */
 }
 
 .template1-container .L .primary-info .information a,
 .template1-container .L .primary-info .information a:hover {
-    font-size: 0.55rem;
+    font-size: 0.525rem; /* 5% more than M */
 }
 
 .template1-container .XL .primary-info .information a,
 .template1-container .XL .primary-info .information a:hover {
-    font-size: 0.605rem;
+    font-size: 0.55125rem; /* 5% more than L */
 }
 
 .template1-container .M .primary-info .summary {
@@ -213,23 +214,23 @@
 }
 
 .template1-container .S .primary-info .summary {
-    font-size: 0.45rem;
-    margin-top: 0.135rem;
+    font-size: 0.475rem; /* 5% less than M */
+    margin-top: 0.1425rem; /* 5% less than M */
 }
 
 .template1-container .XS .primary-info .summary {
-    font-size: 0.405rem;
-    margin-top: 0.12rem;
+    font-size: 0.45125rem; /* 5% less than S */
+    margin-top: 0.135375rem; /* 5% less than S */
 }
 
 .template1-container .L .primary-info .summary {
-    font-size: 0.55rem;
-    margin-top: 0.165rem;
+    font-size: 0.525rem; /* 5% more than M */
+    margin-top: 0.1575rem; /* 5% more than M */
 }
 
 .template1-container .XL .primary-info .summary {
-    font-size: 0.605rem;
-    margin-top: 0.18rem;
+    font-size: 0.55125rem; /* 5% more than L */
+    margin-top: 0.165375rem; /* 5% more than L */
 }
 
 .template1-container .M .experience {
@@ -237,19 +238,19 @@
 }
 
 .template1-container .S .experience {
-    margin-top: 1rem;
+    margin-top: 1.064rem; /* 5% less than M */
 }
 
 .template1-container .XS .experience {
-    margin-top: 0.9rem;
+    margin-top: 1.0108rem; /* 5% less than S */
 }
 
 .template1-container .L .experience {
-    margin-top: 1.23rem;
+    margin-top: 1.176rem; /* 5% more than M */
 }
 
 .template1-container .XL .experience {
-    margin-top: 1.35rem;
+    margin-top: 1.2348rem; /* 5% more than L */
 }
 
 .template1-container .M .projects {
@@ -257,19 +258,19 @@
 }
 
 .template1-container .S .projects {
-    margin-top: 1rem;
+    margin-top: 1.064rem; /* 5% less than M */
 }
 
 .template1-container .XS .projects {
-    margin-top: 0.9rem;
+    margin-top: 1.0108rem; /* 5% less than S */
 }
 
 .template1-container .L .projects {
-    margin-top: 1.23rem;
+    margin-top: 1.176rem; /* 5% more than M */
 }
 
 .template1-container .XL .projects {
-    margin-top: 1.35rem;
+    margin-top: 1.2348rem; /* 5% more than L */
 }
 
 .template1-container .M .experience .section-title {
@@ -279,19 +280,19 @@
 }
 
 .template1-container .S .experience .section-title {
-    font-size: 0.45rem;
+    font-size: 0.475rem; /* 5% less than M */
 }
 
 .template1-container .XS .experience .section-title {
-    font-size: 0.405rem;
+    font-size: 0.45125rem; /* 5% less than S */
 }
 
 .template1-container .L .experience .section-title {
-    font-size: 0.55rem;
+    font-size: 0.525rem; /* 5% more than M */
 }
 
 .template1-container .XL .experience .section-title {
-    font-size: 0.605rem;
+    font-size: 0.55125rem; /* 5% more than L */
 }
 
 .template1-container .M .projects .section-title {
@@ -301,19 +302,19 @@
 }
 
 .template1-container .S .projects .section-title {
-    font-size: 0.45rem;
+    font-size: 0.475rem; /* 5% less than M */
 }
 
 .template1-container .XS .projects .section-title {
-    font-size: 0.405rem;
+    font-size: 0.45125rem; /* 5% less than S */
 }
 
 .template1-container .L .projects .section-title {
-    font-size: 0.55rem;
+    font-size: 0.525rem; /* 5% more than M */
 }
 
 .template1-container .XL .projects .section-title {
-    font-size: 0.605rem;
+    font-size: 0.55125rem; /* 5% more than L */
 }
 
 .template1-container .M .experience .exp-container {
@@ -321,19 +322,19 @@
 }
 
 .template1-container .S .experience .exp-container {
-    margin-top: 0.504rem;
+    margin-top: 0.532rem; /* 5% less than M */
 }
 
 .template1-container .XS .experience .exp-container {
-    margin-top: 0.453rem;
+    margin-top: 0.5054rem; /* 5% less than S */
 }
 
 .template1-container .L .experience .exp-container {
-    margin-top: 0.616rem;
+    margin-top: 0.588rem; /* 5% more than M */
 }
 
 .template1-container .XL .experience .exp-container {
-    margin-top: 0.677rem;
+    margin-top: 0.6174rem; /* 5% more than L */
 }
 
 .template1-container .M .projects .proj-container {
@@ -341,19 +342,19 @@
 }
 
 .template1-container .S .projects .proj-container {
-    margin-top: 0.504rem;
+    margin-top: 0.532rem; /* 5% less than M */
 }
 
 .template1-container .XS .projects .proj-container {
-    margin-top: 0.453rem;
+    margin-top: 0.5054rem; /* 5% less than S */
 }
 
 .template1-container .L .projects .proj-container {
-    margin-top: 0.616rem;
+    margin-top: 0.588rem; /* 5% more than M */
 }
 
 .template1-container .XL .projects .proj-container {
-    margin-top: 0.677rem;
+    margin-top: 0.6174rem; /* 5% more than L */
 }
 
 .template1-container .M .experience .exp-container .company-name {
@@ -363,19 +364,19 @@
 }
 
 .template1-container .S .experience .exp-container .company-name {
-    font-size: 0.504rem;
+    font-size: 0.532rem; /* 5% less than M */
 }
 
 .template1-container .XS .experience .exp-container .company-name {
-    font-size: 0.453rem;
+    font-size: 0.5054rem; /* 5% less than S */
 }
 
 .template1-container .L .experience .exp-container .company-name {
-    font-size: 0.616rem;
+    font-size: 0.588rem; /* 5% more than M */
 }
 
 .template1-container .XL .experience .exp-container .company-name {
-    font-size: 0.677rem;
+    font-size: 0.6174rem; /* 5% more than L */
 }
 
 .template1-container .M .projects .proj-container .proj-name {
@@ -385,19 +386,19 @@
 }
 
 .template1-container .S .projects .proj-container .proj-name {
-    font-size: 0.504rem;
+    font-size: 0.532rem; /* 5% less than M */
 }
 
 .template1-container .XS .projects .proj-container .proj-name {
-    font-size: 0.453rem;
+    font-size: 0.5054rem; /* 5% less than S */
 }
 
 .template1-container .L .projects .proj-container .proj-name {
-    font-size: 0.616rem;
+    font-size: 0.588rem; /* 5% more than M */
 }
 
 .template1-container .XL .projects .proj-container .proj-name {
-    font-size: 0.677rem;
+    font-size: 0.6174rem; /* 5% more than L */
 }
 
 .template1-container .M .experience .exp-container .role-duration {
@@ -406,19 +407,19 @@
 }
 
 .template1-container .S .experience .exp-container .role-duration {
-    font-size: 0.468rem;
+    font-size: 0.494rem; /* 5% less than M */
 }
 
 .template1-container .XS .experience .exp-container .role-duration {
-    font-size: 0.42rem;
+    font-size: 0.4693rem; /* 5% less than S */
 }
 
 .template1-container .L .experience .exp-container .role-duration {
-    font-size: 0.57rem;
+    font-size: 0.546rem; /* 5% more than M */
 }
 
 .template1-container .XL .experience .exp-container .role-duration {
-    font-size: 0.627rem;
+    font-size: 0.5733rem; /* 5% more than L */
 }
 
 .template1-container .M .projects .proj-container .link-duration {
@@ -427,19 +428,19 @@
 }
 
 .template1-container .S .projects .proj-container .link-duration {
-    font-size: 0.468rem;
+    font-size: 0.494rem; /* 5% less than M */
 }
 
 .template1-container .XS .projects .proj-container .link-duration {
-    font-size: 0.42rem;
+    font-size: 0.4693rem; /* 5% less than S */
 }
 
 .template1-container .L .projects .proj-container .link-duration {
-    font-size: 0.57rem;
+    font-size: 0.546rem; /* 5% more than M */
 }
 
 .template1-container .XL .projects .proj-container .link-duration {
-    font-size: 0.627rem;
+    font-size: 0.5733rem; /* 5% more than L */
 }
 
 .template1-container .M .experience .exp-container .responsibilities {
@@ -448,19 +449,19 @@
 }
 
 .template1-container .S .experience .exp-container .responsibilities {
-    font-size: 0.45rem;
+    font-size: 0.475rem; /* 5% less than M */
 }
 
 .template1-container .XS .experience .exp-container .responsibilities {
-    font-size: 0.405rem;
+    font-size: 0.45125rem; /* 5% less than S */
 }
 
 .template1-container .L .experience .exp-container .responsibilities {
-    font-size: 0.55rem;
+    font-size: 0.525rem; /* 5% more than M */
 }
 
 .template1-container .XL .experience .exp-container .responsibilities {
-    font-size: 0.605rem;
+    font-size: 0.55125rem; /* 5% more than L */
 }
 
 .template1-container .M .projects .proj-container .responsibilities {
@@ -469,19 +470,19 @@
 }
 
 .template1-container .S .projects .proj-container .responsibilities {
-    font-size: 0.45rem;
+    font-size: 0.475rem; /* 5% less than M */
 }
 
 .template1-container .XS .projects .proj-container .responsibilities {
-    font-size: 0.405rem;
+    font-size: 0.45125rem; /* 5% less than S */
 }
 
 .template1-container .L .projects .proj-container .responsibilities {
-    font-size: 0.55rem;
+    font-size: 0.525rem; /* 5% more than M */
 }
 
 .template1-container .XL .projects .proj-container .responsibilities {
-    font-size: 0.605rem;
+    font-size: 0.55125rem; /* 5% more than L */
 }
 
 .template1-container .M .experience .exp-container .responsibilities ul {
@@ -490,19 +491,19 @@
 }
 
 .template1-container .S .experience .exp-container .responsibilities ul {
-    padding: 0 0.9rem;
+    padding: 0 0.95rem; /* 5% less than M */
 }
 
 .template1-container .XS .experience .exp-container .responsibilities ul {
-    padding: 0 0.81rem;
+    padding: 0 0.9025rem; /* 5% less than S */
 }
 
 .template1-container .L .experience .exp-container .responsibilities ul {
-    padding: 0 1.1rem;
+    padding: 0 1.05rem; /* 5% more than M */
 }
 
 .template1-container .XL .experience .exp-container .responsibilities ul {
-    padding: 0 1.21rem;
+    padding: 0 1.1025rem; /* 5% more than L */
 }
 
 .template1-container .M .projects .proj-container .responsibilities ul {
@@ -511,19 +512,19 @@
 }
 
 .template1-container .S .projects .proj-container .responsibilities ul {
-    padding: 0 0.9rem;
+    padding: 0 0.95rem; /* 5% less than M */
 }
 
 .template1-container .XS .projects .proj-container .responsibilities ul {
-    padding: 0 0.81rem;
+    padding: 0 0.9025rem; /* 5% less than S */
 }
 
 .template1-container .L .projects .proj-container .responsibilities ul {
-    padding: 0 1.1rem;
+    padding: 0 1.05rem; /* 5% more than M */
 }
 
 .template1-container .XL .projects .proj-container .responsibilities ul {
-    padding: 0 1.21rem;
+    padding: 0 1.1025rem; /* 5% more than L */
 }
 
 .template1-container .M .education {
@@ -531,19 +532,19 @@
 }
 
 .template1-container .S .education {
-    margin-top: 1rem;
+    margin-top: 1.064rem; /* 5% less than M */
 }
 
 .template1-container .XS .education {
-    margin-top: 0.9rem;
+    margin-top: 1.0108rem; /* 5% less than S */
 }
 
 .template1-container .L .education {
-    margin-top: 1.23rem;
+    margin-top: 1.176rem; /* 5% more than M */
 }
 
 .template1-container .XL .education {
-    margin-top: 1.35rem;
+    margin-top: 1.2348rem; /* 5% more than L */
 }
 
 .template1-container .M .certificates {
@@ -551,19 +552,19 @@
 }
 
 .template1-container .S .certificates {
-    margin-top: 1rem;
+    margin-top: 1.064rem; /* 5% less than M */
 }
 
 .template1-container .XS .certificates {
-    margin-top: 0.9rem;
+    margin-top: 1.0108rem; /* 5% less than S */
 }
 
 .template1-container .L .certificates {
-    margin-top: 1.23rem;
+    margin-top: 1.176rem; /* 5% more than M */
 }
 
 .template1-container .XL .certificates {
-    margin-top: 1.35rem;
+    margin-top: 1.2348rem; /* 5% more than L */
 }
 
 .template1-container .M .education .section-title {
@@ -573,19 +574,19 @@
 }
 
 .template1-container .S .education .section-title {
-    font-size: 0.45rem;
+    font-size: 0.475rem; /* 5% less than M */
 }
 
 .template1-container .XS .education .section-title {
-    font-size: 0.405rem;
+    font-size: 0.45125rem; /* 5% less than S */
 }
 
 .template1-container .L .education .section-title {
-    font-size: 0.55rem;
+    font-size: 0.525rem; /* 5% more than M */
 }
 
 .template1-container .XL .education .section-title {
-    font-size: 0.605rem;
+    font-size: 0.55125rem; /* 5% more than L */
 }
 
 .template1-container .M .certificates .section-title {
@@ -595,19 +596,19 @@
 }
 
 .template1-container .S .certificates .section-title {
-    font-size: 0.45rem;
+    font-size: 0.475rem; /* 5% less than M */
 }
 
-.template1-container .S .certificates .section-title {
-    font-size: 0.405rem;
+.template1-container .XS .certificates .section-title {
+    font-size: 0.45125rem; /* 5% less than S */
 }
 
 .template1-container .L .certificates .section-title {
-    font-size: 0.55rem;
+    font-size: 0.525rem; /* 5% more than M */
 }
 
 .template1-container .XL .certificates .section-title {
-    font-size: 0.605rem;
+    font-size: 0.55125rem; /* 5% more than L */
 }
 
 .template1-container .M .education .edu-container {
@@ -615,19 +616,19 @@
 }
 
 .template1-container .S .education .edu-container {
-    margin-top: 0.504rem;
+    margin-top: 0.532rem; /* 5% less than M */
 }
 
 .template1-container .XS .education .edu-container {
-    margin-top: 0.453rem;
+    margin-top: 0.5054rem; /* 5% less than S */
 }
 
 .template1-container .L .education .edu-container {
-    margin-top: 0.616rem;
+    margin-top: 0.588rem; /* 5% more than M */
 }
 
 .template1-container .XL .education .edu-container {
-    margin-top: 0.677rem;
+    margin-top: 0.6174rem; /* 5% more than L */
 }
 
 .template1-container .M .certificates .cert-container {
@@ -635,19 +636,19 @@
 }
 
 .template1-container .S .certificates .cert-container {
-    margin-top: 0.504rem;
+    margin-top: 0.532rem; /* 5% less than M */
 }
 
 .template1-container .XS .certificates .cert-container {
-    margin-top: 0.453rem;
+    margin-top: 0.5054rem; /* 5% less than S */
 }
 
 .template1-container .L .certificates .cert-container {
-    margin-top: 0.616rem;
+    margin-top: 0.588rem; /* 5% more than M */
 }
 
 .template1-container .XL .certificates .cert-container {
-    margin-top: 0.677rem;
+    margin-top: 0.6174rem; /* 5% more than L */
 }
 
 .template1-container .M .education .edu-container .college-name {
@@ -657,19 +658,19 @@
 }
 
 .template1-container .S .education .edu-container .college-name {
-    font-size: 0.504rem;
+    font-size: 0.532rem; /* 5% less than M */
 }
 
 .template1-container .XS .education .edu-container .college-name {
-    font-size: 0.453rem;
+    font-size: 0.5054rem; /* 5% less than S */
 }
 
 .template1-container .L .education .edu-container .college-name {
-    font-size: 0.616rem;
+    font-size: 0.588rem; /* 5% more than M */
 }
 
 .template1-container .XL .education .edu-container .college-name {
-    font-size: 0.677rem;
+    font-size: 0.6174rem; /* 5% more than L */
 }
 
 .template1-container .M .certificates .cert-container .cert-name {
@@ -679,19 +680,19 @@
 }
 
 .template1-container .S .certificates .cert-container .cert-name {
-    font-size: 0.504rem;
+    font-size: 0.532rem; /* 5% less than M */
 }
 
 .template1-container .XS .certificates .cert-container .cert-name {
-    font-size: 0.453rem;
+    font-size: 0.5054rem; /* 5% less than S */
 }
 
 .template1-container .L .certificates .cert-container .cert-name {
-    font-size: 0.616rem;
+    font-size: 0.588rem; /* 5% more than M */
 }
 
 .template1-container .XL .certificates .cert-container .cert-name {
-    font-size: 0.677rem;
+    font-size: 0.6174rem; /* 5% more than L */
 }
 
 .template1-container .M .education .edu-container .degree-major {
@@ -700,19 +701,19 @@
 }
 
 .template1-container .S .education .edu-container .degree-major {
-    font-size: 0.468rem;
+    font-size: 0.494rem; /* 5% less than M */
 }
 
 .template1-container .XS .education .edu-container .degree-major {
-    font-size: 0.42rem;
+    font-size: 0.4693rem; /* 5% less than S */
 }
 
 .template1-container .L .education .edu-container .degree-major {
-    font-size: 0.57rem;
+    font-size: 0.546rem; /* 5% more than M */
 }
 
 .template1-container .XL .education .edu-container .degree-major {
-    font-size: 0.63rem;
+    font-size: 0.5733rem; /* 5% more than L */
 }
 
 .template1-container .M .certificates .cert-container .issuing {
@@ -721,19 +722,19 @@
 }
 
 .template1-container .S .certificates .cert-container .issuing {
-    font-size: 0.468rem;
+    font-size: 0.494rem; /* 5% less than M */
 }
 
 .template1-container .XS .certificates .cert-container .issuing {
-    font-size: 0.42rem;
+    font-size: 0.4693rem; /* 5% less than S */
 }
 
 .template1-container .L .certificates .cert-container .issuing {
-    font-size: 0.57rem;
+    font-size: 0.546rem; /* 5% more than M */
 }
 
 .template1-container .XL .certificates .cert-container .issuing {
-    font-size: 0.63rem;
+    font-size: 0.5733rem; /* 5% more than L */
 }
 
 .template1-container .M .skills {
@@ -741,19 +742,19 @@
 }
 
 .template1-container .S .skills {
-    margin-top: 1rem;
+    margin-top: 1.064rem; /* 5% less than M */
 }
 
 .template1-container .XS .skills {
-    margin-top: 0.9rem;
+    margin-top: 1.0108rem; /* 5% less than S */
 }
 
 .template1-container .L .skills {
-    margin-top: 1.23rem;
+    margin-top: 1.176rem; /* 5% more than M */
 }
 
 .template1-container .XL .skills {
-    margin-top: 1.35rem;
+    margin-top: 1.2348rem; /* 5% more than L */
 }
 
 .template1-container .M .skills .section-title {
@@ -763,19 +764,19 @@
 }
 
 .template1-container .S .skills .section-title {
-    font-size: 0.45rem;
+    font-size: 0.475rem; /* 5% less than M */
 }
 
 .template1-container .XS .skills .section-title {
-    font-size: 0.405rem;
+    font-size: 0.45125rem; /* 5% less than S */
 }
 
 .template1-container .L .skills .section-title {
-    font-size: 0.55rem;
+    font-size: 0.525rem; /* 5% more than M */
 }
 
 .template1-container .XL .skills .section-title {
-    font-size: 0.605rem;
+    font-size: 0.55125rem; /* 5% more than L */
 }
 
 .template1-container .M .skills .core-skills {
@@ -786,19 +787,19 @@
 }
 
 .template1-container .S .skills .core-skills {
-    margin-top: 0.504rem;
+    margin-top: 0.532rem; /* 5% less than M */
 }
 
 .template1-container .XS .skills .core-skills {
-    margin-top: 0.453rem;
+    margin-top: 0.5054rem; /* 5% less than S */
 }
 
 .template1-container .L .skills .core-skills {
-    margin-top: 0.616rem;
+    margin-top: 0.588rem; /* 5% more than M */
 }
 
 .template1-container .XL .skills .core-skills {
-    margin-top: 0.677rem;
+    margin-top: 0.6174rem; /* 5% more than L */
 }
 
 .template1-container .M .skills .core-skills .skill-container {
@@ -809,19 +810,19 @@
 }
 
 .template1-container .S .skills .core-skills .skill-container {
-    padding: 0.18rem 0.36rem;
+    padding: 0.19rem 0.38rem; /* 5% less than M */
 }
 
 .template1-container .XS .skills .core-skills .skill-container {
-    padding: 0.16rem 0.32rem;
+    padding: 0.18rem 0.36rem; /* 5% less than S */
 }
 
 .template1-container .L .skills .core-skills .skill-container {
-    padding: 0.22rem 0.44rem;
+    padding: 0.21rem 0.42rem; /* 5% more than M */
 }
 
 .template1-container .XL .skills .core-skills .skill-container {
-    padding: 0.24rem 0.48rem;
+    padding: 0.22rem 0.44rem; /* 5% more than L */
 }
 
 .template1-container .M .skills .core-skills .skill-container .skill {
@@ -829,19 +830,19 @@
 }
 
 .template1-container .S .skills .core-skills .skill-container .skill {
-    font-size: 0.378rem;
+    font-size: 0.399rem; /* 5% less than M */
 }
 
 .template1-container .XS .skills .core-skills .skill-container .skill {
-    font-size: 0.34rem;
+    font-size: 0.37905rem; /* 5% less than S */
 }
 
 .template1-container .L .skills .core-skills .skill-container .skill {
-    font-size: 0.46rem;
+    font-size: 0.441rem; /* 5% more than M */
 }
 
 .template1-container .XL .skills .core-skills .skill-container .skill {
-    font-size: 0.506rem;
+    font-size: 0.46305rem; /* 5% more than L */
 }
 
 .template1-container .M .achievements {
