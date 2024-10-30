@@ -57,7 +57,9 @@ import {
   useTemplateSync,
 } from "../../store/templatesState";
 import { useRecoilValue } from "recoil";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useSaveResume } from "../../hooks/useSaveResume";
+import { initialResumeData } from "../../utils/resumeData";
 // import { useSession } from "next-auth/react";
 type LandingPageTemplateType = "classic" | "modern" | "bold";
 type ActualTemplateType = "fresher" | "experienced" | "designer";
@@ -67,14 +69,55 @@ const templateMapping: Record<LandingPageTemplateType, ActualTemplateType> = {
   modern: "experienced",
   bold: "designer",
 };
+
+const reverseTemplateMapping: Record<
+  LandingPageTemplateType,
+  ActualTemplateType
+> = {
+  classic: "fresher",
+  modern: "experienced",
+  bold: "designer",
+};
+
 export default function LandingPage() {
-  const [selectedTemplate, setSelected] =
+  const [selectedTemplate, setSelectedTemplate] =
     useState<LandingPageTemplateType>("classic");
   const { data: session, status: sessionStatus } = useSession();
   const { template, setTemplateAndUpdateURL } = useTemplateSync();
   const templateClass = useRecoilValue(templateClassSelector);
   const router = useRouter();
 
+  const { saveResume, isSaving } = useSaveResume();
+  const searchParams = useSearchParams();
+
+  const handleSetTemplate = (template: LandingPageTemplateType) => {
+    setSelectedTemplate(template);
+
+    // Encode the parameters properly
+    const params = new URLSearchParams({
+      callbackUrl: `/create-preference?template=${template}&fromLanding=true`,
+      fromLanding: "true",
+      template: template,
+    }).toString();
+
+    if (!session?.user) {
+      // Include template in the signin URL
+      router.push(`/api/auth/signin?${params}`);
+    } else {
+      // Direct navigation for logged-in users
+      router.push(`/create-preference?template=${template}&fromLanding=true`);
+    }
+  };
+
+  // Handle post-login redirect
+  useEffect(() => {
+    const template = searchParams.get("template");
+    const fromLanding = searchParams.get("fromLanding") === "true";
+
+    if (session?.user && fromLanding && template) {
+      router.push(`/create-preference?template=${template}&fromLanding=true`);
+    }
+  }, [session, searchParams, router]);
   // Map current templates to the respective images
   const currentTemplate: { [key: string]: string } = {
     classic: temp_resume1.src,
@@ -251,7 +294,8 @@ export default function LandingPage() {
             <div
               className={`${selectedTemplate === "classic" ? "nav-item selected" : "nav-item"}`}
               onClick={() => {
-                setTemplateAndUpdateURL("classic"), setSelected("classic");
+                setTemplateAndUpdateURL("classic"),
+                  setSelectedTemplate("classic");
               }}
             >
               Fresher
@@ -259,7 +303,8 @@ export default function LandingPage() {
             <div
               className={`${selectedTemplate === "modern" ? "nav-item selected" : "nav-item"}`}
               onClick={() => {
-                setTemplateAndUpdateURL("modern"), setSelected("modern");
+                setTemplateAndUpdateURL("modern"),
+                  setSelectedTemplate("modern");
               }}
             >
               Experienced
@@ -268,12 +313,15 @@ export default function LandingPage() {
               className={`${selectedTemplate === "bold" ? "nav-item selected" : "nav-item"}`}
               onClick={() => {
                 setTemplateAndUpdateURL("bold");
-                setSelected("bold");
+                setSelectedTemplate("bold");
               }}
             >
               Presentable
             </div>
-            <div className="template-cta" onClick={handleRedirect}>
+            <div
+              className="template-cta"
+              onClick={() => handleSetTemplate(template)}
+            >
               Use This Template
             </div>
           </div>

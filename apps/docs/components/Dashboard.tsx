@@ -16,16 +16,17 @@ import { Template3 } from "./Editor/templates/template3";
 import { useResumeState } from "../hooks/useResumeState";
 import { resumeTimeAtom } from "../store/expiry";
 import { useRouter } from "next/navigation";
+import { Loader } from "lucide-react";
 import { ResumeProps } from "../types/ResumeProps";
 
 const Dashboard = () => {
   const [isGeneratingPDF, setIsGeneratingPDF] =
     useRecoilState(isGeneratingPDFAtom);
-  const resumes: ResumeProps[] = useResumeState();
+  const { resumes, isLoading, error } = useResumeState();
   const [resumeTimes, setResumeTimes] = useRecoilState(resumeTimeAtom);
   const router = useRouter();
 
-  const renderTemplate = (template, resumeData) => {
+  const renderTemplate = (template: string, resumeData: object) => {
     switch (template) {
       case "fresher":
         return <Template1 resumeData={resumeData} className="wrapper" />;
@@ -43,9 +44,10 @@ const Dashboard = () => {
   }, [resumes]);
 
   // Debounce function to optimize scaling on window resize
-  function debounce(func, wait) {
-    let timeout;
-    return function (...args) {
+  function debounce(func: any, wait: any) {
+    let timeout: any;
+    return function (...args: any) {
+      // @ts-ignore
       const context = this;
       clearTimeout(timeout);
       timeout = setTimeout(() => func.apply(context, args), wait);
@@ -124,6 +126,13 @@ const Dashboard = () => {
       window.removeEventListener("resize", handleResize);
     };
   }, [resumes]);
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <Loader className="w-8 h-8" />
+      </div>
+    );
+  }
 
   return (
     <div className="dashboard-container">
@@ -132,12 +141,12 @@ const Dashboard = () => {
         <div className="create-cta">
           <IoAddCircleOutline className="create-icon" />
           <div>
-            <Link href={"/select-templates"}>Create New</Link>
+            <Link href={"/create-preference"}>Create New</Link>
           </div>
         </div>
       </div>
       <div className="resume-container">
-        {resumes.map((resume, index) => (
+        {resumes.map((resume: any, index) => (
           <div
             key={resume.resumeData.resumeId}
             className={`resume-item ${
@@ -159,10 +168,11 @@ const Dashboard = () => {
                 {renderTemplate(resume.template, resume.resumeData)}
               </div>
               <div className="action-toolbar">
-                {resume.resumeState === "DOWNLOAD_SUCCESS" ? (
+                {resume.resumeState === "DOWNLOAD_SUCCESS" ||
+                resume.resumeState === "EDITING" ? (
                   <>
                     <Link
-                      href={`/select-templates/editor?template=${resume.resumeData.templateId}`}
+                      href={`/select-templates/editor?id=${resume.resumeData.resumeId}`}
                     >
                       <div className="edit">
                         <CiEdit className="cta-icon" />

@@ -1,7 +1,13 @@
 "use client";
 import dynamic from "next/dynamic";
 import Image from "next/image";
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import "./EditPage.scss";
 import { Education } from "./Editor/Education";
 import { Skills } from "./Editor/Skills";
@@ -26,16 +32,15 @@ import "react-responsive-modal/styles.css";
 import Link from "next/link";
 import ChanegTemplate from "./changeTemplate/ChangeTemplate";
 import { useRouter } from "next/navigation";
-import { useSaveResume } from "../hooks/useSaveResume";
-import useAiSuggestion from "../hooks/useAiSuggestions";
 import { ResumeProps } from "../types/ResumeProps";
 import { useSession } from "next-auth/react";
-import Modal from "react-responsive-modal";
-import { isOpacityEffect } from "html2canvas/dist/types/render/effects";
 import { resumeSizeAtom } from "../store/resumeSize";
 import { useRecoilState } from "recoil";
 import { Tooltip as ReactTooltip } from "react-tooltip";
-import 'react-tooltip/dist/react-tooltip.css'
+import "react-tooltip/dist/react-tooltip.css";
+import { useFetchResumeData } from "../hooks/useFetchResumeData";
+import { useResumeDraft } from "../hooks/useResumeDraft";
+import debounce from "lodash/debounce";
 
 const PersonalInfo = dynamic(
   () => import("./Editor/PersonalInfo").then((mod) => mod.PersonalInfo),
@@ -65,16 +70,143 @@ export default function EditPage() {
     undefined,
   );
   const router = useRouter();
-  const [template, setTemplate] = useState<string | null>(null);
+  const [initails, setInitials] = useState("");
+
   const [isModelOpen, setIsModelOpen] = useState(false);
+  const [saveStatus, setSaveStatus] = useState<"saved" | "saving" | "error">(
+    "saved",
+  );
 
   const { data: session, status: sessionStatus } = useSession();
+  const { template, setTemplate, loading, error, id } = useFetchResumeData();
+  const resumeId = id;
 
-  const { resumeData, handleInputChange, handleAddField, handleDeleteField } =
-    useResumeData();
+  // Memoized save draft function
+  const saveDraft = useCallback(
+    async (data: ResumeProps) => {
+      if (!resumeId) {
+        console.error("No resume ID available");
+        setSaveStatus("error");
+        return;
+      }
+
+      try {
+        setSaveStatus("saving");
+        console.log("Saving resume data:", { resumeId, data });
+
+        const response = await fetch("/api/resume/saveResume/draft", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            resumeId,
+            content: {
+              ...data,
+              state: "EDITING",
+              userId: session?.user?.id || "default-user-id",
+            },
+          }),
+        });
+
+        const result = await response.json();
+
+        if (!response.ok) {
+          throw new Error(result.error || "Failed to save draft");
+        }
+
+        console.log("Save successful:", result);
+        setSaveStatus("saved");
+      } catch (error) {
+        console.error("Error saving draft:", error);
+        setSaveStatus("error");
+      }
+    },
+    [resumeId, session?.user?.id],
+  );
+
+  // Create debounced save function
+  const debouncedSave = useCallback(
+    debounce((data: ResumeProps) => {
+      saveDraft(data);
+    }, 5000),
+    [saveDraft],
+  );
+
+  // Initialize resume data with change tracking
+  const {
+    resumeData,
+    setResumeData,
+    handleInputChange: baseHandleInputChange,
+    handleAddField,
+    handleDeleteField,
+  } = useResumeData((newData: ResumeProps) => {
+    setSaveStatus("saving");
+    debouncedSave(newData);
+  });
+
+  // Enhanced input change handler
+  const handleInputChange = useCallback(
+    (field: any, value: any, section?: string, index?: number) => {
+      baseHandleInputChange(field, value, section, index);
+      setSaveStatus("saving");
+    },
+    [baseHandleInputChange],
+  );
+
+  // Load initial draft data
+  useEffect(() => {
+    const loadDraft = async () => {
+      if (!resumeId) return;
+
+      try {
+        const response = await fetch(
+          `/api/resume/saveResume/draft?resumeId=${resumeId}`,
+        );
+        const data = await response.json();
+
+        if (response.ok && data.draft?.content) {
+          setResumeData(data.draft.content);
+        }
+      } catch (error) {
+        console.error("Error loading draft:", error);
+        setSaveStatus("error");
+      }
+    };
+
+    loadDraft();
+  }, [resumeId]);
+
+  // Cleanup debounced save on unmount
+  useEffect(() => {
+    return () => {
+      debouncedSave.cancel();
+    };
+  }, [debouncedSave]);
+
+  // Set template ID
+  useEffect(() => {
+    if (template && resumeData) {
+      setResumeData((prev) => ({
+        ...prev,
+        templateId: template,
+      }));
+    }
+  }, [template]);
+
+  useEffect(() => {
+    if (session?.user?.name) {
+      const nameParts = session.user.name.split(" ");
+      // Get the first two initials or fallback to an empty string
+      const firstInitial = nameParts[0]?.[0] || "";
+      const secondInitial = nameParts[1]?.[0] || "";
+      setInitials(firstInitial + secondInitial);
+    }
+  }, [session]);
+
   const { activeSection, handleSectionChange, sections, setActiveSection } =
     useActiveSection();
-
+  const { fetchDraft } = useResumeDraft(id, resumeData, setResumeData);
   const openModel = () => {
     router.push("/select-templates/checkout");
     // setIsModelOpen(true);
@@ -83,28 +215,28 @@ export default function EditPage() {
   const closeModel = () => {
     setIsModelOpen(false);
   };
-  useEffect(() => {
-    // Check if the window is available (runs only on client-side)
-    if (typeof window !== "undefined") {
-      const searchParams = new URLSearchParams(window.location.search);
-      let templateParam = searchParams.get("template");
+  // useEffect(() => {
+  //   // Check if the window is available (runs only on client-side)
+  //   if (typeof window !== "undefined") {
+  //     const searchParams = new URLSearchParams(window.location.search);
+  //     let templateParam = searchParams.get("template");
 
-      // If no template is selected in the URL, check localStorage or default to "fresher"
-      if (!templateParam) {
-        const storedTemplate = localStorage.getItem("resumeData.templateId");
-        templateParam = storedTemplate || "fresher"; // Default to "fresher"
-      }
+  //     // If no template is selected in the URL, check localStorage or default to "fresher"
+  //     if (!templateParam) {
+  //       const storedTemplate = localStorage.getItem("resumeData.templateId");
+  //       templateParam = storedTemplate || "fresher"; // Default to "fresher"
+  //     }
 
-      // Set the template state with the selected or default value
-      setTemplate(templateParam);
+  //     // Set the template state with the selected or default value
+  //     setTemplate(templateParam);
 
-      // Save the selected template to localStorage
-      localStorage.setItem("selectedTemplate", templateParam);
-    }
-  }, []);
+  //     // Save the selected template to localStorage
+  //     localStorage.setItem("selectedTemplate", templateParam);
+  //   }
+  // }, []);
 
   const renderTemplate = () => {
-    console.log("template", template);
+    console.log("Template", template);
     switch (template) {
       case "fresher":
         return <Template1 resumeData={resumeData} id="wrapper" />;
@@ -132,7 +264,7 @@ export default function EditPage() {
     "Experience",
     "Project",
     "Skills",
-    "Certificate"    
+    "Certificate",
   ];
 
   const handleLeftNav = () => {
@@ -287,55 +419,55 @@ export default function EditPage() {
         id="dashboard"
         place="bottom"
         content="Dashboard"
-        style={{zIndex: '1000', backgroundColor: '#1B2432'}}
+        style={{ zIndex: "1000", backgroundColor: "#1B2432" }}
       />
-       <ReactTooltip
+      <ReactTooltip
         id="personal"
         place="right"
         content="Personal Details"
-        style={{zIndex: '1000', backgroundColor: '#1B2432'}}
+        style={{ zIndex: "1000", backgroundColor: "#1B2432" }}
       />
-       <ReactTooltip
+      <ReactTooltip
         id="education"
         place="right"
         content="Education"
-        style={{zIndex: '1000', backgroundColor: '#1B2432'}}
+        style={{ zIndex: "1000", backgroundColor: "#1B2432" }}
       />
-       <ReactTooltip
+      <ReactTooltip
         id="experience"
         place="right"
         content="Work Experience"
-        style={{zIndex: '1000', backgroundColor: '#1B2432'}}
+        style={{ zIndex: "1000", backgroundColor: "#1B2432" }}
       />
-       <ReactTooltip
+      <ReactTooltip
         id="project"
         place="right"
         content="Projects"
-        style={{zIndex: '1000', backgroundColor: '#1B2432'}}
+        style={{ zIndex: "1000", backgroundColor: "#1B2432" }}
       />
-       <ReactTooltip
+      <ReactTooltip
         id="skills"
         place="right"
         content="Skills"
-        style={{zIndex: '1000', backgroundColor: '#1B2432'}}
+        style={{ zIndex: "1000", backgroundColor: "#1B2432" }}
       />
-       <ReactTooltip
+      <ReactTooltip
         id="certificate"
         place="right"
         content="Certificates"
-        style={{zIndex: '1000', backgroundColor: '#1B2432'}}
+        style={{ zIndex: "1000", backgroundColor: "#1B2432" }}
       />
       <ReactTooltip
         id="left"
         place="bottom"
         content="Previous Section"
-        style={{zIndex: '1000', backgroundColor: '#1B2432'}}
+        style={{ zIndex: "1000", backgroundColor: "#1B2432" }}
       />
       <ReactTooltip
         id="right"
         place="bottom"
         content="Next Section"
-        style={{zIndex: '10000', backgroundColor: '#1B2432'}}
+        style={{ zIndex: "10000", backgroundColor: "#1B2432" }}
       />
       <div className="editor-container">
         <div className="navigation">
@@ -343,13 +475,13 @@ export default function EditPage() {
             {session?.user ? (
               <div className="login-cta" onClick={handleRedirect}>
                 <TbGridDots />
-                <div>PG</div>
+                <div>{initails}</div>
               </div>
             ) : (
               <div className="login-cta">
                 <TbGridDots />
                 <div>
-                  <Link href="/">PG</Link>
+                  <Link href="/">{initails}</Link>
                 </div>
               </div>
             )}

@@ -91,7 +91,7 @@ export const Template2 = (props: any) => {
                               "content_education_div_value_section_field"
                             }
                           >
-                            {edu?.score ? `${edu.score}` : ""}
+                            CGPA {edu?.score !== "0" ? `${edu.score}` : null}
                           </div>
                         )}
                         {edu?.start && edu?.end && (
@@ -228,7 +228,9 @@ export const Template2 = (props: any) => {
                               "content_projects_div_value_section_work"
                             }
                             dangerouslySetInnerHTML={{
-                              __html: DOMPurify.sanitize(proj?.responsibilities),
+                              __html: DOMPurify.sanitize(
+                                proj?.responsibilities,
+                              ),
                             }}
                           ></div>
                         )}
@@ -294,28 +296,34 @@ export const Template2 = (props: any) => {
                 </div>
               </div>
             )}
-          {(Array.isArray(resumeData?.coreSkills) &&
-                resumeData?.coreSkills?.length > 0) && (
-          <div className={`${"content_skill_div"} ${"content_container"}`}>
-            <div className={`${"content_skill_div_label"} ${"content_left_part"}`}>
-              Skills
-            </div>
-            <div className={`${"content_skill_div_value"} ${"content_right_part"}`}>
-              {Array.isArray(resumeData?.coreSkills) &&
-                resumeData?.coreSkills?.length > 0 && (
-                  <div className={"content_skill_div_value_section"}>
-                    {/* <div
+          {Array.isArray(resumeData?.coreSkills) &&
+            resumeData?.coreSkills?.length > 0 && (
+              <div className={`${"content_skill_div"} ${"content_container"}`}>
+                <div
+                  className={`${"content_skill_div_label"} ${"content_left_part"}`}
+                >
+                  Skills
+                </div>
+                <div
+                  className={`${"content_skill_div_value"} ${"content_right_part"}`}
+                >
+                  {Array.isArray(resumeData?.coreSkills) &&
+                    resumeData?.coreSkills?.length > 0 && (
+                      <div className={"content_skill_div_value_section"}>
+                        {/* <div
                       className={"content_skill_div_value_section_category"}
                     >
                       Core Skills
                     </div> */}
-                    <div className={"content_skill_div_value_section_skills"}>
-                      {resumeData?.coreSkills.join(", ")}
-                    </div>
-                  </div>
-                )}
-              {/* Uncomment this section if you want to display tech skills */}
-              {/* {Array.isArray(resumeData?.techSkills) &&
+                        <div
+                          className={"content_skill_div_value_section_skills"}
+                        >
+                          {resumeData?.coreSkills.join(", ")}
+                        </div>
+                      </div>
+                    )}
+                  {/* Uncomment this section if you want to display tech skills */}
+                  {/* {Array.isArray(resumeData?.techSkills) &&
                 resumeData?.techSkills?.length > 0 && (
                   <div className={"content_skill_div_value_section"}>
                     <div
@@ -328,11 +336,11 @@ export const Template2 = (props: any) => {
                     </div>
                   </div>
                 )} */}
-            </div>
-          </div>
-        )}
+                </div>
+              </div>
+            )}
         </div>
-      </div>      
+      </div>
     </div>
   );
 };

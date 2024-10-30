@@ -36,7 +36,7 @@ export const actualTemplateSelector = selector<ActualTemplateType>({
 });
 
 // Create a selector for the template class
-export const templateClassSelector = selector({
+export const templateClassSelector:any = selector({
   key: 'templateClassSelector',
   get: ({ get }) => {
     const actualTemplate = get(actualTemplateSelector);

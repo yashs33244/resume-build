@@ -63,10 +63,12 @@ export default function CustomDatePicker({
           index,
         );
       }}
+      views={["year", "month"]} // Restrict the picker to only show year and month
+      // Optional: Add a minDate or maxDate prop if needed
       slotProps={{
         textField: {
           id,
-          placeholder: "MM/DD/YYYY",
+          placeholder: "MM/YYYY", // Update the placeholder to reflect the new format
           className: `form-input ${className || ""}`,
           InputLabelProps: { shrink: true },
         },

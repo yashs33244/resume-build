@@ -37,7 +37,7 @@ const generateJWT = async (payload: JWTPayload) => {
   const jwt = await new SignJWT(payload)
     .setProtectedHeader({ alg: "HS256" })
     .setIssuedAt()
-    .setExpirationTime("365d")
+    .setExpirationTime("30d")
     .sign(jwk);
 
   return jwt;
@@ -170,7 +170,7 @@ export const authOptions: NextAuthOptions = {
       return newToken;
     },
     //@ts-ignore
-    async signIn({ user, account }) {
+    async signIn({ user, account, profile, url}) {
       if (account?.provider === 'google') {
         // Check if the user already exists
         const userDb = await db.user.findUnique({
@@ -213,26 +213,49 @@ export const authOptions: NextAuthOptions = {
           token: jwt,
         };
       }
+      const callbackUrl = url.split("callbackUrl=")[1];
+      return callbackUrl;
 
       return true; // Allow sign-in if not using Google provider
     },
     async redirect({ url, baseUrl }) {
-      // If user is signing in, redirect them to the select-templates page
-      if (url === baseUrl) {
-        return baseUrl + '/dashboard';
-      }
+      console.log("Redirect callback triggered with URL:", url);
       
-  
-      // If user is logging out, redirect them to the landing page
-      if (url === baseUrl + '/api/auth/signout') {
-        return baseUrl;
+      try {
+        const fullUrl = new URL(url, baseUrl);
+        const callbackUrl = fullUrl.searchParams.get("callbackUrl");
+        const fromLanding = fullUrl.searchParams.get("fromLanding") === "true";
+        const template = fullUrl.searchParams.get("template");
+        
+        // Handle sign-out
+        const redirectType = fullUrl.searchParams.get("redirectType");
+        if (redirectType === "signout") {
+          return `${baseUrl}/`;
+        }
+        
+        // If coming from landing page with a template
+        if (fromLanding && template) {
+          return `${baseUrl}/create-preference?template=${template}&fromLanding=true`;
+        }
+        
+        // If there's a specific callback URL
+        if (callbackUrl) {
+          return callbackUrl.startsWith("/") ? `${baseUrl}${callbackUrl}` : callbackUrl;
+        }
+        
+        // Default fallback to dashboard
+        return `${baseUrl}/dashboard`;
+      } catch (error) {
+        console.error("Error in redirect callback:", error);
+        return `${baseUrl}/dashboard`;
       }
-  
-      // Default behavior: Redirect to the base URL
-      return baseUrl;
-    },
-  },
+    }
+    
+    
+  },    
   pages: {
     signIn: '/signin',
+    signOut: '/',
+    error: '/auth/error',
   },
 };

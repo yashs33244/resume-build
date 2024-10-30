@@ -13,7 +13,10 @@ export default function Header() {
 
   const handleSignOut = async (e: any) => {
     e.preventDefault();
-    await signOut({ callbackUrl: "/" });
+    await signOut({
+      callbackUrl: "/?redirectType=signout",
+      redirect: true,
+    });
   };
 
   return (
@@ -25,7 +28,7 @@ export default function Header() {
       </div>
       {session?.user ? (
         <div className="login-cta">
-          <a href="#" onClick={handleSignOut}>
+          <a href="/" onClick={handleSignOut}>
             Logout
           </a>
         </div>

@@ -38,7 +38,7 @@ export async function POST(request: Request) {
     const resume = await db.resume.create({
       data: {
         userId: user.id,
-        state: ResumeState.DOWNLOAD_SUCCESS,
+        state: ResumeState.EDITING,
         templateId: template,
         createdAt: now,
         updatedAt: null,
