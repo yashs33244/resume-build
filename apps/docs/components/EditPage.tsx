@@ -174,8 +174,8 @@ export default function EditPage() {
   const { activeSection, handleSectionChange, sections, setActiveSection } =
     useActiveSection();
   const openModel = () => {
-    router.push("/select-templates/checkout");
-    // setIsModelOpen(true);
+    // router.push("/select-templates/checkout");
+    setIsModelOpen(true);
   };
 
   const closeModel = () => {

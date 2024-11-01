@@ -9,6 +9,7 @@ import {
 import { useSaveResume } from "../hooks/useSaveResume";
 import { useFetchResumeData } from "../hooks/useFetchResumeData";
 import { ResumeProps } from "../types/ResumeProps";
+import { useResumeData } from "./useResumeData";
 
 type LandingPageTemplateType = "classic" | "modern" | "bold";
 type ActualTemplateType = "fresher" | "experienced" | "designer";
@@ -27,14 +28,26 @@ export const useTemplateSelection = () => {
   const [saveStatus, setSaveStatus] = useState<"saved" | "saving" | "error">(
     "saved"
   );
+  const [loading, setLoading] = useState(true); 
+  const [error, setError] = useState<string | null>(null);  
   
   const router = useRouter();
   const actualTemplate = useRecoilValue(actualTemplateSelector);
   const setTemplateAndUpdateURL = useSetTemplateAndUpdateURL();
   const { data: session } = useSession();
   const { saveResume } = useSaveResume();
-  const { rdata, template, setTemplate, loading, error, id } =
-    useFetchResumeData();
+  const {
+    resumeData,
+    handleInputChange: baseHandleInputChange,
+    handleAddField,
+    handleDeleteField,
+  } = useResumeData((newData: ResumeProps) => {
+    setSaveStatus("saving");
+    
+  });
+  const template = resumeData.templateId; 
+  const rdata = resumeData; 
+
 
     let resumeId: string | null = null;
     if (typeof window !== "undefined") {
