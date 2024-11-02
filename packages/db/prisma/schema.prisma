@@ -21,18 +21,56 @@ enum ResumeState {
   DOWNLOAD_FAILED
 }
 
+enum SubscriptionDuration {
+  THIRTY_DAYS
+  NINETY_DAYS
+}
+
+enum SubscriptionStatus {
+  ACTIVE
+  EXPIRED
+  CANCELLED
+}
+
 model User {
-  id           String     @id @default(cuid())
-  email        String     @unique
-  name         String?
-  token        String?
-  profilePhoto String?
-  password     String
-  status       UserStatus @default(FREE)
-  createdAt    DateTime   @default(now())
-  updatedAt    DateTime   @updatedAt
-  sessions     Session[]
-  resumes      Resume[]
+  id            String             @id @default(cuid())
+  email         String             @unique
+  name          String?
+  token         String?
+  profilePhoto  String?
+  password      String
+  status        UserStatus         @default(FREE)
+  createdAt     DateTime           @default(now())
+  updatedAt     DateTime           @updatedAt
+  sessions      Session[]
+  resumes       Resume[]
+  subscriptions UserSubscription[]
+}
+
+model SubscriptionPlan {
+  id            String               @id @default(cuid())
+  name          String // e.g., "30 Day Plan", "90 Day Plan"
+  duration      SubscriptionDuration
+  price         Float
+  description   String?
+  features      String[]
+  createdAt     DateTime             @default(now())
+  updatedAt     DateTime             @updatedAt
+  subscriptions UserSubscription[]
+}
+
+model UserSubscription {
+  id        String             @id @default(cuid())
+  userId    String
+  planId    String
+  startDate DateTime           @default(now())
+  endDate   DateTime
+  status    SubscriptionStatus @default(ACTIVE)
+  paymentId String? // Reference to payment if you have a payment system
+  createdAt DateTime           @default(now())
+  updatedAt DateTime           @updatedAt
+  user      User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  plan      SubscriptionPlan   @relation(fields: [planId], references: [id])
 }
 
 model Session {

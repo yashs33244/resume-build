@@ -1,9 +1,8 @@
 "use client";
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import "./Dashboard.scss";
 import { isGeneratingPDFAtom } from "../store/pdfgenerating";
-import Image from "next/image";
 import Link from "next/link";
 import { CiEdit } from "react-icons/ci";
 import { MdOutlineFileDownload } from "react-icons/md";
@@ -17,7 +16,7 @@ import { useResumeState } from "../hooks/useResumeState";
 import { resumeTimeAtom } from "../store/expiry";
 import { useRouter } from "next/navigation";
 import { Loader } from "lucide-react";
-import { ResumeProps } from "../types/ResumeProps";
+import { useUserStatus } from "../hooks/useUserStatus";
 
 const Dashboard = () => {
   const [isGeneratingPDF, setIsGeneratingPDF] =
@@ -25,6 +24,8 @@ const Dashboard = () => {
   const { resumes, isLoading, error } = useResumeState();
   const [resumeTimes, setResumeTimes] = useRecoilState(resumeTimeAtom);
   const router = useRouter();
+  const { user, isPaid, refetchUser } = useUserStatus();
+  const [downloadingId, setDownloadingId] = useState<string | null>(null);
 
   const renderTemplate = (template: string, resumeData: object) => {
     switch (template) {
@@ -39,11 +40,7 @@ const Dashboard = () => {
     }
   };
 
-  useEffect(() => {
-    console.log("Resumes", resumes);
-  }, [resumes]);
-
-  // Debounce function to optimize scaling on window resize
+  // Debounce function (unchanged)
   function debounce(func: any, wait: any) {
     let timeout: any;
     return function (...args: any) {
@@ -54,7 +51,7 @@ const Dashboard = () => {
     };
   }
 
-  // Optimized scaling of content
+  // Scale content function (unchanged)
   function scaleContent() {
     const containers = document.querySelectorAll(".resumeParent");
     containers.forEach((container) => {
@@ -72,7 +69,14 @@ const Dashboard = () => {
 
   const handleDownload = useCallback(
     async (resumeId: string) => {
+      if (!isPaid) {
+        alert("Please upgrade to premium to download resumes");
+        return;
+      }
+
+      setDownloadingId(resumeId);
       setIsGeneratingPDF(true);
+
       try {
         const realElement = document.querySelector(
           `.resumeParent-${resumeId} .wrapper`,
@@ -80,10 +84,10 @@ const Dashboard = () => {
         if (!realElement) throw new Error("Resume wrapper not found");
 
         const element = realElement.cloneNode(true) as HTMLElement;
-        element.style.transform = "scale(1)"; // Reset scaling for PDF
+        element.style.transform = "scale(1)";
 
-        const cssLink = `<link rel="stylesheet" href="/_next/static/css/app/(pages)/dashboard/page.css">`;
-        const globalCSSLink = `<link rel="stylesheet" href="/_next/static/css/app/layout.css">`;
+        const cssLink = `<link rel="stylesheet" href="http://localhost:3000/_next/static/css/app/(pages)/dashboard/page.css">`;
+        const globalCSSLink = `<link rel="stylesheet" href="http://localhost:3000/_next/static/css/app/layout.css?v=1728991725867">`;
         const fontLink = `<link href='https://fonts.googleapis.com/css?family=Inter' rel='stylesheet'/>`;
         const htmlContent =
           cssLink + globalCSSLink + fontLink + element.outerHTML;
@@ -107,25 +111,26 @@ const Dashboard = () => {
         document.body.appendChild(a);
         a.click();
         window.URL.revokeObjectURL(url);
-      } catch (error) {
+      } catch (error: any) {
         console.error("Error generating PDF:", error);
-        alert("Failed to generate PDF. Please try again.");
+        alert(error.message || "Failed to generate PDF. Please try again.");
       } finally {
         setIsGeneratingPDF(false);
+        setDownloadingId(null);
       }
     },
-    [setIsGeneratingPDF],
+    [setIsGeneratingPDF, isPaid],
   );
+
   const handleCreateNew = () => {
-    // remove resumeData from local storage
     localStorage.removeItem("resumeData");
     router.push("/create-preference");
   };
+
   const handleEdit = () => {
     localStorage.removeItem("resumeData");
   };
 
-  // Use debounced scaling to improve performance
   useEffect(() => {
     const handleResize = debounce(scaleContent, 200);
     window.addEventListener("resize", handleResize);
@@ -138,7 +143,7 @@ const Dashboard = () => {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <Loader className="w-8 h-8" />
+        <Loader className="w-8 h-8 animate-spin" />
       </div>
     );
   }
@@ -162,15 +167,21 @@ const Dashboard = () => {
           >
             <div className="timer">
               {resume.resumeState === "DOWNLOAD_SUCCESS" && (
-                <div className="text-white"> {resume.daysLeft} days left</div>
+                <div className="text-green-500">Downloaded Successfully</div>
               )}
               {resume.resumeState !== "DOWNLOAD_SUCCESS" && (
-                <div className="text-white expired">Expired</div>
+                <div className="text-white opacity-60">Not downloaded yet</div>
               )}
             </div>
             <div className="resume-section">
               <div
-                className={`resume-preview resumeParent resumeParent-${resume.resumeData.resumeId}`}
+                className={`resume-preview resumeParent resumeParent-${
+                  resume.resumeData.resumeId
+                } ${
+                  resume.resumeState === "DOWNLOAD_SUCCESS"
+                    ? "border-2 border-green-500"
+                    : "border-2 border-red-500"
+                }`}
               >
                 {renderTemplate(resume.template, resume.resumeData)}
               </div>
@@ -187,20 +198,34 @@ const Dashboard = () => {
                       </div>
                     </Link>
                     <div
-                      className="download"
-                      onClick={() => handleDownload(resume.resumeData.resumeId)}
+                      className={`download ${!isPaid ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}`}
+                      onClick={() =>
+                        isPaid && handleDownload(resume.resumeData.resumeId)
+                      }
                     >
-                      <MdOutlineFileDownload className="cta-icon" />
-                      <div>Download</div>
-                    </div>
-                    <Link
-                      href={`/tailored-resume?id=${resume.resumeData.resumeId}`}
-                    >
-                      <div className="tailor">
-                        <ImMagicWand className="cta-icon" />
-                        <div>Tailor to a Job</div>
+                      {downloadingId === resume.resumeData.resumeId ? (
+                        <Loader className="w-6 h-6 animate-spin" />
+                      ) : (
+                        <MdOutlineFileDownload className="cta-icon" />
+                      )}
+                      <div>
+                        {downloadingId === resume.resumeData.resumeId
+                          ? "Downloading..."
+                          : "Download"}
                       </div>
-                    </Link>
+                    </div>
+                    <div
+                      className={`tailor ${!isPaid ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}`}
+                      onClick={() =>
+                        isPaid &&
+                        router.push(
+                          `/tailored-resume?id=${resume.resumeData.resumeId}`,
+                        )
+                      }
+                    >
+                      <ImMagicWand className="cta-icon" />
+                      <div>Tailor to a Job</div>
+                    </div>
                   </>
                 ) : (
                   <div className="renew">
