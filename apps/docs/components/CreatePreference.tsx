@@ -11,6 +11,7 @@ import { ResumeProps, ResumeState } from "../types/ResumeProps";
 import { useSaveResume } from "../hooks/useSaveResume";
 import { useResumeUpload } from "../hooks/useResumeUpload";
 import { ResumeUploadProgress } from "./ResumeUploadProgress";
+import { Loader } from "lucide-react";
 
 type LandingPageTemplateType = "classic" | "modern" | "bold";
 type ActualTemplateType = "fresher" | "experienced" | "designer";
@@ -27,32 +28,33 @@ const reverseTemplateMapping: Record<
 
 export default function CreatePreference() {
   const router = useRouter();
-  const [uploadProgress, setUploadProgress] = useState(0);
+  const [isProcessing, setIsProcessing] = useState(false);
   const { saveResume, isSaving } = useSaveResume();
   const searchParams = useSearchParams();
 
   const handleUploadSuccess = async (resumeData: ResumeProps) => {
-    if (template && fromLanding === "true") {
-      // Convert landing page template name to actual template ID
-      const actualTemplate =
-        reverseTemplateMapping[template as LandingPageTemplateType];
-
-      try {
-        // Save the resume with the selected template
+    setIsProcessing(true);
+    try {
+      if (template && fromLanding === "true") {
+        const actualTemplate =
+          reverseTemplateMapping[template as LandingPageTemplateType];
         const resumeId = await saveResume(resumeData, actualTemplate);
-        // Redirect directly to editor with the new resume ID
         router.push(`/select-templates/editor?id=${resumeId}`);
-      } catch (error) {
-        console.error("Failed to save resume:", error);
+      } else {
         router.push("/select-templates");
       }
-    } else {
-      // Normal flow - go to template selection
+    } catch (error) {
+      console.error("Failed to save resume:", error);
       router.push("/select-templates");
+    } finally {
+      setIsProcessing(false);
     }
   };
+
   const { error, isLoading, progress, progressPhase, handleFileUpload } =
-    useResumeUpload({ onUploadSuccess: handleUploadSuccess });
+    useResumeUpload({
+      onUploadSuccess: handleUploadSuccess,
+    });
 
   const processSkills = (skills: string[]) => {
     // Remove duplicates and empty strings
@@ -83,12 +85,13 @@ export default function CreatePreference() {
 
   const onDrop = useCallback(
     async (acceptedFiles: File[]) => {
+      if (isLoading || isProcessing) return; // Prevent multiple uploads
       const file = acceptedFiles[0];
       if (file) {
         await handleFileUpload(file);
       }
     },
-    [handleFileUpload],
+    [handleFileUpload, isLoading, isProcessing],
   );
 
   const LoadingUI = () => {
@@ -113,9 +116,12 @@ export default function CreatePreference() {
       "image/*": [".png", ".jpg", ".jpeg"],
     },
     multiple: false,
+    disabled: isLoading || isProcessing,
   });
 
   const handleStartFromScratch = async () => {
+    if (isProcessing) return;
+    setIsProcessing(true);
     const emptyResumeData: ResumeProps = {
       userId: "user-id",
       personalInfo: {
@@ -129,12 +135,11 @@ export default function CreatePreference() {
       experience: [],
       skills: [],
       coreSkills: [],
-
       languages: [],
       projects: [],
       certificates: [],
       state: ResumeState.EDITING,
-      templateId: "fresher",
+      templateId: "",
     };
     localStorage.setItem("resumeData", JSON.stringify(emptyResumeData));
     await handleUploadSuccess(emptyResumeData);
@@ -143,9 +148,17 @@ export default function CreatePreference() {
   return (
     <div className="preference-container">
       <div className="content-container">
-        <div className="left" {...getRootProps()}>
-          <input {...getInputProps()} />
-          <Image alt="upload" src={file_upload} width={150} height={150} />
+        <div
+          className={`left ${isLoading || isProcessing ? "opacity-50 cursor-not-allowed" : ""}`}
+          {...getRootProps()}
+        >
+          <input {...getInputProps()} disabled={isLoading || isProcessing} />
+          {isLoading || isProcessing ? (
+            <Loader className="w-8 h-8 animate-spin mb-4" />
+          ) : (
+            <Image alt="upload" src={file_upload} width={150} height={150} />
+          )}
+          {/* <Image alt="upload" src={file_upload} width={150} height={150} /> */}
           <div className="action">Upload Existing Resume</div>
           <div className="info">Autofill details using your current resume</div>
           <ResumeUploadProgress
@@ -155,8 +168,17 @@ export default function CreatePreference() {
             error={error}
           />
         </div>
-        <div className="right" onClick={handleStartFromScratch}>
-          <Image alt="add" src={file_add} width={150} height={150} />
+        <div
+          className={`right ${isLoading || isProcessing ? "opacity-50 cursor-not-allowed" : ""}`}
+          onClick={
+            isLoading || isProcessing ? undefined : handleStartFromScratch
+          }
+        >
+          {isProcessing ? (
+            <Loader className="w-8 h-8 animate-spin mb-4" />
+          ) : (
+            <Image alt="add" src={file_add} width={150} height={150} />
+          )}
           <div className="action">Create From Scratch</div>
           <div className="info">Craft your perfect resume from start</div>
         </div>

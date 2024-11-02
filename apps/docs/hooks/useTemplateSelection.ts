@@ -25,12 +25,12 @@ const reverseTemplateMapping: Record<
 
 export const useTemplateSelection = () => {
   const [activeTemplate, setActiveTemplate] = useState<number>(2);
-  const [saveStatus, setSaveStatus] = useState<"saved" | "saving" | "error">(
-    "saved"
-  );
-  const [loading, setLoading] = useState(true); 
-  const [error, setError] = useState<string | null>(null);  
-  
+  const [selectedTemplate, setSelectedTemplate] = useState<LandingPageTemplateType | null>(null);
+  const [templateSelected, setTemplateSelected] = useState<boolean>(false); // Track if any template has been selected
+  const [saveStatus, setSaveStatus] = useState<"saved" | "saving" | "error">("saved");
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
   const router = useRouter();
   const actualTemplate = useRecoilValue(actualTemplateSelector);
   const setTemplateAndUpdateURL = useSetTemplateAndUpdateURL();
@@ -43,20 +43,17 @@ export const useTemplateSelection = () => {
     handleDeleteField,
   } = useResumeData((newData: ResumeProps) => {
     setSaveStatus("saving");
-    
   });
-  const template = resumeData.templateId; 
-  const rdata = resumeData; 
 
+  const template = resumeData.templateId;
+  const rdata = resumeData;
 
-    let resumeId: string | null = null;
-    if (typeof window !== "undefined") {
-      const searchParams = new URLSearchParams(window.location.search);
-      resumeId = searchParams.get("id");  
-      console.log("Resume ID from URL:", resumeId);
-    }
+  let resumeId: string | null = null;
+  if (typeof window !== "undefined") {
+    const searchParams = new URLSearchParams(window.location.search);
+    resumeId = searchParams.get("id");
+  }
 
-  // Function to save a resume draft
   const saveDraft = useCallback(
     async (data: ResumeProps) => {
       if (!resumeId) {
@@ -92,14 +89,17 @@ export const useTemplateSelection = () => {
         setSaveStatus("error");
       }
     },
-    [ session?.user?.id]
+    [session?.user?.id]
   );
 
-  // Function to handle template selection
   const handleSetTemplate = async (template: LandingPageTemplateType) => {
+    if (templateSelected) return; // Prevent selecting another template
+
     setTemplateAndUpdateURL(template);
+    setSelectedTemplate(template);
+    setTemplateSelected(true); // Lock selection to disable further actions
     const actualTemplate = reverseTemplateMapping[template];
-    
+
     if (resumeId) {
       rdata.templateId = actualTemplate;
       await saveDraft(rdata);
@@ -115,6 +115,8 @@ export const useTemplateSelection = () => {
     setActiveTemplate,
     saveStatus,
     handleSetTemplate,
+    selectedTemplate,
+    templateSelected, // Return templateSelected to use in the component
     loading,
     error,
     template,

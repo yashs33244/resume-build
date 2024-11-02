@@ -16,6 +16,8 @@ const TemplatesSelect = () => {
     setActiveTemplate,
     saveStatus,
     handleSetTemplate,
+    selectedTemplate,
+    templateSelected, // New variable to check if a template has been selected
     loading,
     error,
   } = useTemplateSelection();
@@ -45,12 +47,15 @@ const TemplatesSelect = () => {
             alt="template1"
             className={activeTemplate === 1 ? "active" : ""}
           />
-          <div
+          <button
             className={`select-cta ${activeTemplate === 1 ? "open" : ""}`}
             onClick={() => handleSetTemplate("classic")}
+            disabled={templateSelected} // Disable button if any template is already selected
           >
-            Select Template
-          </div>
+            {selectedTemplate === "classic"
+              ? "Template Selected"
+              : "Select Template"}
+          </button>
           <div className="template-desc">
             Ideal for young professionals with 0 to 3 years experience
           </div>
@@ -67,12 +72,15 @@ const TemplatesSelect = () => {
             alt="template2"
             className={activeTemplate === 2 ? "active" : ""}
           />
-          <div
+          <button
             className={`select-cta ${activeTemplate === 2 ? "open" : ""}`}
             onClick={() => handleSetTemplate("modern")}
+            disabled={templateSelected} // Disable button if any template is already selected
           >
-            Select Template
-          </div>
+            {selectedTemplate === "modern"
+              ? "Template Selected"
+              : "Select Template"}
+          </button>
           <div className="template-desc">
             Perfect if you have 3+ work experiences to write about
           </div>
@@ -89,12 +97,15 @@ const TemplatesSelect = () => {
             alt="template3"
             className={activeTemplate === 3 ? "active" : ""}
           />
-          <div
+          <button
             className={`select-cta ${activeTemplate === 3 ? "open" : ""}`}
             onClick={() => handleSetTemplate("bold")}
+            disabled={templateSelected} // Disable button if any template is already selected
           >
-            Select Template
-          </div>
+            {selectedTemplate === "bold"
+              ? "Template Selected"
+              : "Select Template"}
+          </button>
           <div className="template-desc">
             Stand out in manual screening by hiring managers or recruiters
           </div>
