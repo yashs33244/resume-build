@@ -21,7 +21,7 @@ import { useUserStatus } from "../hooks/useUserStatus";
 const Dashboard = () => {
   const [isGeneratingPDF, setIsGeneratingPDF] =
     useRecoilState(isGeneratingPDFAtom);
-  const { resumes, isLoading, error } = useResumeState();
+  const { resumes, isLoading, error, setResumes } = useResumeState();
   const [resumeTimes, setResumeTimes] = useRecoilState(resumeTimeAtom);
   const router = useRouter();
   const { user, isPaid, refetchUser } = useUserStatus();
@@ -102,7 +102,10 @@ const Dashboard = () => {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ html: htmlContent }),
+          body: JSON.stringify({
+            html: htmlContent,
+            resumeId: resumeId, // Add resumeId to the request
+          }),
         });
 
         if (!response.ok) throw new Error("PDF generation failed");
@@ -116,6 +119,19 @@ const Dashboard = () => {
         document.body.appendChild(a);
         a.click();
         window.URL.revokeObjectURL(url);
+
+        // Update local state after successful download
+        const updatedResumes = resumes.map((resume: any) => {
+          if (resume.resumeData.resumeId === resumeId) {
+            return {
+              ...resume,
+              resumeState: "DOWNLOAD_SUCCESS",
+            };
+          }
+          return resume;
+        });
+        // You'll need to add a setResumes function to your state management
+        setResumes(updatedResumes);
       } catch (error: any) {
         console.error("Error generating PDF:", error);
         alert(error.message || "Failed to generate PDF. Please try again.");
@@ -124,7 +140,7 @@ const Dashboard = () => {
         setDownloadingId(null);
       }
     },
-    [setIsGeneratingPDF, isPaid],
+    [setIsGeneratingPDF, isPaid, resumes],
   );
 
   const handleCreateNew = () => {

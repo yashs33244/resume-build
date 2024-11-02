@@ -9,11 +9,10 @@ const prisma = new PrismaClient();
 
 export async function POST(request: NextRequest) {
   try {
-    // Get server session
     const session = await getServerSession(authOptions);
-    const { html } = await request.json();
+    const { html, resumeId } = await request.json();
 
-    if (!session?.user?.email || !html) {
+    if (!session?.user?.email || !html || !resumeId) {
       return NextResponse.json(
         { message: 'Invalid input or user not authenticated' },
         { status: 400 }
@@ -25,6 +24,7 @@ export async function POST(request: NextRequest) {
       where: { email: session.user.email },
       select: { id: true, status: true }
     });
+    
     if (!user) {
       return NextResponse.json(
         { error: 'User not found' },
@@ -39,21 +39,30 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Find the resume record associated with the user
+    // Find the specific resume using resumeId
     const resume = await prisma.resume.findFirst({
-      where: { userId: user.id }, // Filter by userId in findFirst
+      where: {
+        userId: user.id,
+        id: resumeId
+      }
     });
 
-    // Launch browser instance
+    if (!resume) {
+      return NextResponse.json(
+        { error: 'Resume not found' },
+        { status: 404 }
+      );
+    }
+
+    // Launch browser instance and generate PDF
     const browser = await puppeteer.launch({
       headless: 'new',
       args: ['--no-sandbox', '--disable-setuid-sandbox']
     });
 
     const page = await browser.newPage();
-
-    // Set the content of the page to the provided HTML
     await page.setContent(html, { waitUntil: 'networkidle0' });
+
 
     // Inject custom font and styling
     await page.evaluate(() => {
@@ -86,15 +95,11 @@ export async function POST(request: NextRequest) {
 
     await browser.close();
 
-    // Update resume state to DOWNLOAD_SUCCESS if resume exists
-    if (resume) {
-      await prisma.resume.update({
-        where: { id: resume.id }, // Use the primary key of Resume to update
-        data: { state: "DOWNLOAD_SUCCESS" },
-      });
-    }
+    await prisma.resume.update({
+      where: { id: resume.id },
+      data: { state: "DOWNLOAD_SUCCESS" }
+    });
 
-    // Return the PDF with appropriate headers
     return new NextResponse(pdfBuffer, {
       headers: {
         'Content-Type': 'application/pdf',
