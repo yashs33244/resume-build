@@ -41,6 +41,7 @@ import "react-tooltip/dist/react-tooltip.css";
 import { useFetchResumeData } from "../hooks/useFetchResumeData";
 import { useResumeDraft } from "../hooks/useResumeDraft";
 import debounce from "lodash/debounce";
+import { useUserStatus } from "../hooks/useUserStatus";
 
 const PersonalInfo = dynamic(
   () => import("./Editor/PersonalInfo").then((mod) => mod.PersonalInfo),
@@ -76,6 +77,7 @@ export default function EditPage() {
   const [saveStatus, setSaveStatus] = useState<"saved" | "saving" | "error">(
     "saved",
   );
+  const { user, isPaid, refetchUser } = useUserStatus();
 
   const { data: session, status: sessionStatus } = useSession();
   const {
@@ -174,6 +176,9 @@ export default function EditPage() {
   const { activeSection, handleSectionChange, sections, setActiveSection } =
     useActiveSection();
   const openModel = () => {
+    if (isPaid) {
+      setIsModelOpen(true);
+    }
     router.push("/select-templates/checkout");
     // setIsModelOpen(true);
   };

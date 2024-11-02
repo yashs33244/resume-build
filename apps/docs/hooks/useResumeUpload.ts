@@ -7,6 +7,8 @@ interface UseResumeUploadProps {
   onUploadSuccess: (resumeData: ResumeProps) => Promise<void>;
 }
 
+
+
 export const useResumeUpload = ({ onUploadSuccess }: UseResumeUploadProps) => {
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);

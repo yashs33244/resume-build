@@ -27,6 +27,13 @@ const Dashboard = () => {
   const { user, isPaid, refetchUser } = useUserStatus();
   const [downloadingId, setDownloadingId] = useState<string | null>(null);
 
+  // Redirect first-time users with no resumes
+  useEffect(() => {
+    if (!isLoading && (!resumes || resumes.length === 0)) {
+      router.push("/create-preference");
+    }
+  }, [isLoading, resumes, router]);
+
   const renderTemplate = (template: string, resumeData: object) => {
     switch (template) {
       case "fresher":
@@ -40,7 +47,6 @@ const Dashboard = () => {
     }
   };
 
-  // Debounce function (unchanged)
   function debounce(func: any, wait: any) {
     let timeout: any;
     return function (...args: any) {
@@ -51,7 +57,6 @@ const Dashboard = () => {
     };
   }
 
-  // Scale content function (unchanged)
   function scaleContent() {
     const containers = document.querySelectorAll(".resumeParent");
     containers.forEach((container) => {
@@ -140,6 +145,7 @@ const Dashboard = () => {
     };
   }, [resumes]);
 
+  // Show loading state
   if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
@@ -148,6 +154,12 @@ const Dashboard = () => {
     );
   }
 
+  // Don't render dashboard if no resumes
+  if (!resumes || resumes.length === 0) {
+    return null;
+  }
+
+  // Render dashboard only if there are resumes
   return (
     <div className="dashboard-container">
       <div className="top-section">
@@ -175,12 +187,10 @@ const Dashboard = () => {
             </div>
             <div className="resume-section">
               <div
-                className={`resume-preview resumeParent resumeParent-${
-                  resume.resumeData.resumeId
-                } ${
+                className={`resume-preview resumeParent resumeParent-${resume.resumeData.resumeId} border-2 ${
                   resume.resumeState === "DOWNLOAD_SUCCESS"
-                    ? "border-2 border-green-500"
-                    : "border-2 border-red-500"
+                    ? "border-green-500"
+                    : "border-gray-500"
                 }`}
               >
                 {renderTemplate(resume.template, resume.resumeData)}

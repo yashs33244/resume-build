@@ -7,7 +7,6 @@ import {
   useSetTemplateAndUpdateURL,
 } from "../store/templatesState";
 import { useSaveResume } from "../hooks/useSaveResume";
-import { useFetchResumeData } from "../hooks/useFetchResumeData";
 import { ResumeProps } from "../types/ResumeProps";
 import { useResumeData } from "./useResumeData";
 
@@ -105,8 +104,12 @@ export const useTemplateSelection = () => {
       await saveDraft(rdata);
       router.push(`/select-templates/editor?id=${resumeId}`);
     } else if (!resumeId) {
-      rdata.templateId = actualTemplate;
-      saveResume(rdata, actualTemplate);
+      const resumeData = localStorage.getItem("resumeData");  // Get the resume data from local storage
+      if (resumeData) {
+        const parsedData = JSON.parse(resumeData);
+        rdata.templateId = actualTemplate;
+        saveResume(parsedData, actualTemplate);
+      }
     }
   };
 
