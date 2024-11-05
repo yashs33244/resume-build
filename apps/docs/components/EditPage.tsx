@@ -2,6 +2,7 @@
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import React, {
+  Suspense,
   useCallback,
   useEffect,
   useMemo,
@@ -42,6 +43,7 @@ import { useFetchResumeData } from "../hooks/useFetchResumeData";
 import { useResumeDraft } from "../hooks/useResumeDraft";
 import debounce from "lodash/debounce";
 import { useUserStatus } from "../hooks/useUserStatus";
+import { LandingLoader } from "./LandingLoader";
 
 const PersonalInfo = dynamic(
   () => import("./Editor/PersonalInfo").then((mod) => mod.PersonalInfo),
@@ -178,8 +180,9 @@ export default function EditPage() {
   const openModel = () => {
     if (isPaid) {
       setIsModelOpen(true);
+    } else {
+      router.push("/select-templates/checkout");
     }
-    router.push("/select-templates/checkout");
     // setIsModelOpen(true);
   };
 
@@ -376,273 +379,280 @@ export default function EditPage() {
   };
 
   return (
-    <div className="flex flex-col w-full min-h-screen bg-background text-foreground dark:bg-[#1a1b1e] dark:text-white">
-      <Tips
-        activeSection={activeSection}
-        open={tipsOpen}
-        setTipsOpen={(val: any) => setTipsOpen(val)}
-      />
-      <ReactTooltip
-        id="dashboard"
-        place="bottom"
-        content="Dashboard"
-        style={{ zIndex: "1000", backgroundColor: "#1B2432" }}
-      />
-      <ReactTooltip
-        id="personal"
-        place="right"
-        content="Personal Details"
-        style={{ zIndex: "1000", backgroundColor: "#1B2432" }}
-      />
-      <ReactTooltip
-        id="education"
-        place="right"
-        content="Education"
-        style={{ zIndex: "1000", backgroundColor: "#1B2432" }}
-      />
-      <ReactTooltip
-        id="experience"
-        place="right"
-        content="Work Experience"
-        style={{ zIndex: "1000", backgroundColor: "#1B2432" }}
-      />
-      <ReactTooltip
-        id="project"
-        place="right"
-        content="Projects"
-        style={{ zIndex: "1000", backgroundColor: "#1B2432" }}
-      />
-      <ReactTooltip
-        id="skills"
-        place="right"
-        content="Skills"
-        style={{ zIndex: "1000", backgroundColor: "#1B2432" }}
-      />
-      <ReactTooltip
-        id="certificate"
-        place="right"
-        content="Certificates"
-        style={{ zIndex: "1000", backgroundColor: "#1B2432" }}
-      />
-      <ReactTooltip
-        id="left"
-        place="bottom"
-        content="Previous Section"
-        style={{ zIndex: "1000", backgroundColor: "#1B2432" }}
-      />
-      <ReactTooltip
-        id="right"
-        place="bottom"
-        content="Next Section"
-        style={{ zIndex: "10000", backgroundColor: "#1B2432" }}
-      />
-      <div className="editor-container">
-        <div className="navigation">
-          <div className="login-container" data-tooltip-id="dashboard">
-            {session?.user ? (
-              <div className="login-cta" onClick={handleRedirect}>
-                <TbGridDots />
-                <div>{initails}</div>
-              </div>
-            ) : (
-              <div className="login-cta">
-                <TbGridDots />
-                <div>
-                  <Link href="/">{initails}</Link>
+    <Suspense fallback={<LandingLoader />}>
+      <div className="flex flex-col w-full min-h-screen bg-background text-foreground dark:bg-[#1a1b1e] dark:text-white">
+        <Tips
+          activeSection={activeSection}
+          open={tipsOpen}
+          setTipsOpen={(val: any) => setTipsOpen(val)}
+        />
+        <ReactTooltip
+          id="dashboard"
+          place="bottom"
+          content="Dashboard"
+          style={{ zIndex: "1000", backgroundColor: "#1B2432" }}
+        />
+        <ReactTooltip
+          id="personal"
+          place="right"
+          content="Personal Details"
+          style={{ zIndex: "1000", backgroundColor: "#1B2432" }}
+        />
+        <ReactTooltip
+          id="education"
+          place="right"
+          content="Education"
+          style={{ zIndex: "1000", backgroundColor: "#1B2432" }}
+        />
+        <ReactTooltip
+          id="experience"
+          place="right"
+          content="Work Experience"
+          style={{ zIndex: "1000", backgroundColor: "#1B2432" }}
+        />
+        <ReactTooltip
+          id="project"
+          place="right"
+          content="Projects"
+          style={{ zIndex: "1000", backgroundColor: "#1B2432" }}
+        />
+        <ReactTooltip
+          id="skills"
+          place="right"
+          content="Skills"
+          style={{ zIndex: "1000", backgroundColor: "#1B2432" }}
+        />
+        <ReactTooltip
+          id="certificate"
+          place="right"
+          content="Certificates"
+          style={{ zIndex: "1000", backgroundColor: "#1B2432" }}
+        />
+        <ReactTooltip
+          id="left"
+          place="bottom"
+          content="Previous Section"
+          style={{ zIndex: "1000", backgroundColor: "#1B2432" }}
+        />
+        <ReactTooltip
+          id="right"
+          place="bottom"
+          content="Next Section"
+          style={{ zIndex: "10000", backgroundColor: "#1B2432" }}
+        />
+        <div className="editor-container">
+          <div className="navigation">
+            <div className="login-container" data-tooltip-id="dashboard">
+              {session?.user ? (
+                <div className="login-cta" onClick={handleRedirect}>
+                  <TbGridDots />
+                  <div>{initails}</div>
                 </div>
-              </div>
-            )}
-          </div>
-          <div className="nav-container">
-            <div className="logo-placement">
-              <Image alt="short_logo" src={short_logo} width={50} height={50} />
-            </div>
-            <div
-              onClick={() => setActiveSection("Personal Info")}
-              className={`icon-container ${activeSection === "Personal Info" ? "border" : ""}`}
-              data-tooltip-id="personal"
-            >
-              <FaUserTie
-                className={`icon ${activeSection === "Personal Info" ? "selected" : ""}`}
-              />
-            </div>
-            <div
-              onClick={() => setActiveSection("Education")}
-              className={`icon-container ${activeSection === "Education" ? "border" : ""}`}
-              data-tooltip-id="education"
-            >
-              <IoSchool
-                className={`icon ${activeSection === "Education" ? "selected" : ""}`}
-              />
-            </div>
-            <div
-              onClick={() => setActiveSection("Experience")}
-              className={`icon-container ${activeSection === "Experience" ? "border" : ""}`}
-              data-tooltip-id="experience"
-            >
-              <FaSuitcase
-                className={`icon ${activeSection === "Experience" ? "selected" : ""}`}
-              />
-            </div>
-            <div
-              onClick={() => setActiveSection("Project")}
-              className={`icon-container ${activeSection === "Project" ? "border" : ""}`}
-              data-tooltip-id="project"
-            >
-              <AiFillProject
-                className={`icon ${activeSection === "Project" ? "selected" : ""}`}
-              />
-            </div>
-            <div
-              onClick={() => handleSkillsSelect(resumeData)}
-              className={`icon-container ${activeSection === "Skills" ? "border" : ""}`}
-              data-tooltip-id="skills"
-            >
-              <FaTools
-                className={`icon ${activeSection === "Skills" ? "selected" : ""}`}
-              />
-            </div>
-            <div
-              onClick={() => setActiveSection("Certificate")}
-              className={`icon-container ${activeSection === "Certificate" ? "border" : ""}`}
-              data-tooltip-id="certificate"
-            >
-              <PiCertificateFill
-                className={`icon ${activeSection === "Certificate" ? "selected" : ""}`}
-              />
-            </div>
-          </div>
-        </div>
-        <div className="editor">
-          <div className="section-header">
-            <div className="section-title">
-              {getSectionTitle(activeSection)}
-              <div className="tips" onClick={() => setTipsOpen(!tipsOpen)}>
-                <MdTipsAndUpdates />
-                <div>Tips</div>
-              </div>
-            </div>
-            <div className="move-container">
-              <CiCircleChevLeft
-                data-tooltip-id="left"
-                style={{
-                  marginRight: "50px",
-                  width: "40px",
-                  height: "40px",
-                  cursor: "pointer",
-                }}
-                onClick={handleLeftNav}
-              />
-              <PiCaretCircleRightFill
-                data-tooltip-id="right"
-                style={{ width: "40px", height: "40px", cursor: "pointer" }}
-                onClick={handleRightNav}
-              />
-            </div>
-          </div>
-          <div className="material-container">
-            {activeSection === "Personal Info" && (
-              <PersonalInfo
-                resumeData={resumeData}
-                handleInputChange={handleInputChange}
-              />
-            )}
-            {activeSection === "Education" && (
-              <Education
-                resumeData={resumeData}
-                handleInputChange={handleInputChange}
-                handleAddField={handleAddField}
-                handleDeleteField={handleDeleteField}
-              />
-            )}
-            {activeSection === "Experience" && (
-              <Experience
-                resumeData={resumeData}
-                handleInputChange={handleInputChange}
-                handleAddField={handleAddField}
-                handleDeleteField={handleDeleteField}
-              />
-            )}
-            {activeSection === "Skills" && (
-              <Skills
-                resumeData={resumeData}
-                handleInputChange={handleInputChange}
-                handleAddField={handleAddField}
-                handleDeleteField={handleDeleteField}
-              />
-            )}
-            {activeSection === "Project" && (
-              <Project
-                resumeData={resumeData}
-                handleInputChange={handleInputChange}
-                handleAddField={handleAddField}
-                handleDeleteField={handleDeleteField}
-              />
-            )}
-            {activeSection === "Certificate" && (
-              <Certificate
-                resumeData={resumeData}
-                handleInputChange={handleInputChange}
-                handleAddField={handleAddField}
-                handleDeleteField={handleDeleteField}
-              />
-            )}
-            {activeSection === "Language" && (
-              <Language
-                resumeData={resumeData}
-                handleInputChange={handleInputChange}
-                handleAddField={handleAddField}
-                handleDeleteField={handleDeleteField}
-              />
-            )}
-          </div>
-        </div>
-        <div className="preview">
-          <div className="tools">
-            <div className="tools-container">
-              <ChanegTemplate resumeId={resumeId} />
-              <div className="download-container cursor-pointer">
-                {session?.user ? (
-                  <div className="download" onClick={openModel}>
-                    <IoMdDownload />
-                    <div>Download</div>
+              ) : (
+                <div className="login-cta">
+                  <TbGridDots />
+                  <div>
+                    <Link href="/">{initails}</Link>
                   </div>
-                ) : (
-                  <div className="download">
-                    {" "}
-                    <Link href="/api/auth/signin">Login to download</Link>
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
-          <div className="preview-container" id="resumeParent">
-            {renderTemplate()}
-          </div>
-          {isOverflowing && (
-            <div className="overflow_div">
-              <span className="overflow_div_p1">
-                Your content is overflowing. You can optimize the content
-              </span>
-              {["M", "L"].includes(resumeSize) && (
-                <span className="overflow_div_p1">
-                  &nbsp;or you can click&nbsp;
-                  <span onClick={reduceSize} className="overflow_div_action">
-                    here
-                  </span>
-                  &nbsp;to reduce the size
-                </span>
+                </div>
               )}
             </div>
-          )}
+            <div className="nav-container">
+              <div className="logo-placement">
+                <Image
+                  alt="short_logo"
+                  src={short_logo}
+                  width={50}
+                  height={50}
+                />
+              </div>
+              <div
+                onClick={() => setActiveSection("Personal Info")}
+                className={`icon-container ${activeSection === "Personal Info" ? "border" : ""}`}
+                data-tooltip-id="personal"
+              >
+                <FaUserTie
+                  className={`icon ${activeSection === "Personal Info" ? "selected" : ""}`}
+                />
+              </div>
+              <div
+                onClick={() => setActiveSection("Education")}
+                className={`icon-container ${activeSection === "Education" ? "border" : ""}`}
+                data-tooltip-id="education"
+              >
+                <IoSchool
+                  className={`icon ${activeSection === "Education" ? "selected" : ""}`}
+                />
+              </div>
+              <div
+                onClick={() => setActiveSection("Experience")}
+                className={`icon-container ${activeSection === "Experience" ? "border" : ""}`}
+                data-tooltip-id="experience"
+              >
+                <FaSuitcase
+                  className={`icon ${activeSection === "Experience" ? "selected" : ""}`}
+                />
+              </div>
+              <div
+                onClick={() => setActiveSection("Project")}
+                className={`icon-container ${activeSection === "Project" ? "border" : ""}`}
+                data-tooltip-id="project"
+              >
+                <AiFillProject
+                  className={`icon ${activeSection === "Project" ? "selected" : ""}`}
+                />
+              </div>
+              <div
+                onClick={() => handleSkillsSelect(resumeData)}
+                className={`icon-container ${activeSection === "Skills" ? "border" : ""}`}
+                data-tooltip-id="skills"
+              >
+                <FaTools
+                  className={`icon ${activeSection === "Skills" ? "selected" : ""}`}
+                />
+              </div>
+              <div
+                onClick={() => setActiveSection("Certificate")}
+                className={`icon-container ${activeSection === "Certificate" ? "border" : ""}`}
+                data-tooltip-id="certificate"
+              >
+                <PiCertificateFill
+                  className={`icon ${activeSection === "Certificate" ? "selected" : ""}`}
+                />
+              </div>
+            </div>
+          </div>
+          <div className="editor">
+            <div className="section-header">
+              <div className="section-title">
+                {getSectionTitle(activeSection)}
+                <div className="tips" onClick={() => setTipsOpen(!tipsOpen)}>
+                  <MdTipsAndUpdates />
+                  <div>Tips</div>
+                </div>
+              </div>
+              <div className="move-container">
+                <CiCircleChevLeft
+                  data-tooltip-id="left"
+                  style={{
+                    marginRight: "50px",
+                    width: "40px",
+                    height: "40px",
+                    cursor: "pointer",
+                  }}
+                  onClick={handleLeftNav}
+                />
+                <PiCaretCircleRightFill
+                  data-tooltip-id="right"
+                  style={{ width: "40px", height: "40px", cursor: "pointer" }}
+                  onClick={handleRightNav}
+                />
+              </div>
+            </div>
+            <div className="material-container">
+              {activeSection === "Personal Info" && (
+                <PersonalInfo
+                  resumeData={resumeData}
+                  handleInputChange={handleInputChange}
+                />
+              )}
+              {activeSection === "Education" && (
+                <Education
+                  resumeData={resumeData}
+                  handleInputChange={handleInputChange}
+                  handleAddField={handleAddField}
+                  handleDeleteField={handleDeleteField}
+                />
+              )}
+              {activeSection === "Experience" && (
+                <Experience
+                  resumeData={resumeData}
+                  handleInputChange={handleInputChange}
+                  handleAddField={handleAddField}
+                  handleDeleteField={handleDeleteField}
+                />
+              )}
+              {activeSection === "Skills" && (
+                <Skills
+                  resumeData={resumeData}
+                  handleInputChange={handleInputChange}
+                  handleAddField={handleAddField}
+                  handleDeleteField={handleDeleteField}
+                />
+              )}
+              {activeSection === "Project" && (
+                <Project
+                  resumeData={resumeData}
+                  handleInputChange={handleInputChange}
+                  handleAddField={handleAddField}
+                  handleDeleteField={handleDeleteField}
+                />
+              )}
+              {activeSection === "Certificate" && (
+                <Certificate
+                  resumeData={resumeData}
+                  handleInputChange={handleInputChange}
+                  handleAddField={handleAddField}
+                  handleDeleteField={handleDeleteField}
+                />
+              )}
+              {activeSection === "Language" && (
+                <Language
+                  resumeData={resumeData}
+                  handleInputChange={handleInputChange}
+                  handleAddField={handleAddField}
+                  handleDeleteField={handleDeleteField}
+                />
+              )}
+            </div>
+          </div>
+          <div className="preview">
+            <div className="tools">
+              <div className="tools-container">
+                <ChanegTemplate resumeId={resumeId} />
+                <div className="download-container cursor-pointer">
+                  {session?.user ? (
+                    <div className="download" onClick={openModel}>
+                      <IoMdDownload />
+                      <div>Download</div>
+                    </div>
+                  ) : (
+                    <div className="download">
+                      {" "}
+                      <Link href="/api/auth/signin">Login to download</Link>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+            <div className="preview-container" id="resumeParent">
+              {renderTemplate()}
+            </div>
+            {isOverflowing && (
+              <div className="overflow_div">
+                <span className="overflow_div_p1">
+                  Your content is overflowing. You can optimize the content
+                </span>
+                {["M", "L"].includes(resumeSize) && (
+                  <span className="overflow_div_p1">
+                    &nbsp;or you can click&nbsp;
+                    <span onClick={reduceSize} className="overflow_div_action">
+                      here
+                    </span>
+                    &nbsp;to reduce the size
+                  </span>
+                )}
+              </div>
+            )}
+          </div>
+          <DownloadModel
+            isOpen={isModelOpen}
+            onClose={closeModel}
+            resumeData={resumeData}
+            templateId={template || ""}
+          />
         </div>
-        <DownloadModel
-          isOpen={isModelOpen}
-          onClose={closeModel}
-          resumeData={resumeData}
-          templateId={template || ""}
-        />
       </div>
-    </div>
+    </Suspense>
   );
 }
