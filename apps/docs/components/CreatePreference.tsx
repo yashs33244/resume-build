@@ -100,6 +100,9 @@ export default function CreatePreference() {
       certificates: [],
       state: ResumeState.EDITING,
       templateId: "",
+      resumeId: "",
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
     };
     localStorage.setItem("resumeData", JSON.stringify(emptyResumeData));
 

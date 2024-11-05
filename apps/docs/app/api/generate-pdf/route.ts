@@ -56,6 +56,7 @@ export async function POST(request: NextRequest) {
 
     // Launch browser instance and generate PDF
     const browser = await puppeteer.launch({
+      //@ts-ignore
       headless: 'new',
       args: ['--no-sandbox', '--disable-setuid-sandbox']
     });

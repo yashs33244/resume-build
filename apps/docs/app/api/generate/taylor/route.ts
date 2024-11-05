@@ -75,6 +75,7 @@ export async function POST(req: Request) {
     const requiredFields: (keyof ResumeProps)[] = ['userId', 'personalInfo', 'education', 'experience', 'skills', 'coreSkills'];
     for (const field of requiredFields) {
       if (!(field in tailoredResume)) {
+        //@ts-ignore
         tailoredResume[field] = resumeData[field];
       }
     }

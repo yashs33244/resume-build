@@ -3,6 +3,7 @@ import { ResumeProps } from "../types/ResumeProps";
 import { initialResumeData } from "../utils/resumeData";
 import { useFetchResumeData } from "./useFetchResumeData";
 
+
 export const useResumeData = (onDataChange?: (resumeData: ResumeProps) => void) => {
     const [resumeData, setResumeData] = useState<ResumeProps>(initialResumeData);
     const [selectedTemplate, setSelectedTemplate] = useState<string>('fresher');
@@ -20,9 +21,9 @@ export const useResumeData = (onDataChange?: (resumeData: ResumeProps) => void) 
 
         console.log("this is rData",rdata);
         // window.localStorage.setItem("resumeData", JSON.stringify(rdata));
-        const resumeData = JSON.stringify(rdata);
-        const savedData = resumeData;
-        const savedTemplate = resumeData.templateId;
+        const savedData = JSON.stringify(rdata);
+        const parsedData = JSON.parse(savedData);
+        const savedTemplate = parsedData.templateId;
   
         if (savedData) {
           const parsedData = JSON.parse(savedData);
