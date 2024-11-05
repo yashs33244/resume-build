@@ -11,7 +11,6 @@ import { IoMdDownload } from "react-icons/io";
 import { Modal } from "react-responsive-modal";
 import "./DownloadModel.scss";
 import { useSaveResume } from "../hooks/useSaveResume";
-import Resume from "./resumes/Resume_one";
 
 type DownloadModalProps = {
   isOpen: boolean;
