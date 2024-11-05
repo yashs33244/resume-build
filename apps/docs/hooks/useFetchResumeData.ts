@@ -4,7 +4,7 @@ import { initialResumeData } from "../utils/resumeData";
 
 export function useFetchResumeData() {
   const [template, setTemplate] = useState<string>("");
-  const [rdata, setrdata] = useState(undefined);
+  const [rdata, setrdata] = useState<ResumeProps>(initialResumeData);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [id, setId] = useState<string | "">("");

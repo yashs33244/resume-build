@@ -173,7 +173,7 @@ export default function LandingPage() {
             <MdRocketLaunch />
             <div>
               {session?.user ? (
-                <Link href="/select-templates/editor"> Get Started</Link>
+                <Link href="/dashboard"> Get Started</Link>
               ) : (
                 <Link href="/api/auth/signin"> Get Started</Link>
               )}
@@ -274,7 +274,7 @@ export default function LandingPage() {
           <button>
             {/* <Link href="/editor"> Build My Resume</Link> */}
             {session?.user ? (
-              <Link href="/select-templates/editor"> Build My Resume</Link>
+              <Link href="/dashboard"> Build My Resume</Link>
             ) : (
               <Link href="/api/auth/signin"> Build My Resume</Link>
             )}

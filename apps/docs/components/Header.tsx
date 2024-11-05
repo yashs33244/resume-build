@@ -22,9 +22,15 @@ export default function Header() {
   return (
     <div className="header-container">
       <div className="logo-container">
-        <Link href="/">
-          <Image alt="logo" src={logo} width={130} />
-        </Link>
+        {session?.user ? (
+          <Link href="/dashboard">
+            <Image alt="logo" src={logo} width={130} />
+          </Link>
+        ) : (
+          <Link href="/">
+            <Image alt="logo" src={logo} width={130} />
+          </Link>
+        )}
       </div>
       {session?.user ? (
         <div className="login-cta">

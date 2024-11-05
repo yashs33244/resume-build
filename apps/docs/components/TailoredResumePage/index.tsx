@@ -12,33 +12,21 @@ import { useResumeData } from "../../hooks/useResumeData";
 import { useRouter } from "next/navigation";
 import { useSearchParams } from "next/navigation";
 import styles from "./style.module.scss";
-
-import { fetchResumeState } from "../../app/services";
-import { useTransformResumeData } from "../../hooks/useTransformResumeData";
-import useLazyQuery from "../../hooks/useLazyQuery";
 import { Loader, Loader2 } from "lucide-react";
 import { LandingLoader } from "../LandingLoader";
+import { useFetchResumeData } from "../../hooks/useFetchResumeData";
 
 const TailoredResumePage: React.FC = () => {
   const searchParams = useSearchParams();
-  const {
-    apiCbFunction: fetchResume,
-    data,
-    isLoading,
-    isError,
-    errorMessage,
-  } = useLazyQuery(fetchResumeState);
-  const resumeData = useTransformResumeData(data);
+  const { rdata, template, loading, error, id } = useFetchResumeData();
 
   const resumeId = searchParams.get("id");
   const router = useRouter();
+  const resumeData = rdata;
 
   if (!resumeId) {
     router.push("/");
   }
-  useEffect(() => {
-    fetchResume(resumeId);
-  }, []);
 
   const [jobDescription, setJobDescription] = useState("");
   const [isGeneratingPDF, setIsGeneratingPDF] =
@@ -97,28 +85,30 @@ const TailoredResumePage: React.FC = () => {
     [resumeData, tailoredResumeData],
   );
 
-  const updateResumeTime = useCallback(
-    (id: string) => {
-      const expirationDate = new Date();
-      expirationDate.setDate(expirationDate.getDate() + 30);
-      const timeLeft = Math.floor(
-        (expirationDate.getTime() - new Date().getTime()) /
-          (1000 * 60 * 60 * 24),
-      );
-      setResumeTimes((prev) => ({ ...prev, [id]: timeLeft }));
-    },
-    [setResumeTimes],
-  );
-
   const handleDownload = useCallback(
     async (data: ResumeProps) => {
       setIsGeneratingPDF(true);
       try {
+        // Get the specific wrapper for the resume being downloaded
         const realElement = document.getElementById("wrapper");
         if (!realElement) throw new Error("Resume wrapper not found");
 
+        // Find all wrappers and get the correct one based on the data being downloaded
+        const wrappers = document.querySelectorAll("#wrapper");
+        let targetWrapper: Element | null = null;
+
+        // If we're downloading tailored resume and it exists, use the second wrapper
+        if (data === tailoredResumeData && wrappers.length > 1) {
+          targetWrapper = wrappers[1] ?? null;
+        } else {
+          // Otherwise use the first wrapper (original resume)
+          targetWrapper = wrappers[0] ?? null;
+        }
+
+        if (!targetWrapper) throw new Error("Target wrapper not found");
+
         // Cast element to HTMLElement after cloning
-        const element = realElement.cloneNode(true) as HTMLElement;
+        const element = targetWrapper.cloneNode(true) as HTMLElement;
 
         element.style.transform = "scale(1)";
         const resumeId = searchParams.get("id");
@@ -134,7 +124,11 @@ const TailoredResumePage: React.FC = () => {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ html: htmlContent, resumeId: resumeId }),
+          body: JSON.stringify({
+            html: htmlContent,
+            resumeId: resumeId,
+            isTailored: data === tailoredResumeData,
+          }),
         });
 
         if (!response.ok) throw new Error("PDF generation failed");
@@ -144,7 +138,10 @@ const TailoredResumePage: React.FC = () => {
         const a = document.createElement("a");
         a.style.display = "none";
         a.href = url;
-        a.download = "resume.pdf";
+        // Add differentiation in filename for tailored resume
+        const filename =
+          data === tailoredResumeData ? "tailored-resume.pdf" : "resume.pdf";
+        a.download = filename;
         document.body.appendChild(a);
         a.click();
         window.URL.revokeObjectURL(url);
@@ -155,7 +152,7 @@ const TailoredResumePage: React.FC = () => {
         setIsGeneratingPDF(false);
       }
     },
-    [setIsGeneratingPDF, resumeData?.templateId, updateResumeTime],
+    [setIsGeneratingPDF, resumeData, tailoredResumeData, searchParams],
   );
 
   const handleTailor = useCallback(async () => {
@@ -187,6 +184,7 @@ const TailoredResumePage: React.FC = () => {
 
       setTailoredResumeData(tailoredData);
       setShowComparison(true);
+      console.log("Tailored resume data:", tailoredResumeData);
     } catch (error: any) {
       alert(
         error.message ||
@@ -195,7 +193,7 @@ const TailoredResumePage: React.FC = () => {
     } finally {
       setIsTailoring(false);
     }
-  }, [jobDescription, resumeData]);
+  }, [jobDescription, resumeData, tailoredResumeData]);
 
   const handleBackToEdit = useCallback(() => {
     setShowComparison(false);
@@ -252,7 +250,7 @@ const TailoredResumePage: React.FC = () => {
           </div>
         ) : (
           <div className={styles.tailor_p1_head}>
-            {isLoading || resumeData == null ? (
+            {loading || resumeData == null ? (
               <>
                 <Loader />
               </>

@@ -21,7 +21,11 @@ const buildTailorResumePrompt = (jobDescription: string, sectionName: string, se
                  3. Include industry-specific keywords and phrases to improve ATS compatibility.
                  4. Ensure the tailored content is more detailed and specific than the original.
                  5. Maintain a professional tone and use action verbs.
-                 6. Return ONLY the modified content in the exact same JSON format as the original, without any additional explanation or formatting.`
+                 6. Return ONLY the modified content in the exact same JSON format as the original, without any additional explanation or formatting.
+                 
+                 `
+
+
         }
       ]
     }
