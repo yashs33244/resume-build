@@ -183,7 +183,6 @@ export default function EditPage() {
     } else {
       router.push("/select-templates/checkout");
     }
-    // setIsModelOpen(true);
   };
 
   const closeModel = () => {

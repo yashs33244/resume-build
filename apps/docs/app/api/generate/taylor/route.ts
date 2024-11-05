@@ -4,8 +4,6 @@ import { GoogleGenerativeAI } from '@google/generative-ai';
 const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY || '');
 import { ResumeProps } from '../../../../types/ResumeProps';
 
-
-
 const buildTailorResumePrompt = (jobDescription: string, sectionName: string, sectionContent: any) => ({
   contents: [
     {
@@ -21,16 +19,30 @@ const buildTailorResumePrompt = (jobDescription: string, sectionName: string, se
                  3. Include industry-specific keywords and phrases to improve ATS compatibility.
                  4. Ensure the tailored content is more detailed and specific than the original.
                  5. Maintain a professional tone and use action verbs.
-                 6. Return ONLY the modified content in the exact same JSON format as the original, without any additional explanation or formatting.
+                 6. IMPORTANT: Your response must be ONLY valid JSON that matches the exact structure of the original content.
+                 7. Do not include any explanation text, only return the JSON object.
+                 8. Ensure all JSON property names and values are properly quoted.
                  
+                 Example response format:
+                 ${JSON.stringify(sectionContent)}
                  `
-
-
         }
       ]
     }
   ]
 });
+
+const sanitizeJsonResponse = (response: string): string => {
+  // Find the first '{' and last '}' to extract just the JSON object
+  const start = response.indexOf('{');
+  const end = response.lastIndexOf('}');
+  
+  if (start === -1 || end === -1) {
+    throw new Error('No valid JSON object found in response');
+  }
+  
+  return response.slice(start, end + 1);
+};
 
 export async function POST(req: Request) {
   try {
@@ -42,40 +54,46 @@ export async function POST(req: Request) {
 
     const tailoredSections = await Promise.all(
       Object.entries(resumeData).map(async ([sectionName, sectionContent]) => {
-        // Exclude skills-related fields from modification
-        if (sectionName === 'skills' || sectionName === 'coreSkills' || sectionName === 'techSkills') {
-          return [sectionName, sectionContent]; // Retain the original skills content without AI tailoring
+        // Skip processing for non-object sections or specific fields
+        if (
+          sectionName === 'skills' || 
+          sectionName === 'coreSkills' || 
+          sectionName === 'techSkills' ||
+          typeof sectionContent !== 'object' || 
+          sectionContent === null
+        ) {
+          return [sectionName, sectionContent];
         }
 
-        if (typeof sectionContent === 'object' && sectionContent !== null) {
+        try {
           const prompt = buildTailorResumePrompt(jobDescription, sectionName, sectionContent);
+          const model = genAI.getGenerativeModel({ model: 'gemini-pro' });
+          
+          const result = await model.generateContent(prompt);
+          const response = await result.response;
+          const tailoredContent = response.text();
 
-          const geminiStream = await genAI
-            .getGenerativeModel({ model: 'gemini-pro' })
-            .generateContentStream(prompt);
-
-          let tailoredContent = '';
-          for await (const chunk of geminiStream.stream) {
-            tailoredContent += chunk.text();
-          }
-
-          try {
-            const parsedContent = JSON.parse(tailoredContent.trim());
-            return [sectionName, parsedContent];
-          } catch (error) {
-            console.error(`Error parsing tailored content for ${sectionName}:`, error);
+          // Clean and parse the response
+          const sanitizedJson = sanitizeJsonResponse(tailoredContent);
+          const parsedContent = JSON.parse(sanitizedJson);
+          
+          // Validate that the parsed content has the same structure
+          if (typeof parsedContent !== 'object') {
+            console.warn(`Invalid response structure for ${sectionName}, using original content`);
             return [sectionName, sectionContent];
           }
-        }
 
-        // Return as-is for non-object sections
-        return [sectionName, sectionContent];
+          return [sectionName, parsedContent];
+        } catch (error) {
+          console.error(`Error processing section ${sectionName}:`, error);
+          return [sectionName, sectionContent]; // Fallback to original content
+        }
       })
     );
 
     const tailoredResume: ResumeProps = Object.fromEntries(tailoredSections) as ResumeProps;
 
-    // Ensure all required fields are present, including skills, coreSkills, and techSkills
+    // Ensure all required fields are present
     const requiredFields: (keyof ResumeProps)[] = ['userId', 'personalInfo', 'education', 'experience', 'skills', 'coreSkills'];
     for (const field of requiredFields) {
       if (!(field in tailoredResume)) {
@@ -87,6 +105,9 @@ export async function POST(req: Request) {
     return NextResponse.json(tailoredResume, { status: 200 });
   } catch (error) {
     console.error('Error tailoring resume:', error);
-    return NextResponse.json({ message: 'Error tailoring resume' }, { status: 500 });
+    return NextResponse.json({ 
+      message: 'Error tailoring resume', 
+      error: error instanceof Error ? error.message : 'Unknown error'
+    }, { status: 500 });
   }
 }

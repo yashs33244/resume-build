@@ -113,7 +113,7 @@ const TailoredResumePage: React.FC = () => {
         element.style.transform = "scale(1)";
         const resumeId = searchParams.get("id");
 
-        const cssLink = `<link rel="stylesheet" href="http://localhost:3000/_next/static/css/app/(pages)/select-templates/editor/page.css">`;
+        const cssLink = `<link rel="stylesheet" href="http://localhost:3000/_next/static/css/app/(pages)/tailored-resume/page.css">`;
         const globalCSSLink = `<link rel="stylesheet" href="http://localhost:3000/_next/static/css/app/layout.css?v=1728991725867">`;
         const fontLink = `<link href='https://fonts.googleapis.com/css?family=Inter' rel='stylesheet'/>`;
         const htmlContent =
