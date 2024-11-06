@@ -58,12 +58,7 @@ export const Project: React.FC<ProjectProps> = ({
     const responsibilities = value
       .split("\n")
       .filter((item) => item.trim() !== "");
-    handleInputChange(
-      "experience",
-      "responsibilities",
-      responsibilities,
-      index,
-    );
+    handleInputChange("projects", "responsibilities", responsibilities, index);
   };
 
   const handleAiGeneration = async (prompt: string, index: number) => {
@@ -137,7 +132,7 @@ export const Project: React.FC<ProjectProps> = ({
                 <div className="form-row">
                   <div className="row-form-field">
                     <Label htmlFor={`project-${index}`} className="field-label">
-                      Project Name
+                      Project Name *
                     </Label>
                     <Input
                       id={`project-${index}`}
@@ -180,7 +175,7 @@ export const Project: React.FC<ProjectProps> = ({
                       <CustomDatePicker
                         id={`start-${index}`}
                         value={proj.start || ""}
-                        onChange={handleInputChange}
+                        onChange={() => handleInputChange}
                         index={index}
                         className="text-white"
                         field="start"
@@ -193,7 +188,7 @@ export const Project: React.FC<ProjectProps> = ({
                       <CustomDatePicker
                         id={`end-${index}`}
                         value={proj.end || ""}
-                        onChange={handleInputChange}
+                        onChange={() => handleInputChange}
                         index={index}
                         className="text-white"
                         field="end"
@@ -245,7 +240,9 @@ export const Project: React.FC<ProjectProps> = ({
                         onClick={() => {
                           const selection = window.getSelection()?.toString();
                           const textToUse =
-                            selection || exp.responsibilities?.join("\n") || "";
+                            selection ||
+                            proj.responsibilities?.join("\n") ||
+                            "";
                           handleAiGeneration(`${prompt}: ${textToUse}`, index);
                         }}
                         className=" ai-chip px-3 py-1 bg-blue-600 text-white rounded-full text-sm hover:bg-blue-700 transition-colors duration-200 disabled:opacity-50"

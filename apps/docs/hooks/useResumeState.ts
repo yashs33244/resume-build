@@ -1,27 +1,22 @@
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { ResumeProps } from '../types/ResumeProps';
 
-export const useResumeState = () => {
-  const [resumeState, setResumeState] = useState(null);
-  const [daysLeft, setDaysLeft] = useState(null);
-  const [createDate, setCreateDate] = useState<Date | null>(null);
-  const [updateDate, setUpdateDate] = useState<Date | null>(null);
-  const [resumeData, setResumeData] = useState({
-    resumeId: null,
-    personalInfo: null,
-    education: [],
-    experience: [],
-    skills: [],
-    coreSkills: [],
-    techSkills: [],
-    languages: [],
-    achievement: null,
-    projects: [],
-    certificates: [],
-  }); // Hold all resume data with default structure
-  const [template, setTemplate] = useState<string | null>(null); // Add state for template
+interface UseResumeStateReturn {
+  resumes: ResumeProps[];
+  isLoading: boolean;
+  error: string | null;
+  setResumes: (resumes: ResumeProps[]) => void; 
+}
+
+export const useResumeState = (): UseResumeStateReturn => {
+  const [resumes, setResumes] = useState<ResumeProps[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const router = useRouter();
 
   useEffect(() => {
-    const fetchResumeState = async () => {
+    const fetchResumes = async () => {
       try {
         const res = await fetch(`/api/resume/resumestatus`);
         if (!res.ok) {
@@ -29,56 +24,63 @@ export const useResumeState = () => {
         }
 
         const data = await res.json();
-        console.log('Resume state:', data); 
+        console.log('Fetched Resumes:', data);
 
-        // Set the resume state and data
-        setResumeState(data[0].state);
-        setResumeData({
-          resumeId: data[0].resumeId,  
-          personalInfo: data[0].personalInfo,
-          education: data[0].education,
-          experience: data[0].experience,
-          skills: data[0].skills,
-          coreSkills: data[0].coreSkills,
-          techSkills: data[0].techSkills,
-          languages: data[0].languages,
-          achievement: data[0].achievement,
-          projects: data[0].projects,
-          certificates: data[0].certificates,
-        });
-        setTemplate(data[0].templateId); // Set template data[0]
-
-        // If the state is 'DOWNLOAD_SUCCESS', calculate days left for the 30-day expiration
-        if (data[0].state === 'DOWNLOAD_SUCCESS') {
-          const createdAt = new Date(data[0].createdAt);
-          const updatedAt = new Date(data[0].updatedAt);
-          const now = new Date();
-
-          setCreateDate(createdAt);
-          setUpdateDate(updatedAt);
-
-          // Calculate days left based on the most recent date (either createdAt or updatedAt)
-          const mostRecentDate = updatedAt > createdAt ? updatedAt : createdAt;
-          const differenceInDays = Math.max(
-            30 - Math.floor((now.getTime() - mostRecentDate.getTime()) / (1000 * 60 * 60 * 24)),
-            0
-          );
-          setDaysLeft(differenceInDays);
-        } else {
-          // Reset dates and days left if not in 'DOWNLOAD_SUCCESS'
-          setDaysLeft(null);
-          setCreateDate(null);
-          setUpdateDate(null);
+        // Check if data is empty or null
+        if (!data || data.length === 0) {
+          console.log('No resumes found, redirecting to create-preference');
+          router.push('/create-preference');
+          setResumes([]);
+          return;
         }
+
+        const processedResumes = data.map((resume: ResumeProps) => ({
+          resumeState: resume.state,
+          daysLeft: calculateDaysLeft(resume),
+          createDate: new Date(resume.createdAt),
+          updateDate: new Date(resume.updatedAt),
+          resumeData: {
+            resumeId: resume.resumeId,
+            personalInfo: resume.personalInfo,
+            education: resume.education,
+            experience: resume.experience,
+            skills: resume.skills,
+            coreSkills: resume.coreSkills,
+            languages: resume.languages,
+            achievement: resume.achievement,
+            projects: resume.projects,
+            certificates: resume.certificates,
+            templateId: resume.templateId,
+          },
+          template: resume.templateId,
+        }));
+
+        setResumes(processedResumes);
       } catch (error) {
-        console.error('Error fetching resume state:', error);
+        console.error('Error fetching resumes:', error);
+        setError(error instanceof Error ? error.message : 'Failed to load resumes');
+      } finally {
+        setIsLoading(false);
       }
     };
 
-    
-      fetchResumeState();
-    
-  }, []);
+    fetchResumes();
+  }, [router]);
 
-  return { resumeState, daysLeft, createDate, updateDate, resumeData, template};
+  const calculateDaysLeft = (resume: ResumeProps) => {
+    if (resume.state === 'DOWNLOAD_SUCCESS') {
+      const createdAt = new Date(resume.createdAt);
+      const updatedAt = new Date(resume.updatedAt);
+      const now = new Date();
+
+      const mostRecentDate = updatedAt > createdAt ? updatedAt : createdAt;
+      return Math.max(
+        30 - Math.floor((now.getTime() - mostRecentDate.getTime()) / (1000 * 60 * 60 * 24)),
+        0
+      );
+    }
+    return null;
+  };
+
+  return { resumes, isLoading, error, setResumes };
 };

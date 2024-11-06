@@ -1,5 +1,8 @@
 export interface ResumeProps {
+  resumeId: string; 
   userId: string;
+  createdAt: string;
+  updatedAt: string;
   personalInfo?: {
     name: string;
     title: string;
@@ -16,6 +19,7 @@ export interface ResumeProps {
     start: string;
     end: string;
     degree: string;
+    score: number;  
 
   }>;
   experience: Array<{
@@ -28,7 +32,6 @@ export interface ResumeProps {
   }>;
   skills: string[]; // General skills list
   coreSkills?: string[]; // Optional core skills
-  techSkills?: string[]; // Optional technical skills
   languages?: string[]; // Optional languages
   achievement?: {
     title: string;

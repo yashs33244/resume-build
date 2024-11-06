@@ -37,14 +37,17 @@ export const Certificate: React.FC<CertificateProps> = ({
   handleAddField,
   handleDeleteField,
 }) => {
-  const certificates = resumeData.certificate || [];
+  const certificates = resumeData.certificates || [];
   const [isLoading, setIsLoading] = useState<{ [key: number]: boolean }>({});
 
   return (
     <div className="certificate-container">
       <div className="certificate-list">
         {certificates.map((cert, index) => (
-          <Collapsible className={index === 0 ? 'collapse-comp first' : 'collapse-comp'} key={index}>
+          <Collapsible
+            className={index === 0 ? "collapse-comp first" : "collapse-comp"}
+            key={index}
+          >
             <CollapsibleTrigger className="collapse-trigger">
               <div className="cert-note">
                 <ChevronDownIcon className="h-5 w-5 transition-transform" />
@@ -59,7 +62,7 @@ export const Certificate: React.FC<CertificateProps> = ({
               </div>
               <div
                 className="delete-cta"
-                onClick={() => handleDeleteField("certificate", "", index)}
+                onClick={() => handleDeleteField("certificates", "", index)}
               >
                 <FaTrashAlt />
               </div>
@@ -72,14 +75,14 @@ export const Certificate: React.FC<CertificateProps> = ({
                       htmlFor={`certificate-${index}`}
                       className="field-label"
                     >
-                      Certificate Name
+                      Certificate Name *
                     </Label>
                     <Input
                       id={`certificate-${index}`}
                       value={cert.name || ""}
                       onChange={(e) =>
                         handleInputChange(
-                          "certificate",
+                          "certificates",
                           "name",
                           e.target.value,
                           index,
@@ -100,7 +103,7 @@ export const Certificate: React.FC<CertificateProps> = ({
                       value={cert.issuer || ""}
                       onChange={(e) =>
                         handleInputChange(
-                          "certificate",
+                          "certificates",
                           "issuer",
                           e.target.value,
                           index,
@@ -123,7 +126,7 @@ export const Certificate: React.FC<CertificateProps> = ({
                       type="date"
                       onChange={(e) =>
                         handleInputChange(
-                          "certificate",
+                          "certificates",
                           "issuedOn",
                           e.target.value,
                           index,
@@ -141,7 +144,7 @@ export const Certificate: React.FC<CertificateProps> = ({
       </div>
       <Button
         variant="default"
-        onClick={() => handleAddField("certificate")}
+        onClick={() => handleAddField("certificates")}
         className="add-cta"
       >
         + Add Certificate

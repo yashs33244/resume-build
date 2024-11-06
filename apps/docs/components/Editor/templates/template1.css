@@ -158,6 +158,18 @@
     margin-top: 1.5rem;
 }
 
+.template1-container .M .projects {
+    margin-top: 1.12rem;
+}
+
+.template1-container .S .projects {
+    margin-top: 0.85rem;
+}
+
+.template1-container .L .projects {
+    margin-top: 1.5rem;
+}
+
 .template1-container .M .experience .section-title {
     color: #a6aaad;
     font-size: 0.5rem;
@@ -172,6 +184,20 @@
     font-size: 0.62rem;
 }
 
+.template1-container .M .projects .section-title {
+    color: #a6aaad;
+    font-size: 0.5rem;
+    font-weight: 600;
+}
+
+.template1-container .S .projects .section-title {
+    font-size: 0.38rem;
+}
+
+.template1-container .L .projects .section-title {
+    font-size: 0.62rem;
+}
+
 .template1-container .M .experience .exp-container {
     margin-top: 0.56rem;
 }
@@ -181,6 +207,18 @@
 }
 
 .template1-container .L .experience .exp-container {
+    margin-top: 0.7rem;
+}
+
+.template1-container .M .projects .proj-container {
+    margin-top: 0.56rem;
+}
+
+.template1-container .S .projects .proj-container {
+    margin-top: 0.4rem;
+}
+
+.template1-container .L .projects .proj-container {
     margin-top: 0.7rem;
 }
 
@@ -198,6 +236,20 @@
     font-size: 0.7rem;
 }
 
+.template1-container .M .projects .proj-container .proj-name {
+    color: #323336;
+    font-size: 0.56rem;
+    font-weight: 600;
+}
+
+.template1-container .S .projects .proj-container .proj-name {
+    font-size: 0.42rem;
+}
+
+.template1-container .L .projects .proj-container .proj-name {
+    font-size: 0.7rem;
+}
+
 .template1-container .M .experience .exp-container .role-duration {
     color: #707678;
     font-size: 0.52rem;
@@ -208,6 +260,19 @@
 }
 
 .template1-container .L .experience .exp-container .role-duration {
+    font-size: 0.7rem;
+}
+
+.template1-container .M .projects .proj-container .link-duration {
+    color: #707678;
+    font-size: 0.52rem;
+}
+
+.template1-container .S .projects .proj-container .link-duration {
+    font-size: 0.38rem;
+}
+
+.template1-container .L .projects .proj-container .link-duration {
     font-size: 0.7rem;
 }
 
@@ -224,6 +289,19 @@
     font-size: 0.62rem;
 }
 
+.template1-container .M .projects .proj-container .responsibilities {
+    color: #323336;
+    font-size: 0.5rem;
+}
+
+.template1-container .S .projects .proj-container .responsibilities {
+    font-size: 0.38rem;
+}
+
+.template1-container .L .projects .proj-container .responsibilities {
+    font-size: 0.62rem;
+}
+
 .template1-container .M .experience .exp-container .responsibilities ul {
     list-style: disc;
     padding: 0 1rem;
@@ -237,6 +315,19 @@
     padding: 0 1.25rem;
 }
 
+.template1-container .M .projects .proj-container .responsibilities ul {
+    list-style: disc;
+    padding: 0 1rem;
+}
+
+.template1-container .S .projects .proj-container .responsibilities ul {
+    padding: 0 0.75rem;
+}
+
+.template1-container .L .projects .proj-container .responsibilities ul {
+    padding: 0 1.25rem;
+}
+
 .template1-container .M .education {
     margin-top: 1.12rem;
 }
@@ -246,6 +337,18 @@
 }
 
 .template1-container .L .education {
+    margin-top: 1.5rem;
+}
+
+.template1-container .M .certificates {
+    margin-top: 1.12rem;
+}
+
+.template1-container .S .certificates {
+    margin-top: 0.85rem;
+}
+
+.template1-container .L .certificates {
     margin-top: 1.5rem;
 }
 
@@ -263,6 +366,20 @@
     font-size: 0.62rem;
 }
 
+.template1-container .M .certificates .section-title {
+    color: #a6aaad;
+    font-size: 0.5rem;
+    font-weight: 600;
+}
+
+.template1-container .S .certificates .section-title {
+    font-size: 0.38rem;
+}
+
+.template1-container .L .certificates .section-title {
+    font-size: 0.62rem;
+}
+
 .template1-container .M .education .edu-container {
     margin-top: 0.56rem;
 }
@@ -272,6 +389,18 @@
 }
 
 .template1-container .L .education .edu-container {
+    margin-top: 0.7rem;
+}
+
+.template1-container .M .certificates .cert-container {
+    margin-top: 0.56rem;
+}
+
+.template1-container .S .certificates .cert-container {
+    margin-top: 0.4rem;
+}
+
+.template1-container .L .certificates .cert-container {
     margin-top: 0.7rem;
 }
 
@@ -289,6 +418,20 @@
     font-size: 0.7rem;
 }
 
+.template1-container .M .certificates .cert-container .cert-name {
+    color: #323336;
+    font-size: 0.56rem;
+    font-weight: 600;
+}
+
+.template1-container .S .certificates .cert-container .cert-name {
+    font-size: 0.42rem;
+}
+
+.template1-container .L .certificates .cert-container .cert-name {
+    font-size: 0.7rem;
+}
+
 .template1-container .M .education .edu-container .degree-major {
     color: #707678;
     font-size: 0.52rem;
@@ -299,6 +442,19 @@
 }
 
 .template1-container .L .education .edu-container .degree-major {
+    font-size: 0.7rem;
+}
+
+.template1-container .M .certificates .cert-container .issuing {
+    color: #707678;
+    font-size: 0.52rem;
+}
+
+.template1-container .S .certificates .cert-container .issuing {
+    font-size: 0.38rem;
+}
+
+.template1-container .L .certificates .cert-container .issuing {
     font-size: 0.7rem;
 }
 
@@ -419,3 +575,5 @@
 .template1-container .L .achievements .ach-container .achievement {
     font-size: 0.62rem;
 }
+
+

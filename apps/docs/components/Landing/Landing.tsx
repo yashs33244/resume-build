@@ -52,42 +52,90 @@ import "react-alice-carousel/lib/alice-carousel.css";
 import "./App.scss";
 import { useSession } from "next-auth/react";
 import { FaCircleCheck } from "react-icons/fa6";
+import {
+  templateClassSelector,
+  useTemplateSync,
+} from "../../store/templatesState";
+import { useRecoilValue } from "recoil";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useSaveResume } from "../../hooks/useSaveResume";
+import { initialResumeData } from "../../utils/resumeData";
 // import { useSession } from "next-auth/react";
+type LandingPageTemplateType = "classic" | "modern" | "bold";
+type ActualTemplateType = "fresher" | "experienced" | "designer";
+
+const templateMapping: Record<LandingPageTemplateType, ActualTemplateType> = {
+  classic: "fresher",
+  modern: "experienced",
+  bold: "designer",
+};
+
+const reverseTemplateMapping: Record<
+  LandingPageTemplateType,
+  ActualTemplateType
+> = {
+  classic: "fresher",
+  modern: "experienced",
+  bold: "designer",
+};
 
 export default function LandingPage() {
-  // const { data: session, status: sessionStatus } = useSession();
-  const [selectedTemplate, setSelected] = useState("classic");
+  const [selectedTemplate, setSelectedTemplate] =
+    useState<LandingPageTemplateType>("classic");
   const { data: session, status: sessionStatus } = useSession();
+  const { template, setTemplateAndUpdateURL } = useTemplateSync();
+  const templateClass = useRecoilValue<any>(templateClassSelector);
+  const router = useRouter();
+
+  const { saveResume, isSaving } = useSaveResume();
+  const searchParams = useSearchParams();
+
+  const handleSetTemplate = (template: LandingPageTemplateType) => {
+    setSelectedTemplate(template);
+
+    // Encode the parameters properly
+    const params = new URLSearchParams({
+      callbackUrl: `/create-preference?template=${template}&fromLanding=true`,
+      fromLanding: "true",
+      template: template,
+    }).toString();
+
+    if (!session?.user) {
+      // Include template in the signin URL
+      router.push(`/api/auth/signin?${params}`);
+    } else {
+      // Direct navigation for logged-in users
+      router.push(`/create-preference?template=${template}&fromLanding=true`);
+    }
+  };
+
+  // Handle post-login redirect
+  useEffect(() => {
+    const template = searchParams.get("template");
+    const fromLanding = searchParams.get("fromLanding") === "true";
+
+    if (session?.user && fromLanding && template) {
+      router.push(`/create-preference?template=${template}&fromLanding=true`);
+    }
+  }, [session, searchParams, router]);
+  // Map current templates to the respective images
   const currentTemplate: { [key: string]: string } = {
     classic: temp_resume1.src,
     modern: temp_resume2.src,
     bold: temp_resume3.src,
-  } as { [key: string]: string };
-
-  const templateClass = {
-    classic: "back1",
-    modern: "back2",
-    bold: "back3",
-    pro: "back4",
-    creative: "back5",
   };
 
+  // Handle redirect based on user session
+  const handleRedirect = () => {
+    if (session?.user) {
+      const actualTemplate = templateMapping[template]; // Use the correct mapping
+      router.push(`/select-templates/editor?template=${actualTemplate}`);
+    } else {
+      router.push("/api/auth/signin");
+    }
+  };
   return (
     <div className="App">
-      {/* <div className="top-bar">
-        <div className="logo-container">
-          <img alt="logo" src={logo.src} width="170px" height="auto" />
-        </div>
-        <div className="navbar-container">
-          <div>Cover Letter</div>
-          {session?.user ? (
-            <Link href="/api/auth/signin">Logout</Link>
-          ) : (
-            <Link href="/api/auth/signin">Login</Link>
-          )}
-          <button>Create Resume</button>
-        </div>
-      </div> */}
       <div className="legend-container">
         <div className="left-container">
           <div className="title">A no bullshit Resume</div>
@@ -125,7 +173,7 @@ export default function LandingPage() {
             <MdRocketLaunch />
             <div>
               {session?.user ? (
-                <Link href="/select-templates/editor"> Get Started</Link>
+                <Link href="/dashboard"> Get Started</Link>
               ) : (
                 <Link href="/api/auth/signin"> Get Started</Link>
               )}
@@ -145,7 +193,7 @@ export default function LandingPage() {
             </div>
           </div> */}
           <div style={{ marginTop: "36px" }}>
-            <Image alt="loved" src={lovedby} width="44%" />
+            <Image alt="loved" src={lovedby} style={{ width: "44%" }} />
           </div>
         </div>
         <div className="right-container">
@@ -226,7 +274,7 @@ export default function LandingPage() {
           <button>
             {/* <Link href="/editor"> Build My Resume</Link> */}
             {session?.user ? (
-              <Link href="/select-templates/editor"> Build My Resume</Link>
+              <Link href="/dashboard"> Build My Resume</Link>
             ) : (
               <Link href="/api/auth/signin"> Build My Resume</Link>
             )}
@@ -245,24 +293,36 @@ export default function LandingPage() {
           <div className="nav-container">
             <div
               className={`${selectedTemplate === "classic" ? "nav-item selected" : "nav-item"}`}
-              onClick={() => setSelected("classic")}
+              onClick={() => {
+                setTemplateAndUpdateURL("classic"),
+                  setSelectedTemplate("classic");
+              }}
             >
               Fresher
             </div>
             <div
               className={`${selectedTemplate === "modern" ? "nav-item selected" : "nav-item"}`}
-              onClick={() => setSelected("modern")}
+              onClick={() => {
+                setTemplateAndUpdateURL("modern"),
+                  setSelectedTemplate("modern");
+              }}
             >
               Experienced
             </div>
             <div
               className={`${selectedTemplate === "bold" ? "nav-item selected" : "nav-item"}`}
-              onClick={() => setSelected("bold")}
+              onClick={() => {
+                setTemplateAndUpdateURL("bold");
+                setSelectedTemplate("bold");
+              }}
             >
               Presentable
             </div>
-            <div className="template-cta">
-              <Link href="/editor">Use This Template</Link>
+            <div
+              className="template-cta"
+              onClick={() => handleSetTemplate(template)}
+            >
+              Use This Template
             </div>
           </div>
           <div className="image-container">
@@ -460,11 +520,10 @@ export default function LandingPage() {
               <Image src={stars} alt="stars" />
             </div>
             <div className="content">
-            "The only resume building platform which also gives you job interviews. That’s what mattered for me the most."
+              "The only resume building platform which also gives you job
+              interviews. That’s what mattered for me the most."
             </div>
-            <div className="timestamp">
-              Jan 3, 2024
-            </div>
+            <div className="timestamp">Jan 3, 2024</div>
           </div>
           <div className="testimony">
             <div className="header">
@@ -478,11 +537,10 @@ export default function LandingPage() {
               <Image src={stars} alt="stars" />
             </div>
             <div className="content">
-              "There custom AI prompts and tips were truly a live saver. I could finally write my experiences professionally."
+              "There custom AI prompts and tips were truly a live saver. I could
+              finally write my experiences professionally."
             </div>
-            <div className="timestamp">
-              Jan 19, 2024
-            </div>
+            <div className="timestamp">Jan 19, 2024</div>
           </div>
           <div className="testimony">
             <div className="header">
@@ -496,11 +554,10 @@ export default function LandingPage() {
               <Image src={stars} alt="stars" />
             </div>
             <div className="content">
-              "Super satisfied. You don’t need fancy templates. My ATS friendly resume gets screened and attention easily."
+              "Super satisfied. You don’t need fancy templates. My ATS friendly
+              resume gets screened and attention easily."
             </div>
-            <div className="timestamp">
-              Mar 12, 2024
-            </div>
+            <div className="timestamp">Mar 12, 2024</div>
           </div>
           <div className="testimony first second">
             <div className="header">
@@ -514,11 +571,10 @@ export default function LandingPage() {
               <Image src={stars} alt="stars" />
             </div>
             <div className="content">
-              "This is game changer. I could build my impressive resume from scratch in just a few minutes. Totally worth it."
+              "This is game changer. I could build my impressive resume from
+              scratch in just a few minutes. Totally worth it."
             </div>
-            <div className="timestamp">
-              May 21, 2024
-            </div>
+            <div className="timestamp">May 21, 2024</div>
           </div>
           <div className="testimony second">
             <div className="header">
@@ -532,11 +588,10 @@ export default function LandingPage() {
               <Image src={stars} alt="stars" />
             </div>
             <div className="content">
-              "Tailoring your resume for every job profile in this market is like mandatory. I’m glad I landed on FinalCV."
+              "Tailoring your resume for every job profile in this market is
+              like mandatory. I’m glad I landed on FinalCV."
             </div>
-            <div className="timestamp">
-              May 28, 2024
-            </div>
+            <div className="timestamp">May 28, 2024</div>
           </div>
           <div className="testimony second">
             <div className="header">
@@ -550,11 +605,10 @@ export default function LandingPage() {
               <Image src={stars} alt="stars" />
             </div>
             <div className="content">
-              "What an honest product. It removes all noise and irrelavant stuff to focus only on building your resume that works."
+              "What an honest product. It removes all noise and irrelavant stuff
+              to focus only on building your resume that works."
             </div>
-            <div className="timestamp">
-              Jul 7, 2024
-            </div>
+            <div className="timestamp">Jul 7, 2024</div>
           </div>
         </div>
       </div>

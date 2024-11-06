@@ -86,3 +86,27 @@
         }
     }
 }
+
+.select-cta {
+    font-size: 1rem;
+    font-weight: bold;
+    color: white;
+    background-color: #0070f3;
+    padding: 0.5rem 1rem;
+    border-radius: 0.25rem;
+    transition: background-color 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  
+    &.open {
+      background-color: #005bb5;
+    }
+  
+    .loader {
+      font-size: 0.9rem;
+      color: #f3f4f6;
+    }
+  }
+  

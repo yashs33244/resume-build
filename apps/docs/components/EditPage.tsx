@@ -1,7 +1,14 @@
 "use client";
 import dynamic from "next/dynamic";
 import Image from "next/image";
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, {
+  Suspense,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import "./EditPage.scss";
 import { Education } from "./Editor/Education";
 import { Skills } from "./Editor/Skills";
@@ -26,14 +33,17 @@ import "react-responsive-modal/styles.css";
 import Link from "next/link";
 import ChanegTemplate from "./changeTemplate/ChangeTemplate";
 import { useRouter } from "next/navigation";
-import { useSaveResume } from "../hooks/useSaveResume";
-import useAiSuggestion from "../hooks/useAiSuggestions";
 import { ResumeProps } from "../types/ResumeProps";
 import { useSession } from "next-auth/react";
-import Modal from "react-responsive-modal";
-import { isOpacityEffect } from "html2canvas/dist/types/render/effects";
 import { resumeSizeAtom } from "../store/resumeSize";
 import { useRecoilState } from "recoil";
+import { Tooltip as ReactTooltip } from "react-tooltip";
+import "react-tooltip/dist/react-tooltip.css";
+import { useFetchResumeData } from "../hooks/useFetchResumeData";
+import { useResumeDraft } from "../hooks/useResumeDraft";
+import debounce from "lodash/debounce";
+import { useUserStatus } from "../hooks/useUserStatus";
+import { LandingLoader } from "./LandingLoader";
 
 const PersonalInfo = dynamic(
   () => import("./Editor/PersonalInfo").then((mod) => mod.PersonalInfo),
@@ -59,48 +69,147 @@ const Achievement = dynamic(
 export default function EditPage() {
   const [currentTemplate, setCurrentTemplate] = useState("template1");
   const [resumeSize, setResumeSize] = useRecoilState(resumeSizeAtom);
-  const [isOverflowing, setIsOverflowing] = useState(undefined);
+  const [isOverflowing, setIsOverflowing] = useState<boolean | undefined>(
+    undefined,
+  );
   const router = useRouter();
-  const [template, setTemplate] = useState<string | null>(null);
-  const [isModelOpen, setIsModelOpen] = useState(false);
-  const { handleAiSuggestion, isLoading, suggestions, error } =
-    useAiSuggestion();
-  const { data: session, status: sessionStatus } = useSession();
+  const [initails, setInitials] = useState("");
 
-  const { resumeData, handleInputChange, handleAddField, handleDeleteField } =
-    useResumeData();
+  const [isModelOpen, setIsModelOpen] = useState(false);
+  const [saveStatus, setSaveStatus] = useState<"saved" | "saving" | "error">(
+    "saved",
+  );
+  const { user, isPaid, refetchUser } = useUserStatus();
+
+  const { data: session, status: sessionStatus } = useSession();
+  const {
+    resumeData,
+    handleInputChange: baseHandleInputChange,
+    handleAddField,
+    handleDeleteField,
+  } = useResumeData((newData: ResumeProps) => {
+    setSaveStatus("saving");
+    debouncedSave(newData);
+  });
+
+  const resumeId = resumeData.resumeId;
+  const template = resumeData.templateId;
+
+  // Memoized save draft function
+  const saveDraft = useCallback(
+    async (data: ResumeProps) => {
+      if (!resumeId) {
+        console.error("No resume ID available");
+        setSaveStatus("error");
+        return;
+      }
+
+      try {
+        setSaveStatus("saving");
+        console.log("Saving resume data:", { resumeId, data });
+
+        const response = await fetch("/api/resume/saveResume/draft", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            resumeId,
+            content: {
+              ...data,
+              state: "EDITING",
+              userId: session?.user?.id || "default-user-id",
+            },
+          }),
+        });
+
+        const result = await response.json();
+
+        if (!response.ok) {
+          throw new Error(result.error || "Failed to save draft");
+        }
+
+        console.log("Save successful:", result);
+        setSaveStatus("saved");
+      } catch (error) {
+        console.error("Error saving draft:", error);
+        setSaveStatus("error");
+      }
+    },
+    [resumeId, session?.user?.id],
+  );
+
+  // Create debounced save function
+  const debouncedSave = useCallback(
+    debounce((data: ResumeProps) => {
+      saveDraft(data);
+    }, 5000),
+    [saveDraft],
+  );
+
+  // Initialize resume data with change tracking
+
+  // Enhanced input change handler
+  const handleInputChange = useCallback(
+    (field: any, value: any, section?: string, index?: number) => {
+      baseHandleInputChange(field, value, section, index);
+      setSaveStatus("saving");
+    },
+    [baseHandleInputChange],
+  );
+
+  // Cleanup debounced save on unmount
+  useEffect(() => {
+    return () => {
+      debouncedSave.cancel();
+    };
+  }, [debouncedSave]);
+
+  useEffect(() => {
+    if (session?.user?.name) {
+      const nameParts = session.user.name.split(" ");
+      // Get the first two initials or fallback to an empty string
+      const firstInitial = nameParts[0]?.[0] || "";
+      const secondInitial = nameParts[1]?.[0] || "";
+      setInitials(firstInitial + secondInitial);
+    }
+  }, [session]);
+
   const { activeSection, handleSectionChange, sections, setActiveSection } =
     useActiveSection();
-
   const openModel = () => {
-    setIsModelOpen(true);
+    if (isPaid) {
+      setIsModelOpen(true);
+    } else {
+      router.push("/select-templates/checkout");
+    }
   };
 
   const closeModel = () => {
     setIsModelOpen(false);
   };
-  useEffect(() => {
-    // Check if the window is available (runs only on client-side)
-    if (typeof window !== "undefined") {
-      // Try to get the template from the URL first
-      const searchParams = new URLSearchParams(window.location.search);
-      let templateParam = searchParams.get("template");
+  // useEffect(() => {
+  //   // Check if the window is available (runs only on client-side)
+  //   if (typeof window !== "undefined") {
+  //     const searchParams = new URLSearchParams(window.location.search);
+  //     let templateParam = searchParams.get("template");
 
-      // If no template was selected via URL, try localStorage
-      if (!templateParam) {
-        const storedTemplate = localStorage.getItem("selectedTemplate");
-        templateParam = storedTemplate || "fresher"; // Default to "fresher" if nothing in localStorage
-      }
+  //     // If no template is selected in the URL, check localStorage or default to "fresher"
+  //     if (!templateParam) {
+  //       const storedTemplate = localStorage.getItem("resumeData.templateId");
+  //       templateParam = storedTemplate || "fresher"; // Default to "fresher"
+  //     }
 
-      // Set the template state
-      setTemplate(templateParam);
+  //     // Set the template state with the selected or default value
+  //     setTemplate(templateParam);
 
-      // Save the selected template to localStorage for future use
-      localStorage.setItem("selectedTemplate", templateParam);
-    }
-  }, []);
+  //     // Save the selected template to localStorage
+  //     localStorage.setItem("selectedTemplate", templateParam);
+  //   }
+  // }, []);
 
   const renderTemplate = () => {
+    console.log("Template", template);
     switch (template) {
       case "fresher":
         return <Template1 resumeData={resumeData} id="wrapper" />;
@@ -114,7 +223,12 @@ export default function EditPage() {
   };
 
   const handleRedirect = async () => {
-    router.push("/dashboard");
+    try {
+      localStorage.removeItem("resumeData");
+      router.push("/dashboard");
+    } catch (error: any) {
+      console.log("Error", error);
+    }
   };
 
   const navElements = [
@@ -124,7 +238,6 @@ export default function EditPage() {
     "Project",
     "Skills",
     "Certificate",
-    "Language",
   ];
 
   const handleLeftNav = () => {
@@ -250,7 +363,6 @@ export default function EditPage() {
   };
   const handleSkillsSelect = (resumeData: ResumeProps) => {
     setActiveSection("Skills");
-    handleAiSuggestion(resumeData);
   };
 
   const templateChangeHandler = (e: any) => {
@@ -266,212 +378,280 @@ export default function EditPage() {
   };
 
   return (
-    <div className="flex flex-col w-full min-h-screen bg-background text-foreground dark:bg-[#1a1b1e] dark:text-white">
-      <Tips
-        activeSection={activeSection}
-        open={tipsOpen}
-        setTipsOpen={(val) => setTipsOpen(val)}
-      />
-      <div className="editor-container">
-        <div className="navigation">
-          <div className="login-container">
-            {session?.user ? (
-              <div className="login-cta" onClick={handleRedirect}>
-                <TbGridDots />
-                <div>PG</div>
-              </div>
-            ) : (
-              <div className="login-cta">
-                <TbGridDots />
-                <div>
-                  <Link href="/">PG</Link>
+    <Suspense fallback={<LandingLoader />}>
+      <div className="flex flex-col w-full min-h-screen bg-background text-foreground dark:bg-[#1a1b1e] dark:text-white">
+        <Tips
+          activeSection={activeSection}
+          open={tipsOpen}
+          setTipsOpen={(val: any) => setTipsOpen(val)}
+        />
+        <ReactTooltip
+          id="dashboard"
+          place="bottom"
+          content="Dashboard"
+          style={{ zIndex: "1000", backgroundColor: "#1B2432" }}
+        />
+        <ReactTooltip
+          id="personal"
+          place="right"
+          content="Personal Details"
+          style={{ zIndex: "1000", backgroundColor: "#1B2432" }}
+        />
+        <ReactTooltip
+          id="education"
+          place="right"
+          content="Education"
+          style={{ zIndex: "1000", backgroundColor: "#1B2432" }}
+        />
+        <ReactTooltip
+          id="experience"
+          place="right"
+          content="Work Experience"
+          style={{ zIndex: "1000", backgroundColor: "#1B2432" }}
+        />
+        <ReactTooltip
+          id="project"
+          place="right"
+          content="Projects"
+          style={{ zIndex: "1000", backgroundColor: "#1B2432" }}
+        />
+        <ReactTooltip
+          id="skills"
+          place="right"
+          content="Skills"
+          style={{ zIndex: "1000", backgroundColor: "#1B2432" }}
+        />
+        <ReactTooltip
+          id="certificate"
+          place="right"
+          content="Certificates"
+          style={{ zIndex: "1000", backgroundColor: "#1B2432" }}
+        />
+        <ReactTooltip
+          id="left"
+          place="bottom"
+          content="Previous Section"
+          style={{ zIndex: "1000", backgroundColor: "#1B2432" }}
+        />
+        <ReactTooltip
+          id="right"
+          place="bottom"
+          content="Next Section"
+          style={{ zIndex: "10000", backgroundColor: "#1B2432" }}
+        />
+        <div className="editor-container">
+          <div className="navigation">
+            <div className="login-container" data-tooltip-id="dashboard">
+              {session?.user ? (
+                <div className="login-cta" onClick={handleRedirect}>
+                  <TbGridDots />
+                  <div>{initails}</div>
                 </div>
-              </div>
-            )}
-          </div>
-          <div className="nav-container">
-            <div className="logo-placement">
-              <Image alt="short_logo" src={short_logo} width={50} height={50} />
-            </div>
-            <div
-              onClick={() => setActiveSection("Personal Info")}
-              className={`icon-container ${activeSection === "Personal Info" ? "border" : ""}`}
-            >
-              <FaUserTie
-                className={`icon ${activeSection === "Personal Info" ? "selected" : ""}`}
-              />
-            </div>
-            <div
-              onClick={() => setActiveSection("Education")}
-              className={`icon-container ${activeSection === "Education" ? "border" : ""}`}
-            >
-              <IoSchool
-                className={`icon ${activeSection === "Education" ? "selected" : ""}`}
-              />
-            </div>
-            <div
-              onClick={() => setActiveSection("Experience")}
-              className={`icon-container ${activeSection === "Experience" ? "border" : ""}`}
-            >
-              <FaSuitcase
-                className={`icon ${activeSection === "Experience" ? "selected" : ""}`}
-              />
-            </div>
-            <div
-              onClick={() => setActiveSection("Project")}
-              className={`icon-container ${activeSection === "Project" ? "border" : ""}`}
-            >
-              <AiFillProject
-                className={`icon ${activeSection === "Project" ? "selected" : ""}`}
-              />
-            </div>
-            <div
-              onClick={() => handleSkillsSelect(resumeData)}
-              className={`icon-container ${activeSection === "Skills" ? "border" : ""}`}
-            >
-              <FaTools
-                className={`icon ${activeSection === "Skills" ? "selected" : ""}`}
-              />
-            </div>
-            <div
-              onClick={() => setActiveSection("Certificate")}
-              className={`icon-container ${activeSection === "Certificate" ? "border" : ""}`}
-            >
-              <PiCertificateFill
-                className={`icon ${activeSection === "Certificate" ? "selected" : ""}`}
-              />
-            </div>
-          </div>
-        </div>
-        <div className="editor">
-          <div className="section-header">
-            <div className="section-title">
-              {getSectionTitle(activeSection)}
-              <div className="tips" onClick={() => setTipsOpen(!tipsOpen)}>
-                <MdTipsAndUpdates />
-                <div>Tips</div>
-              </div>
-            </div>
-            <div className="move-container">
-              <CiCircleChevLeft
-                style={{
-                  marginRight: "50px",
-                  width: "40px",
-                  height: "40px",
-                  cursor: "pointer",
-                }}
-                onClick={handleLeftNav}
-              />
-              <PiCaretCircleRightFill
-                style={{ width: "40px", height: "40px", cursor: "pointer" }}
-                onClick={handleRightNav}
-              />
-            </div>
-          </div>
-          <div className="material-container">
-            {activeSection === "Personal Info" && (
-              <PersonalInfo
-                resumeData={resumeData}
-                handleInputChange={handleInputChange}
-              />
-            )}
-            {activeSection === "Education" && (
-              <Education
-                resumeData={resumeData}
-                handleInputChange={handleInputChange}
-                handleAddField={handleAddField}
-                handleDeleteField={handleDeleteField}
-              />
-            )}
-            {activeSection === "Experience" && (
-              <Experience
-                resumeData={resumeData}
-                handleInputChange={handleInputChange}
-                handleAddField={handleAddField}
-                handleDeleteField={handleDeleteField}
-              />
-            )}
-            {activeSection === "Skills" && (
-              <Skills
-                resumeData={resumeData}
-                handleInputChange={handleInputChange}
-                handleAddField={handleAddField}
-                handleDeleteField={handleDeleteField}
-              />
-            )}
-            {activeSection === "Project" && (
-              <Project
-                resumeData={resumeData}
-                handleInputChange={handleInputChange}
-                handleAddField={handleAddField}
-                handleDeleteField={handleDeleteField}
-              />
-            )}
-            {activeSection === "Certificate" && (
-              <Certificate
-                resumeData={resumeData}
-                handleInputChange={handleInputChange}
-                handleAddField={handleAddField}
-                handleDeleteField={handleDeleteField}
-              />
-            )}
-            {activeSection === "Language" && (
-              <Language
-                resumeData={resumeData}
-                handleInputChange={handleInputChange}
-                handleAddField={handleAddField}
-                handleDeleteField={handleDeleteField}
-              />
-            )}
-          </div>
-        </div>
-        <div className="preview">
-          <div className="tools">
-            <div className="tools-container">
-              <ChanegTemplate />
-              <div className="download-container cursor-pointer">
-                {session?.user ? (
-                  <div className="download" onClick={openModel}>
-                    <IoMdDownload />
-                    <div>Download</div>
+              ) : (
+                <div className="login-cta">
+                  <TbGridDots />
+                  <div>
+                    <Link href="/">{initails}</Link>
                   </div>
-                ) : (
-                  <div className="download">
-                    {" "}
-                    <Link href="/api/auth/signin">Login to download</Link>
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
-          <div className="preview-container" id="resumeParent">
-            {renderTemplate()}
-          </div>
-          {isOverflowing && (
-            <div className="overflow_div">
-              <span className="overflow_div_p1">
-                Your content is overflowing. You can optimize the content
-              </span>
-              {["M", "L"].includes(resumeSize) && (
-                <span className="overflow_div_p1">
-                  &nbsp;or you can click&nbsp;
-                  <span onClick={reduceSize} className="overflow_div_action">
-                    here
-                  </span>
-                  &nbsp;to reduce the size
-                </span>
+                </div>
               )}
             </div>
-          )}
+            <div className="nav-container">
+              <div className="logo-placement">
+                <Image
+                  alt="short_logo"
+                  src={short_logo}
+                  width={50}
+                  height={50}
+                />
+              </div>
+              <div
+                onClick={() => setActiveSection("Personal Info")}
+                className={`icon-container ${activeSection === "Personal Info" ? "border" : ""}`}
+                data-tooltip-id="personal"
+              >
+                <FaUserTie
+                  className={`icon ${activeSection === "Personal Info" ? "selected" : ""}`}
+                />
+              </div>
+              <div
+                onClick={() => setActiveSection("Education")}
+                className={`icon-container ${activeSection === "Education" ? "border" : ""}`}
+                data-tooltip-id="education"
+              >
+                <IoSchool
+                  className={`icon ${activeSection === "Education" ? "selected" : ""}`}
+                />
+              </div>
+              <div
+                onClick={() => setActiveSection("Experience")}
+                className={`icon-container ${activeSection === "Experience" ? "border" : ""}`}
+                data-tooltip-id="experience"
+              >
+                <FaSuitcase
+                  className={`icon ${activeSection === "Experience" ? "selected" : ""}`}
+                />
+              </div>
+              <div
+                onClick={() => setActiveSection("Project")}
+                className={`icon-container ${activeSection === "Project" ? "border" : ""}`}
+                data-tooltip-id="project"
+              >
+                <AiFillProject
+                  className={`icon ${activeSection === "Project" ? "selected" : ""}`}
+                />
+              </div>
+              <div
+                onClick={() => handleSkillsSelect(resumeData)}
+                className={`icon-container ${activeSection === "Skills" ? "border" : ""}`}
+                data-tooltip-id="skills"
+              >
+                <FaTools
+                  className={`icon ${activeSection === "Skills" ? "selected" : ""}`}
+                />
+              </div>
+              <div
+                onClick={() => setActiveSection("Certificate")}
+                className={`icon-container ${activeSection === "Certificate" ? "border" : ""}`}
+                data-tooltip-id="certificate"
+              >
+                <PiCertificateFill
+                  className={`icon ${activeSection === "Certificate" ? "selected" : ""}`}
+                />
+              </div>
+            </div>
+          </div>
+          <div className="editor">
+            <div className="section-header">
+              <div className="section-title">
+                {getSectionTitle(activeSection)}
+                <div className="tips" onClick={() => setTipsOpen(!tipsOpen)}>
+                  <MdTipsAndUpdates />
+                  <div>Tips</div>
+                </div>
+              </div>
+              <div className="move-container">
+                <CiCircleChevLeft
+                  data-tooltip-id="left"
+                  style={{
+                    marginRight: "50px",
+                    width: "40px",
+                    height: "40px",
+                    cursor: "pointer",
+                  }}
+                  onClick={handleLeftNav}
+                />
+                <PiCaretCircleRightFill
+                  data-tooltip-id="right"
+                  style={{ width: "40px", height: "40px", cursor: "pointer" }}
+                  onClick={handleRightNav}
+                />
+              </div>
+            </div>
+            <div className="material-container">
+              {activeSection === "Personal Info" && (
+                <PersonalInfo
+                  resumeData={resumeData}
+                  handleInputChange={handleInputChange}
+                />
+              )}
+              {activeSection === "Education" && (
+                <Education
+                  resumeData={resumeData}
+                  handleInputChange={handleInputChange}
+                  handleAddField={handleAddField}
+                  handleDeleteField={handleDeleteField}
+                />
+              )}
+              {activeSection === "Experience" && (
+                <Experience
+                  resumeData={resumeData}
+                  handleInputChange={handleInputChange}
+                  handleAddField={handleAddField}
+                  handleDeleteField={handleDeleteField}
+                />
+              )}
+              {activeSection === "Skills" && (
+                <Skills
+                  resumeData={resumeData}
+                  handleInputChange={handleInputChange}
+                  handleAddField={handleAddField}
+                  handleDeleteField={handleDeleteField}
+                />
+              )}
+              {activeSection === "Project" && (
+                <Project
+                  resumeData={resumeData}
+                  handleInputChange={handleInputChange}
+                  handleAddField={handleAddField}
+                  handleDeleteField={handleDeleteField}
+                />
+              )}
+              {activeSection === "Certificate" && (
+                <Certificate
+                  resumeData={resumeData}
+                  handleInputChange={handleInputChange}
+                  handleAddField={handleAddField}
+                  handleDeleteField={handleDeleteField}
+                />
+              )}
+              {activeSection === "Language" && (
+                <Language
+                  resumeData={resumeData}
+                  handleInputChange={handleInputChange}
+                  handleAddField={handleAddField}
+                  handleDeleteField={handleDeleteField}
+                />
+              )}
+            </div>
+          </div>
+          <div className="preview">
+            <div className="tools">
+              <div className="tools-container">
+                <ChanegTemplate resumeId={resumeId} />
+                <div className="download-container cursor-pointer">
+                  {session?.user ? (
+                    <div className="download" onClick={openModel}>
+                      <IoMdDownload />
+                      <div>Download</div>
+                    </div>
+                  ) : (
+                    <div className="download">
+                      {" "}
+                      <Link href="/api/auth/signin">Login to download</Link>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+            <div className="preview-container" id="resumeParent">
+              {renderTemplate()}
+            </div>
+            {isOverflowing && (
+              <div className="overflow_div">
+                <span className="overflow_div_p1">
+                  Your content is overflowing. You can optimize the content
+                </span>
+                {["M", "L"].includes(resumeSize) && (
+                  <span className="overflow_div_p1">
+                    &nbsp;or you can click&nbsp;
+                    <span onClick={reduceSize} className="overflow_div_action">
+                      here
+                    </span>
+                    &nbsp;to reduce the size
+                  </span>
+                )}
+              </div>
+            )}
+          </div>
+          <DownloadModel
+            isOpen={isModelOpen}
+            onClose={closeModel}
+            resumeData={resumeData}
+            templateId={template || ""}
+          />
         </div>
-        <DownloadModel
-          isOpen={isModelOpen}
-          onClose={closeModel}
-          resumeData={resumeData}
-          templateId={template || ""}
-          renderTemplate={renderTemplate}
-        />
       </div>
-    </div>
+    </Suspense>
   );
 }

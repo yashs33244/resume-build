@@ -13,19 +13,28 @@ export default function Header() {
 
   const handleSignOut = async (e: any) => {
     e.preventDefault();
-    await signOut({ callbackUrl: "/" });
+    await signOut({
+      callbackUrl: "/?redirectType=signout",
+      redirect: true,
+    });
   };
 
   return (
     <div className="header-container">
       <div className="logo-container">
-        <Link href="/">
-          <Image alt="logo" src={logo} width={130} />
-        </Link>
+        {session?.user ? (
+          <Link href="/dashboard">
+            <Image alt="logo" src={logo} width={130} />
+          </Link>
+        ) : (
+          <Link href="/">
+            <Image alt="logo" src={logo} width={130} />
+          </Link>
+        )}
       </div>
       {session?.user ? (
         <div className="login-cta">
-          <a href="#" onClick={handleSignOut}>
+          <a href="/" onClick={handleSignOut}>
             Logout
           </a>
         </div>
@@ -35,7 +44,7 @@ export default function Header() {
             <Link href="/api/auth/signin">Login</Link>
           </div>
           <div className="create-cta">
-            <Link href={"/select-templates"}>Create Resume</Link>
+            <Link href={"/api/auth/signin"}>Create Resume</Link>
           </div>
         </div>
       )}

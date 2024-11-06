@@ -268,3 +268,38 @@
     list-style-position: inside;
   }
   
+  /* Projects and Certificates Sections */
+.template3-wrapper .rp_projerience_div_value_section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.template3-wrapper .rp_projerience_div_value_section_name {
+  font-size: var(--experience-section-name-size);
+  font-weight: 700;
+  line-height: normal;
+}
+
+.template3-wrapper .rp_projerience_div_value_section_year {
+  font-size: var(--experience-section-year-size);
+  line-height: normal;
+}
+
+.template3-wrapper .rp_projerience_div_value_section_work {
+  font-size: var(--experience-section-work-size);
+  line-height: normal;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.template3-wrapper .rp_projerience_div_value_section_work ul {
+  list-style: disc;
+  padding: var(--ul-padding);
+}
+
+.template3-wrapper .rp_projerience_div_value_section_work ol {
+  list-style: decimal;
+  list-style-position: inside;
+}

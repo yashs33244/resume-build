@@ -28,9 +28,7 @@ export const Language: React.FC<LanguageProps> = ({
   handleDeleteField,
 }) => {
   const [language, setLanguage] = useState("");
-  const [techSkill, setTechSkill] = useState("");
   const [suggestions, setSuggestions] = useState<string[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
 
   const addLanguage = (language: string) => {
     if (language.trim()) {

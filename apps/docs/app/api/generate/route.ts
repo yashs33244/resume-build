@@ -8,7 +8,8 @@ const buildGoogleGenAIPrompt = (prompt: string) => ({
     { 
       role: 'user', 
       parts: [{ 
-        text: `Please provide a short, professional response to the following prompt. The response should be in plain text, not markdown format, and should be concise and suitable for a resume or professional profile:\n\n${prompt}` 
+        text: `give response not in readme , give a response so that it can render on react quill ediotr , give response in <p> tags and <ul> and <li> tags
+        \n\n${prompt}` 
       }] 
     }
   ],
