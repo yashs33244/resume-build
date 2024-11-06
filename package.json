@@ -16,7 +16,7 @@
     "build:docs": "cd apps/docs && pnpm run build",
     "prisma:generate": "cd packages/db && npx prisma generate",
     "db:migrate": "cd packages/db && npx prisma migrate deploy",
-    "vercel-build": "pnpm prisma:generate && pnpm build"
+    "vercel-build": "pnpm -F packages/db prisma:generate && pnpm build"
   },
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",
