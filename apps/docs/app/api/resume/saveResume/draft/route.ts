@@ -3,7 +3,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "../../../../lib/auth";
 import { db } from "../../../../db";
 import { ResumeProps } from "../../../../../types/ResumeProps";
-import { ResumeState } from "@prisma/client";
+import { ResumeState, Prisma } from "@prisma/client";
 
 export async function POST(request: NextRequest) {
   try {
@@ -28,108 +28,104 @@ export async function POST(request: NextRequest) {
 
     const templateId = content.templateId;
 
-    // Update resume and all related data in a transaction
+    // Prepare all the data operations
+    const prepareEducation = (resumeId: string, education: any[]) =>
+      education?.map((edu) => ({
+        resumeId,
+        institution: edu.institution,
+        major: edu.major,
+        start: edu.start,
+        end: edu.end,
+        degree: edu.degree,
+        score: typeof edu.score === 'string' ? parseFloat(edu.score) : edu.score,
+      })) || [];
+
+    const prepareExperience = (resumeId: string, experience: any[]) =>
+      experience?.map((exp) => ({
+        resumeId,
+        company: exp.company,
+        role: exp.role,
+        start: exp.start,
+        end: exp.end,
+        responsibilities: exp.responsibilities,
+        current: exp.current,
+      })) || [];
+
+    // Split transaction into smaller chunks
     const updatedResume = await db.$transaction(async (tx) => {
-      // 1. Update or create the main resume record
+      // 1. Main resume record
       const resume = await tx.resume.upsert({
         where: { id: resumeId },
         create: {
           id: resumeId,
           userId: session.user.id,
           state: ResumeState.EDITING,
-          templateId: templateId,
+          templateId,
         },
         update: {
           state: ResumeState.EDITING,
-          templateId: templateId,
+          templateId,
           updatedAt: new Date(),
         },
       });
 
-      // 2. Update personal info
+      // 2. Personal Info
       if (content.personalInfo) {
         await tx.personalInfo.upsert({
           where: { resumeId },
-          create: {
-            resumeId,
-            ...content.personalInfo,
-          },
+          create: { resumeId, ...content.personalInfo },
           update: content.personalInfo,
         });
       }
 
-      // 3. Update education records
-      if (content.education?.length > 0) {
-        // Delete existing education records
+      // 3. Education & Experience (Batch operations)
+      if (content.education?.length) {
         await tx.education.deleteMany({ where: { resumeId } });
-        // Create new education records
         await tx.education.createMany({
-          data: content.education.map((edu:any) => ({
-            resumeId,
-            institution: edu.institution,
-            major: edu.major,
-            start: edu.start,
-            end: edu.end,
-            degree: edu.degree,
-            score: parseFloat(edu.score)// to float,
-          })),
+          data: prepareEducation(resumeId, content.education),
         });
       }
 
-      // 4. Update experience records
-      if (content.experience?.length > 0) {
+      if (content.experience?.length) {
         await tx.experience.deleteMany({ where: { resumeId } });
         await tx.experience.createMany({
-          data: content.experience.map((exp:any) => ({
-            resumeId,
-            company: exp.company,
-            role: exp.role,
-            start: exp.start,
-            end: exp.end,
-            responsibilities: exp.responsibilities,
-            current: exp.current,
-          })),
+          data: prepareExperience(resumeId, content.experience),
         });
       }
 
-      // 5. Update skills
-      if (content.skills?.length > 0) {
-        await tx.skill.deleteMany({ where: { resumeId } });
-        await tx.skill.createMany({
-          data: content.skills.map((skill:any) => ({
-            resumeId,
-            name: skill,
-          })),
-        });
+      // 4. Skills, Core Skills, Languages (Simple arrays)
+      const simpleArrays = [
+        { model: tx.skill, data: content.skills },
+        { model: tx.coreSkill, data: content.coreSkills },
+        { model: tx.language, data: content.languages },
+      ];
+
+      for (const { model, data } of simpleArrays) {
+        if (data?.length) {
+          if (model === tx.skill) {
+            await (model as typeof tx.skill).deleteMany({ where: { resumeId } });
+            await (model as typeof tx.skill).createMany({
+              data: data.map((name: string) => ({ resumeId, name })),
+            });
+          } else if (model === tx.coreSkill) {
+            await (model as typeof tx.coreSkill).deleteMany({ where: { resumeId } });
+            await (model as typeof tx.coreSkill).createMany({
+              data: data.map((name: string) => ({ resumeId, name })),
+            });
+          } else if (model === tx.language) {
+            await (model as typeof tx.language).deleteMany({ where: { resumeId } });
+            await (model as typeof tx.language).createMany({
+              data: data.map((name: string) => ({ resumeId, name })),
+            });
+          }
+        }
       }
 
-      // 6. Update core skills
-      if (content.coreSkills?.length > 0) {
-        await tx.coreSkill.deleteMany({ where: { resumeId } });
-        await tx.coreSkill.createMany({
-          data: content.coreSkills.map((skill:any) => ({
-            resumeId,
-            name: skill,
-          })),
-        });
-      }
-
-      // 7. Update languages
-      if (content.languages?.length > 0) {
-        await tx.language.deleteMany({ where: { resumeId } });
-        await tx.language.createMany({
-          data: content.languages.map((lang:any) => ({
-            resumeId,
-            name: lang,
-          })),
-        });
-      }
-
-      // 8. Update projects
-      if (content.projects?.length > 0) {
+      // 5. Projects
+      if (content.projects?.length) {
         await tx.project.deleteMany({ where: { resumeId } });
         await tx.project.createMany({
-          data: content.projects.map((proj:any) => ({
+          data: content.projects.map((proj: any) => ({
             resumeId,
             name: proj.name,
             link: proj.link,
@@ -140,11 +136,11 @@ export async function POST(request: NextRequest) {
         });
       }
 
-      // 9. Update certificates
-      if (content.certificates?.length > 0) {
+      // 6. Certificates
+      if (content.certificates?.length) {
         await tx.certificate.deleteMany({ where: { resumeId } });
         await tx.certificate.createMany({
-          data: content.certificates.map((cert:any) => ({
+          data: content.certificates.map((cert: any) => ({
             resumeId,
             name: cert.name,
             issuer: cert.issuer,
@@ -153,7 +149,7 @@ export async function POST(request: NextRequest) {
         });
       }
 
-      // Fetch the updated resume with all relations
+      // Fetch final result
       return tx.resume.findUnique({
         where: { id: resumeId },
         include: {
@@ -167,18 +163,35 @@ export async function POST(request: NextRequest) {
           certificates: true,
         },
       });
+    }, {
+      maxWait: 10000, // 10s maximum wait time
+      timeout: 30000  // 30s timeout
     });
+
+    if (!updatedResume) {
+      throw new Error('Failed to update resume');
+    }
 
     return NextResponse.json({
       success: true,
       draft: {
         content: updatedResume,
-        updatedAt: updatedResume?.updatedAt,
+        updatedAt: updatedResume.updatedAt,
       },
       message: "Resume saved successfully",
     });
   } catch (error) {
     console.error("API Error:", error);
+    
+    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+      if (error.code === 'P2028') {
+        return NextResponse.json({
+          error: "Database transaction timeout",
+          details: "Please try again",
+        }, { status: 408 });
+      }
+    }
+
     return NextResponse.json(
       {
         error: "Internal server error",
