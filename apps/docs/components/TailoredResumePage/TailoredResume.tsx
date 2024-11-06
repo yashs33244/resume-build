@@ -8,17 +8,16 @@ import { Template1 } from "../Editor/templates/Template1";
 import { Template2 } from "../Editor/templates/template2";
 import { Template3 } from "../Editor/templates/template3";
 import { ResumeProps } from "../../types/ResumeProps";
-import { useResumeData } from "../../hooks/useResumeData";
 import { useRouter } from "next/navigation";
 import { useSearchParams } from "next/navigation";
 import styles from "./style.module.scss";
-import { Loader, Loader2 } from "lucide-react";
+import { Loader } from "lucide-react";
 import { LandingLoader } from "../LandingLoader";
 import { useFetchResumeData } from "../../hooks/useFetchResumeData";
 
 const TailoredResumePage: React.FC = () => {
   const searchParams = useSearchParams();
-  const { rdata, template, loading, error, id } = useFetchResumeData();
+  const { rdata, loading } = useFetchResumeData();
 
   const resumeId = searchParams.get("id");
   const router = useRouter();
