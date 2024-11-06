@@ -103,6 +103,7 @@ export async function POST(req: Request) {
       );
     }
     
+    
     return NextResponse.json(
       { message: 'Error saving resume draft', error: error instanceof Error ? error.message : String(error) },
       { status: 500 }
