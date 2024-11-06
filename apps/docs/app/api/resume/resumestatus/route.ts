@@ -53,7 +53,7 @@ export async function GET(req: Request) {
 
     console.log(`Found ${resumes.length} resumes for user ${user.id}`);
 
-    const formattedResumes = resumes.map(resume => ({
+    const formattedResumes = resumes.map((resume:any) => ({
       state: resume.state,
       resumeId: resume.id,
       createdAt: resume.createdAt,
@@ -61,9 +61,9 @@ export async function GET(req: Request) {
       personalInfo: resume.personalInfo,
       education: resume.education,
       experience: resume.experience,
-      skills: resume.skills.map(skill => skill.name),
-      coreSkills: resume.coreSkills.map(skill => skill.name),
-      languages: resume.languages.map(language => language.name),
+      skills: resume.skills.map((skill:any) => skill.name),
+      coreSkills: resume.coreSkills.map((skill:any) => skill.name),
+      languages: resume.languages.map((language:any) => language.name),
       achievement: resume.achievement,
       projects: resume.projects,
       certificates: resume.certificates,
