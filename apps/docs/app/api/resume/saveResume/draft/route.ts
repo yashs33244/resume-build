@@ -3,7 +3,7 @@ import { db } from '../../../../db';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '../../../../lib/auth';
 import { ResumeProps, ResumeState } from '../../../../../types/ResumeProps';
-import { PrismaClient , Prisma} from '@prisma/client';
+import { PrismaClient, Prisma } from '@prisma/client';
 
 
 export async function POST(req: Request) {
@@ -29,8 +29,6 @@ export async function POST(req: Request) {
     const coreSkillsData = data.coreSkills?.map((skill) => ({ name: skill })) ?? [];
     const languagesData = data.languages?.map((language) => ({ name: language })) ?? [];
 
-    type ResumeUpdateInput = Prisma.ResumeUpdateInput;
-
     // Use transaction with correct Prisma typing
     const result = await db.$transaction(
       async (prisma: Omit<PrismaClient, '$connect' | '$disconnect' | '$on' | '$transaction' | '$use' | '$extends'>) => {
@@ -44,37 +42,35 @@ export async function POST(req: Request) {
           },
         });
 
-        const updateData: ResumeUpdateInput = {
-          state: data.state,
-          //@ts-ignore
-          personalInfo: data.personalInfo as Prisma.JsonValue,
-          //@ts-ignore
-          education: data.education as Prisma.JsonValue,
-          //@ts-ignore
-          experience: data.experience as Prisma.JsonValue,
-          skills: {
-            create: skillsData,
-          },
-          coreSkills: {
-            create: coreSkillsData,
-          },
-          languages: {
-            create: languagesData,
-          },
-          //@ts-ignore
-          achievement: data.achievement as Prisma.JsonValue,
-          //@ts-ignore
-          projects: data.projects as Prisma.JsonValue,
-          //@ts-ignore
-          certificates: data.certificates as Prisma.JsonValue,
-          templateId: data.templateId,
-          updatedAt: new Date(),
-        };
-
         // Update the resume with new data
         return prisma.resume.update({
           where: { id: data.resumeId },
-          data: updateData,
+          data: {
+            state: data.state,
+            //@ts-ignore
+            personalInfo: data.personalInfo as unknown as Prisma.InputJsonValue,
+            //@ts-ignore
+            education: data.education as unknown as Prisma.InputJsonValue,
+            //@ts-ignore
+            experience: data.experience as unknown as Prisma.InputJsonValue,
+            skills: {
+              create: skillsData,
+            },
+            coreSkills: {
+              create: coreSkillsData,
+            },
+            languages: {
+              create: languagesData,
+            },
+            //@ts-ignore
+            achievement: data.achievement as unknown as Prisma.InputJsonValue,
+            //@ts-ignore
+            projects: data.projects as unknown as Prisma.InputJsonValue,
+            //@ts-ignore
+            certificates: data.certificates as unknown as Prisma.InputJsonValue,
+            templateId: data.templateId,
+            updatedAt: new Date(),
+          },
         });
       },
       {
