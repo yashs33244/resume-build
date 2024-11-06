@@ -1,15 +1,18 @@
 // app/api/user/route.ts
 import { NextRequest, NextResponse } from 'next/server';
-import { PrismaClient } from '@prisma/client';
+import { getPrismaClient } from '../db';
 
-const prisma = new PrismaClient();
 
-// Mark as dynamic since we're doing database operations
+// Force dynamic to prevent static optimization
 export const dynamic = 'force-dynamic';
+export const runtime = 'nodejs'; // Use Node.js runtime instead of edge
 
 export async function POST(request: NextRequest) {
+  const db = getPrismaClient();
+  
   try {
-    const { email } = await request.json();
+    const body = await request.json();
+    const { email } = body;
 
     if (!email) {
       return NextResponse.json(
@@ -18,7 +21,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const user = await prisma.user.findUnique({
+    const user = await db.user.findUnique({
       where: { email },
       select: { name: true, email: true, profilePhoto: true },
     });
@@ -31,6 +34,7 @@ export async function POST(request: NextRequest) {
     }
 
     return NextResponse.json(user);
+    
   } catch (error) {
     console.error('Error fetching user data:', error);
     return NextResponse.json(
