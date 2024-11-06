@@ -2,8 +2,16 @@ import { NextResponse } from 'next/server';
 import { db } from '../../../../db';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '../../../../lib/auth';
-import { ResumeProps, ResumeState } from '../../../../../types/ResumeProps';
+import { ResumeProps } from '../../../../../types/ResumeProps';
 import { PrismaClient, Prisma } from '@prisma/client';
+import { 
+  PrismaClientKnownRequestError,
+  PrismaClientUnknownRequestError,
+  PrismaClientRustPanicError,
+  PrismaClientInitializationError,
+  PrismaClientValidationError
+} from '@prisma/client/runtime/library';
+
 
 
 export async function POST(req: Request) {
@@ -80,21 +88,21 @@ export async function POST(req: Request) {
     );
 
     return NextResponse.json(result, { status: 200 });
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error saving resume draft:', error);
     
     // Check if error is a Prisma error
-    if (error instanceof Prisma.PrismaClientKnownRequestError ||
-        error instanceof Prisma.PrismaClientUnknownRequestError ||
-        error instanceof Prisma.PrismaClientRustPanicError ||
-        error instanceof Prisma.PrismaClientInitializationError ||
-        error instanceof Prisma.PrismaClientValidationError) {
+    if (error instanceof PrismaClientKnownRequestError ||
+        error instanceof PrismaClientUnknownRequestError ||
+        error instanceof PrismaClientRustPanicError ||
+        error instanceof PrismaClientInitializationError ||
+        error instanceof PrismaClientValidationError) {
       return NextResponse.json(
         { message: 'Database error', error: error.message },
         { status: 400 }
       );
     }
-
+    
     return NextResponse.json(
       { message: 'Error saving resume draft', error: error instanceof Error ? error.message : String(error) },
       { status: 500 }
