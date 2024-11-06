@@ -7,17 +7,26 @@ export const config = {
 
 export default function middleware(request: NextRequest) {
   const ua = userAgent(request);
-
+  const isPublicPath = request.nextUrl.pathname === '/';
+  
+  // Check for mobile device first
   if (ua?.device?.type === 'mobile') {
-    // Redirect mobile users to the /mobile-page
-    return NextResponse.redirect(new URL('/mobile-page', request.url));
+    // Don't redirect if already on mobile page to prevent loops
+    if (!request.nextUrl.pathname.startsWith('/mobile-page')) {
+      return NextResponse.redirect(new URL('/mobile-page', request.url));
+    }
   }
 
-  const token = request.cookies.get('next-auth.session-token')
+  // Allow public access to landing page
+  if (isPublicPath) {
+    return NextResponse.next();
+  }
 
+  // Check authentication for protected routes
+  const token = request.cookies.get('next-auth.session-token');
+  
   if (!token) {
-    const url = new URL('/api/auth/signin', request.url);
-    // Preserve the original URL as callbackUrl
+    const url = new URL('/signin', request.url);
     url.searchParams.set('callbackUrl', request.url);
     return NextResponse.redirect(url);
   }

@@ -1,4 +1,3 @@
-// hooks/useUserStatus.ts
 import { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
 
@@ -21,22 +20,26 @@ type UseUserStatusReturn = {
 };
 
 export const useUserStatus = (): UseUserStatusReturn => {
-  const { data: session } = useSession();
+  const { data: session, status: sessionStatus } = useSession();
   const [user, setUser] = useState<UserDetails | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
 
   const fetchUserDetails = async () => {
     try {
-      setIsLoading(true);
-      setError(null);
-
+      if (sessionStatus === 'loading') return;
       if (!session?.user?.email) {
         setUser(null);
+        setIsLoading(false);
         return;
       }
 
-      const response = await fetch('/api/user');
+      const response = await fetch('/api/user', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
       
       if (!response.ok) {
         throw new Error('Failed to fetch user details');
@@ -52,12 +55,14 @@ export const useUserStatus = (): UseUserStatusReturn => {
   };
 
   useEffect(() => {
-    fetchUserDetails();
-  }, [session?.user?.email]);
+    if (sessionStatus !== 'loading') {
+      fetchUserDetails();
+    }
+  }, [sessionStatus, session?.user?.email]);
 
   return {
     user,
-    isLoading,
+    isLoading: isLoading || sessionStatus === 'loading',
     error,
     isPaid: user?.status === 'PAID',
     refetchUser: fetchUserDetails
