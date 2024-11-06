@@ -1,8 +1,9 @@
 import { NextResponse } from 'next/server';
 import { db } from '../../../db';
-import { ResumeState } from '@prisma/client';
+
 import { getServerSession } from "next-auth/next";
 import { authOptions } from '../../../lib/auth';
+import { ResumeState } from '../../../../types/ResumeProps';
 
 export async function POST(request: Request) {
   const session = await getServerSession(authOptions);
