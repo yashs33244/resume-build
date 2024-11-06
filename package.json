@@ -13,7 +13,10 @@
     "prisma:docker": "cd packages/db && DATABASE_URL=\"postgresql://postgres:mysecretpassword@db:5432/find-it-here?schema=public\" npx prisma generate && npx prisma migrate deploy",
     "start:web": "cd apps/web && pnpm run start",
     "start": "cd apps/docs && pnpm start",
-    "build:docs": "cd apps/docs && pnpm run build"
+    "build:docs": "cd apps/docs && pnpm run build",
+    "prisma:generate": "cd packages/db && npx prisma generate",
+    "db:migrate": "cd packages/db && npx prisma migrate deploy",
+    "vercel-build": "pnpm prisma:generate && pnpm build"
   },
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",
