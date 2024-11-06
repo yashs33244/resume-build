@@ -1,32 +1,41 @@
-import { NextApiRequest, NextApiResponse } from 'next';
+// app/api/user/route.ts
+import { NextRequest, NextResponse } from 'next/server';
 import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  if (req.method !== 'POST') {
-    return res.status(405).json({ message: 'Method not allowed' });
-  }
+// Mark as dynamic since we're doing database operations
+export const dynamic = 'force-dynamic';
 
-  const { email } = req.body;
-
-  if (!email) {
-    return res.status(400).json({ message: 'Email is required' });
-  }
-
+export async function POST(request: NextRequest) {
   try {
+    const { email } = await request.json();
+
+    if (!email) {
+      return NextResponse.json(
+        { message: 'Email is required' },
+        { status: 400 }
+      );
+    }
+
     const user = await prisma.user.findUnique({
       where: { email },
       select: { name: true, email: true, profilePhoto: true },
     });
 
     if (!user) {
-      return res.status(404).json({ message: 'User not found' });
+      return NextResponse.json(
+        { message: 'User not found' },
+        { status: 404 }
+      );
     }
 
-    res.status(200).json(user);
+    return NextResponse.json(user);
   } catch (error) {
     console.error('Error fetching user data:', error);
-    res.status(500).json({ message: 'Internal server error' });
+    return NextResponse.json(
+      { message: 'Internal server error' },
+      { status: 500 }
+    );
   }
 }
