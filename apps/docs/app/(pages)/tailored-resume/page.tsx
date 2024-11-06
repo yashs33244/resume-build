@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import TailoredResumePage from "../../../components/TailoredResumePage/index.tsx";
+import TailoredResumePage from "../../../components/TailoredResumePage";
 
 const TailoredResume = () => {
   return <TailoredResumePage />;
