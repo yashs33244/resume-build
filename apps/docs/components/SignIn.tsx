@@ -29,7 +29,7 @@ export default function SignIn() {
       setError("Invalid email or password");
     } else {
       // Redirect to select-templates page on successful sign-in
-      router.push("/select-templates");
+      router.push("/dashboard");
     }
   };
 
