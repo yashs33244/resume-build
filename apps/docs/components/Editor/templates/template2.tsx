@@ -6,6 +6,7 @@ import DOMPurify from "dompurify";
 import { useRecoilState } from "recoil";
 import { resumeSizeAtom } from "../../../store/resumeSize";
 import { getDuration } from "../../../utils";
+import { IoIosLink } from "react-icons/io";
 
 export const Template2 = (props: any) => {
   const { resumeData, id } = props;
@@ -70,7 +71,7 @@ export const Template2 = (props: any) => {
                 <div
                   className={`${"content_education_div_value"} ${"content_right_part"}`}
                 >
-                  {resumeData.education.map((edu: any, index: number) => {
+                  {resumeData?.education.map((edu: any, index: number) => {
                     return (
                       <div
                         className={"content_education_div_value_section"}
@@ -85,13 +86,13 @@ export const Template2 = (props: any) => {
                             {edu?.institution || "Institution Name"}
                           </div>
                         )}
-                        {edu?.score && (
+                        {Number(edu?.score) > 0 && (
                           <div
                             className={
                               "content_education_div_value_section_field"
                             }
                           >
-                            CGPA {edu?.score !== "0" ? `${edu.score}` : null}
+                            CGPA {edu.score}
                           </div>
                         )}
                         {edu?.start && edu?.end && (
@@ -199,14 +200,15 @@ export const Template2 = (props: any) => {
                         className={"content_projects_div_value_section"}
                         key={index}
                       >
-                        {proj?.name && proj?.link && (
-                          <div
+                        {proj?.name && (
+                          <a
                             className={
                               "content_projects_div_value_section_name"
                             }
+                            href={proj?.link || null}
                           >
-                            {proj?.name + " - " + proj?.link}
-                          </div>
+                            {proj?.name} {proj?.link ? <IoIosLink /> : null}
+                          </a>
                         )}
                         {(proj?.start || proj?.end || proj?.duration) && (
                           <div

@@ -163,6 +163,12 @@
     font-weight: 600;
     color: rgba(0,0,0,0.7) !important;
   }
+
+  .template2-wrapper .content_projects_div_value_section_name {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
   
   .template2-wrapper .content_bio_div_value,
   .template2-wrapper .content_education_div_value_section_name,

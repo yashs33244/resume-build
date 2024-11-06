@@ -3,6 +3,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
+import { Label } from "@repo/ui/components/ui/label";
 import dayjs from "dayjs";
 
 const darkTheme = createTheme({
@@ -13,15 +14,17 @@ const darkTheme = createTheme({
     MuiOutlinedInput: {
       styleOverrides: {
         root: {
+          marginTop: '12px',
           "&:hover .MuiOutlinedInput-notchedOutline": {
-            borderColor: "rgba(255, 255, 255, 0.5)",
+            border: "0.5px solid rgba(255, 255, 255, 0.5)",
           },
           "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-            borderColor: "rgba(255, 255, 255, 0.8)",
+            border: "0.5px solid rgba(255, 255, 255, 0.8)",
           },
         },
         input: {
           color: "rgba(255, 255, 255, 0.85)",
+          height: "10px"
         },
       },
     },
@@ -65,21 +68,51 @@ const EducationYearPickers = ({ index, edu, handleInputChange }: any) => {
   };
 
   const pickerStyle = {
-    width: "47%",
+    width: "100%",
     "& .MuiOutlinedInput-root": {
       backgroundColor: "#1B2432",
-      borderRadius: "16px",
+      borderRadius: "14px",
     },
     "& .MuiOutlinedInput-notchedOutline": {
-      borderColor: "rgba(255, 255, 255, 0.36)",
+      border: "0.5px solid rgba(255, 255, 255, 0.36)",
     },
   };
 
   return (
     <ThemeProvider theme={darkTheme}>
       <LocalizationProvider dateAdapter={AdapterDayjs}>
-        <div
-          className="form-row"
+        <div className="row-form-field">
+          <Label htmlFor={`start`} className="field-label">
+            Start Year
+          </Label>
+          <DatePicker
+            // label="Start Year"
+            openTo="year"
+            views={["year"]}
+            value={edu.start ? dayjs(edu.start) : null}
+            onChange={handleStartYearChange}
+            minDate={minDate}
+            maxDate={maxDate}
+            sx={pickerStyle}
+          />
+        </div>
+        <div className="row-form-field">
+          <Label htmlFor={`end`} className="field-label">
+            End Year
+          </Label>
+          <DatePicker
+            // label="End Year"
+            openTo="year"
+            views={["year"]}
+            value={edu.end ? dayjs(edu.end) : null}
+            onChange={handleEndYearChange}
+            minDate={edu.start ? dayjs(edu.start).add(1, "year") : minDate}
+            maxDate={maxDate}
+            sx={pickerStyle}
+          />
+        </div>
+        {/* <div
+          // className="form-row"
           style={{
             display: "flex",
             justifyContent: "space-between",
@@ -106,7 +139,7 @@ const EducationYearPickers = ({ index, edu, handleInputChange }: any) => {
             maxDate={maxDate}
             sx={pickerStyle}
           />
-        </div>
+        </div> */}
       </LocalizationProvider>
     </ThemeProvider>
   );

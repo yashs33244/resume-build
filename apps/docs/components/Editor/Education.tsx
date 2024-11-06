@@ -138,7 +138,7 @@ export const Education: React.FC<EducationProps> = ({
                     </Label>
                     <Input
                       id={`score-${index}`}
-                      value={edu.score}
+                      value={edu.score ? edu.score : ''}
                       onChange={(e) =>
                         handleInputChange(
                           "education",

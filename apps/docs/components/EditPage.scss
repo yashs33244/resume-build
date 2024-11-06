@@ -440,7 +440,6 @@
             align-items: center;
             height: calc(100vh - 172px);
             box-sizing: border-box;
-
             
 
             img {
@@ -454,7 +453,7 @@
 
 .overflow_div{
     margin: auto;
-    font-size: 10px;
+    font-size: 0.7rem;
     margin-bottom: 28px;
     opacity: 0.9;
     font-weight: 500;
@@ -466,7 +465,8 @@
 
     &_action{
         font-weight: 700;
-        color: #3B5BFF;
+        color: #17B169;
+        font-size: 0.8rem;
         text-decoration: underline;
         cursor: pointer;
     }

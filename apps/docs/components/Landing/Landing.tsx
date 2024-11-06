@@ -52,6 +52,7 @@ import "react-alice-carousel/lib/alice-carousel.css";
 import "./App.scss";
 import { useSession } from "next-auth/react";
 import { FaCircleCheck } from "react-icons/fa6";
+import { FaAngleRight } from "react-icons/fa6";
 import {
   templateClassSelector,
   useTemplateSync,
@@ -256,7 +257,7 @@ export default function LandingPage() {
             <div>
               <div className="step-title">Enter Details</div>
               <div className="step-subtitle">
-                Edit with AI and in-built best practices
+                Edit an existing resume or start from scratch
               </div>
             </div>
           </div>
@@ -322,7 +323,8 @@ export default function LandingPage() {
               className="template-cta"
               onClick={() => handleSetTemplate(template)}
             >
-              Use This Template
+              <div>Use This Template</div>
+              <FaAngleRight />
             </div>
           </div>
           <div className="image-container">
@@ -440,12 +442,8 @@ export default function LandingPage() {
               companies
             </div>
             <div className="left-cta">
-              {" "}
-              {session?.user ? (
-                <Link href="/select-templates/editor"> Build Now</Link>
-              ) : (
-                <Link href="/api/auth/signin"> Build Now</Link>
-              )}
+              <Link href="/api/auth/signin"> Build Now</Link>
+              <FaAngleRight />            
             </div>
           </div>
           <div className="right">

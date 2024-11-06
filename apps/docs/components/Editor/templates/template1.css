@@ -381,6 +381,9 @@
 
 .template1-container .M .projects .proj-container .proj-name {
     color: #323336;
+    display: flex;
+    align-items: center;
+    gap: 4px;
     font-size: 0.56rem;
     font-weight: 600;
 }

@@ -2,6 +2,7 @@ import React from "react";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { Label } from "@repo/ui/components/ui/label";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import dayjs from "dayjs";
 
@@ -14,7 +15,8 @@ const darkTheme = createTheme({
       styleOverrides: {
         root: {
           backgroundColor: "#1B2432",
-          borderRadius: "16px",
+          borderRadius: "4px",
+          marginTop: "12px",
           border: "rgba(255, 255, 255, 0.4)",
           "&:hover": {
             borderColor: "rgba(255, 255, 255, 0.5)",
@@ -27,6 +29,7 @@ const darkTheme = createTheme({
           color: "rgba(255, 255, 255, 0.85)",
           fontSize: "14px",
           padding: "16px 16px",
+          height: '10px'
         },
         notchedOutline: {
           border: "0.5px solid rgba(255, 255, 255, 0.4)",
@@ -97,10 +100,11 @@ const ExperienceDatePickers = ({ index, exp, handleInputChange }: any) => {
   return (
     <ThemeProvider theme={darkTheme}>
       <LocalizationProvider dateAdapter={AdapterDayjs}>
-        <div className="flex space-x-12">
-          <div className="flex-1">
+          <div className="row-form-field">
+            <Label htmlFor={`role-${index}`} className="field-label">
+              Start Date
+            </Label>
             <DatePicker
-              label="Start Date"
               openTo="year"
               views={["year", "month"]}
               value={exp.start ? dayjs(exp.start) : null}
@@ -118,14 +122,16 @@ const ExperienceDatePickers = ({ index, exp, handleInputChange }: any) => {
                 width: "100%",
                 "& .MuiOutlinedInput-root": {
                   backgroundColor: "#1B2432",
-                  borderRadius: "16px",
+                  borderRadius: "14px",
                 },
               }}
             />
           </div>
           <div className="row-form-field">
+            <Label htmlFor={`role-${index}`} className="field-label">
+              End Date
+            </Label>
             <DatePicker
-              label="End Date"
               openTo="year"
               views={["year", "month"]}
               value={exp.end ? dayjs(exp.end) : null}
@@ -145,12 +151,11 @@ const ExperienceDatePickers = ({ index, exp, handleInputChange }: any) => {
                 width: "100%",
                 "& .MuiOutlinedInput-root": {
                   backgroundColor: "#1B2432",
-                  borderRadius: "16px",
+                  borderRadius: "14px",
                 },
               }}
             />
           </div>
-        </div>
       </LocalizationProvider>
     </ThemeProvider>
   );

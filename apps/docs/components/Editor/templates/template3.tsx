@@ -9,6 +9,7 @@ import { FaLinkedin } from "react-icons/fa";
 import { useRecoilState } from "recoil";
 import { resumeSizeAtom } from "../../../store/resumeSize";
 import { getDuration } from "../../../utils";
+import { IoIosLink } from "react-icons/io";
 
 export const Template3 = (props: any) => {
     const { resumeData, id } = props;
@@ -50,7 +51,7 @@ export const Template3 = (props: any) => {
                             <div className={"lp_add_info_value"}>
                                 <FaLinkedin/>
                                 <a href={resumeData.personalInfo?.linkedin}>
-                                    <span>{resumeData.personalInfo?.linkedin}</span>
+                                    <span>{resumeData.personalInfo?.linkedin ? 'LinkedIn' : ''}</span>
                                 </a>
                             </div>
                         }
@@ -70,9 +71,8 @@ export const Template3 = (props: any) => {
                                             {
                                                 edu?.institution &&
                                                 <div className={"lp_education_div_value_section_name"}>
-                                                    <span>{edu.institution}</span>
-                                                    <span>{`${edu.degree ? ` - ${edu.degree}` : ''}`}</span>
-                                                    <span>{`${edu.major ? `, ${edu.major}` : ''}`}</span>
+                                                    <span>{`${edu.degree ? `${edu.degree}, ` : ''}`}</span>
+                                                    <span>{`${edu.institution ? `${edu.institution}` : ''}`}</span>
                                                 </div>
                                             }
                                             {
@@ -81,6 +81,48 @@ export const Template3 = (props: any) => {
                                                     {edu.start + " - " + edu.end}
                                                 </div>
                                             }
+                                            {
+                                                edu?.major &&
+                                                <div className={"lp_education_div_value_section_major"}>
+                                                    {edu.major}
+                                                </div>
+                                            }                                            
+                                        </div>
+                                    );
+                                })}
+                            </div>
+                        </div>
+                    }
+                    {
+                        Array.isArray(resumeData?.certificates) && resumeData.certificates.length > 0 &&
+                        <div className={`${"lp_certificate_div"} ${"lp_container"}`}>
+                            <div
+                                className={`${"lp_certificate_div_label"} ${"lp_container_header"}`}
+                            >
+                                CERTIFICATES
+                            </div>
+                            <div className={`${"lp_certificate_div_value"}`}>
+                                {resumeData.certificates.map((cert: any, index: number) => {
+                                    return (
+                                        <div className={"lp_certificate_div_value_section"} key={index}>
+                                            {
+                                                cert?.name &&
+                                                <div className={"lp_certificate_div_value_section_name"}>
+                                                    <span>{`${cert.name ? `${cert.name}` : ''}`}</span>
+                                                </div>
+                                            }
+                                            {
+                                                cert?.issuedOn &&
+                                                <div className={"lp_certificate_div_value_section_year"}>
+                                                    {cert.issuedOn}
+                                                </div>
+                                            }
+                                            {
+                                                cert?.issuer &&
+                                                <div className={"lp_certificate_div_value_section_major"}>
+                                                    {cert.issuer}
+                                                </div>
+                                            }                                            
                                         </div>
                                     );
                                 })}
@@ -164,9 +206,9 @@ export const Template3 = (props: any) => {
                         {resumeData.projects?.map((proj: any) => {
                             return (
                             <div className={"rp_projerience_div_value_section"}>
-                                <div className={"rp_projerience_div_value_section_name"}>
-                                {proj?.name + " - " + proj?.link}
-                                </div>
+                                <a className={"rp_projerience_div_value_section_name"} href={proj?.link || null}>
+                                {proj?.name} {proj?.link ? <IoIosLink /> : null}
+                                </a>
                                 <div className={"rp_projerience_div_value_section_year"}>
                                 {proj?.start + " - " + proj.end}
                                 </div>
@@ -180,34 +222,7 @@ export const Template3 = (props: any) => {
                             );
                         })}
                         </div>
-                    </div>}
-          <div className={`${"rp_experience_div"} ${"rp_container"}`}>
-            <div
-              className={`${"rp_experience_div_label"} ${"rp_container_header"}`}
-            >
-              Certificates
-            </div>
-            <div
-              className={`${"rp_experience_div_value"} ${"rp_container_content"}`}
-            >
-              {resumeData.certificates?.map((cert: any) => {
-                return (
-                  <div className={"rp_projerience_div_value_section"}>
-                    <div className={"rp_projerience_div_value_section_name"}>
-                        <div>
-                            <span>{cert?.name}</span>
-                            <span className="issuer">{`${cert?.issuer ? `- ${cert.issuer}` : ''}`}</span>
-                        </div>
-                      {/* {cert?.name + " - " + cert?.issuer} */}
-                    </div>
-                    <div className={"rp_projerience_div_value_section_year"}>
-                      {cert?.issuedOn}
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
+                    </div>}          
                 </div>
             </div>
         </div>

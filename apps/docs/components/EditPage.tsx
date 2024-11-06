@@ -663,7 +663,7 @@ export default function EditPage() {
                   <span onClick={reduceSize} className="overflow_div_action">
                     here
                   </span>
-                  &nbsp;to reduce the size
+                  &nbsp;to reduce the size.
                 </span>
               )}
             </div>

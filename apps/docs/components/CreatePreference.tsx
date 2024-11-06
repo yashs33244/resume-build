@@ -147,13 +147,7 @@ export default function CreatePreference() {
           <input {...getInputProps()} />
           <Image alt="upload" src={file_upload} width={150} height={150} />
           <div className="action">Upload Existing Resume</div>
-          <div className="info">Autofill details using your current resume</div>
-          <ResumeUploadProgress
-            isLoading={isLoading}
-            progress={progress}
-            progressPhase={progressPhase}
-            error={error}
-          />
+          <div className="info">Autofill details using your current resume</div>          
         </div>
         <div className="right" onClick={handleStartFromScratch}>
           <Image alt="add" src={file_add} width={150} height={150} />
@@ -161,6 +155,17 @@ export default function CreatePreference() {
           <div className="info">Craft your perfect resume from start</div>
         </div>
       </div>
+      <div className="loader-container">
+        <div className="left">
+            <ResumeUploadProgress
+                isLoading={isLoading}
+                progress={progress}
+                progressPhase={progressPhase}
+                error={error}
+            />
+        </div>
+        <div className="right">{' '}</div>
+      </div>      
     </div>
   );
 }

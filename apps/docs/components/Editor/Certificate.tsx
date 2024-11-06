@@ -128,7 +128,7 @@ export const Certificate: React.FC<CertificateProps> = ({
                         index={index}
                         className="text-white"
                         field="start"
-                        category="certificate" // Passing the category as 'projects'
+                        category="certificates" // Passing the category as 'projects'
                       />
                     </LocalizationProvider>
                   </div>
