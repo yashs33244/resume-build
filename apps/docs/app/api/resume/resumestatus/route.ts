@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { db } from '../../../db';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '../../../lib/auth';
+import { ResumeProps } from '../../../../types/ResumeProps';
 
 export async function GET(req: Request) {
   const session = await getServerSession(authOptions);
@@ -53,22 +54,25 @@ export async function GET(req: Request) {
 
     console.log(`Found ${resumes.length} resumes for user ${user.id}`);
 
-    const formattedResumes = resumes.map((resume:any) => ({
+    const formattedResumes = resumes.map((resume) => ({
       state: resume.state,
-      resumeId: resume.id,
-      createdAt: resume.createdAt,
-      updatedAt: resume.updatedAt,
+      resumeId: resume.id,  // Assuming `id` is the closest match for `resumeId`
+      createdAt: resume.createdAt, // Convert Date to string if needed
+      updatedAt: resume.updatedAt, // Convert Date to string if needed
       personalInfo: resume.personalInfo,
       education: resume.education,
       experience: resume.experience,
-      skills: resume.skills.map((skill:any) => skill.name),
-      coreSkills: resume.coreSkills.map((skill:any) => skill.name),
-      languages: resume.languages.map((language:any) => language.name),
+      skills: resume.skills, 
+      coreSkills: resume.coreSkills ? resume.coreSkills.map((skill) => skill) : [],
+      languages: resume.languages ? resume.languages.map((language) => language) : [],
       achievement: resume.achievement,
       projects: resume.projects,
       certificates: resume.certificates,
       templateId: resume.templateId,
+      // If 'userId' and other fields are not available, skip or use a fallback value:
+      userId: user.id , // Fallback if `userId` is missing
     }));
+    
 
     console.log(`Returning ${formattedResumes.length} formatted resumes`);
 
