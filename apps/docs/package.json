@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint . --max-warnings 0",
-    "vercel-build": "pnpm -F packages/db prisma:generate && pnpm build"
+    "vercel-build": "pnpm --filter=../../packages/db prisma:generate && next build"
   },
   "dependencies": {
     "@google/generative-ai": "^0.2.1",
