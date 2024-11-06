@@ -1,16 +1,22 @@
 // app/api/user/route.ts
 import { NextRequest, NextResponse } from 'next/server';
-import { getPrismaClient } from '../db';
+import { db } from '../db';
 
 
-// Force dynamic to prevent static optimization
+// Explicitly set Node.js runtime and force dynamic
+export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
-export const runtime = 'nodejs'; // Use Node.js runtime instead of edge
+export const revalidate = 0;
 
 export async function POST(request: NextRequest) {
-  const db = getPrismaClient();
-  
   try {
+    if (request.method !== 'POST') {
+      return NextResponse.json(
+        { message: 'Method not allowed' },
+        { status: 405 }
+      );
+    }
+
     const body = await request.json();
     const { email } = body;
 
@@ -34,7 +40,7 @@ export async function POST(request: NextRequest) {
     }
 
     return NextResponse.json(user);
-    
+
   } catch (error) {
     console.error('Error fetching user data:', error);
     return NextResponse.json(
