@@ -219,30 +219,36 @@ export const authOptions: NextAuthOptions = {
       return true; // Allow sign-in if not using Google provider
     },
     async redirect({ url, baseUrl }) {
-      // Always log the incoming URL and baseUrl for debugging
-      console.log("Redirect callback - URL:", url);
-      console.log("Redirect callback - BaseUrl:", baseUrl);
-
-      // If the URL starts with the base URL, allow it
-      if (url.startsWith(baseUrl)) {
-        return url;
-      }
-
-      // Handle callback URLs
-      if (url.startsWith('/api/auth/callback')) {
+      console.log("Redirect callback triggered with URL:", url);
+      
+      try {
+        const fullUrl = new URL(url, baseUrl);
+        const callbackUrl = fullUrl.searchParams.get("callbackUrl");
+        const fromLanding = fullUrl.searchParams.get("fromLanding") === "true";
+        const template = fullUrl.searchParams.get("template");
+        
+        // Handle sign-out
+        const redirectType = fullUrl.searchParams.get("redirectType");
+        if (redirectType === "signout") {
+          return `${baseUrl}/`;
+        }
+        
+        // If coming from landing page with a template
+        if (fromLanding && template) {
+          return `${baseUrl}/create-preference?template=${template}&fromLanding=true`;
+        }
+        
+        // If there's a specific callback URL
+        if (callbackUrl) {
+          return callbackUrl.startsWith("/") ? `${baseUrl}${callbackUrl}` : callbackUrl;
+        }
+        
+        // Default fallback to dashboard
+        return `${baseUrl}/dashboard`;
+      } catch (error) {
+        console.error("Error in redirect callback:", error);
         return `${baseUrl}/dashboard`;
       }
-
-      // If there's a callback URL in the parameters
-      if (url.includes('callbackUrl')) {
-        const callbackUrl = new URL(url).searchParams.get('callbackUrl');
-        if (callbackUrl?.startsWith(baseUrl)) {
-          return callbackUrl;
-        }
-      }
-
-      // Default to dashboard
-      return `${baseUrl}/dashboard`;
     }
     
     
