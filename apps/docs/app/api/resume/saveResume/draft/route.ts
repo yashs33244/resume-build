@@ -2,8 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../../../../lib/auth";
 import { db } from "../../../../db";
-import { ResumeProps } from "../../../../../types/ResumeProps";
-import { ResumeState, Prisma } from "@prisma/client";
+import { ResumeProps, ResumeState } from "../../../../../types/ResumeProps";
+import { Prisma } from "@prisma/client";
 
 export async function POST(request: NextRequest) {
   try {
