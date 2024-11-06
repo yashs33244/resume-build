@@ -1,25 +1,30 @@
 {
   "$schema": "https://turbo.build/schema.json",
   "globalDependencies": ["**/.env.*local"],
+  "globalEnv": ["DATABASE_URL", "NEXTAUTH_URL", "NEXTAUTH_SECRET", "GOOGLE_CLIENT_ID", "GOOGLE_CLIENT_SECRET", "GOOGLE_API_KEY", "LINKEDIN_CLIENT_ID", "LINKEDIN_CLIENT_SECRET"],
   "tasks": {
     "dev": {
       "dependsOn": ["^db:generate"],
       "cache": false,
-      "persistent": true
+      "persistent": true,
+      "env": ["DATABASE_URL", "NEXTAUTH_URL", "NEXTAUTH_SECRET", "GOOGLE_CLIENT_ID", "GOOGLE_CLIENT_SECRET", "GOOGLE_API_KEY", "LINKEDIN_CLIENT_ID", "LINKEDIN_CLIENT_SECRET"]
     },
     "build": {
       "dependsOn": ["^db:generate", "^build"],
-      "outputs": [".next/**", "!.next/cache/**"]
+      "outputs": [".next/**", "!.next/cache/**"],
+      "env": ["DATABASE_URL", "NEXTAUTH_URL", "NEXTAUTH_SECRET", "GOOGLE_CLIENT_ID", "GOOGLE_CLIENT_SECRET", "GOOGLE_API_KEY", "LINKEDIN_CLIENT_ID", "LINKEDIN_CLIENT_SECRET"]
     },
     "lint": {
       "dependsOn": ["^lint"]
     },
     "db:generate": {
-      "cache": false
+      "cache": false,
+      "env": ["DATABASE_URL"]
     },
     "docs#build": {
       "dependsOn": ["^build", "^db:generate"],
-      "outputs": [".next/**", "!.next/cache/**"]
+      "outputs": [".next/**", "!.next/cache/**"],
+      "env": ["DATABASE_URL"]
     }
   }
 }
