@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useSession } from 'next-auth/react';
 
 export type UserDetails = {
@@ -19,11 +19,17 @@ type UseUserStatusReturn = {
   refetchUser: () => Promise<void>;
 };
 
+const CACHE_DURATION = 60 * 1000; // 1 minute
+
 export const useUserStatus = (): UseUserStatusReturn => {
   const { data: session, status: sessionStatus } = useSession();
   const [user, setUser] = useState<UserDetails | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
+  const cacheRef = useRef<{
+    data: UserDetails | null;
+    timestamp: number | null;
+  }>({ data: null, timestamp: null });
 
   const fetchUserDetails = async () => {
     try {
@@ -34,19 +40,33 @@ export const useUserStatus = (): UseUserStatusReturn => {
         return;
       }
 
+      // Check cache first
+      if (
+        cacheRef.current.data &&
+        cacheRef.current.timestamp &&
+        Date.now() - cacheRef.current.timestamp < CACHE_DURATION
+      ) {
+        setUser(cacheRef.current.data);
+        setIsLoading(false);
+        return;
+      }
+
       const response = await fetch('/api/user', {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
         },
       });
-      
+
       if (!response.ok) {
         throw new Error('Failed to fetch user details');
       }
 
       const userData: UserDetails = await response.json();
       setUser(userData);
+
+      // Update cache
+      cacheRef.current = { data: userData, timestamp: Date.now() };
     } catch (err) {
       setError(err instanceof Error ? err : new Error('Unknown error occurred'));
     } finally {
@@ -65,6 +85,6 @@ export const useUserStatus = (): UseUserStatusReturn => {
     isLoading: isLoading || sessionStatus === 'loading',
     error,
     isPaid: user?.status === 'PAID',
-    refetchUser: fetchUserDetails
+    refetchUser: fetchUserDetails,
   };
 };
