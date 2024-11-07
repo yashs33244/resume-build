@@ -8,10 +8,11 @@ import { useSession, signOut } from "next-auth/react";
 import "./Header.scss";
 import logo from "./logo.svg";
 import premium from "./premium.svg";
+import { useUserStatus } from "../hooks/useUserStatus";
 
 export default function Header() {
   const { data: session, status: sessionStatus } = useSession();
-
+  const { user, isPaid, refetchUser } = useUserStatus();
   const handleSignOut = async (e: any) => {
     e.preventDefault();
     await signOut({
@@ -28,7 +29,7 @@ export default function Header() {
             <Link href="/dashboard">
               <Image alt="logo" src={logo} width={130} />
             </Link>
-            <Image alt="premium" src={premium} width={100} />
+            {isPaid && <Image alt="premium" src={premium} width={100} />}
           </>
         ) : (
           <Link href="/">

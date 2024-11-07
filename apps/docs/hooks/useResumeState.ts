@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { ResumeProps } from '../types/ResumeProps';
+import { PersonalInfo } from '../components/Editor/PersonalInfo';
 
 interface UseResumeStateReturn {
   resumes: ResumeProps[];
@@ -18,9 +19,12 @@ export const useResumeState = (): UseResumeStateReturn => {
   useEffect(() => {
     const fetchResumes = async () => {
       try {
-        const res = await fetch(`/api/resume/resumestatus`);
+        const res = await fetch("/api/resume/resumestatus");
         if (!res.ok) {
-          throw new Error('Failed to fetch resume status');
+          const errorData = await res.json();
+          throw new Error(
+            errorData.message || 'Failed to fetch resume status'
+          );
         }
 
         const data = await res.json();
@@ -33,25 +37,29 @@ export const useResumeState = (): UseResumeStateReturn => {
           setResumes([]);
           return;
         }
+        if (!Array.isArray(data) || data.some((item) => typeof item !== 'object' || item === null)) {
+          throw new Error('Invalid response format');
+        }
 
         const processedResumes = data.map((resume: ResumeProps) => ({
-          resumeState: resume.state,
+          userId: resume.userId,
+          resumeId: resume.resumeId,
+          personalInfo: resume.personalInfo,  
+          createdAt: resume.createdAt,
+          updatedAt: resume.updatedAt,
+          education: resume.education,
+          experience: resume.experience,
+          skills: resume.skills,
+          coreSkills: resume.coreSkills,
+          languages: resume.languages,
+          achievement: resume.achievement,
+          projects: resume.projects,
+          certificates: resume.certificates,
+          templateId: resume.templateId,
+          state: resume.state,
           daysLeft: calculateDaysLeft(resume),
           createDate: new Date(resume.createdAt),
           updateDate: new Date(resume.updatedAt),
-          resumeData: {
-            resumeId: resume.resumeId,
-            personalInfo: resume.personalInfo,
-            education: resume.education,
-            experience: resume.experience,
-            skills: resume.skills,
-            coreSkills: resume.coreSkills,
-            languages: resume.languages,
-            achievement: resume.achievement,
-            projects: resume.projects,
-            certificates: resume.certificates,
-            templateId: resume.templateId,
-          },
           template: resume.templateId,
         }));
 

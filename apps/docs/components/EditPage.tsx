@@ -82,6 +82,7 @@ export default function EditPage() {
   const { user, isPaid, refetchUser } = useUserStatus();
 
   const { data: session, status: sessionStatus } = useSession();
+  const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
   const {
     resumeData,
     handleInputChange: baseHandleInputChange,
@@ -177,9 +178,48 @@ export default function EditPage() {
 
   const { activeSection, handleSectionChange, sections, setActiveSection } =
     useActiveSection();
+
+  const handleDownload = async () => {
+    setIsGeneratingPDF(true);
+    try {
+      const element = document.getElementById("wrapper");
+      if (!element) throw new Error("Resume wrapper not found");
+      element.style.transform = "scale(1)";
+
+      // Add the CSS link directly in the HTML content
+      const globalCSSLink = `<link rel="stylesheet" href="/static/css/app/layout.css">`;
+      const cssLink = `<link rel="stylesheet" href="/static/css/app/(pages)/select-templates/editor/page.css">`;
+      const htmlContent = cssLink + globalCSSLink + element.outerHTML;
+
+      const response = await fetch("/api/generate-pdf", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ html: htmlContent, resumeId: resumeId }),
+      });
+
+      if (!response.ok) throw new Error("PDF generation failed");
+
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.style.display = "none";
+      a.href = url;
+      a.download = "resume.pdf";
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error("Error generating PDF:", error);
+    } finally {
+      setIsGeneratingPDF(false);
+    }
+  };
+
   const openModel = () => {
     if (isPaid) {
-      setIsModelOpen(true);
+      handleDownload();
     } else {
       router.push("/select-templates/checkout");
     }

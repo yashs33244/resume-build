@@ -117,11 +117,11 @@ export async function GET(req: Request) {
     console.log(`Found ${resumes.length} resumes for user ${user.id}`);
 
     const formattedResumes: ResumeProps[] = resumes.map((resume: DatabaseResume): ResumeProps => ({
+      personalInfo: resume.personalInfo,  
       resumeId: resume.id,
       userId: resume.userId,
       createdAt: resume.createdAt.toISOString(),
       updatedAt: resume.updatedAt.toISOString(),
-      personalInfo: resume.personalInfo,
       education: resume.education,
       experience: resume.experience,
       skills: resume.skills.map(skill => skill.name),

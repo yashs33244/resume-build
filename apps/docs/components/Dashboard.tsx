@@ -20,6 +20,7 @@ import { useRouter } from "next/navigation";
 import { MdLock } from "react-icons/md";
 import { Loader } from "lucide-react";
 import { useUserStatus } from "../hooks/useUserStatus";
+import { ResumeProps } from "../types/ResumeProps";
 
 const Dashboard = () => {
   const [isGeneratingPDF, setIsGeneratingPDF] =
@@ -94,8 +95,8 @@ const Dashboard = () => {
         const element = realElement.cloneNode(true) as HTMLElement;
         element.style.transform = "scale(1)";
 
-        const cssLink = `<link rel="stylesheet" href="http://localhost:3000/_next/static/css/app/(pages)/dashboard/page.css">`;
-        const globalCSSLink = `<link rel="stylesheet" href="http://localhost:3000/_next/static/css/app/layout.css?v=1728991725867">`;
+        const cssLink = `<link rel="stylesheet" href="/static/css/app/(pages)/dashboard/page.css">`;
+        const globalCSSLink = `<link rel="stylesheet" href="/static/css/app/layout.css">`;
         const fontLink = `<link href='https://fonts.googleapis.com/css?family=Inter' rel='stylesheet'/>`;
         const htmlContent =
           cssLink + globalCSSLink + fontLink + element.outerHTML;
@@ -181,13 +182,6 @@ const Dashboard = () => {
   // Render dashboard only if there are resumes
   return (
     <div className="dashboard-container">
-      {false && <div className="expired-state">
-          <MdLock />
-          <div className="renew-cta">
-            <MdAutorenew />
-            <div>Renew</div>
-          </div>
-      </div>}
       <div className="top-section">
         <div className="dash-title">My Resumes</div>
         <div className="create-cta">
@@ -196,38 +190,30 @@ const Dashboard = () => {
         </div>
       </div>
       <div className="resume-container">
-        {resumes.map((resume: any, index) => (
+        {resumes.map((resume: ResumeProps, index) => (
           <div
-            key={resume.resumeData.resumeId}
-            className={`resume-item ${
-              index === 0 ? "first-resume" : "second-resume"
-            }`}
+            key={resume.resumeId}
+            className={`resume-item ${index === 0 ? "first-resume" : "second-resume"}`}
           >
             <div className="timer">
-              <TimeAgo timestamp={resume?.updateDate} />
-              {/* {resume.resumeState === "DOWNLOAD_SUCCESS" && (
-                <div className="text-white"> {resume.daysLeft} days left</div>
-              )}
-              {resume.resumeState !== "DOWNLOAD_SUCCESS" && (
-                <div className="text-white expired">Expired</div>
-              )} */}
+              <TimeAgo timestamp={resume.updatedAt} />
             </div>
             <div className="resume-section">
               <div
-                className={`resume-preview resumeParent resumeParent-${resume.resumeData.resumeId} border-2 ${
-                  resume.resumeState === "DOWNLOAD_SUCCESS"
+                className={`resume-preview resumeParent resumeParent-${resume.resumeId} border-2 ${
+                  resume.state === "DOWNLOAD_SUCCESS"
                     ? "border-green-500"
                     : "border-gray-500"
                 }`}
               >
-                {renderTemplate(resume.template, resume.resumeData)}
+                {renderTemplate(resume.templateId, resume)}
               </div>
               <div className="action-toolbar">
-                {resume.resumeState === "DOWNLOAD_SUCCESS" ||
-                resume.resumeState === "EDITING" ? (
+                {resume.state === "DOWNLOAD_SUCCESS" ||
+                resume.state === "EDITING" ? (
                   <>
                     <Link
-                      href={`/select-templates/editor?id=${resume.resumeData.resumeId}`}
+                      href={`/select-templates/editor?id=${resume.resumeId}`}
                     >
                       <div className="edit" onClick={handleEdit}>
                         <CiEdit className="cta-icon" />
@@ -236,17 +222,15 @@ const Dashboard = () => {
                     </Link>
                     <div
                       className={`download ${!isPaid ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}`}
-                      onClick={() =>
-                        isPaid && handleDownload(resume.resumeData.resumeId)
-                      }
+                      onClick={() => isPaid && handleDownload(resume.resumeId)}
                     >
-                      {downloadingId === resume.resumeData.resumeId ? (
+                      {downloadingId === resume.resumeId ? (
                         <Loader className="w-6 h-6 animate-spin" />
                       ) : (
                         <MdOutlineFileDownload className="cta-icon" />
                       )}
                       <div>
-                        {downloadingId === resume.resumeData.resumeId
+                        {downloadingId === resume.resumeId
                           ? "Downloading..."
                           : "Download"}
                       </div>
@@ -255,9 +239,7 @@ const Dashboard = () => {
                       className={`tailor ${!isPaid ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}`}
                       onClick={() =>
                         isPaid &&
-                        router.push(
-                          `/tailored-resume?id=${resume.resumeData.resumeId}`,
-                        )
+                        router.push(`/tailored-resume?id=${resume.resumeId}`)
                       }
                     >
                       <ImMagicWand className="cta-icon" />

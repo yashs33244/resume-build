@@ -27,7 +27,7 @@ export const Template1 = (props: any) => {
   const certificates = resumeData.certificates || [];
 
   const getDuration = (dateString: any) => {
-    console.log("Date string = ", dateString)
+    console.log("Date string = ", dateString);
     const date = new Date(dateString);
     const formattedDate = date.toLocaleDateString("en-US", {
       month: "short",
@@ -147,9 +147,7 @@ export const Template1 = (props: any) => {
             <div className="section-title">CERTIFICATES</div>
             {certificates.map((cert: any, index: any) => (
               <div className="cert-container" key={index}>
-                {cert?.name && (
-                  <div className="cert-name">{cert.name}</div>
-                )}
+                {cert?.name && <div className="cert-name">{cert.name}</div>}
                 {(cert?.issuedOn || cert?.issuer) && (
                   <div className="issuing">
                     {`${cert.issuer ? cert.issuer : ""} ${cert.issuedOn ? `- ${getDuration(cert.issuedOn)}` : ""}`}
@@ -159,7 +157,7 @@ export const Template1 = (props: any) => {
             ))}
           </div>
         )}
-        {(coreSkills.length > 0) && (
+        {coreSkills.length > 0 && (
           <div className="skills">
             {coreSkills.length > 0 && (
               <div className="section-title">SKILLS</div>

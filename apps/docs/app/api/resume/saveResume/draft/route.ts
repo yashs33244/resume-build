@@ -23,20 +23,27 @@ export async function POST(request: NextRequest) {
     }
 
     // Split the transaction into smaller chunks to prevent timeout
-    const resume = await db.resume.upsert({
-      where: { id: resumeId },
-      create: {
-        id: resumeId,
-        userId: session.user.id,
-        state: ResumeState.EDITING,
-        templateId: content.templateId,
-      },
-      update: {
-        state: ResumeState.EDITING,
-        templateId: content.templateId,
-        updatedAt: new Date(),
-      },
-    });
+    let resume = await db.resume.findUnique({ where: { id: resumeId } });
+
+    if (!resume) {
+      resume = await db.resume.create({
+        data: {
+          id: resumeId,
+          userId: session.user.id,
+          state: ResumeState.EDITING,
+          templateId: content.templateId,
+        },
+      });
+    } else {
+      resume = await db.resume.update({
+        where: { id: resumeId },  
+        data: {
+          state: resume.state === ResumeState.DOWNLOAD_SUCCESS ? ResumeState.DOWNLOAD_SUCCESS : ResumeState.EDITING,
+          templateId: content.templateId,
+          updatedAt: new Date(),
+        },
+      });
+    }
 
     // Handle personal info
     if (content.personalInfo) {
