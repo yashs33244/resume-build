@@ -74,7 +74,7 @@ export default function SignIn() {
             {/* <p className="text-gray-600">Or sign in with</p> */}
             <div className="flex justify-center mt-2 space-x-4">
               <button
-                onClick={() => signIn("google")}
+                onClick={() => signIn("google", { redirect: true })}
                 style={{
                   width: "72%",
                   fontWeight: "600",
