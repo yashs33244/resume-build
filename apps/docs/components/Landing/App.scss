@@ -374,8 +374,11 @@
                     color: white;
                     border: 1px solid white;
                     border-radius: 8px;
+                    display: flex;
+                    align-items: center;
                     font-size: 16px;
-                    width: 70%;
+                    gap: 8px;
+                    width: 80%;
                     text-align: center;
                     padding: 14px 24px;
                     margin-top: 30px;
@@ -466,8 +469,8 @@
                 border-radius: 16px;
                 
                 .infographic {
-                    height: 55px;
-                    width: 14%;
+                    height: 62px;
+                    width: 18%;
                     background-color: rgb(10, 10, 1, 0.6);
                     padding: 12px 16px 0 16px;
                     border-top-left-radius: 16px;
@@ -496,7 +499,7 @@
         margin-top: 10rem;
         padding-bottom: 10rem;
         .title {
-            // background: linear-gradient(to right, #0094FF, #FF33DE);
+            background: linear-gradient(to right, #0094FF, #FF33DE);
             // background: linear-gradient(to right, #0094FF, black);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -551,6 +554,9 @@
                     width: 50%;
                     padding: 12px 28px;
                     text-align: center;
+                    display: flex;
+                    align-items: center;
+                    gap: 8px;
                     font-weight: 500;
                     font-size: 1.3rem;
                     border-radius: 12px;

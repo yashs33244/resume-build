@@ -7,18 +7,21 @@
 .template2-wrapper {
 
     --font-size-base: 16px; /* Default for M */
-    --font-size-small: 0.75;
-    --font-size-large: 1.25;
+    --font-size-small: 0.9;
+    --font-size-smaller: 0.8;
+    --font-size-smallest: 0.75;
+    --font-size-large: 1.1;
+    --font-size-larger: 1.25;
   
     --padding-base: 40px;
     --gap-base: 30px;
   
     /* Font-sizes and other dimensions */
-    --header-name-size: calc(var(--font-size-base) + 2px);
-    --header-role-size: calc(var(--font-size-base) - 1px);
-    --header-contact-size: calc(var(--font-size-base) - 6px);
+    --header-name-size: calc(var(--font-size-base) + 4px);
+    --header-role-size: calc(var(--font-size-base) - 0px);
+    --header-contact-size: calc(var(--font-size-base) - 4px);
     --content-label-size: var(--font-size-base);
-    --content-value-size: calc(var(--font-size-base) - 6px);
+    --content-value-size: calc(var(--font-size-base) - 4px);
   
     /* Paddings, Margins */
     --container-padding: var(--padding-base);
@@ -31,19 +34,29 @@
     --padding-base: 40px;
     --gap-base: 30px;
   }
-  
-  /* Size S */
+
   .template2-wrapper.S {
-    --font-size-base: 14px; /* 75% of M */
-    --padding-base: 30px; /* 75% of M */
-    --gap-base: 22.5px; /* 75% of M */
+    --font-size-base: 15.2px;
+    --padding-base: 38px;
+    --gap-base: 28.5px;
   }
-  
-  /* Size L */
+
+  .template2-wrapper.XS {
+    --font-size-base: 14.44px;
+    --padding-base: 36.1px;
+    --gap-base: 27.07px;
+  }
+
   .template2-wrapper.L {
-    --font-size-base: 18px; /* 125% of M */
-    --padding-base: 50px; /* 125% of M */
-    --gap-base: 37.5px; /* 125% of M */
+    --font-size-base: 16.8px; /* 125% of M */
+    --padding-base: 42px; /* 125% of M */
+    --gap-base: 31.5px; /* 125% of M */
+  }
+
+  .template2-wrapper.XL {
+    --font-size-base: 17.64px; /* 125% of M */
+    --padding-base: 44.1px; /* 125% of M */
+    --gap-base: 33.07px; /* 125% of M */
   }
   
   /* Template Container */
@@ -149,6 +162,12 @@
   .template2-wrapper .content_skill_div_value_section_category{
     font-weight: 600;
     color: rgba(0,0,0,0.7) !important;
+  }
+
+  .template2-wrapper .content_projects_div_value_section_name {
+    display: flex;
+    align-items: center;
+    gap: 4px;
   }
   
   .template2-wrapper .content_bio_div_value,

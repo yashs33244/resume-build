@@ -7,6 +7,7 @@ import Link from "next/link";
 import { useSession, signOut } from "next-auth/react";
 import "./Header.scss";
 import logo from "./logo.svg";
+import premium from "./premium.svg";
 
 export default function Header() {
   const { data: session, status: sessionStatus } = useSession();
@@ -23,9 +24,12 @@ export default function Header() {
     <div className="header-container">
       <div className="logo-container">
         {session?.user ? (
-          <Link href="/dashboard">
-            <Image alt="logo" src={logo} width={130} />
-          </Link>
+          <>
+            <Link href="/dashboard">
+              <Image alt="logo" src={logo} width={130} />
+            </Link>
+            <Image alt="premium" src={premium} width={100} />
+          </>
         ) : (
           <Link href="/">
             <Image alt="logo" src={logo} width={130} />

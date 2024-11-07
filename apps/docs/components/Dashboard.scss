@@ -5,7 +5,39 @@
     width: calc(100% - 8rem);
     margin-left: 4rem;
     height: calc(100vh - 100px);
-    border-radius: 28px;
+    border-top-left-radius: 28px;
+    border-top-right-radius: 28px;
+    position: relative;
+
+    .expired-state {
+        width: 100%;
+        height: calc(100vh - 100px);
+        background-color: #121420;
+        opacity: 0.85;
+        z-index: 10000;
+        border-top-left-radius: 28px;
+        border-top-right-radius: 28px;
+        position: absolute;
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        align-items: center;
+        font-size: 4rem;
+
+        .renew-cta {
+            font-size: 1.4rem;
+            font-weight: 600;
+            padding: 4px 32px;
+            background-color: #3B5BFF;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            opacity: 1 !important;
+            margin-top: 12px;
+            cursor: pointer;
+        }
+    }
 
     .top-section {
         width: 94%;
@@ -54,10 +86,12 @@
 
             .timer {
                 opacity: 0.6;
+                font-size: 0.8rem;
             }
 
             .resume-section {
                 width: 100%;
+                margin-top: 4px;
 
                 display: flex;
 
@@ -119,12 +153,16 @@
                     .tailor {
                         display: flex;
                         align-items: center;
-                        margin-top: 18px;
+                        margin-top: 18px;                        
                         cursor: pointer;
+                        font-weight: 700;
 
                         div {
+                            background: linear-gradient(to right, #ffffff, #3b5bff);
+                            -webkit-background-clip: text;
+                            -webkit-text-fill-color: transparent;
                             margin-left: 10px;
-                            opacity: 0.8;
+                            opacity: 0.8;                            
                             font-size: 1.25rem;
                         }
                     }
@@ -136,7 +174,8 @@
             width: 50%;
 
             .timer {
-                opacity: 0.7;
+                opacity: 0.6;
+                font-size: 0.8rem;
             }
 
             .expired {
@@ -145,7 +184,7 @@
 
             .resume-section {
                 width: 100%;
-
+                margin-top: 4px;
                 display: flex;
 
                 img {

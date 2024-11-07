@@ -123,7 +123,9 @@ export default function Tips(props: any) {
                 <div>Certificate</div>
               </CollapsibleTrigger>
               <CollapsibleContent className="collapse-content">
-                <div>Best Practices of personal information will go here</div>
+                {tipsData && tipsData.certificates.map((tip, index) => (
+                  <li style={{marginTop: '8px'}} key={index}>{tip}</li>
+                ))}
               </CollapsibleContent>
             </Collapsible>
           </div>

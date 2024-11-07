@@ -13,8 +13,11 @@ import { Template1 } from "./Editor/templates/Template1";
 import { Template2 } from "./Editor/templates/template2";
 import { Template3 } from "./Editor/templates/template3";
 import { useResumeState } from "../hooks/useResumeState";
+import TimeAgo from "./TimeAgo";
 import { resumeTimeAtom } from "../store/expiry";
+import { MdAutorenew } from "react-icons/md";
 import { useRouter } from "next/navigation";
+import { MdLock } from "react-icons/md";
 import { Loader } from "lucide-react";
 import { useUserStatus } from "../hooks/useUserStatus";
 
@@ -178,6 +181,13 @@ const Dashboard = () => {
   // Render dashboard only if there are resumes
   return (
     <div className="dashboard-container">
+      {false && <div className="expired-state">
+          <MdLock />
+          <div className="renew-cta">
+            <MdAutorenew />
+            <div>Renew</div>
+          </div>
+      </div>}
       <div className="top-section">
         <div className="dash-title">My Resumes</div>
         <div className="create-cta">
@@ -194,12 +204,13 @@ const Dashboard = () => {
             }`}
           >
             <div className="timer">
-              {resume.resumeState === "DOWNLOAD_SUCCESS" && (
-                <div className="text-green-500">Downloaded Successfully</div>
+              <TimeAgo timestamp={resume?.updateDate} />
+              {/* {resume.resumeState === "DOWNLOAD_SUCCESS" && (
+                <div className="text-white"> {resume.daysLeft} days left</div>
               )}
               {resume.resumeState !== "DOWNLOAD_SUCCESS" && (
-                <div className="text-white opacity-60">Not downloaded yet</div>
-              )}
+                <div className="text-white expired">Expired</div>
+              )} */}
             </div>
             <div className="resume-section">
               <div

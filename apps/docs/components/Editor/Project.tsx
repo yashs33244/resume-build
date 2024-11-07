@@ -22,9 +22,9 @@ const ClientSideQuill = dynamic(() => import("react-quill"), {
   ssr: false,
   loading: () => (
     <div className="flex flex-row gap-2">
-      <div className="w-4 h-4 rounded-full bg-blue-700 animate-bounce [animation-delay:.7s]"></div>
-      <div className="w-4 h-4 rounded-full bg-blue-700 animate-bounce [animation-delay:.3s]"></div>
-      <div className="w-4 h-4 rounded-full bg-blue-700 animate-bounce [animation-delay:.7s]"></div>
+      <div className="w-4 h-4 rounded-full bg-white-500 animate-bounce [animation-delay:.7s]"></div>
+      <div className="w-4 h-4 rounded-full bg-white-500 animate-bounce [animation-delay:.3s]"></div>
+      <div className="w-4 h-4 rounded-full bg-white-500 animate-bounce [animation-delay:.7s]"></div>
     </div>
   ),
 });
@@ -171,6 +171,9 @@ export const Project: React.FC<ProjectProps> = ({
                 </div>
                 <div className="form-row">
                   <div className="row-form-field">
+                    <Label htmlFor={`start-${index}`} className="field-label">
+                      Start Date
+                    </Label>
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                       <CustomDatePicker
                         id={`start-${index}`}
@@ -184,6 +187,9 @@ export const Project: React.FC<ProjectProps> = ({
                     </LocalizationProvider>
                   </div>
                   <div className="row-form-field">
+                    <Label htmlFor={`end-${index}`} className="field-label">
+                      End Date
+                    </Label>
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                       <CustomDatePicker
                         id={`end-${index}`}

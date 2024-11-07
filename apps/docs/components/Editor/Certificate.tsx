@@ -9,6 +9,9 @@ import { ResumeProps } from "../../types/ResumeProps";
 import "./styles/certificate.scss";
 import { BsStars } from "react-icons/bs";
 import { FaTrashAlt } from "react-icons/fa";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import CustomDatePicker from "./CustomDatePicker";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import {
   Collapsible,
   CollapsibleTrigger,
@@ -114,6 +117,22 @@ export const Certificate: React.FC<CertificateProps> = ({
                     />
                   </div>
                   <div className="row-form-field">
+                    <Label htmlFor={`start-${index}`} className="field-label">
+                      Start Date
+                    </Label>
+                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                      <CustomDatePicker
+                        id={`start-${index}`}
+                        value={cert.issuedOn || ""}
+                        onChange={handleInputChange}
+                        index={index}
+                        className="text-white"
+                        field="start"
+                        category="certificates" // Passing the category as 'projects'
+                      />
+                    </LocalizationProvider>
+                  </div>
+                  {/* <div className="row-form-field">
                     <Label
                       htmlFor={`issuedOn-${index}`}
                       className="field-label"
@@ -135,7 +154,7 @@ export const Certificate: React.FC<CertificateProps> = ({
                       placeholder=""
                       className="form-input"
                     />
-                  </div>
+                  </div> */}
                 </div>
               </div>
             </CollapsibleContent>

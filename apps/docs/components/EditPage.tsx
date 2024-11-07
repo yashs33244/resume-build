@@ -393,12 +393,14 @@ export default function EditPage() {
                   <TbGridDots />
                   <div>{initails}</div>
                 </div>
-              ) : (
-                <div className="login-cta">
-                  <TbGridDots />
-                  <div>
-                    <Link href="/">{initails}</Link>
+                ) : (
+                  <div className="login-cta">
+                    <TbGridDots />
+                    <div>
+                      <Link href="/">{initails}</Link>
+                    </div>
                   </div>
+<<<<<<< HEAD
                 </div>
               )}
             </div>
@@ -586,11 +588,194 @@ export default function EditPage() {
                     </span>
                     &nbsp;to reduce the size.
                   </span>
+=======
+>>>>>>> 996780ff9d140cb1c57b46d73bdb016ee079f9be
                 )}
               </div>
+          <div className="nav-container">
+            <div className="logo-placement">
+              <Image alt="short_logo" src={short_logo} width={50} height={50} />
+            </div>
+            <div
+              onClick={() => setActiveSection("Personal Info")}
+              className={`icon-container ${activeSection === "Personal Info" ? "border" : ""}`}
+              data-tooltip-id="personal"
+            >
+              <FaUserTie
+                className={`icon ${activeSection === "Personal Info" ? "selected" : ""}`}
+              />
+            </div>
+            <div
+              onClick={() => setActiveSection("Education")}
+              className={`icon-container ${activeSection === "Education" ? "border" : ""}`}
+              data-tooltip-id="education"
+            >
+              <IoSchool
+                className={`icon ${activeSection === "Education" ? "selected" : ""}`}
+              />
+            </div>
+            <div
+              onClick={() => setActiveSection("Experience")}
+              className={`icon-container ${activeSection === "Experience" ? "border" : ""}`}
+              data-tooltip-id="experience"
+            >
+              <FaSuitcase
+                className={`icon ${activeSection === "Experience" ? "selected" : ""}`}
+              />
+            </div>
+            <div
+              onClick={() => setActiveSection("Project")}
+              className={`icon-container ${activeSection === "Project" ? "border" : ""}`}
+              data-tooltip-id="project"
+            >
+              <AiFillProject
+                className={`icon ${activeSection === "Project" ? "selected" : ""}`}
+              />
+            </div>
+            <div
+              onClick={() => handleSkillsSelect(resumeData)}
+              className={`icon-container ${activeSection === "Skills" ? "border" : ""}`}
+              data-tooltip-id="skills"
+            >
+              <FaTools
+                className={`icon ${activeSection === "Skills" ? "selected" : ""}`}
+              />
+            </div>
+            <div
+              onClick={() => setActiveSection("Certificate")}
+              className={`icon-container ${activeSection === "Certificate" ? "border" : ""}`}
+              data-tooltip-id="certificate"
+            >
+              <PiCertificateFill
+                className={`icon ${activeSection === "Certificate" ? "selected" : ""}`}
+              />
+            </div>
+          </div>
+        </div>
+        <div className="editor">
+          <div className="section-header">
+            <div className="section-title">
+              {getSectionTitle(activeSection)}
+              <div className="tips" onClick={() => setTipsOpen(!tipsOpen)}>
+                <MdTipsAndUpdates />
+                <div>Tips</div>
+              </div>
+            </div>
+            <div className="move-container">
+              <CiCircleChevLeft
+                data-tooltip-id="left"
+                style={{
+                  marginRight: "50px",
+                  width: "40px",
+                  height: "40px",
+                  cursor: "pointer",
+                }}
+                onClick={handleLeftNav}
+              />
+              <PiCaretCircleRightFill
+                data-tooltip-id="right"
+                style={{ width: "40px", height: "40px", cursor: "pointer" }}
+                onClick={handleRightNav}
+              />
+            </div>
+          </div>
+          <div className="material-container">
+            {activeSection === "Personal Info" && (
+              <PersonalInfo
+                resumeData={resumeData}
+                handleInputChange={handleInputChange}
+              />
+            )}
+            {activeSection === "Education" && (
+              <Education
+                resumeData={resumeData}
+                handleInputChange={handleInputChange}
+                handleAddField={handleAddField}
+                handleDeleteField={handleDeleteField}
+              />
+            )}
+            {activeSection === "Experience" && (
+              <Experience
+                resumeData={resumeData}
+                handleInputChange={handleInputChange}
+                handleAddField={handleAddField}
+                handleDeleteField={handleDeleteField}
+              />
+            )}
+            {activeSection === "Skills" && (
+              <Skills
+                resumeData={resumeData}
+                handleInputChange={handleInputChange}
+                handleAddField={handleAddField}
+                handleDeleteField={handleDeleteField}
+              />
+            )}
+            {activeSection === "Project" && (
+              <Project
+                resumeData={resumeData}
+                handleInputChange={handleInputChange}
+                handleAddField={handleAddField}
+                handleDeleteField={handleDeleteField}
+              />
+            )}
+            {activeSection === "Certificate" && (
+              <Certificate
+                resumeData={resumeData}
+                handleInputChange={handleInputChange}
+                handleAddField={handleAddField}
+                handleDeleteField={handleDeleteField}
+              />
+            )}
+            {activeSection === "Language" && (
+              <Language
+                resumeData={resumeData}
+                handleInputChange={handleInputChange}
+                handleAddField={handleAddField}
+                handleDeleteField={handleDeleteField}
+              />
             )}
           </div>
         </div>
+        <div className="preview">
+          <div className="tools">
+            <div className="tools-container">
+              <ChanegTemplate resumeSize={resumeSize} />
+              <div className="download-container cursor-pointer">
+                {session?.user ? (
+                  <div className="download" onClick={openModel}>
+                    <IoMdDownload />
+                    <div>Download</div>
+                  </div>
+                ) : (
+                  <div className="download">
+                    {" "}
+                    <Link href="/api/auth/signin">Login to download</Link>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+          <div className="preview-container" id="resumeParent">
+            {renderTemplate()}
+          </div>
+          {isOverflowing && (
+            <div className="overflow_div">
+              <span className="overflow_div_p1">
+                Your content is overflowing. You can optimize the content
+              </span>
+              {["M", "L", "S", "XL"].includes(resumeSize) && (
+                <span className="overflow_div_p1">
+                  &nbsp;or you can click&nbsp;
+                  <span onClick={reduceSize} className="overflow_div_action">
+                    here
+                  </span>
+                  &nbsp;to reduce the size.
+                </span>
+              )}
+            </div>
+          )}
+      </div>
+      </div>
       </div>
     </Suspense>
   );

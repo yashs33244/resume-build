@@ -173,7 +173,7 @@ export const PersonalInfo: React.FC<PersonalInfoProps> = ({
               id="summary"
               className="form-input"
               // type="text"
-              rows={4}
+              rows="5"
               value={resumeData.personalInfo?.bio || ""}
               onChange={(e) =>
                 handleInputChange("personalInfo", "bio", e.target.value)

@@ -6,6 +6,7 @@ import "./template1.css";
 import { useRecoilState } from "recoil";
 import { resumeSizeAtom } from "../../../store/resumeSize";
 import { ResumeProps } from "../../../types/ResumeProps";
+import { IoIosLink } from "react-icons/io";
 
 type Template1Props = {
   resumeData: ResumeProps;
@@ -26,6 +27,7 @@ export const Template1 = (props: any) => {
   const certificates = resumeData.certificates || [];
 
   const getDuration = (dateString: any) => {
+    console.log("Date string = ", dateString)
     const date = new Date(dateString);
     const formattedDate = date.toLocaleDateString("en-US", {
       month: "short",
@@ -65,7 +67,7 @@ export const Template1 = (props: any) => {
           <div className="information">
             {`${personalInfo?.email || "Email"} | ${personalInfo?.phone || "Phone"} `}
             <a href={personalInfo?.linkedin || "#"}>
-              {`${personalInfo.linkedin ? `| ${personalInfo.linkedin}` : ""}`}
+              {`${personalInfo.linkedin ? `| LinkedIn` : ""}`}
             </a>
           </div>
           <div className="summary">{personalInfo?.bio || ""}</div>
@@ -106,7 +108,7 @@ export const Template1 = (props: any) => {
                 {(edu?.degree || edu?.major) && (
                   <div className="degree-major">
                     {/* {`${edu?.degree || ""} - ${edu?.major || ""}`} */}
-                    {`${edu.degree ? edu.degree : ""} ${edu.major ? `- ${edu.major}` : ""}`}
+                    {`${edu.degree ? edu.degree : ""} ${edu.major ? `- ${edu.major}` : ""} | ${edu.start} - ${edu.end}`}
                   </div>
                 )}
               </div>
@@ -119,11 +121,13 @@ export const Template1 = (props: any) => {
             {projects.map((proj: any, index: any) => (
               <div className="proj-container" key={index}>
                 {proj?.name && (
-                  <div className="proj-name">{proj.name}</div>
+                  <a className="proj-name" href={proj?.link || null}>
+                    {proj.name} {proj?.link ? <IoIosLink /> : null}
+                  </a>
                 )}
                 {(proj?.link || proj?.start || proj?.end) && (
                   <div className="link-duration">
-                    {`${proj?.link || ""} | ${getDuration(proj?.start)} - ${proj?.current ? "Present" : getDuration(proj?.end)}`}
+                    {`${getDuration(proj?.start)} - ${proj?.current ? "Present" : getDuration(proj?.end)}`}
                   </div>
                 )}
                 {proj?.responsibilities && (

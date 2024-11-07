@@ -196,6 +196,17 @@ export default function CreatePreference() {
           )}
         </div>
       </div>
+      {/* <div className="loader-container">
+        <div className="left">
+            <ResumeUploadProgress
+                isLoading={isLoading}
+                progress={progress}
+                progressPhase={progressPhase}
+                error={error}
+            />
+        </div>
+        <div className="right">{' '}</div>
+      </div>       */}
       <style jsx>{`
         .disabled {
           pointer-events: none;

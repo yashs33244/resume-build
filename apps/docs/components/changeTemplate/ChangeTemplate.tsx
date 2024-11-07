@@ -6,7 +6,7 @@ import { useRecoilState } from "recoil";
 import { resumeSizeAtom } from "../../store/resumeSize";
 import SizeChange from "./SizeChange";
 
-export default function ChangeTemplate({ resumeId }: { resumeId: string }) {
+export default function ChangeTemplate({ resumeId }: { resumeId: string }, { resumeSize } : { resumeSize : any }) {
   return (
     <div className="widgets">
       <div className="change-template">
@@ -17,7 +17,7 @@ export default function ChangeTemplate({ resumeId }: { resumeId: string }) {
           </Link>
         </div>
       </div>
-      <SizeChange />
+      <SizeChange resumeSize={resumeSize} />
     </div>
   );
 }

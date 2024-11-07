@@ -4,6 +4,7 @@
 .template3-wrapper *{
     line-height: normal;
     box-sizing: border-box;
+    font-family: 'Inter';
 }
 
 
@@ -40,23 +41,37 @@
   .template3-wrapper.M {
     --font-size-base: 16px;
     --padding-base: 20px;
-    --gap-base: 10px;
+    --gap-base: 20px;
   }
   
   /* Size S */
   .template3-wrapper.S {
-    --font-size-base: 12px; /* 75% of M */
-    --padding-base: 15px; /* 75% of M */
-    --gap-base: 7.5px; /* 75% of M */
-    --ul-padding : 0px 0px 0px 8px
+    --font-size-base: 15.2px; /* 75% of M */
+    --padding-base: 19px; /* 75% of M */
+    --gap-base: 19px; /* 75% of M */
+    --ul-padding : 0px 0px 0px 9.5px
+  }
+
+  .template3-wrapper.XS {
+    --font-size-base: 14.44px; /* 75% of M */
+    --padding-base: 18.05px; /* 75% of M */
+    --gap-base: 18.05px; /* 75% of M */
+    --ul-padding : 0px 0px 0px 9.02px
   }
   
   /* Size L */
   .template3-wrapper.L {
-    --font-size-base: 20px; /* 125% of M */
-    --padding-base: 25px; /* 125% of M */
-    --gap-base: 12.5px; /* 125% of M */
-    --ul-padding : 0px 0px 0px 12px
+    --font-size-base: 16.8px; /* 125% of M */
+    --padding-base: 21px; /* 125% of M */
+    --gap-base: 21px; /* 125% of M */
+    --ul-padding : 0px 0px 0px 10.5px
+  }
+
+  .template3-wrapper.XL {
+    --font-size-base: 17.64px; /* 125% of M */
+    --padding-base: 22.05px; /* 125% of M */
+    --gap-base: 22.05px; /* 125% of M */
+    --ul-padding : 0px 0px 0px 11.02px
   }
   
   
@@ -70,7 +85,8 @@
     max-width: 595px;
     min-height: 842px;
     max-height: 842px;
-    color: black;
+    /* color: black; */
+    color: rgba(0,0,0,0.8);
     display: flex;
     overflow-y: hidden;
     font-family: ui-serif !important;
@@ -87,8 +103,10 @@
     max-width: 210px;
     display: flex;
     flex-direction: column;
-    background-color: #e5e4e2;
+    /* background-color: #e5e4e2; */
+    background-color: #303D5D;
     padding: var(--lp-padding);
+    color: white;
     gap: var(--container-gap);
   }
   
@@ -118,6 +136,7 @@
   .template3-wrapper .lp_add_info_value {
     display: flex;
     gap: 5px;
+    margin-top: 4px;
     font-size: var(--add-info-value-size);
 
     & svg{
@@ -186,8 +205,50 @@
     font-weight: 700;
     line-height: normal;
   }
+
+  .template3-wrapper .lp_education_div_value_section_major {
+    font-size: var(--education-section-name-size);
+    font-weight: 500;
+    line-height: normal;
+  }
   
   .template3-wrapper .lp_education_div_value_section_year {
+    font-size: var(--education-section-year-size);
+    line-height: normal;
+  }
+
+  .template3-wrapper .lp_certificate_div {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+  
+  .template3-wrapper .lp_certificate_div_value {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    justify-content: space-between;
+  }
+  
+  .template3-wrapper .lp_certificate_div_value_section {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+  
+  .template3-wrapper .lp_certificate_div_value_section_name {
+    font-size: var(--education-section-name-size);
+    font-weight: 700;
+    line-height: normal;
+  }
+
+  .template3-wrapper .lp_certificate_div_value_section_major {
+    font-size: var(--education-section-name-size);
+    font-weight: 500;
+    line-height: normal;
+  }
+  
+  .template3-wrapper .lp_certificate_div_value_section_year {
     font-size: var(--education-section-year-size);
     line-height: normal;
   }
@@ -272,13 +333,20 @@
 .template3-wrapper .rp_projerience_div_value_section {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  /* gap: 10px; */
 }
 
 .template3-wrapper .rp_projerience_div_value_section_name {
   font-size: var(--experience-section-name-size);
-  font-weight: 700;
+  font-weight: 600;
   line-height: normal;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.template3-wrapper .rp_projerience_div_value_section_name .issuer {
+  font-weight: 400;
 }
 
 .template3-wrapper .rp_projerience_div_value_section_year {
