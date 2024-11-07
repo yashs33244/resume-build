@@ -18,76 +18,109 @@ export const useResumeDraft = (
 ) => {
   const [saveStatus, setSaveStatus] = useState<'saved' | 'saving' | 'error'>('saved');
   const isInitialMount = useRef(true);
-  const lastSavedData = useRef('');
+  const lastSavedDataRef = useRef('');
+  const saveAttempts = useRef(0);
+  const maxRetries = 3;
 
-  // Debounced save function
-  const saveDraftDebounced = useRef(
-    debounce(async (data: ResumeProps) => {
-      if (!resumeId) return;
-
-      const currentDataString = JSON.stringify(data);
-      if (currentDataString === lastSavedData.current) {
-        return;
-      }
-
-      try {
-        setSaveStatus('saving');
-        const payload = {
-          resumeId,
-          content: data  // templateId is already part of the content
-        };
-
-        const response = await fetch('/api/resume/saveResume/draft', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(payload),
-        });
-
-        if (!response.ok) {
-          throw new Error('Failed to save draft');
-        }
-
-        const result: SaveDraftResponse = await response.json();
-        
-        if (result.draft?.content) {
-          setResumeData(result.draft.content);
-          lastSavedData.current = JSON.stringify(result.draft.content);
-        }
-
-        setSaveStatus('saved');
-      } catch (error) {
-        console.error('Error saving draft:', error);
-        setSaveStatus('error');
-      }
-    }, 5000)
-  ).current;
-
-  // Fetch initial draft
-  const fetchDraft = useCallback(async () => {
-    if (!resumeId) return;
+  const saveDraft = async (data: ResumeProps): Promise<boolean> => {
+    if (!resumeId) return false;
 
     try {
-      setSaveStatus('saving');
-      const response = await fetch(`/api/resume/saveResume/draft?resumeId=${resumeId}`);
-      
+      const payload = {
+        resumeId,
+        content: data
+      };
+
+      const response = await fetch('/api/resume/saveResume/draft', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      });
+
       if (!response.ok) {
-        throw new Error('Failed to fetch draft');
+        throw new Error('Failed to save draft');
       }
 
       const result: SaveDraftResponse = await response.json();
       
       if (result.draft?.content) {
         setResumeData(result.draft.content);
-        lastSavedData.current = JSON.stringify(result.draft.content);
+        lastSavedDataRef.current = JSON.stringify(result.draft.content);
+        saveAttempts.current = 0;
       }
-      
-      setSaveStatus('saved');
+
+      return true;
     } catch (error) {
-      console.error('Error fetching draft:', error);
-      setSaveStatus('error');
+      console.error('Error saving draft:', error);
+      return false;
     }
+  };
+
+  // Debounced save function with retry logic
+  const saveDraftDebounced = useRef(
+    debounce(async (data: ResumeProps) => {
+      const currentDataString = JSON.stringify(data);
+      if (currentDataString === lastSavedDataRef.current) {
+        return;
+      }
+
+      setSaveStatus('saving');
+      
+      const success = await saveDraft(data);
+      
+      if (success) {
+        setSaveStatus('saved');
+      } else if (saveAttempts.current < maxRetries) {
+        saveAttempts.current++;
+        // Retry after a delay
+        setTimeout(() => {
+          saveDraftDebounced(data);
+        }, 1000 * saveAttempts.current); // Exponential backoff
+      } else {
+        setSaveStatus('error');
+        saveAttempts.current = 0;
+      }
+    }, 2000) // Reduced debounce time
+  ).current;
+
+  // Fetch initial draft with retry logic
+  const fetchDraft = useCallback(async () => {
+    if (!resumeId) return;
+
+    let attempts = 0;
+    const fetchWithRetry = async (): Promise<void> => {
+      try {
+        setSaveStatus('saving');
+        const response = await fetch(`/api/resume/saveResume/draft?resumeId=${resumeId}`);
+        
+        if (!response.ok) {
+          throw new Error('Failed to fetch draft');
+        }
+
+        const result: SaveDraftResponse = await response.json();
+        
+        if (result.draft?.content) {
+          setResumeData(result.draft.content);
+          lastSavedDataRef.current = JSON.stringify(result.draft.content);
+        }
+        
+        setSaveStatus('saved');
+      } catch (error) {
+        console.error('Error fetching draft:', error);
+        if (attempts < maxRetries) {
+          attempts++;
+          setTimeout(() => {
+            fetchWithRetry();
+          }, 1000 * attempts);
+        } else {
+          setSaveStatus('error');
+        }
+      }
+    };
+
+    await fetchWithRetry();
   }, [resumeId, setResumeData]);
 
   // Effect for saving drafts
@@ -108,6 +141,12 @@ export const useResumeDraft = (
 
   return {
     saveStatus,
-    fetchDraft
+    fetchDraft,
+    retry: () => {
+      if (resumeId && data) {
+        saveAttempts.current = 0;
+        saveDraftDebounced(data);
+      }
+    }
   };
 };

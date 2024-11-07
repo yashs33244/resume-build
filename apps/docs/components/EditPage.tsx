@@ -188,25 +188,6 @@ export default function EditPage() {
   const closeModel = () => {
     setIsModelOpen(false);
   };
-  // useEffect(() => {
-  //   // Check if the window is available (runs only on client-side)
-  //   if (typeof window !== "undefined") {
-  //     const searchParams = new URLSearchParams(window.location.search);
-  //     let templateParam = searchParams.get("template");
-
-  //     // If no template is selected in the URL, check localStorage or default to "fresher"
-  //     if (!templateParam) {
-  //       const storedTemplate = localStorage.getItem("resumeData.templateId");
-  //       templateParam = storedTemplate || "fresher"; // Default to "fresher"
-  //     }
-
-  //     // Set the template state with the selected or default value
-  //     setTemplate(templateParam);
-
-  //     // Save the selected template to localStorage
-  //     localStorage.setItem("selectedTemplate", templateParam);
-  //   }
-  // }, []);
 
   const renderTemplate = () => {
     console.log("Template", template);
@@ -292,46 +273,7 @@ export default function EditPage() {
     checkOverflow();
   }, [resumeData, resumeSize]);
 
-  const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
   const [tipsOpen, setTipsOpen] = useState(false);
-  const [showDownloadModal, setDownloadModal] = useState(false);
-
-  const handleDownload = async () => {
-    setIsGeneratingPDF(true);
-    try {
-      const element = document.getElementById("wrapper");
-      if (!element) throw new Error("Resume wrapper not found");
-      element.style.transform = "scale(1)";
-
-      // Add the CSS link directly in the HTML content
-      const cssLink = `<link rel="stylesheet" href="http://localhost:3000/_next/static/css/app/(pages)/select-templates/editor/page.css">`;
-      const htmlContent = cssLink + element.outerHTML;
-
-      const response = await fetch("/api/generate-pdf", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ html: htmlContent }),
-      });
-
-      if (!response.ok) throw new Error("PDF generation failed");
-
-      const blob = await response.blob();
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.style.display = "none";
-      a.href = url;
-      a.download = "resume.pdf";
-      document.body.appendChild(a);
-      a.click();
-      window.URL.revokeObjectURL(url);
-    } catch (error) {
-      console.error("Error generating PDF:", error);
-    } finally {
-      setIsGeneratingPDF(false);
-    }
-  };
 
   const getSectionTitle = (props: any) => {
     switch (activeSection) {
@@ -374,6 +316,10 @@ export default function EditPage() {
       setResumeSize("S");
     } else if (resumeSize == "L") {
       setResumeSize("M");
+    } else if (resumeSize == "XL") {
+      setResumeSize("L");
+    } else if (resumeSize == "S") {
+      setResumeSize("XS");
     }
   };
 
@@ -632,24 +578,18 @@ export default function EditPage() {
                 <span className="overflow_div_p1">
                   Your content is overflowing. You can optimize the content
                 </span>
-                {["M", "L"].includes(resumeSize) && (
+                {["M", "L", "S", "XL"].includes(resumeSize) && (
                   <span className="overflow_div_p1">
                     &nbsp;or you can click&nbsp;
                     <span onClick={reduceSize} className="overflow_div_action">
                       here
                     </span>
-                    &nbsp;to reduce the size
+                    &nbsp;to reduce the size.
                   </span>
                 )}
               </div>
             )}
           </div>
-          <DownloadModel
-            isOpen={isModelOpen}
-            onClose={closeModel}
-            resumeData={resumeData}
-            templateId={template || ""}
-          />
         </div>
       </div>
     </Suspense>

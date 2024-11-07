@@ -2,33 +2,36 @@ import { NextRequest, NextResponse } from "next/server";
 import { userAgent } from "next/server";
 
 export const config = {
-  matcher: ['/dashboard', '/create-preference', '/select-templates/:path*', '/']
+  matcher: [
+    '/dashboard/:path*',
+    '/create-preference/:path*',
+    '/select-templates/:path*',
+    '/((?!api|_next/static|_next/image|favicon.ico|mobile-page).*)',
+  ]
 }
 
 export default function middleware(request: NextRequest) {
   const ua = userAgent(request);
-  const isPublicPath = request.nextUrl.pathname === '/';
   
-  // Check for mobile device first
+  // Handle mobile redirect
   if (ua?.device?.type === 'mobile') {
-    // Don't redirect if already on mobile page to prevent loops
-    if (!request.nextUrl.pathname.startsWith('/mobile-page')) {
-      return NextResponse.redirect(new URL('/mobile-page', request.url));
-    }
+    return NextResponse.redirect(new URL('/mobile-page', request.url));
   }
 
-  // Allow public access to landing page
-  if (isPublicPath) {
+  // Skip auth check for public routes
+  const publicPaths = ['/signin', '/', '/mobile-page'];
+  const path = request.nextUrl.pathname;
+  if (publicPaths.includes(path)) {
     return NextResponse.next();
   }
 
-  // Check authentication for protected routes
+  // Check for auth token
   const token = request.cookies.get('next-auth.session-token');
   
   if (!token) {
-    const url = new URL('/signin', request.url);
-    url.searchParams.set('callbackUrl', request.url);
-    return NextResponse.redirect(url);
+    const signinUrl = new URL('/api/auth/signin', request.url);
+    signinUrl.searchParams.set('callbackUrl', request.url);
+    return NextResponse.redirect(signinUrl);
   }
 
   return NextResponse.next();

@@ -242,6 +242,9 @@ export const authOptions: NextAuthOptions = {
         if (callbackUrl) {
           return callbackUrl.startsWith("/") ? `${baseUrl}${callbackUrl}` : callbackUrl;
         }
+        if (url.includes('signout')) {
+          return baseUrl + '/';
+        }
         
         // Default fallback to dashboard
         return `${baseUrl}/dashboard`;
