@@ -183,7 +183,7 @@ const TailoredResumePage: React.FC = () => {
 
       setTailoredResumeData(tailoredData);
       setShowComparison(true);
-      console.log("Tailored resume data:", tailoredResumeData);
+      // console.log("Tailored resume data:", tailoredResumeData);
     } catch (error: any) {
       alert(
         error.message ||

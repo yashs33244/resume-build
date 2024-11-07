@@ -136,7 +136,7 @@ const DownloadModal: React.FC<DownloadModalProps> = ({
       }
 
       setTailoredResumeData(tailoredData);
-      console.log("Tailored resume data:", tailoredData);
+      // console.log("Tailored resume data:", tailoredData);
       setShowComparison(true);
     } catch (error: any) {
       console.error("Error tailoring resume:", error);

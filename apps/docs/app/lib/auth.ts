@@ -52,10 +52,10 @@ export const authOptions: NextAuthOptions = {
         password: { label: "password", type: "password", placeholder: "" },
       },
       async authorize(credentials: any) {
-        console.log("Authorize function called with:", credentials.username);
+        // console.log("Authorize function called with:", credentials.username);
       
         if (!credentials.username || !credentials.password) {
-          console.log("Missing username or password");
+          // console.log("Missing username or password");
           return null;
         }
       
@@ -226,29 +226,39 @@ export const authOptions: NextAuthOptions = {
       return true; // Allow sign-in if not using Google provider
     },
     async redirect({ url, baseUrl }) {
-      console.log("Redirect callback:", { url, baseUrl });
+      console.log("Redirect callback triggered with URL:", url);
       
-      // Handle sign out
-      if (url.includes('/signout')) {
-        return baseUrl;
+      try {
+        const fullUrl = new URL(url, baseUrl);
+        const callbackUrl = fullUrl.searchParams.get("callbackUrl");
+        const fromLanding = fullUrl.searchParams.get("fromLanding") === "true";
+        const template = fullUrl.searchParams.get("template");
+        
+        // Handle sign-out
+        const redirectType = fullUrl.searchParams.get("redirectType");
+        if (redirectType === "signout") {
+          return `${baseUrl}/`;
+        }
+        
+        // If coming from landing page with a template
+        if (fromLanding && template) {
+          return `${baseUrl}/create-preference?template=${template}&fromLanding=true`;
+        }
+        
+        // If there's a specific callback URL
+        if (callbackUrl) {
+          return callbackUrl.startsWith("/") ? `${baseUrl}${callbackUrl}` : callbackUrl;
+        }
+        if (url.includes('signout')) {
+          return baseUrl + '/';
+        }
+        
+        // Default fallback to dashboard
+        return `${baseUrl}/dashboard`;
+      } catch (error) {
+        console.error("Error in redirect callback:", error);
+        return `${baseUrl}/dashboard`;
       }
-      
-      // Handle callback URLs
-      if (url.startsWith('/api/auth/callback')) {
-        return baseUrl + '/dashboard';
-      }
-      
-      // Handle relative URLs
-      if (url.startsWith('/')) {
-        return baseUrl + url;
-      }
-      
-      // Handle other URLs
-      if (url.startsWith(baseUrl)) {
-        return url;
-      }
-      
-      return baseUrl;
     }
     
     

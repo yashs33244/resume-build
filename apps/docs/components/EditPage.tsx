@@ -106,7 +106,7 @@ export default function EditPage() {
 
       try {
         setSaveStatus("saving");
-        console.log("Saving resume data:", { resumeId, data });
+        // console.log("Saving resume data:", { resumeId, data });
 
         const response = await fetch("/api/resume/saveResume/draft", {
           method: "POST",
@@ -129,7 +129,7 @@ export default function EditPage() {
           throw new Error(result.error || "Failed to save draft");
         }
 
-        console.log("Save successful:", result);
+        // console.log("Save successful:", result);
         setSaveStatus("saved");
       } catch (error) {
         console.error("Error saving draft:", error);
