@@ -1,10 +1,10 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 
 // Utility function to get time ago string
-const getTimeAgo = (timestamp) => {
+const getTimeAgo = (timestamp: any) => {
   const now = new Date();
   const givenTime = new Date(timestamp);
-  const differenceInMs = now - givenTime;
+  const differenceInMs = now.getTime() - givenTime.getTime();
 
   const seconds = Math.floor(differenceInMs / 1000);
   const minutes = Math.floor(differenceInMs / (1000 * 60));
@@ -20,12 +20,12 @@ const getTimeAgo = (timestamp) => {
   if (hours === 1) return `an hour ago`;
   if (minutes >= 2) return `${minutes} minutes ago`;
   if (minutes === 1) return `a minute ago`;
-  return 'just now';
+  return "just now";
 };
 
 // React component to display time ago
-const TimeAgo = ({ timestamp }) => {
-  const [timeAgo, setTimeAgo] = useState('');
+const TimeAgo = ({ timestamp }: any) => {
+  const [timeAgo, setTimeAgo] = useState("");
 
   useEffect(() => {
     const updateAgo = () => setTimeAgo(getTimeAgo(timestamp));
