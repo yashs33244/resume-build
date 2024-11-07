@@ -124,7 +124,7 @@ export const Certificate: React.FC<CertificateProps> = ({
                       <CustomDatePicker
                         id={`start-${index}`}
                         value={cert.issuedOn || ""}
-                        onChange={handleInputChange}
+                        onChange={() => handleInputChange}
                         index={index}
                         className="text-white"
                         field="start"

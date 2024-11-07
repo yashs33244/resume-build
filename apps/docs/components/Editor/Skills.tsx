@@ -100,7 +100,7 @@ export const Skills: React.FC<SkillsProps> = ({
 
   useEffect(() => {
     const currentRole = resumeData.personalInfo?.title || "";
-    console.log("currentRole", currentRole);
+    // console.log("currentRole", currentRole);
 
     // Retrieve cache from localStorage
     const savedCache = localStorage.getItem("skillCache");
@@ -177,11 +177,11 @@ export const Skills: React.FC<SkillsProps> = ({
 
   const renderAISuggestedSkills = () => {
     return (
-      <div className="ai-skill-container">
+      <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 mt-4">
         {suggestions.map((skill, index) => (
           <button
             key={index}
-            className="ai-skill-item"
+            className="text-white text-sm font-medium p-2 py-1 rounded-full border border-blue-600 hover:bg-slate-700 transition-colors transition-shadow"
             onClick={() => addCoreSkill(skill)}
           >
             {skill}
@@ -195,13 +195,13 @@ export const Skills: React.FC<SkillsProps> = ({
     <div className="skills-container">
       <div className="core-skills">
         <Label htmlFor={`skill`} className="field-label">
-          Skills
+          Core Skills
         </Label>
         <div className="core-skill-selector">
           <Input
             value={coreSkill}
             onChange={(e) => setCoreSkill(e.target.value)}
-            placeholder="Type skills & tools like - Product strategy, Java, Data Analysis etc.."
+            placeholder="Type core skills like - Product strategy, OOPs etc"
             className="form-input"
             onKeyPress={(e) => e.key === "Enter" && addCoreSkill(coreSkill)}
           />

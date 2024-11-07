@@ -6,11 +6,10 @@ import DOMPurify from "dompurify";
 import { useRecoilState } from "recoil";
 import { resumeSizeAtom } from "../../../store/resumeSize";
 import { getDuration } from "../../../utils";
-import { IoIosLink } from "react-icons/io";
 
 export const Template2 = (props: any) => {
   const { resumeData, id } = props;
-  console.log("Resume data = ", resumeData);
+  // console.log("Resume data = ", resumeData);
   const [resumeSize, setResumeSize] = useRecoilState(resumeSizeAtom);
 
   return (
@@ -33,14 +32,14 @@ export const Template2 = (props: any) => {
             <div className={"header_right_part_url"}>
               {resumeData?.personalInfo?.email}
             </div>
+            <div className={"header_right_part_phone"}>
+              <a href={resumeData?.personalInfo?.linkedin}>
+                {resumeData?.personalInfo?.linkedin}
+              </a>
+            </div>
             <div className={"header_right_part_email"}>
               {resumeData?.personalInfo?.phone}
             </div>
-            <div className={"header_right_part_phone"}>
-              <a href={resumeData?.personalInfo?.linkedin}>
-                Linkedin
-              </a>
-            </div>                        
           </div>
         </div>
         <div className={"content"}>
@@ -71,7 +70,7 @@ export const Template2 = (props: any) => {
                 <div
                   className={`${"content_education_div_value"} ${"content_right_part"}`}
                 >
-                  {resumeData?.education.map((edu: any, index: number) => {
+                  {resumeData.education.map((edu: any, index: number) => {
                     return (
                       <div
                         className={"content_education_div_value_section"}
@@ -86,13 +85,13 @@ export const Template2 = (props: any) => {
                             {edu?.institution || "Institution Name"}
                           </div>
                         )}
-                        {Number(edu?.score) > 0 && (
+                        {edu?.score && (
                           <div
                             className={
                               "content_education_div_value_section_field"
                             }
                           >
-                            CGPA {edu.score}
+                            CGPA {edu?.score !== "0" ? `${edu.score}` : null}
                           </div>
                         )}
                         {edu?.start && edu?.end && (
@@ -200,15 +199,14 @@ export const Template2 = (props: any) => {
                         className={"content_projects_div_value_section"}
                         key={index}
                       >
-                        {proj?.name && (
-                          <a
+                        {proj?.name && proj?.link && (
+                          <div
                             className={
                               "content_projects_div_value_section_name"
                             }
-                            href={proj?.link || null}
                           >
-                            {proj?.name} {proj?.link ? <IoIosLink /> : null}
-                          </a>
+                            {proj?.name + " - " + proj?.link}
+                          </div>
                         )}
                         {(proj?.start || proj?.end || proj?.duration) && (
                           <div
