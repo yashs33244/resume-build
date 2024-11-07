@@ -2,6 +2,7 @@
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import React, {
+  Suspense,
   useCallback,
   useEffect,
   useMemo,
@@ -41,6 +42,8 @@ import "react-tooltip/dist/react-tooltip.css";
 import { useFetchResumeData } from "../hooks/useFetchResumeData";
 import { useResumeDraft } from "../hooks/useResumeDraft";
 import debounce from "lodash/debounce";
+import { useUserStatus } from "../hooks/useUserStatus";
+import { LandingLoader } from "./LandingLoader";
 
 const PersonalInfo = dynamic(
   () => import("./Editor/PersonalInfo").then((mod) => mod.PersonalInfo),
@@ -76,10 +79,21 @@ export default function EditPage() {
   const [saveStatus, setSaveStatus] = useState<"saved" | "saving" | "error">(
     "saved",
   );
+  const { user, isPaid, refetchUser } = useUserStatus();
 
   const { data: session, status: sessionStatus } = useSession();
-  const { template, setTemplate, loading, error, id } = useFetchResumeData();
-  const resumeId = id;
+  const {
+    resumeData,
+    handleInputChange: baseHandleInputChange,
+    handleAddField,
+    handleDeleteField,
+  } = useResumeData((newData: ResumeProps) => {
+    setSaveStatus("saving");
+    debouncedSave(newData);
+  });
+
+  const resumeId = resumeData.resumeId;
+  const template = resumeData.templateId;
 
   // Memoized save draft function
   const saveDraft = useCallback(
@@ -134,16 +148,6 @@ export default function EditPage() {
   );
 
   // Initialize resume data with change tracking
-  const {
-    resumeData,
-    setResumeData,
-    handleInputChange: baseHandleInputChange,
-    handleAddField,
-    handleDeleteField,
-  } = useResumeData((newData: ResumeProps) => {
-    setSaveStatus("saving");
-    debouncedSave(newData);
-  });
 
   // Enhanced input change handler
   const handleInputChange = useCallback(
@@ -154,45 +158,12 @@ export default function EditPage() {
     [baseHandleInputChange],
   );
 
-  // Load initial draft data
-  useEffect(() => {
-    const loadDraft = async () => {
-      if (!resumeId) return;
-
-      try {
-        const response = await fetch(
-          `/api/resume/saveResume/draft?resumeId=${resumeId}`,
-        );
-        const data = await response.json();
-
-        if (response.ok && data.draft?.content) {
-          setResumeData(data.draft.content);
-        }
-      } catch (error) {
-        console.error("Error loading draft:", error);
-        setSaveStatus("error");
-      }
-    };
-
-    loadDraft();
-  }, [resumeId]);
-
   // Cleanup debounced save on unmount
   useEffect(() => {
     return () => {
       debouncedSave.cancel();
     };
   }, [debouncedSave]);
-
-  // Set template ID
-  useEffect(() => {
-    if (template && resumeData) {
-      setResumeData((prev) => ({
-        ...prev,
-        templateId: template,
-      }));
-    }
-  }, [template]);
 
   useEffect(() => {
     if (session?.user?.name) {
@@ -206,10 +177,12 @@ export default function EditPage() {
 
   const { activeSection, handleSectionChange, sections, setActiveSection } =
     useActiveSection();
-  const { fetchDraft } = useResumeDraft(id, resumeData, setResumeData);
   const openModel = () => {
-    router.push("/select-templates/checkout");
-    // setIsModelOpen(true);
+    if (isPaid) {
+      setIsModelOpen(true);
+    } else {
+      router.push("/select-templates/checkout");
+    }
   };
 
   const closeModel = () => {
@@ -251,7 +224,7 @@ export default function EditPage() {
 
   const handleRedirect = async () => {
     try {
-      // saveResume(resumeData, template || "");
+      localStorage.removeItem("resumeData");
       router.push("/dashboard");
     } catch (error: any) {
       console.log("Error", error);
@@ -409,83 +382,84 @@ export default function EditPage() {
   };
 
   return (
-    <div className="flex flex-col w-full min-h-screen bg-background text-foreground dark:bg-[#1a1b1e] dark:text-white">
-      <Tips
-        activeSection={activeSection}
-        open={tipsOpen}
-        setTipsOpen={(val: any) => setTipsOpen(val)}
-      />
-      <ReactTooltip
-        id="dashboard"
-        place="bottom"
-        content="Dashboard"
-        style={{ zIndex: "1000", backgroundColor: "#1B2432" }}
-      />
-      <ReactTooltip
-        id="personal"
-        place="right"
-        content="Personal Details"
-        style={{ zIndex: "1000", backgroundColor: "#1B2432" }}
-      />
-      <ReactTooltip
-        id="education"
-        place="right"
-        content="Education"
-        style={{ zIndex: "1000", backgroundColor: "#1B2432" }}
-      />
-      <ReactTooltip
-        id="experience"
-        place="right"
-        content="Work Experience"
-        style={{ zIndex: "1000", backgroundColor: "#1B2432" }}
-      />
-      <ReactTooltip
-        id="project"
-        place="right"
-        content="Projects"
-        style={{ zIndex: "1000", backgroundColor: "#1B2432" }}
-      />
-      <ReactTooltip
-        id="skills"
-        place="right"
-        content="Skills"
-        style={{ zIndex: "1000", backgroundColor: "#1B2432" }}
-      />
-      <ReactTooltip
-        id="certificate"
-        place="right"
-        content="Certificates"
-        style={{ zIndex: "1000", backgroundColor: "#1B2432" }}
-      />
-      <ReactTooltip
-        id="left"
-        place="bottom"
-        content="Previous Section"
-        style={{ zIndex: "1000", backgroundColor: "#1B2432" }}
-      />
-      <ReactTooltip
-        id="right"
-        place="bottom"
-        content="Next Section"
-        style={{ zIndex: "10000", backgroundColor: "#1B2432" }}
-      />
-      <div className="editor-container">
-        <div className="navigation">
-          <div className="login-container" data-tooltip-id="dashboard">
-            {session?.user ? (
-              <div className="login-cta" onClick={handleRedirect}>
-                <TbGridDots />
-                <div>{initails}</div>
-              </div>
-            ) : (
-              <div className="login-cta">
-                <TbGridDots />
-                <div>
-                  <Link href="/">{initails}</Link>
+    <Suspense fallback={<LandingLoader />}>
+      <div className="flex flex-col w-full min-h-screen bg-background text-foreground dark:bg-[#1a1b1e] dark:text-white">
+        <Tips
+          activeSection={activeSection}
+          open={tipsOpen}
+          setTipsOpen={(val: any) => setTipsOpen(val)}
+        />
+        <ReactTooltip
+          id="dashboard"
+          place="bottom"
+          content="Dashboard"
+          style={{ zIndex: "1000", backgroundColor: "#1B2432" }}
+        />
+        <ReactTooltip
+          id="personal"
+          place="right"
+          content="Personal Details"
+          style={{ zIndex: "1000", backgroundColor: "#1B2432" }}
+        />
+        <ReactTooltip
+          id="education"
+          place="right"
+          content="Education"
+          style={{ zIndex: "1000", backgroundColor: "#1B2432" }}
+        />
+        <ReactTooltip
+          id="experience"
+          place="right"
+          content="Work Experience"
+          style={{ zIndex: "1000", backgroundColor: "#1B2432" }}
+        />
+        <ReactTooltip
+          id="project"
+          place="right"
+          content="Projects"
+          style={{ zIndex: "1000", backgroundColor: "#1B2432" }}
+        />
+        <ReactTooltip
+          id="skills"
+          place="right"
+          content="Skills"
+          style={{ zIndex: "1000", backgroundColor: "#1B2432" }}
+        />
+        <ReactTooltip
+          id="certificate"
+          place="right"
+          content="Certificates"
+          style={{ zIndex: "1000", backgroundColor: "#1B2432" }}
+        />
+        <ReactTooltip
+          id="left"
+          place="bottom"
+          content="Previous Section"
+          style={{ zIndex: "1000", backgroundColor: "#1B2432" }}
+        />
+        <ReactTooltip
+          id="right"
+          place="bottom"
+          content="Next Section"
+          style={{ zIndex: "10000", backgroundColor: "#1B2432" }}
+        />
+        <div className="editor-container">
+          <div className="navigation">
+            <div className="login-container" data-tooltip-id="dashboard">
+              {session?.user ? (
+                <div className="login-cta" onClick={handleRedirect}>
+                  <TbGridDots />
+                  <div>{initails}</div>
                 </div>
+                ) : (
+                  <div className="login-cta">
+                    <TbGridDots />
+                    <div>
+                      <Link href="/">{initails}</Link>
+                    </div>
+                  </div>
+                )}
               </div>
-            )}
-          </div>
           <div className="nav-container">
             <div className="logo-placement">
               <Image alt="short_logo" src={short_logo} width={50} height={50} />
@@ -668,14 +642,9 @@ export default function EditPage() {
               )}
             </div>
           )}
-        </div>
-        <DownloadModel
-          isOpen={isModelOpen}
-          onClose={closeModel}
-          resumeData={resumeData}
-          templateId={template || ""}
-        />
       </div>
-    </div>
+      </div>
+      </div>
+    </Suspense>
   );
 }

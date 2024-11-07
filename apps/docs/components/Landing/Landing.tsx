@@ -85,7 +85,7 @@ export default function LandingPage() {
     useState<LandingPageTemplateType>("classic");
   const { data: session, status: sessionStatus } = useSession();
   const { template, setTemplateAndUpdateURL } = useTemplateSync();
-  const templateClass = useRecoilValue(templateClassSelector);
+  const templateClass = useRecoilValue<any>(templateClassSelector);
   const router = useRouter();
 
   const { saveResume, isSaving } = useSaveResume();
@@ -174,7 +174,7 @@ export default function LandingPage() {
             <MdRocketLaunch />
             <div>
               {session?.user ? (
-                <Link href="/select-templates/editor"> Get Started</Link>
+                <Link href="/dashboard"> Get Started</Link>
               ) : (
                 <Link href="/api/auth/signin"> Get Started</Link>
               )}
@@ -194,7 +194,7 @@ export default function LandingPage() {
             </div>
           </div> */}
           <div style={{ marginTop: "36px" }}>
-            <Image alt="loved" src={lovedby} width="44%" />
+            <Image alt="loved" src={lovedby} style={{ width: "44%" }} />
           </div>
         </div>
         <div className="right-container">
@@ -275,7 +275,7 @@ export default function LandingPage() {
           <button>
             {/* <Link href="/editor"> Build My Resume</Link> */}
             {session?.user ? (
-              <Link href="/select-templates/editor"> Build My Resume</Link>
+              <Link href="/dashboard"> Build My Resume</Link>
             ) : (
               <Link href="/api/auth/signin"> Build My Resume</Link>
             )}

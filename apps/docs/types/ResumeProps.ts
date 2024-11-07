@@ -1,5 +1,8 @@
 export interface ResumeProps {
+  resumeId: string; 
   userId: string;
+  createdAt: string;
+  updatedAt: string;
   personalInfo?: {
     name: string;
     title: string;

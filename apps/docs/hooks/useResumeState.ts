@@ -6,6 +6,7 @@ interface UseResumeStateReturn {
   resumes: ResumeProps[];
   isLoading: boolean;
   error: string | null;
+  setResumes: (resumes: ResumeProps[]) => void; 
 }
 
 export const useResumeState = (): UseResumeStateReturn => {
@@ -81,5 +82,5 @@ export const useResumeState = (): UseResumeStateReturn => {
     return null;
   };
 
-  return { resumes, isLoading, error };
+  return { resumes, isLoading, error, setResumes };
 };

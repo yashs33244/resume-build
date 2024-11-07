@@ -23,10 +23,18 @@ export default function Header() {
   return (
     <div className="header-container">
       <div className="logo-container">
-        <Link href="/">
-          <Image alt="logo" src={logo} width={130} />          
-        </Link>
-        <Image alt="premium" src={premium} width={100} />
+        {session?.user ? (
+          <>
+            <Link href="/dashboard">
+              <Image alt="logo" src={logo} width={130} />
+            </Link>
+            <Image alt="premium" src={premium} width={100} />
+          </>
+        ) : (
+          <Link href="/">
+            <Image alt="logo" src={logo} width={130} />
+          </Link>
+        )}
       </div>
       {session?.user ? (
         <div className="login-cta">

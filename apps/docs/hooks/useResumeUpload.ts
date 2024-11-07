@@ -68,6 +68,9 @@ export const useResumeUpload = ({ onUploadSuccess }: UseResumeUploadProps) => {
         simulateProgress(40, 90, 2000);
 
         const resumeData: ResumeProps = {
+          resumeId: parsedData.resumeId || 'resume-id',
+          createdAt: parsedData.createdAt || new Date().toISOString(),
+          updatedAt: parsedData.updatedAt || new Date().toISOString(),
           userId: parsedData.userId || 'user-id',
           personalInfo: {
             name: parsedData.personalInfo?.name || '',
@@ -95,9 +98,13 @@ export const useResumeUpload = ({ onUploadSuccess }: UseResumeUploadProps) => {
             responsibilities: formatBulletPoints(exp.responsibilities || []),
             current: exp.current || false,
           })) || [],
+          
           skills: processSkills(parsedData.skills || []),
+          
           coreSkills: processSkills(parsedData.coreSkills || []),
+          
           languages: processSkills(parsedData.languages || []),
+          
           projects: parsedData.projects?.map((proj: any) => ({
             name: proj.name || '',
             link: proj.link || '',
@@ -113,6 +120,7 @@ export const useResumeUpload = ({ onUploadSuccess }: UseResumeUploadProps) => {
           state: ResumeState.EDITING,
           templateId: parsedData.templateId || 'default-template',
         };
+        console.log(' ', resumeData);
 
         setProgressPhase('complete');
         simulateProgress(90, 100, 500);

@@ -1,21 +1,29 @@
 import { useCallback, useEffect, useState } from "react";
 import { ResumeProps } from "../types/ResumeProps";
 import { initialResumeData } from "../utils/resumeData";
+import { useFetchResumeData } from "./useFetchResumeData";
+
 
 export const useResumeData = (onDataChange?: (resumeData: ResumeProps) => void) => {
     const [resumeData, setResumeData] = useState<ResumeProps>(initialResumeData);
     const [selectedTemplate, setSelectedTemplate] = useState<string>('fresher');
     const [isClient, setIsClient] = useState<boolean>(false);
+    const { rdata, template, loading, error, id } =
+    useFetchResumeData();
   
     useEffect(() => {
       setIsClient(true);
     }, []);
-  
+    
     // Load initial resumeData from localStorage
     useEffect(() => {
-      if (isClient) {
-        const savedData = window.localStorage.getItem('resumeData');
-        const savedTemplate = window.localStorage.getItem('selectedTemplate');
+      if (isClient && rdata) {
+
+        console.log("this is rData",rdata);
+        // window.localStorage.setItem("resumeData", JSON.stringify(rdata));
+        const savedData = JSON.stringify(rdata);
+        const parsedData = JSON.parse(savedData);
+        const savedTemplate = parsedData.templateId;
   
         if (savedData) {
           const parsedData = JSON.parse(savedData);
@@ -32,13 +40,13 @@ export const useResumeData = (onDataChange?: (resumeData: ResumeProps) => void) 
           setSelectedTemplate(savedTemplate);
         }
       }
-    }, [isClient]);
+    }, [isClient, rdata]);
   
     // Persist resumeData to localStorage and notify parent of changes
     useEffect(() => {
       if (isClient) {
-        window.localStorage.setItem('resumeData', JSON.stringify(resumeData));
-        window.localStorage.setItem('selectedTemplate', selectedTemplate);
+        // window.localStorage.setItem('resumeData', JSON.stringify(resumeData));
+        // window.localStorage.setItem('selectedTemplate', selectedTemplate);
         onDataChange?.(resumeData);
       }
     }, [resumeData, selectedTemplate, isClient, onDataChange]);

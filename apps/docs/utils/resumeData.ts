@@ -1,6 +1,9 @@
 import { ResumeProps } from '../types/ResumeProps';
 
 export const initialResumeData: ResumeProps = {
+  
+  templateId: "", // Add the required 'templateId' field
+  resumeId: "string",
   userId: "string", 
   personalInfo: {
     name: "",
@@ -24,6 +27,11 @@ export const initialResumeData: ResumeProps = {
     title: "",
     description: ""
   },
+  projects: [
+    
+  ],
+  //@ts-ignore
+  state: "", // Add the required 'state' field
   languages: [], // Optional: You can populate this later
   certificates: [] // Optional: You can populate this later
 };

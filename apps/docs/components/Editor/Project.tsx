@@ -178,7 +178,7 @@ export const Project: React.FC<ProjectProps> = ({
                       <CustomDatePicker
                         id={`start-${index}`}
                         value={proj.start || ""}
-                        onChange={handleInputChange}
+                        onChange={() => handleInputChange}
                         index={index}
                         className="text-white"
                         field="start"
@@ -194,7 +194,7 @@ export const Project: React.FC<ProjectProps> = ({
                       <CustomDatePicker
                         id={`end-${index}`}
                         value={proj.end || ""}
-                        onChange={handleInputChange}
+                        onChange={() => handleInputChange}
                         index={index}
                         className="text-white"
                         field="end"

@@ -4,7 +4,7 @@ import { initialResumeData } from "../utils/resumeData";
 
 export function useFetchResumeData() {
   const [template, setTemplate] = useState<string>("");
-  const [resumeData, setResumeData] = useState<ResumeProps>(initialResumeData);
+  const [rdata, setrdata] = useState<ResumeProps>(initialResumeData);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [id, setId] = useState<string | "">("");
@@ -39,17 +39,20 @@ export function useFetchResumeData() {
         if (!response.ok) {
           throw new Error(`Error fetching resume: ${response.statusText}`);
         }
+        
+
 
         const resumeData = await response.json();
-
+        console.log("Fetched Resume Data:", resumeData);
+        
         // Set resume resumeData
-        setResumeData(resumeData);
+        setrdata(resumeData);
 
         // Handle template selection
         let templateParam = resumeData.templateId;
         
         if (!templateParam) {
-          // If no template in resume resumeData, check localStorage or default to "fresher"
+          // If no template in resume resumeData, check localStorage or pdefault to "fresher"
           const storedTemplate = localStorage.getItem("resumeData.templateId");
           templateParam = storedTemplate ;
         }
@@ -57,6 +60,7 @@ export function useFetchResumeData() {
         // Set template state and save to localStorage
         setTemplate(templateParam);
         localStorage.setItem("selectedTemplate", templateParam);
+        window.localStorage.setItem("resumeData", JSON.stringify(resumeData));
         
 
 
@@ -71,5 +75,5 @@ export function useFetchResumeData() {
     fetchResumeData();
   }, []); // Empty dependency array means this runs once on mount
 
-  return { resumeData, template, setTemplate, loading, error , id};
+  return { rdata, template, setTemplate, loading, error , id};
 }
