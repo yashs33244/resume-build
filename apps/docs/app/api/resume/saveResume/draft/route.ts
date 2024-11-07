@@ -1,189 +1,110 @@
-import { NextRequest, NextResponse } from "next/server";
-import { getServerSession } from "next-auth";
-import { authOptions } from "../../../../lib/auth";
-import { db } from "../../../../db";
-import { ResumeProps } from "../../../../../types/ResumeProps";
-import { ResumeState } from "@prisma/client";
+import { NextResponse } from 'next/server';
+import { db } from '../../../../db';
+import { getServerSession } from 'next-auth/next';
+import { authOptions } from '../../../../lib/auth';
+import { ResumeProps } from '../../../../../types/ResumeProps';
+import { PrismaClient, Prisma } from '@prisma/client';
+import { 
+  PrismaClientKnownRequestError,
+  PrismaClientUnknownRequestError,
+  PrismaClientRustPanicError,
+  PrismaClientInitializationError,
+  PrismaClientValidationError
+} from '@prisma/client/runtime/library';
 
-export async function POST(request: NextRequest) {
+
+
+export async function POST(req: Request) {
+  const session = await getServerSession(authOptions);
+
+  if (!session?.user?.email) {
+    return NextResponse.json({ message: 'User not authenticated' }, { status: 401 });
+  }
+
   try {
-    const session = await getServerSession(authOptions);
-    if (!session) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    const data: ResumeProps = await req.json();
+
+    const user = await db.user.findUnique({
+      where: { email: session.user.email },
+    });
+
+    if (!user) {
+      return NextResponse.json({ message: 'User not found' }, { status: 404 });
     }
 
-    const body = await request.json();
-    const { resumeId, content } = body;
-    console.log("Received Data:", { resumeId, content });
+    // Create arrays for the many-to-many relationships
+    const skillsData = data.skills.map((skill) => ({ name: skill }));
+    const coreSkillsData = data.coreSkills?.map((skill) => ({ name: skill })) ?? [];
+    const languagesData = data.languages?.map((language) => ({ name: language })) ?? [];
 
-    if (!resumeId || !content) {
+    // Use transaction with correct Prisma typing
+    const result = await db.$transaction(
+      async (prisma: Omit<PrismaClient, '$connect' | '$disconnect' | '$on' | '$transaction' | '$use' | '$extends'>) => {
+        // Delete existing relationships first
+        await prisma.resume.update({
+          where: { id: data.resumeId },
+          data: {
+            skills: { deleteMany: {} },
+            coreSkills: { deleteMany: {} },
+            languages: { deleteMany: {} },
+          },
+        });
+
+        // Update the resume with new data
+        return prisma.resume.update({
+          where: { id: data.resumeId },
+          data: {
+            state: data.state,
+            //@ts-ignore
+            personalInfo: data.personalInfo as unknown as Prisma.InputJsonValue,
+            //@ts-ignore
+            education: data.education as unknown as Prisma.InputJsonValue,
+            //@ts-ignore
+            experience: data.experience as unknown as Prisma.InputJsonValue,
+            skills: {
+              create: skillsData,
+            },
+            coreSkills: {
+              create: coreSkillsData,
+            },
+            languages: {
+              create: languagesData,
+            },
+            //@ts-ignore
+            achievement: data.achievement as unknown as Prisma.InputJsonValue,
+            //@ts-ignore
+            projects: data.projects as unknown as Prisma.InputJsonValue,
+            //@ts-ignore
+            certificates: data.certificates as unknown as Prisma.InputJsonValue,
+            templateId: data.templateId,
+            updatedAt: new Date(),
+          },
+        });
+      },
+      {
+        maxWait: 5000, // 5s maximum wait time
+        timeout: 10000, // 10s timeout
+      }
+    );
+
+    return NextResponse.json(result, { status: 200 });
+  } catch (error: any) {
+    console.error('Error saving resume draft:', error);
+    
+    // Check if error is a Prisma error
+    if (error instanceof PrismaClientKnownRequestError ||
+        error instanceof PrismaClientUnknownRequestError ||
+        error instanceof PrismaClientRustPanicError ||
+        error instanceof PrismaClientInitializationError ||
+        error instanceof PrismaClientValidationError) {
       return NextResponse.json(
-        {
-          error: "Resume ID and content are required",
-          receivedData: { resumeId, content },
-        },
+        { message: 'Database error', error: error.message },
         { status: 400 }
       );
     }
-
-    const templateId = content.templateId;
-
-    // Update resume and all related data in a transaction
-    const updatedResume = await db.$transaction(async (tx) => {
-      // 1. Update or create the main resume record
-      const resume = await tx.resume.upsert({
-        where: { id: resumeId },
-        create: {
-          id: resumeId,
-          userId: session.user.id,
-          state: ResumeState.EDITING,
-          templateId: templateId,
-        },
-        update: {
-          state: ResumeState.EDITING,
-          templateId: templateId,
-          updatedAt: new Date(),
-        },
-      });
-
-      // 2. Update personal info
-      if (content.personalInfo) {
-        await tx.personalInfo.upsert({
-          where: { resumeId },
-          create: {
-            resumeId,
-            ...content.personalInfo,
-          },
-          update: content.personalInfo,
-        });
-      }
-
-      // 3. Update education records
-      if (content.education?.length > 0) {
-        // Delete existing education records
-        await tx.education.deleteMany({ where: { resumeId } });
-        // Create new education records
-        await tx.education.createMany({
-          data: content.education.map((edu:any) => ({
-            resumeId,
-            institution: edu.institution,
-            major: edu.major,
-            start: edu.start,
-            end: edu.end,
-            degree: edu.degree,
-            score: parseFloat(edu.score)// to float,
-          })),
-        });
-      }
-
-      // 4. Update experience records
-      if (content.experience?.length > 0) {
-        await tx.experience.deleteMany({ where: { resumeId } });
-        await tx.experience.createMany({
-          data: content.experience.map((exp:any) => ({
-            resumeId,
-            company: exp.company,
-            role: exp.role,
-            start: exp.start,
-            end: exp.end,
-            responsibilities: exp.responsibilities,
-            current: exp.current,
-          })),
-        });
-      }
-
-      // 5. Update skills
-      if (content.skills?.length > 0) {
-        await tx.skill.deleteMany({ where: { resumeId } });
-        await tx.skill.createMany({
-          data: content.skills.map((skill:any) => ({
-            resumeId,
-            name: skill,
-          })),
-        });
-      }
-
-      // 6. Update core skills
-      if (content.coreSkills?.length > 0) {
-        await tx.coreSkill.deleteMany({ where: { resumeId } });
-        await tx.coreSkill.createMany({
-          data: content.coreSkills.map((skill:any) => ({
-            resumeId,
-            name: skill,
-          })),
-        });
-      }
-
-      // 7. Update languages
-      if (content.languages?.length > 0) {
-        await tx.language.deleteMany({ where: { resumeId } });
-        await tx.language.createMany({
-          data: content.languages.map((lang:any) => ({
-            resumeId,
-            name: lang,
-          })),
-        });
-      }
-
-      // 8. Update projects
-      if (content.projects?.length > 0) {
-        await tx.project.deleteMany({ where: { resumeId } });
-        await tx.project.createMany({
-          data: content.projects.map((proj:any) => ({
-            resumeId,
-            name: proj.name,
-            link: proj.link,
-            start: proj.start,
-            end: proj.end,
-            responsibilities: proj.responsibilities,
-          })),
-        });
-      }
-
-      // 9. Update certificates
-      if (content.certificates?.length > 0) {
-        await tx.certificate.deleteMany({ where: { resumeId } });
-        await tx.certificate.createMany({
-          data: content.certificates.map((cert:any) => ({
-            resumeId,
-            name: cert.name,
-            issuer: cert.issuer,
-            issuedOn: cert.issuedOn,
-          })),
-        });
-      }
-
-      // Fetch the updated resume with all relations
-      return tx.resume.findUnique({
-        where: { id: resumeId },
-        include: {
-          personalInfo: true,
-          education: true,
-          experience: true,
-          skills: true,
-          coreSkills: true,
-          languages: true,
-          projects: true,
-          certificates: true,
-        },
-      });
-    });
-
-    return NextResponse.json({
-      success: true,
-      draft: {
-        content: updatedResume,
-        updatedAt: updatedResume?.updatedAt,
-      },
-      message: "Resume saved successfully",
-    });
-  } catch (error) {
-    console.error("API Error:", error);
+    
     return NextResponse.json(
-      {
-        error: "Internal server error",
-        details: error instanceof Error ? error.message : "Unknown error",
-      },
+      { message: 'Error saving resume draft', error: error instanceof Error ? error.message : String(error) },
       { status: 500 }
     );
   }
