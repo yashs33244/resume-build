@@ -154,14 +154,14 @@ export default function CreatePreference() {
           >
             Autofill details using your current resume
           </div>
-          {(isLoading || selectedOption === "upload") && (
+          {/* {(isLoading || selectedOption === "upload") && (
             <ResumeUploadProgress
               isLoading={true}
               progress={progress}
               progressPhase={progressPhase}
               error={error}
             />
-          )}
+          )} */}
         </div>
         <div
           className={`right ${selectedOption && selectedOption !== "scratch" ? "disabled" : ""}`}
@@ -186,33 +186,41 @@ export default function CreatePreference() {
           >
             Craft your perfect resume from start
           </div>
-          {selectedOption === "scratch" && (
+          {/* {selectedOption === "scratch" && (
             <ResumeUploadProgress
               isLoading={true}
               progress={0}
               progressPhase="parsing"
               error={undefined}
             />
-          )}
+          )} */}
         </div>
       </div>
-      {/* <div className="loader-container">
+      <div className="loader-container">
         <div className="left">
-            <ResumeUploadProgress
+            {(isLoading || selectedOption === "upload") && (
+                <ResumeUploadProgress
+                isLoading={true}
+                progress={progress}
+                progressPhase={progressPhase}
+                error={error}
+                />
+            )}
+            {/* <ResumeUploadProgress
                 isLoading={isLoading}
                 progress={progress}
                 progressPhase={progressPhase}
                 error={error}
-            />
+            /> */}
         </div>
         <div className="right">{' '}</div>
-      </div>       */}
-      <style jsx>{`
+      </div>      
+      {/* <style jsx>{`
         .disabled {
           pointer-events: none;
           cursor: not-allowed;
         }
-      `}</style>
+      `}</style> */}
     </div>
   );
 }

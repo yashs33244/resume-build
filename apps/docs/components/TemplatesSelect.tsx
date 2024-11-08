@@ -8,6 +8,7 @@ import template2 from "./template2.png";
 import template3 from "./template3.png";
 import logo from "./logo.svg";
 import "./TemplatesSelect.scss";
+import { Loader } from "lucide-react";
 import { useTemplateSelection } from "../hooks/useTemplateSelection";
 import { LandingLoader } from "./LandingLoader";
 
@@ -24,7 +25,11 @@ const TemplatesSelect = () => {
   } = useTemplateSelection();
 
   return (
-    <Suspense fallback={<LandingLoader />}>
+    <Suspense fallback={
+      <div className="flex items-center justify-center min-h-screen">
+        <Loader className="w-8 h-8 animate-spin" />
+      </div>
+    }>
     <div className="template-select-container">
       <div className="container-title">Select your final CV template</div>
         <div className="templates-wrapper">

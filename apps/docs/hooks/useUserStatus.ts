@@ -58,7 +58,7 @@ export const useUserStatus = (): UseUserStatusReturn => {
     if (sessionStatus !== 'loading') {
       fetchUserDetails();
     }
-  }, [sessionStatus, session?.user?.email]);
+  }, []);
 
   return {
     user,

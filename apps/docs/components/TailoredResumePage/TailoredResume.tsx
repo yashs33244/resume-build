@@ -11,8 +11,8 @@ import { ResumeProps } from "../../types/ResumeProps";
 import { useRouter } from "next/navigation";
 import { useSearchParams } from "next/navigation";
 import styles from "./style.module.scss";
-import { Loader } from "lucide-react";
 import { LandingLoader } from "../LandingLoader";
+import { Loader } from "lucide-react";
 import { useFetchResumeData } from "../../hooks/useFetchResumeData";
 
 const TailoredResumePage: React.FC = () => {
@@ -200,7 +200,11 @@ const TailoredResumePage: React.FC = () => {
   }, []);
 
   return (
-    <Suspense fallback={<LandingLoader />}>
+    <Suspense fallback={
+      <div className="flex items-center justify-center min-h-screen">
+        <Loader className="w-8 h-8 animate-spin" />
+      </div>
+    }>
       <div className={styles.head}>
         {showComparison ? (
           <div className={styles.tailor_p2_head}>

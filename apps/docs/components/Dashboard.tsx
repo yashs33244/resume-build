@@ -182,6 +182,13 @@ const Dashboard = () => {
   // Render dashboard only if there are resumes
   return (
     <div className="dashboard-container">
+      {false&& <div className="expired-state">
+          <MdLock />
+          <div className="renew-cta">
+            <MdAutorenew />
+            <div>Renew</div>
+          </div>
+      </div>}
       <div className="top-section">
         <div className="dash-title">My Resumes</div>
         <div className="create-cta">

@@ -21,6 +21,7 @@ import { IoSchool } from "react-icons/io5";
 import { AiFillProject } from "react-icons/ai";
 import short_logo from "./short_logo.svg";
 import { IoMdDownload } from "react-icons/io";
+import { Loader } from "lucide-react";
 import { CiCircleChevLeft } from "react-icons/ci";
 import { PiCaretCircleRightFill, PiCertificateFill } from "react-icons/pi";
 import { MdTipsAndUpdates } from "react-icons/md";
@@ -364,7 +365,11 @@ export default function EditPage() {
   };
 
   return (
-    <Suspense fallback={<LandingLoader />}>
+    <Suspense fallback={
+      <div className="flex items-center justify-center min-h-screen">
+        <Loader className="w-8 h-8 animate-spin" />
+      </div>
+    }>
       <div className="flex flex-col w-full min-h-screen bg-background text-foreground dark:bg-[#1a1b1e] dark:text-white">
         <Tips
           activeSection={activeSection}
@@ -431,13 +436,13 @@ export default function EditPage() {
               {session?.user ? (
                 <div className="login-cta" onClick={handleRedirect}>
                   <TbGridDots />
-                  <div>{initails}</div>
+                  <div>{initails?.toUpperCase()}</div>
                 </div>
               ) : (
                 <div className="login-cta">
                   <TbGridDots />
                   <div>
-                    <Link href="/">{initails}</Link>
+                    <Link href="/">{initails?.toUpperCase()}</Link>
                   </div>
                 </div>
               )}

@@ -177,11 +177,11 @@ export const Skills: React.FC<SkillsProps> = ({
 
   const renderAISuggestedSkills = () => {
     return (
-      <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 mt-4">
+      <div className="ai-skill-container">
         {suggestions.map((skill, index) => (
           <button
             key={index}
-            className="text-white text-sm font-medium p-2 py-1 rounded-full border border-blue-600 hover:bg-slate-700 transition-colors transition-shadow"
+            className="ai-skill-item"
             onClick={() => addCoreSkill(skill)}
           >
             {skill}
