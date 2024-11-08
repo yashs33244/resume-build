@@ -200,4 +200,8 @@ export const useResumeData = (onDataChange?: (resumeData: ResumeProps) => void) 
         handleDeleteField,
         setTemplate: setSelectedTemplate,
     };
+<<<<<<< HEAD
 };
+=======
+};
+>>>>>>> e8f0f0d8b116803e08e7393c7266853471a82538

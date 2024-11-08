@@ -86,13 +86,13 @@ export const Template2 = (props: any) => {
                             {edu?.institution || "Institution Name"}
                           </div>
                         )}
-                        {edu?.score && (
+                        {Number(edu?.score) > 0 && (
                           <div
                             className={
                               "content_education_div_value_section_field"
                             }
                           >
-                            CGPA {edu?.score !== "0" ? `${edu.score}` : null}
+                            CGPA {edu.score}
                           </div>
                         )}
                         {edu?.start && edu?.end && (
