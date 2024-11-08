@@ -192,6 +192,7 @@ export const useResumeData = (onDataChange?: (resumeData: ResumeProps) => void) 
     };
 
     return {
+        loading,
         resumeData,
         setResumeData,
         selectedTemplate,

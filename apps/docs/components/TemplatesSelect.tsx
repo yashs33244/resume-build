@@ -17,6 +17,7 @@ const TemplatesSelect = () => {
     activeTemplate,
     setActiveTemplate,
     saveStatus,
+    resumeLoading,
     handleSetTemplate,
     selectedTemplate,
     templateSelected, // New variable to check if a template has been selected
@@ -24,14 +25,23 @@ const TemplatesSelect = () => {
     error,
   } = useTemplateSelection();
 
-  return (
-    <Suspense fallback={
+  if (resumeLoading) {
+    return (
       <div className="flex items-center justify-center min-h-screen">
         <Loader className="w-8 h-8 animate-spin" />
       </div>
-    }>
-    <div className="template-select-container">
-      <div className="container-title">Select your final CV template</div>
+    );
+  }
+  return (
+    <Suspense
+      fallback={
+        <div className="flex items-center justify-center min-h-screen">
+          <Loader className="w-8 h-8 animate-spin" />
+        </div>
+      }
+    >
+      <div className="template-select-container">
+        <div className="container-title">Select your final CV template</div>
         <div className="templates-wrapper">
           <div className="template" onMouseOver={() => setActiveTemplate(1)}>
             <div

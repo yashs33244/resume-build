@@ -37,6 +37,7 @@ export const useTemplateSelection = () => {
   const { saveResume } = useSaveResume();
   const {
     resumeData,
+    loading: resumeLoading, 
     handleInputChange: baseHandleInputChange,
     handleAddField,
     handleDeleteField,
@@ -121,6 +122,7 @@ export const useTemplateSelection = () => {
     selectedTemplate,
     templateSelected, // Return templateSelected to use in the component
     loading,
+    resumeLoading,
     error,
     template,
   };

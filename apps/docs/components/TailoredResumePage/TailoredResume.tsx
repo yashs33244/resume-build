@@ -15,6 +15,12 @@ import { LandingLoader } from "../LandingLoader";
 import { Loader } from "lucide-react";
 import { useFetchResumeData } from "../../hooks/useFetchResumeData";
 
+const TEMPLATE_NAME_MAPPING = {
+  fresher: "template1",
+  experienced: "template2",
+  designer: "template3",
+};
+
 const TailoredResumePage: React.FC = () => {
   const searchParams = useSearchParams();
   const { rdata, loading } = useFetchResumeData();
@@ -112,11 +118,14 @@ const TailoredResumePage: React.FC = () => {
         element.style.transform = "scale(1)";
         const resumeId = searchParams.get("id");
 
-        const cssLink = `<link rel="stylesheet" href="/static/css/app/(pages)/tailored-resume/page.css">`;
-        const globalCSSLink = `<link rel="stylesheet"/static/css/app/layout.css?v=1728991725867">`;
+        const templateName =
+          TEMPLATE_NAME_MAPPING[
+            resumeData.templateId as keyof typeof TEMPLATE_NAME_MAPPING
+          ];
+
+        const cssLink = `<link rel="stylesheet" href="${process.env.NEXT_PUBLIC_BASE_URL}/${templateName}.css">`;
         const fontLink = `<link href='https://fonts.googleapis.com/css?family=Inter' rel='stylesheet'/>`;
-        const htmlContent =
-          cssLink + globalCSSLink + fontLink + element.outerHTML;
+        const htmlContent = cssLink + fontLink + element.outerHTML;
 
         const response = await fetch("/api/generate-pdf", {
           method: "POST",
@@ -200,11 +209,13 @@ const TailoredResumePage: React.FC = () => {
   }, []);
 
   return (
-    <Suspense fallback={
-      <div className="flex items-center justify-center min-h-screen">
-        <Loader className="w-8 h-8 animate-spin" />
-      </div>
-    }>
+    <Suspense
+      fallback={
+        <div className="flex items-center justify-center min-h-screen">
+          <Loader className="w-8 h-8 animate-spin" />
+        </div>
+      }
+    >
       <div className={styles.head}>
         {showComparison ? (
           <div className={styles.tailor_p2_head}>
