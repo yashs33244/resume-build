@@ -1,0 +1,373 @@
+/* Base Template Styles */
+
+
+.template3-wrapper *{
+    line-height: normal;
+    box-sizing: border-box;
+    font-family: 'Inter';
+}
+
+
+.template3-wrapper {
+    --font-size-base: 16px; /* Default for M */
+    --font-size-small: 0.75;
+    --font-size-large: 1.25;
+  
+    --padding-base: 20px;
+    --gap-base: 10px;
+  
+    /* Font-sizes and other dimensions */
+    --personalInfo-name-size: calc(var(--font-size-base) + 4px);
+    --personalInfo-role-size: calc(var(--font-size-base) - 1px);
+    --add-info-value-size: calc(var(--font-size-base) - 6px);
+    --container-header-size: calc(var(--font-size-base) - 4px);
+    --education-section-name-size: calc(var(--font-size-base) - 6px);
+    --education-section-year-size: calc(var(--font-size-base) - 8px);
+    --skill-item-size: calc(var(--font-size-base) - 6px);
+    --rp-container-header-size: calc(var(--font-size-base) - 2px);
+    --bio-value-size: calc(var(--font-size-base) - 6px);
+    --experience-section-name-size: calc(var(--font-size-base) - 6px);
+    --experience-section-year-size: calc(var(--font-size-base) - 6px);
+    --experience-section-work-size: calc(var(--font-size-base) - 6px);
+  
+    /* Paddings, Margins */
+    --lp-padding: var(--padding-base);
+    --rp-padding: var(--padding-base);
+    --container-gap: var(--gap-base);
+    --ul-padding : 0px 0px 0px 10px
+  }
+  
+  /* Default size M */
+  .template3-wrapper.M {
+    --font-size-base: 16px;
+    --padding-base: 20px;
+    --gap-base: 20px;
+  }
+  
+  /* Size S */
+  .template3-wrapper.S {
+    --font-size-base: 15.2px; /* 75% of M */
+    --padding-base: 19px; /* 75% of M */
+    --gap-base: 19px; /* 75% of M */
+    --ul-padding : 0px 0px 0px 9.5px
+  }
+
+  .template3-wrapper.XS {
+    --font-size-base: 14.44px; /* 75% of M */
+    --padding-base: 18.05px; /* 75% of M */
+    --gap-base: 18.05px; /* 75% of M */
+    --ul-padding : 0px 0px 0px 9.02px
+  }
+  
+  /* Size L */
+  .template3-wrapper.L {
+    --font-size-base: 16.8px; /* 125% of M */
+    --padding-base: 21px; /* 125% of M */
+    --gap-base: 21px; /* 125% of M */
+    --ul-padding : 0px 0px 0px 10.5px
+  }
+
+  .template3-wrapper.XL {
+    --font-size-base: 17.64px; /* 125% of M */
+    --padding-base: 22.05px; /* 125% of M */
+    --gap-base: 22.05px; /* 125% of M */
+    --ul-padding : 0px 0px 0px 11.02px
+  }
+  
+  
+  /* Template Container */
+  .template3-wrapper .template-container {
+    position: relative;
+    background-color: #fff;
+    height: 95%;
+    aspect-ratio: 0.7751937984;
+    min-width: 595px;
+    max-width: 595px;
+    min-height: 842px;
+    max-height: 842px;
+    /* color: black; */
+    color: rgba(0,0,0,0.8);
+    display: flex;
+    overflow-y: hidden;
+    font-family: ui-serif !important;
+    word-wrap: break-word;
+  }
+
+  .template3-wrapper .template-container *{
+    word-wrap: break-word;
+  }
+  
+  /* Left Panel */
+  .template3-wrapper .lp {
+    min-width: 210px;
+    max-width: 210px;
+    display: flex;
+    flex-direction: column;
+    /* background-color: #e5e4e2; */
+    background-color: #303D5D;
+    padding: var(--lp-padding);
+    color: white;
+    gap: var(--container-gap);
+  }
+  
+  .template3-wrapper .lp_personalInfo {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 5px;
+  }
+  
+  .template3-wrapper .lp_personalInfo_name {
+    font-size: var(--personalInfo-name-size);
+    font-weight: 700;
+    line-height: normal;
+  }
+  
+  .template3-wrapper .lp_personalInfo_role {
+    font-size: var(--personalInfo-role-size);
+    font-weight: 500;
+  }
+  
+  .template3-wrapper .lp_add_info {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .template3-wrapper .lp_add_info_value {
+    display: flex;
+    gap: 5px;
+    margin-top: 4px;
+    font-size: var(--add-info-value-size);
+
+    & svg{
+        min-width: 10px;
+        max-width: 10px;
+        height: 14px;
+    }
+
+    & span{
+        max-width: calc(100% - 10px);
+        line-height: 14px;
+        word-break: break-all;
+    }
+  }
+
+  .template3-wrapper.S .lp_add_info_value {
+    align-items: center;
+    & svg{
+        min-width: 7px;
+        max-width: 7px;
+        height: 7px;
+    }
+  }
+  .template3-wrapper.L .lp_add_info_value {
+    align-items: center;
+    & svg{
+        min-width: 12px;
+        max-width: 12px;
+        height:12px;
+    }
+  }
+  
+  .template3-wrapper .lp_add_info_value a,
+  .template3-wrapper .lp_add_info_value a:focus,
+  .template3-wrapper .lp_add_info_value a:hover {
+    color: inherit;
+    text-decoration: none;
+  }
+  
+  .template3-wrapper .lp_container_header {
+    font-size: var(--container-header-size);
+    font-weight: 700;
+  }
+  
+  .template3-wrapper .lp_education_div {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+  
+  .template3-wrapper .lp_education_div_value {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    justify-content: space-between;
+  }
+  
+  .template3-wrapper .lp_education_div_value_section {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+  
+  .template3-wrapper .lp_education_div_value_section_name {
+    font-size: var(--education-section-name-size);
+    font-weight: 700;
+    line-height: normal;
+  }
+
+  .template3-wrapper .lp_education_div_value_section_major {
+    font-size: var(--education-section-name-size);
+    font-weight: 500;
+    line-height: normal;
+  }
+  
+  .template3-wrapper .lp_education_div_value_section_year {
+    font-size: var(--education-section-year-size);
+    line-height: normal;
+  }
+
+  .template3-wrapper .lp_certificate_div {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+  
+  .template3-wrapper .lp_certificate_div_value {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    justify-content: space-between;
+  }
+  
+  .template3-wrapper .lp_certificate_div_value_section {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+  
+  .template3-wrapper .lp_certificate_div_value_section_name {
+    font-size: var(--education-section-name-size);
+    font-weight: 700;
+    line-height: normal;
+  }
+
+  .template3-wrapper .lp_certificate_div_value_section_major {
+    font-size: var(--education-section-name-size);
+    font-weight: 500;
+    line-height: normal;
+  }
+  
+  .template3-wrapper .lp_certificate_div_value_section_year {
+    font-size: var(--education-section-year-size);
+    line-height: normal;
+  }
+  
+  .template3-wrapper .lp_skill_div_value {
+    display: flex;
+    flex-direction: column;
+    gap:4px;
+  }
+  
+  .template3-wrapper .lp_skill_div_value_item {
+    font-size: var(--skill-item-size);
+  }
+  
+  /* Right Panel */
+  .template3-wrapper .rp {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    padding: var(--rp-padding);
+    width:calc(100% - 210px);
+  }
+  
+  .template3-wrapper .rp_container {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+  
+  .template3-wrapper .rp_container_header {
+    font-size: var(--rp-container-header-size);
+    font-weight: 700;
+  }
+  
+  .template3-wrapper .rp_bio_div_value {
+    font-size: var(--bio-value-size);
+    line-height: normal;
+  }
+  
+  .template3-wrapper .rp_experience_div_value {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .template3-wrapper .rp_experience_div_value_section {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .template3-wrapper .rp_experience_div_value_section_name {
+    font-size: var(--experience-section-name-size);
+    font-weight: 700;
+    line-height: normal;
+  }
+  
+  .template3-wrapper .rp_experience_div_value_section_year {
+    font-size: var(--experience-section-year-size);
+    line-height: normal;
+  }
+  
+  .template3-wrapper .rp_experience_div_value_section_work {
+    font-size: var(--experience-section-work-size);
+    line-height: normal;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+  
+  .template3-wrapper .rp_experience_div_value_section_work ul {
+    list-style: disc;
+    /* list-style-position: inside; */
+    padding: var(--ul-padding);
+  }
+  
+  .template3-wrapper .rp_experience_div_value_section_work ol {
+    list-style: decimal;
+    list-style-position: inside;
+  }
+  
+  /* Projects and Certificates Sections */
+.template3-wrapper .rp_projerience_div_value_section {
+  display: flex;
+  flex-direction: column;
+  /* gap: 10px; */
+}
+
+.template3-wrapper .rp_projerience_div_value_section_name {
+  font-size: var(--experience-section-name-size);
+  font-weight: 600;
+  line-height: normal;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.template3-wrapper .rp_projerience_div_value_section_name .issuer {
+  font-weight: 400;
+}
+
+.template3-wrapper .rp_projerience_div_value_section_year {
+  font-size: var(--experience-section-year-size);
+  line-height: normal;
+}
+
+.template3-wrapper .rp_projerience_div_value_section_work {
+  font-size: var(--experience-section-work-size);
+  line-height: normal;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.template3-wrapper .rp_projerience_div_value_section_work ul {
+  list-style: disc;
+  padding: var(--ul-padding);
+}
+
+.template3-wrapper .rp_projerience_div_value_section_work ol {
+  list-style: decimal;
+  list-style-position: inside;
+}

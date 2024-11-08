@@ -1,0 +1,269 @@
+/* Base Template Styles */
+.template2-wrapper *{
+    font-family: 'Inter';
+    line-height: 1.5;
+    box-sizing: border-box;
+}
+.template2-wrapper {
+
+    --font-size-base: 16px; /* Default for M */
+    --font-size-small: 0.9;
+    --font-size-smaller: 0.8;
+    --font-size-smallest: 0.75;
+    --font-size-large: 1.1;
+    --font-size-larger: 1.25;
+  
+    --padding-base: 40px;
+    --gap-base: 30px;
+  
+    /* Font-sizes and other dimensions */
+    --header-name-size: calc(var(--font-size-base) + 4px);
+    --header-role-size: calc(var(--font-size-base) - 0px);
+    --header-contact-size: calc(var(--font-size-base) - 4px);
+    --content-label-size: var(--font-size-base);
+    --content-value-size: calc(var(--font-size-base) - 4px);
+  
+    /* Paddings, Margins */
+    --container-padding: var(--padding-base);
+    --container-gap: var(--gap-base);
+  }
+  
+  /* Default size M */
+  .template2-wrapper.M {
+    --font-size-base: 16px;
+    --padding-base: 40px;
+    --gap-base: 30px;
+  }
+
+  .template2-wrapper.S {
+    --font-size-base: 15.2px;
+    --padding-base: 38px;
+    --gap-base: 28.5px;
+  }
+
+  .template2-wrapper.XS {
+    --font-size-base: 14.44px;
+    --padding-base: 36.1px;
+    --gap-base: 27.07px;
+  }
+
+  .template2-wrapper.L {
+    --font-size-base: 16.8px; /* 125% of M */
+    --padding-base: 42px; /* 125% of M */
+    --gap-base: 31.5px; /* 125% of M */
+  }
+
+  .template2-wrapper.XL {
+    --font-size-base: 17.64px; /* 125% of M */
+    --padding-base: 44.1px; /* 125% of M */
+    --gap-base: 33.07px; /* 125% of M */
+  }
+  
+  /* Template Container */
+  .template2-wrapper .template-container {
+    position: relative;
+    background-color: #fff;
+    height: 95%;
+    aspect-ratio: 0.7751937984;
+    min-width: 595px;
+    max-width: 595px;
+    min-height: 842px;
+    max-height: 842px;
+    background-color: white;
+    color: black;
+    padding: var(--container-padding);
+    display: flex;
+    flex-direction: column;
+    gap: var(--container-gap);
+    overflow-y: hidden;
+    word-wrap: break-word;
+  }
+
+  .template2-wrapper .template-container *{
+    word-wrap: break-word;
+  }
+  
+  /* Header Section */
+  .template2-wrapper .header {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .template2-wrapper .header_left_part {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+  
+  .template2-wrapper .header_left_part_name {
+    font-size: var(--header-name-size);
+    font-weight: 700;
+    color: #c50;
+  }
+  
+  .template2-wrapper .header_left_part_role {
+    font-size: var(--header-role-size);
+    color: #808080;
+    font-weight: 550;
+  }
+  
+  .template2-wrapper .header_right_part_url,
+  .template2-wrapper .header_right_part_email,
+  .template2-wrapper .header_right_part_phone {
+    font-size: var(--header-contact-size);
+  }
+  
+  .template2-wrapper .header_right_part_phone a,
+  .template2-wrapper .header_right_part_phone a:focus,
+  .template2-wrapper .header_right_part_phone a:hover {
+    color: inherit;
+    text-decoration: none;
+  }
+  
+  /* Content Section */
+  .template2-wrapper .content {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .template2-wrapper .content_container {
+    display: flex;
+    hanging-punctuation: 10px;
+  }
+  
+  .template2-wrapper .content_left_part {
+    min-width: 130px;
+    max-width: 130px;
+  }
+  
+  .template2-wrapper .content_right_part {
+    flex: 1;
+    max-width: calc(100% - 130px);
+  }
+  
+  /* Content Labels and Values */
+  .template2-wrapper .content_bio_div_label,
+  .template2-wrapper .content_education_div_label,
+  .template2-wrapper .content_certificates_div_label,
+  .template2-wrapper .content_experience_div_label,
+  .template2-wrapper .content_projects_div_label,
+  .template2-wrapper .content_skill_div_label,
+  .template2-wrapper .content_acheivement_div_label{
+    font-size: var(--content-label-size);
+    font-weight: 700;
+    color: #c50;
+  }
+
+  .template2-wrapper .content_education_div_value_section_name,
+  .template2-wrapper .content_certificates_div_value_section_name,
+  .template2-wrapper .content_experience_div_value_section_name,
+  .template2-wrapper .content_projects_div_value_section_name,
+  .template2-wrapper .content_skill_div_value_section_category{
+    font-weight: 600;
+    color: rgba(0,0,0,0.7) !important;
+  }
+
+  .template2-wrapper .content_projects_div_value_section_name {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  
+  .template2-wrapper .content_bio_div_value,
+  .template2-wrapper .content_education_div_value_section_name,
+  .template2-wrapper .content_certificates_div_value_section_name,
+  .template2-wrapper .content_experience_div_value_section_name,
+  .template2-wrapper .content_projects_div_value_section_name,
+  .template2-wrapper .content_education_div_value_section_year,
+  .template2-wrapper .content_certificates_div_value_section_year,
+  .template2-wrapper .content_education_div_value_section_field,
+  .template2-wrapper .content_certificates_div_value_section_field,
+  .template2-wrapper .content_experience_div_value_section_year,
+  .template2-wrapper .content_projects_div_value_section_year,
+  .template2-wrapper .content_experience_div_value_section_work,
+  .template2-wrapper .content_projects_div_value_section_work,
+  .template2-wrapper .content_skill_div_value_section_skills,
+  .template2-wrapper .content_acheivement_div_value_section_remarks,
+  .template2-wrapper .content_skill_div_value_section_category{
+    font-size: var(--content-value-size);
+    color: #808080;
+  }
+  
+  /* Education, Experience, Skills, and Achievements Sections */
+  .template2-wrapper .content_education_div_value {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: space-between;
+  }
+
+  .template2-wrapper .content_certificates_div_value {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: space-between;
+  }
+  
+  .template2-wrapper .content_education_div_value_section {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    width: calc(50% - 10px);
+  }
+
+  .template2-wrapper .content_certificates_div_value_section {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    width: calc(50% - 10px);
+  }
+  
+  .template2-wrapper .content_experience_div_value {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .template2-wrapper .content_projects_div_value {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .template2-wrapper .content_experience_div_value_section_work ul {
+    list-style: disc;
+    /* list-style-position: inside; */
+    padding: 0px 0px 0px 10px;
+  }
+
+  .template2-wrapper .content_projects_div_value_section_work ul {
+    list-style: disc;
+    /* list-style-position: inside; */
+    padding: 0px 0px 0px 10px;
+  }
+  
+  .template2-wrapper .content_experience_div_value_section_work ol {
+    list-style: decimal;
+    list-style-position: inside;
+  }
+
+  .template2-wrapper .content_projects_div_value_section_work ol {
+    list-style: decimal;
+    list-style-position: inside;
+  }
+  
+  .template2-wrapper .content_skill_div_value,
+  .template2-wrapper .content_acheivement_div_value {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .template2-wrapper .content_skill_div_value_section,
+  .template2-wrapper .content_acheivement_div_value_section {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+  

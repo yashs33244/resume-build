@@ -67,6 +67,12 @@ const Achievement = dynamic(
   { ssr: false },
 );
 
+const TEMPLATE_NAME_MAPPING = {
+  fresher: "template1",
+  experienced: "template2",
+  designer: "template3",
+};
+
 export default function EditPage() {
   const [currentTemplate, setCurrentTemplate] = useState("template1");
   const [resumeSize, setResumeSize] = useRecoilState(resumeSizeAtom);
@@ -84,19 +90,9 @@ export default function EditPage() {
 
   const { data: session, status: sessionStatus } = useSession();
   const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
-  const {
-    resumeData,
-    handleInputChange: baseHandleInputChange,
-    handleAddField,
-    handleDeleteField,
-  } = useResumeData((newData: ResumeProps) => {
-    setSaveStatus("saving");
-    debouncedSave(newData);
-  });
-
+  const { resumeData, handleInputChange, handleAddField, handleDeleteField } =
+    useResumeData((data) => debouncedSave(data)); // Use debounced save as the callback
   const resumeId = resumeData.resumeId;
-  const template = resumeData.templateId;
-
   // Memoized save draft function
   const saveDraft = useCallback(
     async (data: ResumeProps) => {
@@ -108,7 +104,6 @@ export default function EditPage() {
 
       try {
         setSaveStatus("saving");
-        // console.log("Saving resume data:", { resumeId, data });
 
         const response = await fetch("/api/resume/saveResume/draft", {
           method: "POST",
@@ -131,7 +126,6 @@ export default function EditPage() {
           throw new Error(result.error || "Failed to save draft");
         }
 
-        // console.log("Save successful:", result);
         setSaveStatus("saved");
       } catch (error) {
         console.error("Error saving draft:", error);
@@ -149,23 +143,14 @@ export default function EditPage() {
     [saveDraft],
   );
 
-  // Initialize resume data with change tracking
-
-  // Enhanced input change handler
-  const handleInputChange = useCallback(
-    (field: any, value: any, section?: string, index?: number) => {
-      baseHandleInputChange(field, value, section, index);
-      setSaveStatus("saving");
-    },
-    [baseHandleInputChange],
-  );
-
   // Cleanup debounced save on unmount
   useEffect(() => {
     return () => {
       debouncedSave.cancel();
     };
   }, [debouncedSave]);
+
+  const template = resumeData.templateId;
 
   useEffect(() => {
     if (session?.user?.name) {
@@ -188,9 +173,14 @@ export default function EditPage() {
       element.style.transform = "scale(1)";
 
       // Add the CSS link directly in the HTML content
-      const globalCSSLink = `<link rel="stylesheet" href="/static/css/app/layout.css">`;
-      const cssLink = `<link rel="stylesheet" href="/static/css/app/(pages)/select-templates/editor/page.css">`;
-      const htmlContent = cssLink + globalCSSLink + element.outerHTML;
+      const templateName =
+        TEMPLATE_NAME_MAPPING[
+          resumeData.templateId as keyof typeof TEMPLATE_NAME_MAPPING
+        ];
+
+      const cssLink = `<link rel="stylesheet" href="${process.env.NEXT_PUBLIC_BASE_URL}/${templateName}.css">`;
+      const htmlContent = cssLink + element.outerHTML;
+      console.log("HTML Content", htmlContent);
 
       const response = await fetch("/api/generate-pdf", {
         method: "POST",
@@ -365,11 +355,13 @@ export default function EditPage() {
   };
 
   return (
-    <Suspense fallback={
-      <div className="flex items-center justify-center min-h-screen">
-        <Loader className="w-8 h-8 animate-spin" />
-      </div>
-    }>
+    <Suspense
+      fallback={
+        <div className="flex items-center justify-center min-h-screen">
+          <Loader className="w-8 h-8 animate-spin" />
+        </div>
+      }
+    >
       <div className="flex flex-col w-full min-h-screen bg-background text-foreground dark:bg-[#1a1b1e] dark:text-white">
         <Tips
           activeSection={activeSection}

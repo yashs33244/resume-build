@@ -22,7 +22,21 @@ import { Loader } from "lucide-react";
 import { useUserStatus } from "../hooks/useUserStatus";
 import { ResumeProps } from "../types/ResumeProps";
 
-const Dashboard = () => {
+export async function getServerSideProps() {
+  return {
+    props: {
+      NEXT_PUBLIC_BASE_URL: process.env.NEXT_PUBLIC_BASE_URL,
+    },
+  };
+}
+
+const TEMPLATE_NAME_MAPPING = {
+  fresher: "template1",
+  experienced: "template2",
+  designer: "template3",
+};
+
+const Dashboard = (props: any) => {
   const [isGeneratingPDF, setIsGeneratingPDF] =
     useRecoilState(isGeneratingPDFAtom);
   const { resumes, isLoading, error, setResumes } = useResumeState();
@@ -77,7 +91,7 @@ const Dashboard = () => {
   }
 
   const handleDownload = useCallback(
-    async (resumeId: string) => {
+    async (resumeId: string, templateId: string) => {
       if (!isPaid) {
         alert("Please upgrade to premium to download resumes");
         return;
@@ -95,11 +109,14 @@ const Dashboard = () => {
         const element = realElement.cloneNode(true) as HTMLElement;
         element.style.transform = "scale(1)";
 
-        const cssLink = `<link rel="stylesheet" href="/static/css/app/(pages)/dashboard/page.css">`;
-        const globalCSSLink = `<link rel="stylesheet" href="/static/css/app/layout.css">`;
+        const templateName =
+          TEMPLATE_NAME_MAPPING[
+            templateId as keyof typeof TEMPLATE_NAME_MAPPING
+          ];
+        const cssLink = `<link rel="stylesheet" href="${process.env.NEXT_PUBLIC_BASE_URL}/${templateName}.css">`;
+
         const fontLink = `<link href='https://fonts.googleapis.com/css?family=Inter' rel='stylesheet'/>`;
-        const htmlContent =
-          cssLink + globalCSSLink + fontLink + element.outerHTML;
+        const htmlContent = cssLink + fontLink + element.outerHTML;
 
         const response = await fetch("/api/generate-pdf", {
           method: "POST",
@@ -182,13 +199,15 @@ const Dashboard = () => {
   // Render dashboard only if there are resumes
   return (
     <div className="dashboard-container">
-      {false&& <div className="expired-state">
+      {false && (
+        <div className="expired-state">
           <MdLock />
           <div className="renew-cta">
             <MdAutorenew />
             <div>Renew</div>
           </div>
-      </div>}
+        </div>
+      )}
       <div className="top-section">
         <div className="dash-title">My Resumes</div>
         <div className="create-cta">
@@ -229,7 +248,10 @@ const Dashboard = () => {
                     </Link>
                     <div
                       className={`download ${!isPaid ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}`}
-                      onClick={() => isPaid && handleDownload(resume.resumeId)}
+                      onClick={() =>
+                        isPaid &&
+                        handleDownload(resume.resumeId, resume.templateId)
+                      }
                     >
                       {downloadingId === resume.resumeId ? (
                         <Loader className="w-6 h-6 animate-spin" />

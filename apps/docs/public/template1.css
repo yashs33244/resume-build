@@ -1,0 +1,901 @@
+
+.template1-container *{
+    font-family: 'Inter';
+    line-height: 1.5;
+    box-sizing: border-box;
+}
+
+.template1-container {
+    position: relative;
+    background-color: #fff;
+    height: 95%;
+    aspect-ratio: 0.71;
+    min-width: 595px;
+    max-width: 595px;
+    min-height: 842px;
+    max-height: 842px;
+    overflow: hidden;
+    word-wrap: break-word;
+}
+
+.template1-container .M {
+    padding: 2rem 3.5rem;
+}
+
+.template1-container .S {
+    padding: 1.9rem 3.32rem;
+}
+
+.template1-container .XS {
+    padding: 1.80rem 3.15rem;
+}
+
+.template1-container .L {
+    padding: 2.1rem 3.67rem;
+}
+
+.template1-container .XL {
+    padding: 2.2rem 3.85rem;
+}
+
+.template1-container .M .tag {
+    width: fit-content;
+    background: #097969;
+    padding: 5px 8px;
+    position: absolute;
+    left: 20px;
+    top: 38px;
+    z-index: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.template1-container .S .tag {
+    padding: 4.75px 7.6px;
+    left: 19px;
+    top: 36.1px;
+}
+
+.template1-container .XS .tag {
+    padding: 4.51px 6.48px;
+    left: 18.05px;
+    top: 34.29px;
+}
+
+.template1-container .L .tag {
+    padding: 5.25px 8.4px;
+    left: 21px;
+    top: 39.9px;
+}
+
+.template1-container .XL .tag {
+    padding: 5.51px 8.82px;
+    left: 22.05px;
+    top: 41.89px;
+}
+
+.template1-container .M .tag_value {
+    color: white;
+    font-weight: 700;
+    font-size: 10px;
+    line-height: 14px;
+}
+
+.template1-container .S .tag_value {
+    font-size: 9.5px;
+    line-height: 13.3px;
+}
+
+.template1-container .XS .tag_value {
+    font-size: 9.02px;
+    line-height: 12.63px;
+}
+
+.template1-container .L .tag_value {
+    font-size: 10.5px;
+    line-height: 14.7px;
+}
+
+.template1-container .XL .tag_value {
+    font-size: 11.02px;
+    line-height: 15.43px;
+}
+
+.template1-container .M .primary-info .name {
+    color: #323336;
+    font-weight: 700;
+    font-size: 1rem;
+}
+
+.template1-container .S .primary-info .name {
+    font-size: 0.95rem;
+}
+
+.template1-container .XS .primary-info .name {
+    font-size: 0.902rem;
+}
+
+.template1-container .L .primary-info .name {
+    font-size: 1.05rem;
+}
+
+.template1-container .XL .primary-info .name {
+    font-size: 1.102rem;
+}
+
+.template1-container .M .primary-info .position {
+    color: #323336;
+    font-size: 0.7rem;
+    margin-top: 0.2rem;
+    font-weight: 500;
+}
+
+.template1-container .S .primary-info .position {
+    font-size: 0.66rem;
+    margin-top: 0.19rem;
+    font-weight: 500;
+}
+
+.template1-container .XS .primary-info .position {
+    font-size: 0.627rem;
+    margin-top: 0.18rem;
+    font-weight: 500;
+}
+
+.template1-container .L .primary-info .position {
+    font-size: 0.735rem;
+    margin-top: 0.21rem;
+    font-weight: 500;
+}
+
+.template1-container .XL .primary-info .position {
+    font-size: 0.77rem;
+    margin-top: 0.22rem;
+    font-weight: 500;
+}
+
+
+.template1-container .M .primary-info .information {
+    color: #707678;
+    font-size: 0.5rem;
+    margin-top: 0.15rem;
+}
+
+.template1-container .S .primary-info .information {
+    font-size: 0.475rem; /* 5% less than M */
+    margin-top: 0.1425rem; /* 5% less than M */
+}
+
+.template1-container .XS .primary-info .information {
+    font-size: 0.45125rem; /* 5% less than S */
+    margin-top: 0.135375rem; /* 5% less than S */
+}
+
+.template1-container .L .primary-info .information {
+    font-size: 0.525rem; /* 5% more than M */
+    margin-top: 0.1575rem; /* 5% more than M */
+}
+
+.template1-container .XL .primary-info .information {
+    font-size: 0.55125rem; /* 5% more than L */
+    margin-top: 0.165375rem; /* 5% more than L */
+}
+
+.template1-container .M .primary-info .information a,
+.template1-container .M .primary-info .information a:hover {
+    color: inherit;
+    text-decoration: none;
+}
+
+.template1-container .S .primary-info .information a,
+.template1-container .S .primary-info .information a:hover {
+    font-size: 0.475rem; /* 5% less than M */
+}
+
+.template1-container .XS .primary-info .information a,
+.template1-container .XS .primary-info .information a:hover {
+    font-size: 0.45125rem; /* 5% less than S */
+}
+
+.template1-container .L .primary-info .information a,
+.template1-container .L .primary-info .information a:hover {
+    font-size: 0.525rem; /* 5% more than M */
+}
+
+.template1-container .XL .primary-info .information a,
+.template1-container .XL .primary-info .information a:hover {
+    font-size: 0.55125rem; /* 5% more than L */
+}
+
+.template1-container .M .primary-info .summary {
+    color: #707678;
+    font-size: 0.5rem;
+    margin-top: 0.15rem;
+}
+
+.template1-container .S .primary-info .summary {
+    font-size: 0.475rem; /* 5% less than M */
+    margin-top: 0.1425rem; /* 5% less than M */
+}
+
+.template1-container .XS .primary-info .summary {
+    font-size: 0.45125rem; /* 5% less than S */
+    margin-top: 0.135375rem; /* 5% less than S */
+}
+
+.template1-container .L .primary-info .summary {
+    font-size: 0.525rem; /* 5% more than M */
+    margin-top: 0.1575rem; /* 5% more than M */
+}
+
+.template1-container .XL .primary-info .summary {
+    font-size: 0.55125rem; /* 5% more than L */
+    margin-top: 0.165375rem; /* 5% more than L */
+}
+
+.template1-container .M .experience {
+    margin-top: 1.12rem;
+}
+
+.template1-container .S .experience {
+    margin-top: 1.064rem; /* 5% less than M */
+}
+
+.template1-container .XS .experience {
+    margin-top: 1.0108rem; /* 5% less than S */
+}
+
+.template1-container .L .experience {
+    margin-top: 1.176rem; /* 5% more than M */
+}
+
+.template1-container .XL .experience {
+    margin-top: 1.2348rem; /* 5% more than L */
+}
+
+.template1-container .M .projects {
+    margin-top: 1.12rem;
+}
+
+.template1-container .S .projects {
+    margin-top: 1.064rem; /* 5% less than M */
+}
+
+.template1-container .XS .projects {
+    margin-top: 1.0108rem; /* 5% less than S */
+}
+
+.template1-container .L .projects {
+    margin-top: 1.176rem; /* 5% more than M */
+}
+
+.template1-container .XL .projects {
+    margin-top: 1.2348rem; /* 5% more than L */
+}
+
+.template1-container .M .experience .section-title {
+    color: #a6aaad;
+    font-size: 0.5rem;
+    font-weight: 600;
+}
+
+.template1-container .S .experience .section-title {
+    font-size: 0.475rem; /* 5% less than M */
+}
+
+.template1-container .XS .experience .section-title {
+    font-size: 0.45125rem; /* 5% less than S */
+}
+
+.template1-container .L .experience .section-title {
+    font-size: 0.525rem; /* 5% more than M */
+}
+
+.template1-container .XL .experience .section-title {
+    font-size: 0.55125rem; /* 5% more than L */
+}
+
+.template1-container .M .projects .section-title {
+    color: #a6aaad;
+    font-size: 0.5rem;
+    font-weight: 600;
+}
+
+.template1-container .S .projects .section-title {
+    font-size: 0.475rem; /* 5% less than M */
+}
+
+.template1-container .XS .projects .section-title {
+    font-size: 0.45125rem; /* 5% less than S */
+}
+
+.template1-container .L .projects .section-title {
+    font-size: 0.525rem; /* 5% more than M */
+}
+
+.template1-container .XL .projects .section-title {
+    font-size: 0.55125rem; /* 5% more than L */
+}
+
+.template1-container .M .experience .exp-container {
+    margin-top: 0.56rem;
+}
+
+.template1-container .S .experience .exp-container {
+    margin-top: 0.532rem; /* 5% less than M */
+}
+
+.template1-container .XS .experience .exp-container {
+    margin-top: 0.5054rem; /* 5% less than S */
+}
+
+.template1-container .L .experience .exp-container {
+    margin-top: 0.588rem; /* 5% more than M */
+}
+
+.template1-container .XL .experience .exp-container {
+    margin-top: 0.6174rem; /* 5% more than L */
+}
+
+.template1-container .M .projects .proj-container {
+    margin-top: 0.56rem;
+}
+
+.template1-container .S .projects .proj-container {
+    margin-top: 0.532rem; /* 5% less than M */
+}
+
+.template1-container .XS .projects .proj-container {
+    margin-top: 0.5054rem; /* 5% less than S */
+}
+
+.template1-container .L .projects .proj-container {
+    margin-top: 0.588rem; /* 5% more than M */
+}
+
+.template1-container .XL .projects .proj-container {
+    margin-top: 0.6174rem; /* 5% more than L */
+}
+
+.template1-container .M .experience .exp-container .company-name {
+    color: #323336;
+    font-size: 0.56rem;
+    font-weight: 600;
+}
+
+.template1-container .S .experience .exp-container .company-name {
+    font-size: 0.532rem; /* 5% less than M */
+}
+
+.template1-container .XS .experience .exp-container .company-name {
+    font-size: 0.5054rem; /* 5% less than S */
+}
+
+.template1-container .L .experience .exp-container .company-name {
+    font-size: 0.588rem; /* 5% more than M */
+}
+
+.template1-container .XL .experience .exp-container .company-name {
+    font-size: 0.6174rem; /* 5% more than L */
+}
+
+.template1-container .M .projects .proj-container .proj-name {
+    color: #323336;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.56rem;
+    font-weight: 600;
+}
+
+.template1-container .S .projects .proj-container .proj-name {
+    font-size: 0.532rem; /* 5% less than M */
+}
+
+.template1-container .XS .projects .proj-container .proj-name {
+    font-size: 0.5054rem; /* 5% less than S */
+}
+
+.template1-container .L .projects .proj-container .proj-name {
+    font-size: 0.588rem; /* 5% more than M */
+}
+
+.template1-container .XL .projects .proj-container .proj-name {
+    font-size: 0.6174rem; /* 5% more than L */
+}
+
+.template1-container .M .experience .exp-container .role-duration {
+    color: #707678;
+    font-size: 0.52rem;
+}
+
+.template1-container .S .experience .exp-container .role-duration {
+    font-size: 0.494rem; /* 5% less than M */
+}
+
+.template1-container .XS .experience .exp-container .role-duration {
+    font-size: 0.4693rem; /* 5% less than S */
+}
+
+.template1-container .L .experience .exp-container .role-duration {
+    font-size: 0.546rem; /* 5% more than M */
+}
+
+.template1-container .XL .experience .exp-container .role-duration {
+    font-size: 0.5733rem; /* 5% more than L */
+}
+
+.template1-container .M .projects .proj-container .link-duration {
+    color: #707678;
+    font-size: 0.52rem;
+}
+
+.template1-container .S .projects .proj-container .link-duration {
+    font-size: 0.494rem; /* 5% less than M */
+}
+
+.template1-container .XS .projects .proj-container .link-duration {
+    font-size: 0.4693rem; /* 5% less than S */
+}
+
+.template1-container .L .projects .proj-container .link-duration {
+    font-size: 0.546rem; /* 5% more than M */
+}
+
+.template1-container .XL .projects .proj-container .link-duration {
+    font-size: 0.5733rem; /* 5% more than L */
+}
+
+.template1-container .M .experience .exp-container .responsibilities {
+    color: #323336;
+    font-size: 0.5rem;
+}
+
+.template1-container .S .experience .exp-container .responsibilities {
+    font-size: 0.475rem; /* 5% less than M */
+}
+
+.template1-container .XS .experience .exp-container .responsibilities {
+    font-size: 0.45125rem; /* 5% less than S */
+}
+
+.template1-container .L .experience .exp-container .responsibilities {
+    font-size: 0.525rem; /* 5% more than M */
+}
+
+.template1-container .XL .experience .exp-container .responsibilities {
+    font-size: 0.55125rem; /* 5% more than L */
+}
+
+.template1-container .M .projects .proj-container .responsibilities {
+    color: #323336;
+    font-size: 0.5rem;
+}
+
+.template1-container .S .projects .proj-container .responsibilities {
+    font-size: 0.475rem; /* 5% less than M */
+}
+
+.template1-container .XS .projects .proj-container .responsibilities {
+    font-size: 0.45125rem; /* 5% less than S */
+}
+
+.template1-container .L .projects .proj-container .responsibilities {
+    font-size: 0.525rem; /* 5% more than M */
+}
+
+.template1-container .XL .projects .proj-container .responsibilities {
+    font-size: 0.55125rem; /* 5% more than L */
+}
+
+.template1-container .M .experience .exp-container .responsibilities ul {
+    list-style: disc;
+    padding: 0 1rem;
+}
+
+.template1-container .S .experience .exp-container .responsibilities ul {
+    padding: 0 0.95rem; /* 5% less than M */
+}
+
+.template1-container .XS .experience .exp-container .responsibilities ul {
+    padding: 0 0.9025rem; /* 5% less than S */
+}
+
+.template1-container .L .experience .exp-container .responsibilities ul {
+    padding: 0 1.05rem; /* 5% more than M */
+}
+
+.template1-container .XL .experience .exp-container .responsibilities ul {
+    padding: 0 1.1025rem; /* 5% more than L */
+}
+
+.template1-container .M .projects .proj-container .responsibilities ul {
+    list-style: disc;
+    padding: 0 1rem;
+}
+
+.template1-container .S .projects .proj-container .responsibilities ul {
+    padding: 0 0.95rem; /* 5% less than M */
+}
+
+.template1-container .XS .projects .proj-container .responsibilities ul {
+    padding: 0 0.9025rem; /* 5% less than S */
+}
+
+.template1-container .L .projects .proj-container .responsibilities ul {
+    padding: 0 1.05rem; /* 5% more than M */
+}
+
+.template1-container .XL .projects .proj-container .responsibilities ul {
+    padding: 0 1.1025rem; /* 5% more than L */
+}
+
+.template1-container .M .education {
+    margin-top: 1.12rem;
+}
+
+.template1-container .S .education {
+    margin-top: 1.064rem; /* 5% less than M */
+}
+
+.template1-container .XS .education {
+    margin-top: 1.0108rem; /* 5% less than S */
+}
+
+.template1-container .L .education {
+    margin-top: 1.176rem; /* 5% more than M */
+}
+
+.template1-container .XL .education {
+    margin-top: 1.2348rem; /* 5% more than L */
+}
+
+.template1-container .M .certificates {
+    margin-top: 1.12rem;
+}
+
+.template1-container .S .certificates {
+    margin-top: 1.064rem; /* 5% less than M */
+}
+
+.template1-container .XS .certificates {
+    margin-top: 1.0108rem; /* 5% less than S */
+}
+
+.template1-container .L .certificates {
+    margin-top: 1.176rem; /* 5% more than M */
+}
+
+.template1-container .XL .certificates {
+    margin-top: 1.2348rem; /* 5% more than L */
+}
+
+.template1-container .M .education .section-title {
+    color: #a6aaad;
+    font-size: 0.5rem;
+    font-weight: 600;
+}
+
+.template1-container .S .education .section-title {
+    font-size: 0.475rem; /* 5% less than M */
+}
+
+.template1-container .XS .education .section-title {
+    font-size: 0.45125rem; /* 5% less than S */
+}
+
+.template1-container .L .education .section-title {
+    font-size: 0.525rem; /* 5% more than M */
+}
+
+.template1-container .XL .education .section-title {
+    font-size: 0.55125rem; /* 5% more than L */
+}
+
+.template1-container .M .certificates .section-title {
+    color: #a6aaad;
+    font-size: 0.5rem;
+    font-weight: 600;
+}
+
+.template1-container .S .certificates .section-title {
+    font-size: 0.475rem; /* 5% less than M */
+}
+
+.template1-container .XS .certificates .section-title {
+    font-size: 0.45125rem; /* 5% less than S */
+}
+
+.template1-container .L .certificates .section-title {
+    font-size: 0.525rem; /* 5% more than M */
+}
+
+.template1-container .XL .certificates .section-title {
+    font-size: 0.55125rem; /* 5% more than L */
+}
+
+.template1-container .M .education .edu-container {
+    margin-top: 0.56rem;
+}
+
+.template1-container .S .education .edu-container {
+    margin-top: 0.532rem; /* 5% less than M */
+}
+
+.template1-container .XS .education .edu-container {
+    margin-top: 0.5054rem; /* 5% less than S */
+}
+
+.template1-container .L .education .edu-container {
+    margin-top: 0.588rem; /* 5% more than M */
+}
+
+.template1-container .XL .education .edu-container {
+    margin-top: 0.6174rem; /* 5% more than L */
+}
+
+.template1-container .M .certificates .cert-container {
+    margin-top: 0.56rem;
+}
+
+.template1-container .S .certificates .cert-container {
+    margin-top: 0.532rem; /* 5% less than M */
+}
+
+.template1-container .XS .certificates .cert-container {
+    margin-top: 0.5054rem; /* 5% less than S */
+}
+
+.template1-container .L .certificates .cert-container {
+    margin-top: 0.588rem; /* 5% more than M */
+}
+
+.template1-container .XL .certificates .cert-container {
+    margin-top: 0.6174rem; /* 5% more than L */
+}
+
+.template1-container .M .education .edu-container .college-name {
+    color: #323336;
+    font-size: 0.56rem;
+    font-weight: 600;
+}
+
+.template1-container .S .education .edu-container .college-name {
+    font-size: 0.532rem; /* 5% less than M */
+}
+
+.template1-container .XS .education .edu-container .college-name {
+    font-size: 0.5054rem; /* 5% less than S */
+}
+
+.template1-container .L .education .edu-container .college-name {
+    font-size: 0.588rem; /* 5% more than M */
+}
+
+.template1-container .XL .education .edu-container .college-name {
+    font-size: 0.6174rem; /* 5% more than L */
+}
+
+.template1-container .M .certificates .cert-container .cert-name {
+    color: #323336;
+    font-size: 0.56rem;
+    font-weight: 600;
+}
+
+.template1-container .S .certificates .cert-container .cert-name {
+    font-size: 0.532rem; /* 5% less than M */
+}
+
+.template1-container .XS .certificates .cert-container .cert-name {
+    font-size: 0.5054rem; /* 5% less than S */
+}
+
+.template1-container .L .certificates .cert-container .cert-name {
+    font-size: 0.588rem; /* 5% more than M */
+}
+
+.template1-container .XL .certificates .cert-container .cert-name {
+    font-size: 0.6174rem; /* 5% more than L */
+}
+
+.template1-container .M .education .edu-container .degree-major {
+    color: #707678;
+    font-size: 0.52rem;
+}
+
+.template1-container .S .education .edu-container .degree-major {
+    font-size: 0.494rem; /* 5% less than M */
+}
+
+.template1-container .XS .education .edu-container .degree-major {
+    font-size: 0.4693rem; /* 5% less than S */
+}
+
+.template1-container .L .education .edu-container .degree-major {
+    font-size: 0.546rem; /* 5% more than M */
+}
+
+.template1-container .XL .education .edu-container .degree-major {
+    font-size: 0.5733rem; /* 5% more than L */
+}
+
+.template1-container .M .certificates .cert-container .issuing {
+    color: #707678;
+    font-size: 0.52rem;
+}
+
+.template1-container .S .certificates .cert-container .issuing {
+    font-size: 0.494rem; /* 5% less than M */
+}
+
+.template1-container .XS .certificates .cert-container .issuing {
+    font-size: 0.4693rem; /* 5% less than S */
+}
+
+.template1-container .L .certificates .cert-container .issuing {
+    font-size: 0.546rem; /* 5% more than M */
+}
+
+.template1-container .XL .certificates .cert-container .issuing {
+    font-size: 0.5733rem; /* 5% more than L */
+}
+
+.template1-container .M .skills {
+    margin-top: 1.12rem;
+}
+
+.template1-container .S .skills {
+    margin-top: 1.064rem; /* 5% less than M */
+}
+
+.template1-container .XS .skills {
+    margin-top: 1.0108rem; /* 5% less than S */
+}
+
+.template1-container .L .skills {
+    margin-top: 1.176rem; /* 5% more than M */
+}
+
+.template1-container .XL .skills {
+    margin-top: 1.2348rem; /* 5% more than L */
+}
+
+.template1-container .M .skills .section-title {
+    color: #a6aaad;
+    font-size: 0.5rem;
+    font-weight: 600;
+}
+
+.template1-container .S .skills .section-title {
+    font-size: 0.475rem; /* 5% less than M */
+}
+
+.template1-container .XS .skills .section-title {
+    font-size: 0.45125rem; /* 5% less than S */
+}
+
+.template1-container .L .skills .section-title {
+    font-size: 0.525rem; /* 5% more than M */
+}
+
+.template1-container .XL .skills .section-title {
+    font-size: 0.55125rem; /* 5% more than L */
+}
+
+.template1-container .M .skills .core-skills {
+    display: flex;
+    margin-top: 0.56rem;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+
+.template1-container .S .skills .core-skills {
+    margin-top: 0.532rem; /* 5% less than M */
+}
+
+.template1-container .XS .skills .core-skills {
+    margin-top: 0.5054rem; /* 5% less than S */
+}
+
+.template1-container .L .skills .core-skills {
+    margin-top: 0.588rem; /* 5% more than M */
+}
+
+.template1-container .XL .skills .core-skills {
+    margin-top: 0.6174rem; /* 5% more than L */
+}
+
+.template1-container .M .skills .core-skills .skill-container {
+    padding: 0.2rem 0.4rem;
+    background-color: #f1f5f7;
+    border-radius: 2px;
+    color: #323336;
+}
+
+.template1-container .S .skills .core-skills .skill-container {
+    padding: 0.19rem 0.38rem; /* 5% less than M */
+}
+
+.template1-container .XS .skills .core-skills .skill-container {
+    padding: 0.18rem 0.36rem; /* 5% less than S */
+}
+
+.template1-container .L .skills .core-skills .skill-container {
+    padding: 0.21rem 0.42rem; /* 5% more than M */
+}
+
+.template1-container .XL .skills .core-skills .skill-container {
+    padding: 0.22rem 0.44rem; /* 5% more than L */
+}
+
+.template1-container .M .skills .core-skills .skill-container .skill {
+    font-size: 0.42rem;
+}
+
+.template1-container .S .skills .core-skills .skill-container .skill {
+    font-size: 0.399rem; /* 5% less than M */
+}
+
+.template1-container .XS .skills .core-skills .skill-container .skill {
+    font-size: 0.37905rem; /* 5% less than S */
+}
+
+.template1-container .L .skills .core-skills .skill-container .skill {
+    font-size: 0.441rem; /* 5% more than M */
+}
+
+.template1-container .XL .skills .core-skills .skill-container .skill {
+    font-size: 0.46305rem; /* 5% more than L */
+}
+
+.template1-container .M .achievements {
+    margin-top: 1.12rem;
+}
+
+.template1-container .S .achievements {
+    margin-top: 0.85rem;
+}
+
+.template1-container .L .achievements {
+    margin-top: 1.5rem;
+}
+
+.template1-container .M .achievements .section-title {
+    color: #a6aaad;
+    font-size: 0.5rem;
+    font-weight: 600;
+}
+
+.template1-container .S .achievements .section-title {
+    font-size: 0.38rem;
+}
+
+.template1-container .L .achievements .section-title {
+    font-size: 0.62rem;
+}
+
+.template1-container .M .achievements .ach-container {
+    margin-top: 0.56rem;
+}
+
+.template1-container .S .achievements .ach-container {
+    margin-top: 0.4rem;
+}
+
+.template1-container .L .achievements .ach-container {
+    margin-top: 0.7rem;
+}
+
+.template1-container .M .achievements .ach-container .achievement {
+    font-size: 0.5rem;
+}
+
+.template1-container .S .achievements .ach-container .achievement {
+    font-size: 0.38rem;
+}
+
+.template1-container .L .achievements .ach-container .achievement {
+    font-size: 0.62rem;
+}
+
+

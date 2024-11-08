@@ -2,54 +2,53 @@ import { useCallback, useEffect, useState } from "react";
 import { ResumeProps } from "../types/ResumeProps";
 import { initialResumeData } from "../utils/resumeData";
 import { useFetchResumeData } from "./useFetchResumeData";
-
+import _ from "lodash"; // Lodash for deep comparison
 
 export const useResumeData = (onDataChange?: (resumeData: ResumeProps) => void) => {
     const [resumeData, setResumeData] = useState<ResumeProps>(initialResumeData);
     const [selectedTemplate, setSelectedTemplate] = useState<string>('fresher');
     const [isClient, setIsClient] = useState<boolean>(false);
-    const { rdata, template, loading, error, id } =
-    useFetchResumeData();
+    const [previousData, setPreviousData] = useState<ResumeProps | null>(null);
+
+    const { rdata, template, loading, error, id } = useFetchResumeData();
   
     useEffect(() => {
-      setIsClient(true);
+        setIsClient(true);
     }, []);
     
-    // Load initial resumeData from localStorage
+    // Load initial resumeData from localStorage and avoid redundant fetch
     useEffect(() => {
-      if (isClient && rdata) {
+        if (isClient && rdata) {
+            const savedData = JSON.stringify(rdata);
+            const parsedData = JSON.parse(savedData);
+            const savedTemplate = parsedData.templateId;
 
-        console.log("this is rData",rdata);
-        // window.localStorage.setItem("resumeData", JSON.stringify(rdata));
-        const savedData = JSON.stringify(rdata);
-        const parsedData = JSON.parse(savedData);
-        const savedTemplate = parsedData.templateId;
-  
-        if (savedData) {
-          const parsedData = JSON.parse(savedData);
-          if (!Array.isArray(parsedData.coreSkills)) {
-            parsedData.coreSkills = [];
-          }
-          if (!Array.isArray(parsedData.languages)) {
-            parsedData.languages = [];
-          }
-          setResumeData(parsedData);
+            if (savedData) {
+                const parsedData = JSON.parse(savedData);
+                if (!Array.isArray(parsedData.coreSkills)) {
+                    parsedData.coreSkills = [];
+                }
+                if (!Array.isArray(parsedData.languages)) {
+                    parsedData.languages = [];
+                }
+                setResumeData(parsedData);
+            }
+
+            if (savedTemplate) {
+                setSelectedTemplate(savedTemplate);
+            }
         }
-  
-        if (savedTemplate) {
-          setSelectedTemplate(savedTemplate);
-        }
-      }
     }, [isClient, rdata]);
   
-    // Persist resumeData to localStorage and notify parent of changes
+    // Only send data changes if resumeData has changed meaningfully
     useEffect(() => {
-      if (isClient) {
-        // window.localStorage.setItem('resumeData', JSON.stringify(resumeData));
-        // window.localStorage.setItem('selectedTemplate', selectedTemplate);
-        onDataChange?.(resumeData);
-      }
-    }, [resumeData, selectedTemplate, isClient, onDataChange]);
+        if (isClient && !_.isEqual(previousData, resumeData)) {
+            setPreviousData(resumeData); // Update to current data after successful change
+            window.localStorage.setItem('resumeData', JSON.stringify(resumeData));
+            onDataChange?.(resumeData);
+        }
+    }, [resumeData, isClient, onDataChange, previousData]);
+
     const handleInputChange = useCallback((
         section: keyof ResumeProps,
         field: string,
@@ -57,7 +56,7 @@ export const useResumeData = (onDataChange?: (resumeData: ResumeProps) => void) 
         index?: number
       ) => {
         setResumeData((prevData) => {
-          const newData = { ...prevData } as ResumeProps;
+            const newData = { ...prevData } as ResumeProps;
 
             if (section === "personalInfo") {
                 //@ts-ignore
@@ -76,14 +75,13 @@ export const useResumeData = (onDataChange?: (resumeData: ResumeProps) => void) 
                     newData.experience = newData.experience.map((item, i) =>
                         i === index ? { ...item, [field]: value } : item
                     );
-                    // change current 
                     if (field === "current") {
                         newData.experience = newData.experience.map((item, i) =>
                             i === index ? { ...item, end: value ? "Present" : "" } : item
                         );
                     }
                 }
-            } else if (section === "projects") { // Fix this to match "projects"
+            } else if (section === "projects") {
                 if (newData.projects && Array.isArray(newData.projects) && index !== undefined) {
                     newData.projects = newData.projects.map((item, i) =>
                         i === index ? { ...item, [field]: value } : item
@@ -104,7 +102,7 @@ export const useResumeData = (onDataChange?: (resumeData: ResumeProps) => void) 
                         ...currentSkills.slice(index + 1)
                     ];
                 }
-            } else if (section === "languages") { // Fix this to match "languages"
+            } else if (section === "languages") {
                 if (index !== undefined) {
                     const currentLanguages = Array.isArray(newData.languages) ? newData.languages : [];
                     newData.languages = [
@@ -126,49 +124,49 @@ export const useResumeData = (onDataChange?: (resumeData: ResumeProps) => void) 
         });
       }, []);
 
-      const handleAddField = useCallback((section: keyof ResumeProps) => {
+    const handleAddField = useCallback((section: keyof ResumeProps) => {
         setResumeData((prevData) => {
-          const newData = { ...prevData };
-          if (section === "education") {
-              newData.education = [
-                  ...(prevData.education || []),
-                  { institution: "", start: "", end: "", degree: "" , major: "" , score:0},
-              ];
-          } else if (section === "experience") {
-              newData.experience = [
-                  ...(prevData.experience || []),
-                  { company: "", role: "", start: "", end: "", responsibilities: [] , current: false },
-              ];
-          } else if (section === "projects") { // Fix this to match "projects"
-            newData.projects = [
-                ...(prevData.projects || []),
-                { name: "", link: "", start: "", end: "", responsibilities: [] },
-            ];
-          } else if (section === "certificates") {
-            newData.certificates = [
-                ...(prevData.certificates || []),
-                { name: "", issuer: "", issuedOn: "" },
-            ];
-          } else if (section === "skills") {
-              newData.skills = Array.isArray(prevData.skills) 
-                  ? [...prevData.skills, ""]
-                  : [""];
-          } else if (section === "languages") {
-             newData.languages = Array.isArray(prevData.languages) 
-                ? [...prevData.languages, ""]
-                : [""];
-          }
-          return newData;
+            const newData = { ...prevData };
+            if (section === "education") {
+                newData.education = [
+                    ...(prevData.education || []),
+                    { institution: "", start: "", end: "", degree: "", major: "", score: 0 },
+                ];
+            } else if (section === "experience") {
+                newData.experience = [
+                    ...(prevData.experience || []),
+                    { company: "", role: "", start: "", end: "", responsibilities: [], current: false },
+                ];
+            } else if (section === "projects") {
+                newData.projects = [
+                    ...(prevData.projects || []),
+                    { name: "", link: "", start: "", end: "", responsibilities: [] },
+                ];
+            } else if (section === "certificates") {
+                newData.certificates = [
+                    ...(prevData.certificates || []),
+                    { name: "", issuer: "", issuedOn: "" },
+                ];
+            } else if (section === "skills") {
+                newData.skills = Array.isArray(prevData.skills) 
+                    ? [...prevData.skills, ""]
+                    : [""];
+            } else if (section === "languages") {
+                newData.languages = Array.isArray(prevData.languages) 
+                    ? [...prevData.languages, ""]
+                    : [""];
+            }
+            return newData;
         });
-      }, []);
+    }, []);
 
-      const handleDeleteField = useCallback((
+    const handleDeleteField = useCallback((
         section: keyof ResumeProps,
         field: string,
         index?: number
-      ) => {
+    ) => {
         setResumeData((prevData) => {
-          const newData = { ...prevData };
+            const newData = { ...prevData };
             if (section === "education" || section === "experience" || section === "projects" || section === "certificates") {
                 (newData[section] as any[]) = (prevData[section] as any[]).filter(
                     (_, i) => i !== index
@@ -178,7 +176,7 @@ export const useResumeData = (onDataChange?: (resumeData: ResumeProps) => void) 
                 newData.coreSkills = Array.isArray(newData.coreSkills) 
                     ? newData.coreSkills.filter((_, i) => i !== index)
                     : [];
-            }else if (section === "languages" && field === 'language' && index !== undefined) {
+            } else if (section === "languages" && field === 'language' && index !== undefined) {
                 newData.languages = Array.isArray(newData.languages) 
                     ? newData.languages.filter((_, i) => i !== index)
                     : [];
@@ -187,11 +185,11 @@ export const useResumeData = (onDataChange?: (resumeData: ResumeProps) => void) 
             }
             return newData;
         });
-      }, []);
+    }, []);
+
     const setTemplate = (template: string) => {
         setSelectedTemplate(template);
     };
-
 
     return {
         resumeData,
@@ -201,5 +199,5 @@ export const useResumeData = (onDataChange?: (resumeData: ResumeProps) => void) 
         handleAddField,
         handleDeleteField,
         setTemplate: setSelectedTemplate,
-      };
+    };
 };
