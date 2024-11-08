@@ -84,19 +84,9 @@ export default function EditPage() {
 
   const { data: session, status: sessionStatus } = useSession();
   const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
-  const {
-    resumeData,
-    handleInputChange: baseHandleInputChange,
-    handleAddField,
-    handleDeleteField,
-  } = useResumeData((newData: ResumeProps) => {
-    setSaveStatus("saving");
-    debouncedSave(newData);
-  });
-
+  const { resumeData, handleInputChange, handleAddField, handleDeleteField } =
+    useResumeData((data) => debouncedSave(data)); // Use debounced save as the callback
   const resumeId = resumeData.resumeId;
-  const template = resumeData.templateId;
-
   // Memoized save draft function
   const saveDraft = useCallback(
     async (data: ResumeProps) => {
@@ -108,7 +98,6 @@ export default function EditPage() {
 
       try {
         setSaveStatus("saving");
-        // console.log("Saving resume data:", { resumeId, data });
 
         const response = await fetch("/api/resume/saveResume/draft", {
           method: "POST",
@@ -131,7 +120,6 @@ export default function EditPage() {
           throw new Error(result.error || "Failed to save draft");
         }
 
-        // console.log("Save successful:", result);
         setSaveStatus("saved");
       } catch (error) {
         console.error("Error saving draft:", error);
@@ -149,23 +137,14 @@ export default function EditPage() {
     [saveDraft],
   );
 
-  // Initialize resume data with change tracking
-
-  // Enhanced input change handler
-  const handleInputChange = useCallback(
-    (field: any, value: any, section?: string, index?: number) => {
-      baseHandleInputChange(field, value, section, index);
-      setSaveStatus("saving");
-    },
-    [baseHandleInputChange],
-  );
-
   // Cleanup debounced save on unmount
   useEffect(() => {
     return () => {
       debouncedSave.cancel();
     };
   }, [debouncedSave]);
+
+  const template = resumeData.templateId;
 
   useEffect(() => {
     if (session?.user?.name) {
