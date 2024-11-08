@@ -236,6 +236,9 @@ const Dashboard = (props: any) => {
               </div>
               <div className="action-toolbar">
                 {resume.state === "DOWNLOAD_SUCCESS" ||
+                resume.state === "DOWNLOAD_FAILED" ||
+                resume.state === "DOWNLOADING" ||
+                resume.state === "NOT_STARTED" ||
                 resume.state === "EDITING" ? (
                   <>
                     <Link
