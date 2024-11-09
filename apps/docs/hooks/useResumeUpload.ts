@@ -120,12 +120,12 @@ export const useResumeUpload = ({ onUploadSuccess }: UseResumeUploadProps) => {
           state: ResumeState.EDITING,
           templateId: parsedData.templateId || 'default-template',
         };
-        console.log(' ', resumeData);
 
         setProgressPhase('complete');
         simulateProgress(90, 100, 500);
+        console.log('Resume data from parse:', resumeData);  
 
-        localStorage.setItem('resumeData', JSON.stringify(resumeData));
+        localStorage.setItem('resumeDataa', JSON.stringify(resumeData));
         await onUploadSuccess(resumeData);
       } catch (error) {
         console.error('Error in file upload:', error);

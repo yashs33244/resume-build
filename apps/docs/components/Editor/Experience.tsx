@@ -15,9 +15,6 @@ import {
   CollapsibleContent,
 } from "@repo/ui/components/ui/collapsible";
 import loading from "../../public/loading.gif";
-import CustomDatePicker from "./CustomDatePicker";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import ExperienceDatePickers from "../ExperienceDatePickers";
 
 const ClientSideQuill = dynamic(() => import("react-quill"), {

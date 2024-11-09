@@ -5,12 +5,13 @@ import { useFetchResumeData } from "./useFetchResumeData";
 import _ from "lodash"; // Lodash for deep comparison
 
 export const useResumeData = (onDataChange?: (resumeData: ResumeProps) => void) => {
-    const [resumeData, setResumeData] = useState<ResumeProps>(initialResumeData);
+    
     const [selectedTemplate, setSelectedTemplate] = useState<string>('fresher');
     const [isClient, setIsClient] = useState<boolean>(false);
     const [previousData, setPreviousData] = useState<ResumeProps | null>(null);
 
     const { rdata, template, loading, error, id } = useFetchResumeData();
+    const [resumeData, setResumeData] = useState<ResumeProps>(rdata);
   
     useEffect(() => {
         setIsClient(true);

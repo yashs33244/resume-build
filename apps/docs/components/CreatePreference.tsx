@@ -198,23 +198,23 @@ export default function CreatePreference() {
       </div>
       <div className="loader-container">
         <div className="left">
-            {(isLoading || selectedOption === "upload") && (
-                <ResumeUploadProgress
-                isLoading={true}
-                progress={progress}
-                progressPhase={progressPhase}
-                error={error}
-                />
-            )}
-            {/* <ResumeUploadProgress
+          {(isLoading || selectedOption === "upload") && (
+            <ResumeUploadProgress
+              isLoading={true}
+              progress={progress}
+              progressPhase={progressPhase}
+              error={error}
+            />
+          )}
+          {/* <ResumeUploadProgress
                 isLoading={isLoading}
                 progress={progress}
                 progressPhase={progressPhase}
                 error={error}
             /> */}
         </div>
-        <div className="right">{' '}</div>
-      </div>      
+        <div className="right"> </div>
+      </div>
       {/* <style jsx>{`
         .disabled {
           pointer-events: none;

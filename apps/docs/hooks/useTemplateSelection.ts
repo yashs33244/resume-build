@@ -105,7 +105,7 @@ export const useTemplateSelection = () => {
       await saveDraft(rdata);
       router.push(`/select-templates/editor?id=${resumeId}`);
     } else if (!resumeId) {
-      const resumeData = localStorage.getItem("resumeData");  // Get the resume data from local storage
+      const resumeData = localStorage.getItem("resumeDataa");  // Get the resume data from local storage
       if (resumeData) {
         const parsedData = JSON.parse(resumeData);
         rdata.templateId = actualTemplate;

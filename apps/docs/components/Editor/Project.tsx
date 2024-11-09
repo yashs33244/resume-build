@@ -17,6 +17,7 @@ import {
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import CustomDatePicker from "./CustomDatePicker";
+import loading from "../../public/loading.gif";
 
 const ClientSideQuill = dynamic(() => import("react-quill"), {
   ssr: false,
@@ -227,19 +228,18 @@ export const Project: React.FC<ProjectProps> = ({
                           ],
                         }}
                       />
-                      {isLoading[index] && (
-                        <div className="absolute inset-0 flex items-center justify-center bg-gray-100 bg-opacity-75">
-                          <div className="flex space-x-2 animate-pulse">
-                            <div className="w-3 h-3 bg-gray-500 rounded-full"></div>
-                            <div className="w-3 h-3 bg-gray-500 rounded-full"></div>
-                            <div className="w-3 h-3 bg-gray-500 rounded-full"></div>
-                          </div>
-                        </div>
-                      )}
                     </div>
                   </div>
                   <div className="ai-container flex flex-wrap items-center gap-2 mt-4">
-                    <BsStars style={{ width: "20px", height: "20px" }} />
+                    {!isLoading[index] ? (
+                      <BsStars style={{ width: "20px", height: "20px" }} />
+                    ) : (
+                      <img
+                        src={loading.src}
+                        alt="loading..."
+                        style={{ width: "20px", height: "20px" }}
+                      />
+                    )}
                     {aiPrompts.map((prompt, promptIndex) => (
                       <button
                         key={promptIndex}
