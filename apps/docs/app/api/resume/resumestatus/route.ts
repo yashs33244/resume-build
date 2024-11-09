@@ -9,8 +9,8 @@ interface DatabaseResume {
   state: ResumeState;
   id: string;
   userId: string;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: Date | null;
+  updatedAt: Date | null;
   templateId: string;
   personalInfo: {
     name: string;
@@ -117,19 +117,19 @@ export async function GET(req: Request) {
     console.log(`Found ${resumes.length} resumes for user ${user.id}`);
 
     const formattedResumes: ResumeProps[] = resumes.map((resume: DatabaseResume): ResumeProps => ({
-      personalInfo: resume.personalInfo,  
+      personalInfo: resume.personalInfo,
       resumeId: resume.id,
       userId: resume.userId,
-      createdAt: resume.createdAt.toISOString(),
-      updatedAt: resume.updatedAt.toISOString(),
-      education: resume.education,
-      experience: resume.experience,
-      skills: resume.skills.map(skill => skill.name),
-      coreSkills: resume.coreSkills ? resume.coreSkills.map(skill => skill.name) : undefined,
-      languages: resume.languages ? resume.languages.map(lang => lang.name) : undefined,
+      createdAt: resume.createdAt?.toISOString() ?? new Date().toISOString(), // Provide default value if null
+      updatedAt: resume.updatedAt?.toISOString() ?? new Date().toISOString(), // Provide default value if null
+      education: resume.education ?? [],
+      experience: resume.experience ?? [],
+      skills: resume.skills?.map(skill => skill.name) ?? [],
+      coreSkills: resume.coreSkills?.map(skill => skill.name),
+      languages: resume.languages?.map(lang => lang.name),
       achievement: resume.achievement,
-      projects: resume.projects,
-      certificates: resume.certificates,
+      projects: resume.projects ?? [],
+      certificates: resume.certificates ?? [],
       state: resume.state,
       templateId: resume.templateId,
     }));
