@@ -4,7 +4,8 @@
     // padding: 3rem 4rem;
     width: calc(100% - 8rem);
     margin-left: 4rem;
-    height: calc(100vh - 100px);
+    max-height: calc(100vh - 100px);
+    min-height: calc(100vh - 100px);
     border-top-left-radius: 28px;
     border-top-right-radius: 28px;
     position: relative;
@@ -61,6 +62,7 @@
             border-radius: 8px;
             display: flex;
             align-items: center;
+            cursor: pointer;
 
             .create-icon {
                 width: 25px;
@@ -80,8 +82,13 @@
         margin-top: 2.5rem;
 
         display: flex;
+        flex-wrap: wrap;
+        row-gap: 50px;
+        max-height: calc(100vh - 220px);
+        overflow-y: scroll;
+        padding-bottom: 40px;
 
-        .first-resume {
+        .resume-item {
             width: 50%;
 
             .timer {
@@ -170,68 +177,68 @@
             }
         }
 
-        .second-resume {
-            width: 50%;
+        // .second-resume {
+        //     width: 50%;
 
-            .timer {
-                opacity: 0.6;
-                font-size: 0.8rem;
-            }
+        //     .timer {
+        //         opacity: 0.6;
+        //         font-size: 0.8rem;
+        //     }
 
-            .expired {
-                color: red;
-            }
+        //     .expired {
+        //         color: red;
+        //     }
 
-            .resume-section {
-                width: 100%;
-                margin-top: 4px;
-                display: flex;
+        //     .resume-section {
+        //         width: 100%;
+        //         margin-top: 4px;
+        //         display: flex;
 
-                img {
-                    width: 36%;
-                    height: auto;
-                    aspect-ratio: 1/1.38;
-                    margin-top: 10px;
-                    border-radius: 8px;
-                    opacity: 0.6;
-                }
+        //         img {
+        //             width: 36%;
+        //             height: auto;
+        //             aspect-ratio: 1/1.38;
+        //             margin-top: 10px;
+        //             border-radius: 8px;
+        //             opacity: 0.6;
+        //         }
 
-                .action-toolbar {
-                    margin-left: 36px;
-                    margin-top: 18px;
+        //         .action-toolbar {
+        //             margin-left: 36px;
+        //             margin-top: 18px;
                     
-                    .renew {
-                        display: flex;
-                        align-items: center;
-                        padding: 6px 16px;
-                        border: 0.5px solid white;
-                        opacity: 0.8;
-                        border-radius: 8px;
-                        cursor: pointer;
+        //             .renew {
+        //                 display: flex;
+        //                 align-items: center;
+        //                 padding: 6px 16px;
+        //                 border: 0.5px solid white;
+        //                 opacity: 0.8;
+        //                 border-radius: 8px;
+        //                 cursor: pointer;
 
-                        .cta-icon {
-                            width: 20px;
-                            height: 20px;
-                            opacity: 0.9;
-                        }
+        //                 .cta-icon {
+        //                     width: 20px;
+        //                     height: 20px;
+        //                     opacity: 0.9;
+        //                 }
                         
-                        div {
-                            font-size: 1.1rem;
-                            margin-left: 10px;
-                        }
-                    }
-                }
-            }
-        }
+        //                 div {
+        //                     font-size: 1.1rem;
+        //                     margin-left: 10px;
+        //                 }
+        //             }
+        //         }
+        //     }
+        // }
     }
 }
 
 .resume-preview{
     display: flex;
-    min-width: 253.64px;
-    max-width: 253.64px;
-    min-height: 360px;
-    max-height: 360px;
+    min-width: 250px;
+    max-width: 250px;
+    min-height: 350px;
+    max-height: 350px;
     border-radius: 16px;
     background-color: white;
     align-items: center;

@@ -185,7 +185,7 @@ const Dashboard = (props: any) => {
   // Show loading state
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
+      <div className="flex items-center justify-center min-h-screen" style={{minHeight:'calc(100vh - 100px)',maxHeight:'calc(100vh - 100px)'}}>
         <Loader className="w-8 h-8 animate-spin" />
       </div>
     );
