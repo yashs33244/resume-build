@@ -104,7 +104,7 @@ export default function CreatePreference() {
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     };
-    localStorage.setItem("resumeData", JSON.stringify(emptyResumeData));
+    localStorage.setItem("resumeDataa", JSON.stringify(emptyResumeData));
 
     // Show progress for "Create from Scratch" option
     const fakeProgress = { current: 0 };
