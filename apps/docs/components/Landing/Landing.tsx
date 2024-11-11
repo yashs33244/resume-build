@@ -174,7 +174,7 @@ export default function LandingPage() {
             <MdRocketLaunch />
             <div>
               {session?.user ? (
-                <Link href="/dashboard"> Get started</Link>
+                <Link href="/dashboard"> Get Started</Link>
               ) : (
                 <Link href="/api/auth/signin"> Get Started</Link>
               )}
