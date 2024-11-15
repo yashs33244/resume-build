@@ -25,10 +25,10 @@ export const Template3 = (props: any) => {
                 <div className={"lp"}>
                     <div className={"lp_personalInfo"}>
                         <div className={"lp_personalInfo_name"}>
-                            {resumeData?.personalInfo?.name}
+                            {resumeData?.personalInfo?.name || "Full Name"}
                         </div>
                         <div className={"lp_personalInfo_role"}>
-                            {resumeData?.personalInfo?.title}
+                            {resumeData?.personalInfo?.title || "Job Title"}
                         </div>
                     </div>
                     <div className={"lp_add_info"}>
@@ -36,14 +36,14 @@ export const Template3 = (props: any) => {
                             resumeData?.personalInfo?.email &&
                             <div className={"lp_add_info_value"}>
                                 <IoMail/>
-                                <span>{resumeData.personalInfo.email}</span>
+                                <span>{resumeData?.personalInfo?.email || "Email"}</span>
                             </div>
                         }
                         {
                             resumeData?.personalInfo?.phone &&
                             <div className={"lp_add_info_value"}>
                                 <FaPhoneAlt/>
-                                <span>{resumeData.personalInfo.phone}</span>
+                                <span>{resumeData?.personalInfo?.phone || "Contact Number"}</span>
                             </div>
                         }
                         {

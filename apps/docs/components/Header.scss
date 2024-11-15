@@ -21,6 +21,14 @@
     .login-cta {
         color: white;
         font-weight: 600;
+        display: flex;
+        font-size: 1.2rem;
+        align-items: center;
+        gap: 12px;
+
+        a {
+            font-size: 1rem;
+        }
     }
     .action-container {
 

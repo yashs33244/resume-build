@@ -23,15 +23,15 @@ export const Template2 = (props: any) => {
         <div className={"header"}>
           <div className={"header_left_part"}>
             <div className={"header_left_part_name"}>
-              {resumeData?.personalInfo?.name}
+              {resumeData?.personalInfo?.name || "Full Name"}
             </div>
             <div className={"header_left_part_role"}>
-              {resumeData?.personalInfo?.title}
+              {resumeData?.personalInfo?.title || "Job Title"}
             </div>
           </div>
           <div className={"header_right_part"}>
             <div className={"header_right_part_url"}>
-              {resumeData?.personalInfo?.email}
+              {resumeData?.personalInfo?.email || "Email"}
             </div>
             <div className={"header_right_part_phone"}>
               <a href={resumeData?.personalInfo?.linkedin || "#"}>
@@ -39,7 +39,7 @@ export const Template2 = (props: any) => {
               </a>
             </div>
             <div className={"header_right_part_email"}>
-              {resumeData?.personalInfo?.phone}
+              {resumeData?.personalInfo?.phone || "Contact Number"}
             </div>
           </div>
         </div>

@@ -420,7 +420,7 @@ export default function LandingPage() {
             </div>
             <div className="feature-title">Auto Formatting</div>
             <div className="feature-desc">
-              Those spaces, margins and paddings are already neatly taken care
+              Those spaces, margins and alignments are already neatly taken care
               of
             </div>
           </div>

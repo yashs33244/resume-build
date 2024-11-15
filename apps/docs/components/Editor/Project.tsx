@@ -118,7 +118,6 @@ export const Project: React.FC<ProjectProps> = ({
                 <ChevronDownIcon className="h-5 w-5 transition-transform" />
                 <div className="project-details">
                   <div className="title">{proj.name || `Enter Project`}</div>
-                  <div className="subtitle">{proj.link ? proj.link : null}</div>
                 </div>
               </div>
               <div

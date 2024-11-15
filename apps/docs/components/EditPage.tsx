@@ -294,9 +294,11 @@ export default function EditPage() {
   });
 
   useEffect(() => {
-    const checkOverflow = () => {
+    const checkOverflow = () => {      
       const templateElement = document.querySelector(".template-container");
+      console.log("TEMPLATE ELEMENT ------", templateElement);
       if (templateElement) {
+        console.log("SCROLL HEIGHT ------", templateElement.scrollHeight);
         const isOverflown = templateElement.scrollHeight > 842;
         setIsOverflowing(isOverflown);
       }

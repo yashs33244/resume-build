@@ -6,6 +6,7 @@ import { ModeToggle } from "@repo/ui/components/Toggle";
 import Link from "next/link";
 import { useSession, signOut } from "next-auth/react";
 import "./Header.scss";
+import { FaCircleUser } from "react-icons/fa6";
 import logo from "./logo.svg";
 import premium from "./premium.svg";
 import { useUserStatus } from "../hooks/useUserStatus";
@@ -39,6 +40,7 @@ export default function Header() {
       </div>
       {session?.user ? (
         <div className="login-cta">
+          <FaCircleUser />
           <a href="/" onClick={handleSignOut}>
             Logout
           </a>

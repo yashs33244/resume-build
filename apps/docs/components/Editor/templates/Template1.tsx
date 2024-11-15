@@ -44,12 +44,12 @@ export const Template1 = (props: any) => {
   const initials = getInitials(personalInfo?.name?.toUpperCase() || "");
 
   return (
-    <div className="template1-container wrapper" id={id}>
+    <div className={`template1-wrapper ${resumeSize} wrapper`} id={id}>
       <link
         rel="stylesheet"
         href="https://fonts.googleapis.com/css?family=Inter"
       />
-      <div className={`M ${resumeSize}`}>
+      <div className={`template-container M ${resumeSize}`}>
         {initials && initials.length > 0 && (
           <div className="tag">
             {initials.map((item: any, index: number) => (
@@ -61,11 +61,11 @@ export const Template1 = (props: any) => {
         )}
         <div className="primary-info">
           <div className="name">
-            {personalInfo?.name?.toUpperCase() || "Name"}
+            {personalInfo?.name?.toUpperCase() || "Full Name"}
           </div>
-          <div className="position">{personalInfo?.title || "Title"}</div>
+          <div className="position">{personalInfo?.title || "Job Title"}</div>
           <div className="information">
-            {`${personalInfo?.email || "Email"} | ${personalInfo?.phone || "Phone"} `}
+            {`${personalInfo?.email || "Email"} | ${personalInfo?.phone || "Contact Number"} `}
             <a href={personalInfo?.linkedin || "#"}>
               {`${personalInfo.linkedin ? `| LinkedIn` : ""}`}
             </a>

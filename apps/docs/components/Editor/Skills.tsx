@@ -195,13 +195,13 @@ export const Skills: React.FC<SkillsProps> = ({
     <div className="skills-container">
       <div className="core-skills">
         <Label htmlFor={`skill`} className="field-label">
-          Core Skills
+          Skills
         </Label>
         <div className="core-skill-selector">
           <Input
             value={coreSkill}
             onChange={(e) => setCoreSkill(e.target.value)}
-            placeholder="Type core skills like - Product strategy, OOPs etc"
+            placeholder="Type core skills like - Product strategy, Java, UX Design etc"
             className="form-input"
             onKeyPress={(e) => e.key === "Enter" && addCoreSkill(coreSkill)}
           />
