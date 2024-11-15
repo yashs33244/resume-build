@@ -10,7 +10,8 @@ export default function ConditionalHeader() {
   if (
     pathname === "/signin" ||
     pathname === "/select-templates" ||
-    pathname === "/select-templates/editor"
+    pathname === "/select-templates/editor" ||
+    pathname === "/mobile-page"
   ) {
     return null;
   }
