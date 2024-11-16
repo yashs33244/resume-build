@@ -89,8 +89,13 @@ export default function EditPage() {
 
   const { data: session, status: sessionStatus } = useSession();
   const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
-  const { resumeData, handleInputChange, handleAddField, handleDeleteField } =
-    useResumeData((data) => debouncedSave(data)); // Use debounced save as the callback
+  const {
+    resumeData,
+    handleInputChange,
+    handleAddField,
+    handleDeleteField,
+    loading,
+  } = useResumeData((data) => debouncedSave(data)); // Use debounced save as the callback
   const resumeId = resumeData.resumeId;
   // Memoized save draft function
   const saveDraft = useCallback(
@@ -354,7 +359,19 @@ export default function EditPage() {
       setResumeSize("XS");
     }
   };
-
+  if (loading) {
+    return (
+      <div
+        className="flex items-center justify-center min-h-screen"
+        style={{
+          minHeight: "calc(100vh - 100px)",
+          maxHeight: "calc(100vh - 100px)",
+        }}
+      >
+        <Loader className="w-8 h-8 animate-spin" />
+      </div>
+    );
+  }
   return (
     <Suspense
       fallback={
