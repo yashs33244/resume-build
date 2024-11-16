@@ -40,9 +40,8 @@ const Dashboard = (props: any) => {
   const [isGeneratingPDF, setIsGeneratingPDF] =
     useRecoilState(isGeneratingPDFAtom);
   const { resumes, isLoading, error, setResumes } = useResumeState();
-  const [resumeTimes, setResumeTimes] = useRecoilState(resumeTimeAtom);
   const router = useRouter();
-  const { user, isPaid, refetchUser } = useUserStatus();
+  const { isPaid } = useUserStatus();
   const [downloadingId, setDownloadingId] = useState<string | null>(null);
 
   // Redirect first-time users with no resumes
@@ -185,7 +184,13 @@ const Dashboard = (props: any) => {
   // Show loading state
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center min-h-screen" style={{minHeight:'calc(100vh - 100px)',maxHeight:'calc(100vh - 100px)'}}>
+      <div
+        className="flex items-center justify-center min-h-screen"
+        style={{
+          minHeight: "calc(100vh - 100px)",
+          maxHeight: "calc(100vh - 100px)",
+        }}
+      >
         <Loader className="w-8 h-8 animate-spin" />
       </div>
     );

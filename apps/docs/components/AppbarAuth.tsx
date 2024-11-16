@@ -1,19 +1,18 @@
-'use client';
+"use client";
 
-import { signIn } from 'next-auth/react';
-import { useSession } from 'next-auth/react';
-//import { useRouter } from 'next/navigation';
-import { Button } from '@repo/ui/components/ui/button';
+import { signIn } from "next-auth/react";
+import { Button } from "@repo/ui/components/ui/button";
+import { useProfileSession } from "../hooks/useProfileSession";
 
 export const AppbarAuth = ({ isInMenu = false }: { isInMenu?: boolean }) => {
-  const session = useSession();
+  const { user } = useProfileSession();
   //const router = useRouter();
 
   return (
-    !session?.data?.user && (
+    !user && (
       <Button
-        size={'sm'}
-        variant={isInMenu ? 'navLink' : 'outline'}
+        size={"sm"}
+        variant={isInMenu ? "navLink" : "outline"}
         id="navbar-default"
         onClick={() => {
           signIn();

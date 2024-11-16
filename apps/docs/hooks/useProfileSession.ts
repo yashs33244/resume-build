@@ -11,6 +11,7 @@ interface ProfileSession {
     image?: string | null;
   } | null;
   isOpen: boolean;
+  sessionData: any;
   setIsOpen: (isOpen: boolean) => void;
   handleSignIn: () => void;
   handleSignOut: () => void;
@@ -19,6 +20,7 @@ interface ProfileSession {
 export function useProfileSession(): ProfileSession {
   const { data: session, status } = useSession();
   const [isOpen, setIsOpen] = useState(false);
+  const sessionData  = session;
 
   const handleSignIn = () => {
     signIn();
@@ -32,6 +34,7 @@ export function useProfileSession(): ProfileSession {
     status,
     user: session?.user ?? null,
     isOpen,
+    sessionData,
     setIsOpen,
     handleSignIn,
     handleSignOut,

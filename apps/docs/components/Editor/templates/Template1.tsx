@@ -27,7 +27,7 @@ export const Template1 = (props: any) => {
   const certificates = resumeData.certificates || [];
 
   const getDuration = (dateString: any) => {
-    console.log("Date string = ", dateString);
+    // console.log("Date string = ", dateString);
     const date = new Date(dateString);
     const formattedDate = date.toLocaleDateString("en-US", {
       month: "short",

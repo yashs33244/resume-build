@@ -4,16 +4,18 @@ import ProfileWrapper from "./ProfileWrapper";
 import Image from "next/image";
 import { ModeToggle } from "@repo/ui/components/Toggle";
 import Link from "next/link";
-import { useSession, signOut } from "next-auth/react";
+import { signOut } from "next-auth/react";
 import "./Header.scss";
 import { FaCircleUser } from "react-icons/fa6";
 import logo from "./logo.svg";
 import premium from "./premium.svg";
 import { useUserStatus } from "../hooks/useUserStatus";
+import { useProfileSession } from "../hooks/useProfileSession";
 
 export default function Header() {
-  const { data: session, status: sessionStatus } = useSession();
-  const { user, isPaid, refetchUser } = useUserStatus();
+  const { user } = useProfileSession();
+  const sessionUser = user;
+  const { isPaid, refetchUser } = useUserStatus();
   const handleSignOut = async (e: any) => {
     e.preventDefault();
     await signOut({
@@ -25,7 +27,7 @@ export default function Header() {
   return (
     <div className="header-container">
       <div className="logo-container">
-        {session?.user ? (
+        {sessionUser ? (
           <>
             <Link href="/dashboard">
               <Image alt="logo" src={logo} width={130} />
@@ -38,7 +40,7 @@ export default function Header() {
           </Link>
         )}
       </div>
-      {session?.user ? (
+      {sessionUser ? (
         <div className="login-cta">
           <FaCircleUser />
           <a href="/" onClick={handleSignOut}>

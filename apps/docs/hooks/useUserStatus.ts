@@ -1,5 +1,9 @@
-import { useEffect, useRef, useState } from 'react';
+// hooks/useUserStatus.ts
+import { useEffect, useRef } from 'react';
 import { useSession } from 'next-auth/react';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { isPaidSelector, userStatusAtom } from '../store/userStatusAtom';
+
 
 export type UserDetails = {
   id: string;
@@ -19,72 +23,87 @@ type UseUserStatusReturn = {
   refetchUser: () => Promise<void>;
 };
 
-const CACHE_DURATION = 60 * 1000; // 1 minute
+
+// Global request tracking
+let activeRequest: Promise<UserDetails> | null = null;
 
 export const useUserStatus = (): UseUserStatusReturn => {
   const { data: session, status: sessionStatus } = useSession();
-  const [user, setUser] = useState<UserDetails | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<Error | null>(null);
-  const cacheRef = useRef<{
-    data: UserDetails | null;
-    timestamp: number | null;
-  }>({ data: null, timestamp: null });
+  const [userStatus, setUserStatus] = useRecoilState(userStatusAtom);
+  const isPaid = useRecoilValue(isPaidSelector);
+  const lastFetchRef = useRef<number>(0);
 
   const fetchUserDetails = async () => {
     try {
       if (sessionStatus === 'loading') return;
       if (!session?.user?.email) {
-        setUser(null);
-        setIsLoading(false);
+        setUserStatus(prev => ({ ...prev, user: null, isLoading: false }));
         return;
       }
 
+      const CACHE_DURATION = 60 * 1000; // 1 minute
       // Check cache first
+      const now = Date.now();
       if (
-        cacheRef.current.data &&
-        cacheRef.current.timestamp &&
-        Date.now() - cacheRef.current.timestamp < CACHE_DURATION
+        userStatus.user &&
+        userStatus.lastFetched &&
+        now - userStatus.lastFetched < CACHE_DURATION
       ) {
-        setUser(cacheRef.current.data);
-        setIsLoading(false);
         return;
       }
+      
 
-      const response = await fetch('/api/user', {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+      // If there's already an active request, use it instead of making a new one
+      if (!activeRequest) {
+        activeRequest = fetch('/api/user', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }).then(response => {
+          if (!response.ok) {
+            throw new Error('Failed to fetch user details');
+          }
+          return response.json();
+        });
+
+        // Clear the active request after it completes
+        activeRequest.finally(() => {
+          activeRequest = null;
+        });
+      }
+
+      setUserStatus(prev => ({ ...prev, isLoading: true }));
+      
+      const userData = await activeRequest;
+
+      setUserStatus({
+        user: userData,
+        isLoading: false,
+        error: null,
+        lastFetched: now,
       });
 
-      if (!response.ok) {
-        throw new Error('Failed to fetch user details');
-      }
-
-      const userData: UserDetails = await response.json();
-      setUser(userData);
-
-      // Update cache
-      cacheRef.current = { data: userData, timestamp: Date.now() };
     } catch (err) {
-      setError(err instanceof Error ? err : new Error('Unknown error occurred'));
-    } finally {
-      setIsLoading(false);
+      setUserStatus(prev => ({
+        ...prev,
+        error: err instanceof Error ? err : new Error('Unknown error occurred'),
+        isLoading: false,
+      }));
     }
   };
 
   useEffect(() => {
-    if (sessionStatus !== 'loading') {
+    if (sessionStatus !== 'loading' && !userStatus.user) {
       fetchUserDetails();
     }
-  }, [session]);
+  }, [sessionStatus, session?.user?.email]);
 
   return {
-    user,
-    isLoading: isLoading || sessionStatus === 'loading',
-    error,
-    isPaid: user?.status === 'PAID',
+    user: userStatus.user,
+    isLoading: userStatus.isLoading || sessionStatus === 'loading',
+    error: userStatus.error,
+    isPaid,
     refetchUser: fetchUserDetails,
   };
 };

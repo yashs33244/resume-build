@@ -62,10 +62,8 @@ export const useResumeState = (): UseResumeStateReturn => {
           updateDate: new Date(resume.updatedAt),
           template: resume.templateId,
         }));
-        const sortedResumes = processedResumes.sort((a, b) => 
-          b.createDate.getTime() - a.createDate.getTime()
-        );
-
+        // sort bu update date
+        processedResumes.sort((a, b) => b.updateDate.getTime() - a.updateDate.getTime());
 
         setResumes(processedResumes);
       } catch (error) {

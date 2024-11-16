@@ -10,7 +10,7 @@ import { getDuration } from "../../../utils";
 export const Template2 = (props: any) => {
   const { resumeData, id } = props;
   // console.log("Resume data = ", resumeData);
-  console.log("Resume data = ", resumeData);
+  // console.log("Resume data = ", resumeData);
   const [resumeSize, setResumeSize] = useRecoilState(resumeSizeAtom);
 
   return (
