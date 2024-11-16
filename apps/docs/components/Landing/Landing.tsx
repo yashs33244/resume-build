@@ -50,7 +50,6 @@ import AliceCarousel from "react-alice-carousel";
 import Link from "next/link";
 import "react-alice-carousel/lib/alice-carousel.css";
 import "./App.scss";
-import { useSession } from "next-auth/react";
 import { FaCircleCheck } from "react-icons/fa6";
 import { FaAngleRight } from "react-icons/fa6";
 import {
@@ -60,8 +59,8 @@ import {
 import { useRecoilValue } from "recoil";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useSaveResume } from "../../hooks/useSaveResume";
-import { initialResumeData } from "../../utils/resumeData";
-// import { useSession } from "next-auth/react";
+import { useProfileSession } from "../../hooks/useProfileSession";
+
 type LandingPageTemplateType = "classic" | "modern" | "bold";
 type ActualTemplateType = "fresher" | "experienced" | "designer";
 
@@ -83,7 +82,6 @@ const reverseTemplateMapping: Record<
 export default function LandingPage() {
   const [selectedTemplate, setSelectedTemplate] =
     useState<LandingPageTemplateType>("classic");
-  const { data: session, status: sessionStatus } = useSession();
   const { template, setTemplateAndUpdateURL } = useTemplateSync();
   const templateClass = useRecoilValue<any>(templateClassSelector);
   const router = useRouter();
@@ -101,7 +99,7 @@ export default function LandingPage() {
       template: template,
     }).toString();
 
-    if (!session?.user) {
+    if (!user) {
       // Include template in the signin URL
       router.push(`/api/auth/signin?${params}`);
     } else {
@@ -109,16 +107,17 @@ export default function LandingPage() {
       router.push(`/create-preference?template=${template}&fromLanding=true`);
     }
   };
+  const { user, sessionData } = useProfileSession();
 
   // Handle post-login redirect
   useEffect(() => {
     const template = searchParams.get("template");
     const fromLanding = searchParams.get("fromLanding") === "true";
 
-    if (session?.user && fromLanding && template) {
+    if (user && fromLanding && template) {
       router.push(`/create-preference?template=${template}&fromLanding=true`);
     }
-  }, [session, searchParams, router]);
+  }, [sessionData, searchParams, router]);
   // Map current templates to the respective images
   const currentTemplate: { [key: string]: string } = {
     classic: temp_resume1.src,
@@ -128,7 +127,7 @@ export default function LandingPage() {
 
   // Handle redirect based on user session
   const handleRedirect = () => {
-    if (session?.user) {
+    if (user) {
       const actualTemplate = templateMapping[template]; // Use the correct mapping
       router.push(`/select-templates/editor?template=${actualTemplate}`);
     } else {
@@ -173,26 +172,14 @@ export default function LandingPage() {
           <div className="primary-cta">
             <MdRocketLaunch />
             <div>
-              {session?.user ? (
+              {user ? (
                 <Link href="/dashboard"> Get Started</Link>
               ) : (
                 <Link href="/api/auth/signin"> Get Started</Link>
               )}
             </div>
           </div>
-          {/* <div className="secondary-cta">
-            <FaEdit />
-            <div>
-              {session?.user ? (
-                <Link href="/select-templates/editor">
-                  {" "}
-                  Enter Details Manually
-                </Link>
-              ) : (
-                <Link href="/api/auth/signin"> Enter Details Manually</Link>
-              )}
-            </div>
-          </div> */}
+
           <div style={{ marginTop: "36px" }}>
             <Image alt="loved" src={lovedby} style={{ width: "44%" }} />
           </div>
@@ -274,7 +261,7 @@ export default function LandingPage() {
         <div className="action-cta">
           <button>
             {/* <Link href="/editor"> Build My Resume</Link> */}
-            {session?.user ? (
+            {user ? (
               <Link href="/dashboard"> Build My Resume</Link>
             ) : (
               <Link href="/api/auth/signin"> Build My Resume</Link>
@@ -339,20 +326,6 @@ export default function LandingPage() {
         <div className="title">Resume Builder</div>
         <div className="subtitle">Dead Simple</div>
         <div className="features1">
-          {/* <div className="feature">
-            <div className="infographic">
-              <img
-                style={{ height: "40px", width: "auto" }}
-                src={imp.src}
-                alt="imp"
-              />
-            </div>
-            <div className="feature-title">Linkedin Import</div>
-            <div className="feature-desc">
-              Get started effortlessly by importing all basic information from
-              Linkedin directly
-            </div>
-          </div> */}
           <div className="feature">
             <div className="infographic">
               <img
@@ -383,20 +356,6 @@ export default function LandingPage() {
           </div>
         </div>
         <div className="features1">
-          {/* <div className="feature">
-            <div className="infographic">
-              <img
-                style={{ height: "40px", width: "auto" }}
-                src={cover.src}
-                alt="cover"
-              />
-            </div>
-            <div className="feature-title">One Click Cover Letter</div>
-            <div className="feature-desc">
-              Generate your professional cover letter in one click for your
-              desired job
-            </div>
-          </div> */}
           <div className="feature">
             <div className="infographic">
               <img
@@ -443,7 +402,7 @@ export default function LandingPage() {
             </div>
             <div className="left-cta">
               <Link href="/api/auth/signin"> Build Now</Link>
-              <FaAngleRight />            
+              <FaAngleRight />
             </div>
           </div>
           <div className="right">

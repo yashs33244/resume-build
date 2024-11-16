@@ -48,20 +48,18 @@ export const PersonalInfo: React.FC<PersonalInfoProps> = ({
     handleInputChange("personalInfo", "bio", summary);
   };
 
-  // useEffect(() => {
-  //   if (user) {
-  //     // Update name if it's empty
-  //     if (!resumeData.personalInfo?.name && user.name) {
-  //       setName(user.name);
-  //       handleInputChange("personalInfo", "name", user.name);
-  //     }
-  //     // Update email if it's empty
-  //     if (!resumeData.personalInfo?.email && user.email) {
-  //       setEmail(user.email);
-  //       handleInputChange("personalInfo", "email", user.email);
-  //     }
-  //   }
-  // }, [user, resumeData.personalInfo, handleInputChange]);
+  useEffect(() => {
+    if (user) {
+      // Initialize name if it's empty and user.name exists
+      if (!resumeData.personalInfo?.name && user.name) {
+        handleInputChange("personalInfo", "name", user.name);
+      }
+      // Initialize email if it's empty and user.email exists
+      if (!resumeData.personalInfo?.email && user.email) {
+        handleInputChange("personalInfo", "email", user.email);
+      }
+    }
+  }, [user, resumeData.personalInfo, handleInputChange]);
 
   return (
     <div className="personal-container">

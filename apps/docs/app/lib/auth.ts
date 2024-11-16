@@ -226,40 +226,46 @@ export const authOptions: NextAuthOptions = {
       return true; // Allow sign-in if not using Google provider
     },
     async redirect({ url, baseUrl }) {
+      // Add debugging to track repeated calls
       console.log("Redirect callback triggered with URL:", url);
       
       try {
+        // First, check if we're already on the dashboard to prevent redirect loops
+        if (url === `${baseUrl}/dashboard`) {
+          return url;
+        }
+        
         const fullUrl = new URL(url, baseUrl);
+        
+        // Handle sign-out specifically
+        if (url.includes('signout') || fullUrl.searchParams.get("redirectType") === "signout") {
+          return `${baseUrl}/`;
+        }
+        
+        // Get URL parameters
         const callbackUrl = fullUrl.searchParams.get("callbackUrl");
         const fromLanding = fullUrl.searchParams.get("fromLanding") === "true";
         const template = fullUrl.searchParams.get("template");
         
-        // Handle sign-out
-        const redirectType = fullUrl.searchParams.get("redirectType");
-        if (redirectType === "signout") {
-          return `${baseUrl}/`;
-        }
+        // Priority order for redirects:
         
-        // If coming from landing page with a template
+        // 1. Template from landing page
         if (fromLanding && template) {
           return `${baseUrl}/create-preference?template=${template}&fromLanding=true`;
         }
         
-        // If there's a specific callback URL
+        // 2. Specific callback URL
         if (callbackUrl) {
           return callbackUrl.startsWith("/") ? `${baseUrl}${callbackUrl}` : callbackUrl;
         }
-        if (url.includes('signout')) {
-          return baseUrl + '/';
-        }
         
-        // Default fallback to dashboard
+        // 3. Default to dashboard
         return `${baseUrl}/dashboard`;
       } catch (error) {
         console.error("Error in redirect callback:", error);
         return `${baseUrl}/dashboard`;
       }
-    }
+    },
     
     
   },    

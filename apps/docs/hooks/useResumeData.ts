@@ -81,6 +81,14 @@ export const useResumeData = (onDataChange?: (resumeData: ResumeProps) => void) 
                             i === index ? { ...item, end: value ? "Present" : "" } : item
                         );
                     }
+                    newData.experience.sort((a, b) => {
+                        // Convert start dates to timestamps for comparison
+                        const dateA = a.start ? new Date(a.start).getTime() : 0;
+                        const dateB = b.start ? new Date(b.start).getTime() : 0;
+                        
+                        // Sort in descending order (latest first)
+                        return dateB - dateA;
+                    });
                 }
             } else if (section === "projects") {
                 if (newData.projects && Array.isArray(newData.projects) && index !== undefined) {
