@@ -9,6 +9,7 @@ import { ResumeProps } from "../../types/ResumeProps";
 import "./styles/project.scss";
 import { BsStars } from "react-icons/bs";
 import { FaTrashAlt } from "react-icons/fa";
+import ExperienceDatePickers from "../ExperienceDatePickers";
 import {
   Collapsible,
   CollapsibleTrigger,
@@ -170,38 +171,12 @@ export const Project: React.FC<ProjectProps> = ({
                   </div>
                 </div>
                 <div className="form-row">
-                  <div className="row-form-field">
-                    <Label htmlFor={`start-${index}`} className="field-label">
-                      Start Date
-                    </Label>
-                    <LocalizationProvider dateAdapter={AdapterDayjs}>
-                      <CustomDatePicker
-                        id={`start-${index}`}
-                        value={proj.start || ""}
-                        onChange={() => handleInputChange}
-                        index={index}
-                        className="text-white"
-                        field="start"
-                        category="projects" // Passing the category as 'projects'
-                      />
-                    </LocalizationProvider>
-                  </div>
-                  <div className="row-form-field">
-                    <Label htmlFor={`end-${index}`} className="field-label">
-                      End Date
-                    </Label>
-                    <LocalizationProvider dateAdapter={AdapterDayjs}>
-                      <CustomDatePicker
-                        id={`end-${index}`}
-                        value={proj.end || ""}
-                        onChange={() => handleInputChange}
-                        index={index}
-                        className="text-white"
-                        field="end"
-                        category="projects" // Passing the category as 'projects'
-                      />
-                    </LocalizationProvider>
-                  </div>
+                  <ExperienceDatePickers
+                    type="projects"
+                    index={index}
+                    exp={proj}
+                    handleInputChange={handleInputChange}
+                  />
                 </div>
                 <div className="single-form-row">
                   <div className="form-field">

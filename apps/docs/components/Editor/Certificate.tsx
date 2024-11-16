@@ -96,7 +96,7 @@ export const Certificate: React.FC<CertificateProps> = ({
                     />
                   </div>
                 </div>
-                <div className="form-row">
+                <div className="single-form-row">
                   <div className="row-form-field">
                     <Label htmlFor={`issuer-${index}`} className="field-label">
                       Issuing Organisation
@@ -115,46 +115,7 @@ export const Certificate: React.FC<CertificateProps> = ({
                       placeholder="For Eg: Google"
                       className="form-input"
                     />
-                  </div>
-                  <div className="row-form-field">
-                    <Label htmlFor={`start-${index}`} className="field-label">
-                      Start Date
-                    </Label>
-                    <LocalizationProvider dateAdapter={AdapterDayjs}>
-                      <CustomDatePicker
-                        id={`start-${index}`}
-                        value={cert.issuedOn || ""}
-                        onChange={() => handleInputChange}
-                        index={index}
-                        className="text-white"
-                        field="start"
-                        category="certificates" // Passing the category as 'projects'
-                      />
-                    </LocalizationProvider>
-                  </div>
-                  {/* <div className="row-form-field">
-                    <Label
-                      htmlFor={`issuedOn-${index}`}
-                      className="field-label"
-                    >
-                      Issued Date
-                    </Label>
-                    <Input
-                      id={`issuedOn-${index}`}
-                      value={cert.issuedOn || ""}
-                      type="date"
-                      onChange={(e) =>
-                        handleInputChange(
-                          "certificates",
-                          "issuedOn",
-                          e.target.value,
-                          index,
-                        )
-                      }
-                      placeholder=""
-                      className="form-input"
-                    />
-                  </div> */}
+                  </div>                  
                 </div>
               </div>
             </CollapsibleContent>

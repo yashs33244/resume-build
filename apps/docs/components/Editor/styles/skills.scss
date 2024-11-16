@@ -38,6 +38,16 @@
                 margin-left: 4px;
             }
         }
+
+        .reco-fallback {
+            color: rgba(255,255,255,0.6);
+            font-style: italic;
+            font-size: 0.8rem;
+            width: 70%;
+            padding: 8px 16px;
+            background-color: #121420;
+            border-radius: 12px;
+        }
     }
 
     .tech-skills {

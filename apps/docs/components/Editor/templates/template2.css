@@ -208,14 +208,14 @@
   .template2-wrapper .content_education_div_value_section {
     display: flex;
     flex-direction: column;
-    gap: 5px;
+    gap: 2px;
     width: calc(50% - 10px);
   }
 
   .template2-wrapper .content_certificates_div_value_section {
     display: flex;
     flex-direction: column;
-    gap: 5px;
+    gap: 2px;
     width: calc(50% - 10px);
   }
   

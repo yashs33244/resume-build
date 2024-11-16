@@ -5,6 +5,7 @@ import "./template2.css";
 import DOMPurify from "dompurify";
 import { useRecoilState } from "recoil";
 import { resumeSizeAtom } from "../../../store/resumeSize";
+import { IoIosLink } from "react-icons/io";
 import { getDuration } from "../../../utils";
 
 export const Template2 = (props: any) => {
@@ -33,14 +34,14 @@ export const Template2 = (props: any) => {
             <div className={"header_right_part_url"}>
               {resumeData?.personalInfo?.email || "Email"}
             </div>
+            <div className={"header_right_part_email"}>
+              {resumeData?.personalInfo?.phone || "Contact Number"}
+            </div>
             <div className={"header_right_part_phone"}>
               <a href={resumeData?.personalInfo?.linkedin || "#"}>
                 {`${resumeData?.personalInfo.linkedin ? `LinkedIn` : ""}`}
               </a>
-            </div>
-            <div className={"header_right_part_email"}>
-              {resumeData?.personalInfo?.phone || "Contact Number"}
-            </div>
+            </div>            
           </div>
         </div>
         <div className={"content"}>
@@ -200,14 +201,15 @@ export const Template2 = (props: any) => {
                         className={"content_projects_div_value_section"}
                         key={index}
                       >
-                        {proj?.name && proj?.link && (
-                          <div
+                        {proj?.name && (
+                          <a
                             className={
                               "content_projects_div_value_section_name"
                             }
+                            href={proj?.link || null}
                           >
-                            {proj?.name + " - " + proj?.link}
-                          </div>
+                            {proj?.name} {proj?.link ? <IoIosLink /> : null}
+                          </a>
                         )}
                         {(proj?.start || proj?.end || proj?.duration) && (
                           <div

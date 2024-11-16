@@ -211,7 +211,7 @@ export const Skills: React.FC<SkillsProps> = ({
           Recommended for your role
         </div>
 
-        {renderAISuggestedSkills()}
+        {resumeData?.personalInfo?.title ? renderAISuggestedSkills() : <div className="reco-fallback">Enter job title to get required skills for your resume..</div>}
       </div>
       {isLoading && <div>Loading suggestions...</div>}
     </div>

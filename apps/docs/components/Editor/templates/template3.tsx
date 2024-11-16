@@ -62,7 +62,7 @@ export const Template3 = (props: any) => {
                             <div
                                 className={`${"lp_education_div_label"} ${"lp_container_header"}`}
                             >
-                                Education
+                                EDUCATION
                             </div>
                             <div className={`${"lp_education_div_value"}`}>
                                 {resumeData.education.map((edu: any, index: number) => {
@@ -133,7 +133,7 @@ export const Template3 = (props: any) => {
                         Array.isArray(resumeData?.coreSkills) && resumeData.coreSkills.length > 0 &&
                         <div className={`${"lp_skill_div"} ${"lp_container"}`}>
                             <div className={`${"lp_skill_div_label"} ${"lp_container_header"}`}>
-                                Skill
+                                SKILLS
                             </div>
                             <div className={`${"lp_skill_div_value"}`}>
                                 {resumeData.coreSkills.map((item: any, index: number) => (
@@ -161,7 +161,7 @@ export const Template3 = (props: any) => {
                         Array.isArray(resumeData?.experience) && resumeData.experience.length > 0 &&
                         <div className={`${"rp_experience_div"} ${"rp_container"}`}>
                             <div className={`${"rp_experience_div_label"} ${"rp_container_header"}`}>
-                                Experience
+                                WORK EXPERIENCE
                             </div>
                             <div className={`${"rp_experience_div_value"} ${"rp_container_content"}`}>
                                 {resumeData.experience.map((exp: any, index: number) => {
@@ -198,7 +198,7 @@ export const Template3 = (props: any) => {
                         <div
                             className={`${"rp_experience_div_label"} ${"rp_container_header"}`}
                         >
-                            Projects
+                            PROJECTS
                         </div>
                         <div
                             className={`${"rp_experience_div_value"} ${"rp_container_content"}`}
@@ -209,9 +209,9 @@ export const Template3 = (props: any) => {
                                 <a className={"rp_projerience_div_value_section_name"} href={proj?.link || null}>
                                 {proj?.name} {proj?.link ? <IoIosLink /> : null}
                                 </a>
-                                <div className={"rp_projerience_div_value_section_year"}>
-                                {proj?.start + " - " + proj.end}
-                                </div>
+                                {(proj?.start || proj?.end) && <div className={"rp_projerience_div_value_section_year"}>
+                                {getDuration(proj?.start) + " - " + getDuration(proj.end)}
+                                </div>}
                                 <div
                                 className={"rp_projerience_div_value_section_work"}
                                 dangerouslySetInnerHTML={{

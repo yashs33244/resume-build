@@ -195,6 +195,7 @@ export const Experience: React.FC<ExperienceProps> = ({
                 <div>
                   <div className="form-row">
                     <ExperienceDatePickers
+                      type="experience"
                       index={index}
                       exp={exp}
                       handleInputChange={handleInputChange}

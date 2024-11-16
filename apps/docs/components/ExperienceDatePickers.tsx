@@ -65,21 +65,21 @@ const darkTheme = createTheme({
   },
 });
 
-const ExperienceDatePickers = ({ index, exp, handleInputChange }: any) => {
+const ExperienceDatePickers = ({ index, exp, handleInputChange, type }: any) => {
   const handleStartDateChange = (newValue: any) => {
     if (newValue) {
       const startDate = newValue.format("YYYY-MM");
-      handleInputChange("experience", "start", startDate, index);
+      handleInputChange(type, "start", startDate, index);
 
       // Clear end date if it exists and is not strictly after new start date
       if (exp.end && !dayjs(exp.end).isAfter(startDate, "month")) {
-        handleInputChange("experience", "end", "", index);
+        handleInputChange(type, "end", "", index);
       }
     } else {
-      handleInputChange("experience", "start", "", index);
+      handleInputChange(type, "start", "", index);
       // Clear end date if start date is cleared
       if (exp.end) {
-        handleInputChange("experience", "end", "", index);
+        handleInputChange(type, "end", "", index);
       }
     }
   };
@@ -87,13 +87,13 @@ const ExperienceDatePickers = ({ index, exp, handleInputChange }: any) => {
   const handleEndDateChange = (newValue: any) => {
     if (newValue) {
       const endDate = newValue.format("YYYY-MM");
-      if (!dayjs(endDate).isAfter(dayjs(exp.start), "month")) {
-        alert("End date must be after start date");
-        return;
-      }
-      handleInputChange("experience", "end", endDate, index);
+      // if (!dayjs(endDate).isAfter(dayjs(exp.start), "month")) {
+      //   alert("End date must be after start date");
+      //   return;
+      // }
+      handleInputChange(type, "end", endDate, index);
     } else {
-      handleInputChange("experience", "end", "", index);
+      handleInputChange(type, "end", "", index);
     }
   };
 
@@ -109,10 +109,12 @@ const ExperienceDatePickers = ({ index, exp, handleInputChange }: any) => {
               views={["year", "month"]}
               value={exp.start ? dayjs(exp.start) : null}
               onChange={handleStartDateChange}
+              format="MM YYYY"
               slotProps={{
                 textField: {
                   fullWidth: true,
                   error: false,
+                  placeholder: "MM YYYY",
                 },
                 actionBar: {
                   actions: ["clear"],
@@ -136,12 +138,14 @@ const ExperienceDatePickers = ({ index, exp, handleInputChange }: any) => {
               views={["year", "month"]}
               value={exp.end ? dayjs(exp.end) : null}
               onChange={handleEndDateChange}
+              format="MM YYYY"
               disabled={exp.current} // Disable if the experience is current
               minDate={exp.start ? dayjs(exp.start).add(1, "month") : undefined}
               slotProps={{
                 textField: {
                   fullWidth: true,
                   error: false,
+                  placeholder: "MM YYYY",
                 },
                 actionBar: {
                   actions: ["clear"],
