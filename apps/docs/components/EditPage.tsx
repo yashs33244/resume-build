@@ -362,16 +362,16 @@ export default function EditPage() {
   if (loading) {
     return (
       <div
-        className="flex items-center justify-center min-h-screen"
+        className="fixed inset-0 flex items-center justify-center"
         style={{
-          minHeight: "calc(100vh - 100px)",
-          maxHeight: "calc(100vh - 100px)",
+          backgroundColor: "#121420", // Set the background color
         }}
       >
         <Loader className="w-8 h-8 animate-spin" />
       </div>
     );
   }
+
   return (
     <Suspense
       fallback={
