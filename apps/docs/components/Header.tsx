@@ -11,11 +11,13 @@ import logo from "./logo.svg";
 import premium from "./premium.svg";
 import { useUserStatus } from "../hooks/useUserStatus";
 import { useProfileSession } from "../hooks/useProfileSession";
+import { useEffect } from "react";
 
 export default function Header() {
   const { user } = useProfileSession();
   const sessionUser = user;
   const { isPaid, refetchUser } = useUserStatus();
+
   const handleSignOut = async (e: any) => {
     e.preventDefault();
     await signOut({
