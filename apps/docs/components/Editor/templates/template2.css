@@ -62,14 +62,15 @@
   /* Template Container */
   .template2-wrapper .template-container {
     position: relative;
-    background-color: #fff;
+    /* background-color: #fff; */
+    background: linear-gradient(to bottom, #fdebe2, #f8f8fa);
     height: 95%;
     aspect-ratio: 0.7751937984;
     min-width: 595px;
     max-width: 595px;
     min-height: 842px;
     max-height: 842px;
-    background-color: white;
+    /* background-color: white; */
     color: black;
     padding: var(--container-padding);
     display: flex;

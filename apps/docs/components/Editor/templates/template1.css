@@ -77,107 +77,107 @@
 .template1-wrapper .M .tag_value {
     color: white;
     font-weight: 700;
-    font-size: 10px;
+    font-size: 12px;
     line-height: 14px;
 }
 
 .template1-wrapper .S .tag_value {
-    font-size: 9.5px;
+    font-size: 11.4px;
     line-height: 13.3px;
 }
 
 .template1-wrapper .XS .tag_value {
-    font-size: 9.02px;
+    font-size: 10.83px;
     line-height: 12.63px;
 }
 
 .template1-wrapper .L .tag_value {
-    font-size: 10.5px;
+    font-size: 12.6px;
     line-height: 14.7px;
 }
 
 .template1-wrapper .XL .tag_value {
-    font-size: 11.02px;
+    font-size: 13.23px;
     line-height: 15.43px;
 }
 
 .template1-wrapper .M .primary-info .name {
     color: #323336;
     font-weight: 700;
-    font-size: 1rem;
+    font-size: 20px;
 }
 
 .template1-wrapper .S .primary-info .name {
-    font-size: 0.95rem;
+    font-size: 19px;
 }
 
 .template1-wrapper .XS .primary-info .name {
-    font-size: 0.902rem;
+    font-size: 18.05px;
 }
 
 .template1-wrapper .L .primary-info .name {
-    font-size: 1.05rem;
+    font-size: 21px;
 }
 
 .template1-wrapper .XL .primary-info .name {
-    font-size: 1.102rem;
+    font-size: 22.05px;
 }
 
 .template1-wrapper .M .primary-info .position {
     color: #323336;
-    font-size: 0.7rem;
-    margin-top: 0.2rem;
+    font-size: 16px;
+    margin-top: 0.1rem;
     font-weight: 500;
 }
 
 .template1-wrapper .S .primary-info .position {
-    font-size: 0.66rem;
-    margin-top: 0.19rem;
+    font-size: 15.2px;
+    margin-top: 0.095rem;
     font-weight: 500;
 }
 
 .template1-wrapper .XS .primary-info .position {
-    font-size: 0.627rem;
-    margin-top: 0.18rem;
+    font-size: 14.44px;
+    margin-top: 0.09rem;
     font-weight: 500;
 }
 
 .template1-wrapper .L .primary-info .position {
-    font-size: 0.735rem;
-    margin-top: 0.21rem;
+    font-size: 16.8px;
+    margin-top: 0.105rem;
     font-weight: 500;
 }
 
 .template1-wrapper .XL .primary-info .position {
-    font-size: 0.77rem;
-    margin-top: 0.22rem;
+    font-size: 17.64px;
+    margin-top: 0.11rem;
     font-weight: 500;
 }
 
 
 .template1-wrapper .M .primary-info .information {
     color: #707678;
-    font-size: 0.5rem;
+    font-size: 12px;
     margin-top: 0.15rem;
 }
 
 .template1-wrapper .S .primary-info .information {
-    font-size: 0.475rem; /* 5% less than M */
+    font-size: 11.4px; /* 5% less than M */
     margin-top: 0.1425rem; /* 5% less than M */
 }
 
 .template1-wrapper .XS .primary-info .information {
-    font-size: 0.45125rem; /* 5% less than S */
+    font-size: 10.83px; /* 5% less than S */
     margin-top: 0.135375rem; /* 5% less than S */
 }
 
 .template1-wrapper .L .primary-info .information {
-    font-size: 0.525rem; /* 5% more than M */
+    font-size: 12.6px; /* 5% more than M */
     margin-top: 0.1575rem; /* 5% more than M */
 }
 
 .template1-wrapper .XL .primary-info .information {
-    font-size: 0.55125rem; /* 5% more than L */
+    font-size: 13.23px; /* 5% more than L */
     margin-top: 0.165375rem; /* 5% more than L */
 }
 
@@ -189,47 +189,47 @@
 
 .template1-wrapper .S .primary-info .information a,
 .template1-wrapper .S .primary-info .information a:hover {
-    font-size: 0.475rem; /* 5% less than M */
+    font-size: 11.4px; /* 5% less than M */
 }
 
 .template1-wrapper .XS .primary-info .information a,
 .template1-wrapper .XS .primary-info .information a:hover {
-    font-size: 0.45125rem; /* 5% less than S */
+    font-size: 10.83px; /* 5% less than S */
 }
 
 .template1-wrapper .L .primary-info .information a,
 .template1-wrapper .L .primary-info .information a:hover {
-    font-size: 0.525rem; /* 5% more than M */
+    font-size: 12.6px; /* 5% more than M */
 }
 
 .template1-wrapper .XL .primary-info .information a,
 .template1-wrapper .XL .primary-info .information a:hover {
-    font-size: 0.55125rem; /* 5% more than L */
+    font-size: 13.23px; /* 5% more than L */
 }
 
 .template1-wrapper .M .primary-info .summary {
     color: #707678;
-    font-size: 0.5rem;
+    font-size: 12px;
     margin-top: 0.15rem;
 }
 
 .template1-wrapper .S .primary-info .summary {
-    font-size: 0.475rem; /* 5% less than M */
+    font-size: 11.4px; /* 5% less than M */
     margin-top: 0.1425rem; /* 5% less than M */
 }
 
 .template1-wrapper .XS .primary-info .summary {
-    font-size: 0.45125rem; /* 5% less than S */
+    font-size: 10.83px; /* 5% less than S */
     margin-top: 0.135375rem; /* 5% less than S */
 }
 
 .template1-wrapper .L .primary-info .summary {
-    font-size: 0.525rem; /* 5% more than M */
+    font-size: 12.6px; /* 5% more than M */
     margin-top: 0.1575rem; /* 5% more than M */
 }
 
 .template1-wrapper .XL .primary-info .summary {
-    font-size: 0.55125rem; /* 5% more than L */
+    font-size: 13.23px; /* 5% more than L */
     margin-top: 0.165375rem; /* 5% more than L */
 }
 
@@ -275,46 +275,46 @@
 
 .template1-wrapper .M .experience .section-title {
     color: #a6aaad;
-    font-size: 0.5rem;
+    font-size: 10px;
     font-weight: 600;
 }
 
 .template1-wrapper .S .experience .section-title {
-    font-size: 0.475rem; /* 5% less than M */
+    font-size: 9.5px; /* 5% less than M */
 }
 
 .template1-wrapper .XS .experience .section-title {
-    font-size: 0.45125rem; /* 5% less than S */
+    font-size: 9.02px; /* 5% less than S */
 }
 
 .template1-wrapper .L .experience .section-title {
-    font-size: 0.525rem; /* 5% more than M */
+    font-size: 10.5px; /* 5% more than M */
 }
 
 .template1-wrapper .XL .experience .section-title {
-    font-size: 0.55125rem; /* 5% more than L */
+    font-size: 11.02px; /* 5% more than L */
 }
 
 .template1-wrapper .M .projects .section-title {
     color: #a6aaad;
-    font-size: 0.5rem;
+    font-size: 10px;
     font-weight: 600;
 }
 
 .template1-wrapper .S .projects .section-title {
-    font-size: 0.475rem; /* 5% less than M */
+    font-size: 9.5px; /* 5% less than M */
 }
 
 .template1-wrapper .XS .projects .section-title {
-    font-size: 0.45125rem; /* 5% less than S */
+    font-size: 9.02px; /* 5% less than S */
 }
 
 .template1-wrapper .L .projects .section-title {
-    font-size: 0.525rem; /* 5% more than M */
+    font-size: 10.5px; /* 5% more than M */
 }
 
 .template1-wrapper .XL .projects .section-title {
-    font-size: 0.55125rem; /* 5% more than L */
+    font-size: 10.02px; /* 5% more than L */
 }
 
 .template1-wrapper .M .experience .exp-container {
@@ -359,24 +359,24 @@
 
 .template1-wrapper .M .experience .exp-container .company-name {
     color: #323336;
-    font-size: 0.56rem;
+    font-size: 12px;
     font-weight: 600;
 }
 
 .template1-wrapper .S .experience .exp-container .company-name {
-    font-size: 0.532rem; /* 5% less than M */
+    font-size: 11.4px; /* 5% less than M */
 }
 
 .template1-wrapper .XS .experience .exp-container .company-name {
-    font-size: 0.5054rem; /* 5% less than S */
+    font-size: 10.83px; /* 5% less than S */
 }
 
 .template1-wrapper .L .experience .exp-container .company-name {
-    font-size: 0.588rem; /* 5% more than M */
+    font-size: 12.6px; /* 5% more than M */
 }
 
 .template1-wrapper .XL .experience .exp-container .company-name {
-    font-size: 0.6174rem; /* 5% more than L */
+    font-size: 13.23px; /* 5% more than L */
 }
 
 .template1-wrapper .M .projects .proj-container .proj-name {
@@ -384,108 +384,108 @@
     display: flex;
     align-items: center;
     gap: 4px;
-    font-size: 0.56rem;
+    font-size: 12px;
     font-weight: 600;
 }
 
 .template1-wrapper .S .projects .proj-container .proj-name {
-    font-size: 0.532rem; /* 5% less than M */
+    font-size: 11.4px; /* 5% less than M */
 }
 
 .template1-wrapper .XS .projects .proj-container .proj-name {
-    font-size: 0.5054rem; /* 5% less than S */
+    font-size: 10.83px; /* 5% less than S */
 }
 
 .template1-wrapper .L .projects .proj-container .proj-name {
-    font-size: 0.588rem; /* 5% more than M */
+    font-size: 12.6px; /* 5% more than M */
 }
 
 .template1-wrapper .XL .projects .proj-container .proj-name {
-    font-size: 0.6174rem; /* 5% more than L */
+    font-size: 13.23px; /* 5% more than L */
 }
 
 .template1-wrapper .M .experience .exp-container .role-duration {
     color: #707678;
-    font-size: 0.52rem;
+    font-size: 10px;
 }
 
 .template1-wrapper .S .experience .exp-container .role-duration {
-    font-size: 0.494rem; /* 5% less than M */
+    font-size: 9.5px; /* 5% less than M */
 }
 
 .template1-wrapper .XS .experience .exp-container .role-duration {
-    font-size: 0.4693rem; /* 5% less than S */
+    font-size: 9.02px; /* 5% less than S */
 }
 
 .template1-wrapper .L .experience .exp-container .role-duration {
-    font-size: 0.546rem; /* 5% more than M */
+    font-size: 10.5px; /* 5% more than M */
 }
 
 .template1-wrapper .XL .experience .exp-container .role-duration {
-    font-size: 0.5733rem; /* 5% more than L */
+    font-size: 11.02px; /* 5% more than L */
 }
 
 .template1-wrapper .M .projects .proj-container .link-duration {
     color: #707678;
-    font-size: 0.52rem;
+    font-size: 10px;
 }
 
 .template1-wrapper .S .projects .proj-container .link-duration {
-    font-size: 0.494rem; /* 5% less than M */
+    font-size: 9.5px; /* 5% less than M */
 }
 
 .template1-wrapper .XS .projects .proj-container .link-duration {
-    font-size: 0.4693rem; /* 5% less than S */
+    font-size: 9.02px; /* 5% less than S */
 }
 
 .template1-wrapper .L .projects .proj-container .link-duration {
-    font-size: 0.546rem; /* 5% more than M */
+    font-size: 10.5px; /* 5% more than M */
 }
 
 .template1-wrapper .XL .projects .proj-container .link-duration {
-    font-size: 0.5733rem; /* 5% more than L */
+    font-size: 11.02px; /* 5% more than L */
 }
 
 .template1-wrapper .M .experience .exp-container .responsibilities {
     color: #323336;
-    font-size: 0.5rem;
+    font-size: 10px;
 }
 
 .template1-wrapper .S .experience .exp-container .responsibilities {
-    font-size: 0.475rem; /* 5% less than M */
+    font-size: 9.5px; /* 5% less than M */
 }
 
 .template1-wrapper .XS .experience .exp-container .responsibilities {
-    font-size: 0.45125rem; /* 5% less than S */
+    font-size: 9.02px; /* 5% less than S */
 }
 
 .template1-wrapper .L .experience .exp-container .responsibilities {
-    font-size: 0.525rem; /* 5% more than M */
+    font-size: 10.5px; /* 5% more than M */
 }
 
 .template1-wrapper .XL .experience .exp-container .responsibilities {
-    font-size: 0.55125rem; /* 5% more than L */
+    font-size: 11.02px; /* 5% more than L */
 }
 
 .template1-wrapper .M .projects .proj-container .responsibilities {
     color: #323336;
-    font-size: 0.5rem;
+    font-size: 10px;
 }
 
 .template1-wrapper .S .projects .proj-container .responsibilities {
-    font-size: 0.475rem; /* 5% less than M */
+    font-size: 9.5px; /* 5% less than M */
 }
 
 .template1-wrapper .XS .projects .proj-container .responsibilities {
-    font-size: 0.45125rem; /* 5% less than S */
+    font-size: 9.02px; /* 5% less than S */
 }
 
 .template1-wrapper .L .projects .proj-container .responsibilities {
-    font-size: 0.525rem; /* 5% more than M */
+    font-size: 10.5px; /* 5% more than M */
 }
 
 .template1-wrapper .XL .projects .proj-container .responsibilities {
-    font-size: 0.55125rem; /* 5% more than L */
+    font-size: 11.02px; /* 5% more than L */
 }
 
 .template1-wrapper .M .experience .exp-container .responsibilities ul {
@@ -572,46 +572,46 @@
 
 .template1-wrapper .M .education .section-title {
     color: #a6aaad;
-    font-size: 0.5rem;
+    font-size: 10px;
     font-weight: 600;
 }
 
 .template1-wrapper .S .education .section-title {
-    font-size: 0.475rem; /* 5% less than M */
+    font-size: 9.5px; /* 5% less than M */
 }
 
 .template1-wrapper .XS .education .section-title {
-    font-size: 0.45125rem; /* 5% less than S */
+    font-size: 9.02px; /* 5% less than S */
 }
 
 .template1-wrapper .L .education .section-title {
-    font-size: 0.525rem; /* 5% more than M */
+    font-size: 10.5px; /* 5% more than M */
 }
 
 .template1-wrapper .XL .education .section-title {
-    font-size: 0.55125rem; /* 5% more than L */
+    font-size: 11.02px; /* 5% more than L */
 }
 
 .template1-wrapper .M .certificates .section-title {
     color: #a6aaad;
-    font-size: 0.5rem;
+    font-size: 10px;
     font-weight: 600;
 }
 
 .template1-wrapper .S .certificates .section-title {
-    font-size: 0.475rem; /* 5% less than M */
+    font-size: 9.5px; /* 5% less than M */
 }
 
 .template1-wrapper .XS .certificates .section-title {
-    font-size: 0.45125rem; /* 5% less than S */
+    font-size: 9.02px; /* 5% less than S */
 }
 
 .template1-wrapper .L .certificates .section-title {
-    font-size: 0.525rem; /* 5% more than M */
+    font-size: 10.5px; /* 5% more than M */
 }
 
 .template1-wrapper .XL .certificates .section-title {
-    font-size: 0.55125rem; /* 5% more than L */
+    font-size: 11.02px; /* 5% more than L */
 }
 
 .template1-wrapper .M .education .edu-container {
@@ -656,88 +656,88 @@
 
 .template1-wrapper .M .education .edu-container .college-name {
     color: #323336;
-    font-size: 0.56rem;
+    font-size: 12px;
     font-weight: 600;
 }
 
 .template1-wrapper .S .education .edu-container .college-name {
-    font-size: 0.532rem; /* 5% less than M */
+    font-size: 11.4px; /* 5% less than M */
 }
 
 .template1-wrapper .XS .education .edu-container .college-name {
-    font-size: 0.5054rem; /* 5% less than S */
+    font-size: 10.83px; /* 5% less than S */
 }
 
 .template1-wrapper .L .education .edu-container .college-name {
-    font-size: 0.588rem; /* 5% more than M */
+    font-size: 12.6px; /* 5% more than M */
 }
 
 .template1-wrapper .XL .education .edu-container .college-name {
-    font-size: 0.6174rem; /* 5% more than L */
+    font-size: 13.23px; /* 5% more than L */
 }
 
 .template1-wrapper .M .certificates .cert-container .cert-name {
     color: #323336;
-    font-size: 0.56rem;
+    font-size: 12px;
     font-weight: 600;
 }
 
 .template1-wrapper .S .certificates .cert-container .cert-name {
-    font-size: 0.532rem; /* 5% less than M */
+    font-size: 11.4px; /* 5% less than M */
 }
 
 .template1-wrapper .XS .certificates .cert-container .cert-name {
-    font-size: 0.5054rem; /* 5% less than S */
+    font-size: 10.83px; /* 5% less than S */
 }
 
 .template1-wrapper .L .certificates .cert-container .cert-name {
-    font-size: 0.588rem; /* 5% more than M */
+    font-size: 12.6px; /* 5% more than M */
 }
 
 .template1-wrapper .XL .certificates .cert-container .cert-name {
-    font-size: 0.6174rem; /* 5% more than L */
+    font-size: 13.23px; /* 5% more than L */
 }
 
 .template1-wrapper .M .education .edu-container .degree-major {
     color: #707678;
-    font-size: 0.52rem;
+    font-size: 10px;
 }
 
 .template1-wrapper .S .education .edu-container .degree-major {
-    font-size: 0.494rem; /* 5% less than M */
+    font-size: 9.5px; /* 5% less than M */
 }
 
 .template1-wrapper .XS .education .edu-container .degree-major {
-    font-size: 0.4693rem; /* 5% less than S */
+    font-size: 9.02px; /* 5% less than S */
 }
 
 .template1-wrapper .L .education .edu-container .degree-major {
-    font-size: 0.546rem; /* 5% more than M */
+    font-size: 10.5px; /* 5% more than M */
 }
 
 .template1-wrapper .XL .education .edu-container .degree-major {
-    font-size: 0.5733rem; /* 5% more than L */
+    font-size: 11.02px; /* 5% more than L */
 }
 
 .template1-wrapper .M .certificates .cert-container .issuing {
     color: #707678;
-    font-size: 0.52rem;
+    font-size: 10px;
 }
 
 .template1-wrapper .S .certificates .cert-container .issuing {
-    font-size: 0.494rem; /* 5% less than M */
+    font-size: 9.5px; /* 5% less than M */
 }
 
 .template1-wrapper .XS .certificates .cert-container .issuing {
-    font-size: 0.4693rem; /* 5% less than S */
+    font-size: 9.02px; /* 5% less than S */
 }
 
 .template1-wrapper .L .certificates .cert-container .issuing {
-    font-size: 0.546rem; /* 5% more than M */
+    font-size: 10.5px; /* 5% more than M */
 }
 
 .template1-wrapper .XL .certificates .cert-container .issuing {
-    font-size: 0.5733rem; /* 5% more than L */
+    font-size: 11.02px; /* 5% more than L */
 }
 
 .template1-wrapper .M .skills {
@@ -762,24 +762,24 @@
 
 .template1-wrapper .M .skills .section-title {
     color: #a6aaad;
-    font-size: 0.5rem;
+    font-size: 10px;
     font-weight: 600;
 }
 
 .template1-wrapper .S .skills .section-title {
-    font-size: 0.475rem; /* 5% less than M */
+    font-size: 9.5px; /* 5% less than M */
 }
 
 .template1-wrapper .XS .skills .section-title {
-    font-size: 0.45125rem; /* 5% less than S */
+    font-size: 9.02px; /* 5% less than S */
 }
 
 .template1-wrapper .L .skills .section-title {
-    font-size: 0.525rem; /* 5% more than M */
+    font-size: 10.5px; /* 5% more than M */
 }
 
 .template1-wrapper .XL .skills .section-title {
-    font-size: 0.55125rem; /* 5% more than L */
+    font-size: 11.02px; /* 5% more than L */
 }
 
 .template1-wrapper .M .skills .core-skills {
@@ -829,23 +829,23 @@
 }
 
 .template1-wrapper .M .skills .core-skills .skill-container .skill {
-    font-size: 0.42rem;
+    font-size: 10px;
 }
 
 .template1-wrapper .S .skills .core-skills .skill-container .skill {
-    font-size: 0.399rem; /* 5% less than M */
+    font-size: 9.5px; /* 5% less than M */
 }
 
 .template1-wrapper .XS .skills .core-skills .skill-container .skill {
-    font-size: 0.37905rem; /* 5% less than S */
+    font-size: 9.02px; /* 5% less than S */
 }
 
 .template1-wrapper .L .skills .core-skills .skill-container .skill {
-    font-size: 0.441rem; /* 5% more than M */
+    font-size: 10.5px; /* 5% more than M */
 }
 
 .template1-wrapper .XL .skills .core-skills .skill-container .skill {
-    font-size: 0.46305rem; /* 5% more than L */
+    font-size: 11.02px; /* 5% more than L */
 }
 
 .template1-wrapper .M .achievements {
