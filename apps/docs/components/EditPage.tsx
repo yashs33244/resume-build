@@ -375,7 +375,7 @@ export default function EditPage() {
       <div
         className="fixed inset-0 flex items-center justify-center"
         style={{
-          backgroundColor: "#121420", // Set the background color
+          backgroundColor: "#1B2432", // Set the background color
         }}
       >
         <Loader className="w-8 h-8 animate-spin" />
