@@ -1,6 +1,6 @@
 "use client";
 import React, { useCallback, useEffect, useState } from "react";
-import { useRecoilState } from "recoil";
+import { constSelector, useRecoilState } from "recoil";
 import "./Dashboard.scss";
 import { isGeneratingPDFAtom } from "../store/pdfgenerating";
 import Link from "next/link";
@@ -111,6 +111,8 @@ const Dashboard = (props: any) => {
         const cssResponse = await fetch(
           `/api/resume/getTemplate?templateName=${templateId}`,
         );
+        console.log("cssResponse", cssResponse);
+        console.log("ReSUME ID", resumeId);
         if (!cssResponse.ok) throw new Error("Failed to fetch CSS URL");
         const { url: cssUrl } = await cssResponse.json();
 
@@ -149,7 +151,7 @@ const Dashboard = (props: any) => {
 
         // Update local state after successful download
         const updatedResumes = resumes.map((resume: any) => {
-          if (resume.resumeData.resumeId === resumeId) {
+          if (resume?.resumeData?.resumeId === resumeId) {
             return {
               ...resume,
               resumeState: "DOWNLOAD_SUCCESS",
