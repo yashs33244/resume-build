@@ -17,16 +17,16 @@
     --gap-base: 10px;
   
     /* Font-sizes and other dimensions */
-    --personalInfo-name-size: calc(var(--font-size-base) + 4px);
-    --personalInfo-role-size: calc(var(--font-size-base) - 1px);
+    --personalInfo-name-size: calc(var(--font-size-base) + 6px);
+    --personalInfo-role-size: calc(var(--font-size-base));
     --add-info-value-size: calc(var(--font-size-base) - 6px);
-    --container-header-size: calc(var(--font-size-base) - 4px);
-    --education-section-name-size: calc(var(--font-size-base) - 6px);
-    --education-section-year-size: calc(var(--font-size-base) - 8px);
+    --container-header-size: calc(var(--font-size-base) - 2px);
+    --education-section-name-size: calc(var(--font-size-base) - 4px);
+    --education-section-year-size: calc(var(--font-size-base) - 6px);
     --skill-item-size: calc(var(--font-size-base) - 6px);
     --rp-container-header-size: calc(var(--font-size-base) - 2px);
     --bio-value-size: calc(var(--font-size-base) - 6px);
-    --experience-section-name-size: calc(var(--font-size-base) - 6px);
+    --experience-section-name-size: calc(var(--font-size-base) - 4px);
     --experience-section-year-size: calc(var(--font-size-base) - 6px);
     --experience-section-work-size: calc(var(--font-size-base) - 6px);
   
@@ -219,12 +219,12 @@
   
   .template3-wrapper .lp_education_div_value_section_name {
     font-size: var(--education-section-name-size);
-    font-weight: 700;
+    font-weight: 600;
     line-height: normal;
   }
 
   .template3-wrapper .lp_education_div_value_section_major {
-    font-size: var(--education-section-name-size);
+    font-size: var(--education-section-year-size);
     font-weight: 500;
     line-height: normal;
   }
@@ -256,12 +256,12 @@
   
   .template3-wrapper .lp_certificate_div_value_section_name {
     font-size: var(--education-section-name-size);
-    font-weight: 700;
+    font-weight: 600;
     line-height: normal;
   }
 
   .template3-wrapper .lp_certificate_div_value_section_major {
-    font-size: var(--education-section-name-size);
+    font-size: var(--education-section-year-size);
     font-weight: 500;
     line-height: normal;
   }
