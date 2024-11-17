@@ -30,10 +30,12 @@ export async function getServerSideProps() {
   };
 }
 
-const TEMPLATE_NAME_MAPPING = {
-  fresher: "template1",
-  experienced: "template2",
-  designer: "template3",
+const template_css_map = {
+  fresher: "https://utfs.io/f/Clj1dqnLZKkyaWv9BvzoiLk2AQdWuZafvXHeBrEhSKFn7Ngz",
+  experienced:
+    "https://utfs.io/f/Clj1dqnLZKkyHgL3tfqELCqQuhUwYHrz3lnvt0fTa4y5IgsW",
+  designer:
+    "https://utfs.io/f/Clj1dqnLZKky41CMBCeRQv1SI8iXB29JT3FDwqKozgGr4Zhu",
 };
 
 const Dashboard = (props: any) => {
@@ -107,24 +109,13 @@ const Dashboard = (props: any) => {
 
         const element = realElement.cloneNode(true) as HTMLElement;
         element.style.transform = "scale(1)";
+        //@ts-ignore
+        const css = template_css_map[templateId];
 
-        const cssResponse = await fetch(
-          `/api/resume/getTemplate?templateName=${templateId}`,
-        );
-        console.log("cssResponse", cssResponse);
-        console.log("ReSUME ID", resumeId);
-        if (!cssResponse.ok) throw new Error("Failed to fetch CSS URL");
-        const { url: cssUrl } = await cssResponse.json();
-
-        // Fetch the actual CSS content
-        const cssContentResponse = await fetch(cssUrl);
-        if (!cssContentResponse.ok)
-          throw new Error("Failed to fetch CSS content");
-        const cssContent = await cssContentResponse.text();
-        const styleTag = `<style>${cssContent}</style>`;
+        const cssContent = `<link href=${css} rel='stylesheet'/>`;
 
         const fontLink = `<link href='https://fonts.googleapis.com/css?family=Inter' rel='stylesheet'/>`;
-        const htmlContent = styleTag + fontLink + element.outerHTML;
+        const htmlContent = cssContent + fontLink + element.outerHTML;
 
         const response = await fetch("/api/generate-pdf", {
           method: "POST",
