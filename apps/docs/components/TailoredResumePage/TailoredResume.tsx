@@ -118,14 +118,20 @@ const TailoredResumePage: React.FC = () => {
         element.style.transform = "scale(1)";
         const resumeId = searchParams.get("id");
 
-        const templateName =
-          TEMPLATE_NAME_MAPPING[
-            resumeData.templateId as keyof typeof TEMPLATE_NAME_MAPPING
-          ];
+        const cssResponse = await fetch(
+          `/api/resume/getTemplate?templateName=${resumeData.templateId}`,
+        );
+        if (!cssResponse.ok) throw new Error("Failed to fetch CSS URL");
+        const { url: cssUrl } = await cssResponse.json();
 
-        const cssLink = `<link rel="stylesheet" href="${process.env.NEXT_PUBLIC_BASE_URL}/${templateName}.css">`;
+        // Fetch the actual CSS content
+        const cssContentResponse = await fetch(cssUrl);
+        if (!cssContentResponse.ok)
+          throw new Error("Failed to fetch CSS content");
+        const cssContent = await cssContentResponse.text();
+        const styleTag = `<style>${cssContent}</style>`;
         const fontLink = `<link href='https://fonts.googleapis.com/css?family=Inter' rel='stylesheet'/>`;
-        const htmlContent = cssLink + fontLink + element.outerHTML;
+        const htmlContent = styleTag + fontLink + element.outerHTML;
 
         const response = await fetch("/api/generate-pdf", {
           method: "POST",

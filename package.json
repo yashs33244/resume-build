@@ -58,6 +58,7 @@
     "@types/html-to-text": "^9.0.4",
     "@types/react-alice-carousel": "^1.15.3",
     "@types/wkhtmltopdf": "^0.3.9",
+    "@uploadthing/react": "^7.1.1",
     "ai": "^3.3.0",
     "date-fns": "^4.1.0",
     "dayjs": "^1.11.13",
@@ -74,6 +75,7 @@
     "react-to-pdf": "^1.0.1",
     "react-tooltip": "^5.28.0",
     "sass": "^1.77.8",
-    "typewriter-effect": "^2.21.0"
+    "typewriter-effect": "^2.21.0",
+    "uploadthing": "^7.3.0"
   }
 }
