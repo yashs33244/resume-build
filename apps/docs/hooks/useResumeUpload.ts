@@ -34,13 +34,6 @@ export const useResumeUpload = ({ onUploadSuccess }: UseResumeUploadProps) => {
     return Array.from(new Set(skills.filter((skill) => skill.trim())));
   };
 
-  const formatBulletPoints = (points: string[]) => {
-    return points.map((point) => {
-      const trimmedPoint = point.trim();
-      const withoutArticles = trimmedPoint.replace(/^(the|a|an)\s+/i, '');
-      return withoutArticles.charAt(0).toUpperCase() + withoutArticles.slice(1);
-    });
-  };
 
   const handleFileUpload = async (file: File) => {
     if (file) {
@@ -95,7 +88,7 @@ export const useResumeUpload = ({ onUploadSuccess }: UseResumeUploadProps) => {
             role: exp.role || '',
             start: exp.start || '',
             end: exp.end || '',
-            responsibilities: formatBulletPoints(exp.responsibilities || []),
+            responsibilities: exp.responsibilities || [],
             current: exp.current || false,
           })) || [],
           
@@ -110,7 +103,7 @@ export const useResumeUpload = ({ onUploadSuccess }: UseResumeUploadProps) => {
             link: proj.link || '',
             start: proj.start || '',
             end: proj.end || '',
-            responsibilities: formatBulletPoints(proj.responsibilities || []),
+            responsibilities: proj.responsibilities || [],
           })) || [],
           certificates: parsedData.certificates?.map((cert: any) => ({
             name: cert.name || '',
