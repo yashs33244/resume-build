@@ -92,7 +92,7 @@ const Dashboard = (props: any) => {
   const handleDownload = useCallback(
     async (resumeId: string, templateId: string) => {
       if (!isPaid) {
-        alert("Please upgrade to premium to download resumes");
+        router.push("/select-templates/checkout");
         return;
       }
 
@@ -262,9 +262,8 @@ const Dashboard = (props: any) => {
                       </div>
                     </Link>
                     <div
-                      className={`download ${!isPaid || downloadingId === resume.resumeId ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}`}
+                      className={`download ${!isPaid || downloadingId === resume.resumeId ? "opacity-50" : "cursor-pointer"}`}
                       onClick={() =>
-                        isPaid &&
                         downloadingId !== resume.resumeId &&
                         handleDownload(resume.resumeId, resume.templateId)
                       }

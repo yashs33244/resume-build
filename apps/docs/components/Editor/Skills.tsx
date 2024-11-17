@@ -42,7 +42,7 @@ export const Skills: React.FC<SkillsProps> = ({
     async (role: string) => {
       setIsLoading(true);
       try {
-        const prompt = `Based on the following resume information, suggest 5 relevant skills for a ${role} position:
+        const prompt = `Based on the following resume information, suggest 6 relevant skills, tools or technologies for a ${role} position:
 
         Education: ${resumeData.education
           .map((edu) => `${edu.degree} from ${edu.institution}`)
@@ -53,7 +53,7 @@ export const Skills: React.FC<SkillsProps> = ({
         Current Skills: ${resumeData.skills.join(", ")}
         Bio: ${resumeData.personalInfo?.bio ?? ""}
 
-        Please provide 5 skill suggestions, each on a new line.`;
+        Provide 6 skill, tools or technologies suggestions, each on a new line. Treat each list item as one skill, tool or technology `;
 
         const response = await fetch("/api/generate/skills", {
           method: "POST",
@@ -211,7 +211,13 @@ export const Skills: React.FC<SkillsProps> = ({
           Recommended for your role
         </div>
 
-        {resumeData?.personalInfo?.title ? renderAISuggestedSkills() : <div className="reco-fallback">Enter job title to get required skills for your resume..</div>}
+        {resumeData?.personalInfo?.title ? (
+          renderAISuggestedSkills()
+        ) : (
+          <div className="reco-fallback">
+            Enter job title to get required skills for your resume..
+          </div>
+        )}
       </div>
       {isLoading && <div>Loading suggestions...</div>}
     </div>

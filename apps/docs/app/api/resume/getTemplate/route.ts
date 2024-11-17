@@ -30,7 +30,7 @@ export async function GET(request: Request) {
     console.log("File URLs response:", fileUrls);
 
     // Accessing the data property correctly
-    if (!fileUrls || !fileUrls.data || fileUrls.data.length === 0 || !fileUrls.data[0].url) {
+    if (!fileUrls?.data?.length || !fileUrls.data[0]?.url) {
       console.error("Invalid file URL response:", fileUrls);
       return NextResponse.json({ error: "File URL data is invalid" }, { status: 500 });
     }

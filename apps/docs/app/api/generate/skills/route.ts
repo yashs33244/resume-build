@@ -14,6 +14,10 @@ const buildGoogleGenAIPrompt = (prompt: string) => ({
   ],
 });
 
+
+
+
+
 export async function POST(req: Request) {
   try {
     const { prompt } = await req.json();

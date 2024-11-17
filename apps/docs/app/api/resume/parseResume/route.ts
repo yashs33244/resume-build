@@ -85,18 +85,8 @@ const processBulletPoint = (bullet: string): string => {
 };
 
 const prompt = `
-Parse the following resume with these props and follow these specific formatting rules:
-
-1. Skills should be categorized into two arrays:
-   - skills: General technical and soft skills
-   - coreSkills: Primary technical skills or specializations
-
-2. For experience and projects:
-   - Convert any paragraph descriptions into bullet points
-   - Each bullet point should start with an action verb
-   - Focus on achievements and quantifiable results
-   - Remove any articles (a, an, the) from the beginning of bullets
-   
+Parse the following resume with these props:
+Extract all the information as it is. Do not meddle with the data. However, follow this rule - 
 Parse into this structure:
 {
   personalInfo: {
@@ -139,10 +129,9 @@ Parse into this structure:
     issuer: string;
     issuedOn: string;
   }],
-  also add certificates array
-  give the responsibilities with bullet points
   if cgpa is not present, give it as null
 }`;
+
 
 export async function POST(request: NextRequest) {
   if (!apiKey) {
@@ -175,9 +164,10 @@ export async function POST(request: NextRequest) {
       },
       prompt
     ]);
-
+    console.log('prompt', prompt);
     const response = await result.response;
     const text = await response.text();
+    
 
     const jsonStartIndex = text.indexOf('{');
     const jsonEndIndex = text.lastIndexOf('}');
@@ -203,7 +193,7 @@ export async function POST(request: NextRequest) {
         responsibilities: Array.isArray(exp.responsibilities) 
           ? exp.responsibilities
               .filter((resp:any) => resp.trim()) // Remove empty entries
-              .map(processBulletPoint)     // Apply enhanced processing
+              .map(processBulletPoint)    // Apply enhanced processing
           : []
       })) || [],
       // Process project responsibilities with enhanced formatting
