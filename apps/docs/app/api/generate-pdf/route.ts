@@ -3,7 +3,8 @@ import { getServerSession } from 'next-auth';
 import { db } from '../../db';
 import { authOptions } from '../../lib/auth';
 import { ResumeState } from "../../../types/ResumeProps";
-import chromium from '@sparticuz/chromium';
+const chromium = require('@sparticuz/chromium');
+const puppeteer = require('puppeteer-core');
 
 // Configure chrome paths with better edge case handling
 const CHROME_PATHS = {
@@ -101,6 +102,9 @@ const configurePuppeteer = (puppeteer:any, additionalOptions = {}) => ({
 });
 
 
+
+
+
 export async function POST(request: NextRequest) {
   let browser;
   let resumeId;
@@ -145,8 +149,16 @@ export async function POST(request: NextRequest) {
           data: { state: ResumeState.DOWNLOADING },
       });
 
-      const puppeteer = await getPuppeteer();
-      browser = await puppeteer.launch();
+    const puppeteer = await getPuppeteer();
+    browser = await puppeteer.launch({
+      executablePath: await chromium.executablePath(),
+      args: chromium.args,
+      defaultViewport: chromium.defaultViewport,
+      headless: chromium.headless,
+    });
+    console.log('Resolved Chromium Path:', await chromium.executablePath());
+
+    
 
       const page = await browser.newPage();
       await page.setViewport({
