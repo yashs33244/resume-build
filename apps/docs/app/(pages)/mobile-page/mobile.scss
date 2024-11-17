@@ -9,22 +9,22 @@
         padding: 0 3rem;
 
         img {
-            width: 150px;
+            width: 120px;
         }
     }
 
     .headline {
         font-weight: 600;
-        font-size: 2.2rem;
+        font-size: 1.5rem;
         opacity: 0.8; 
-        margin-top: 4rem;
+        margin-top: 3rem;
         padding: 0 3rem;
     }
 
     .tagline {
-        font-size: 1.4rem;
+        font-size: 1rem;
         color: rgba(255,255,255,0.6);
-        margin-top: 2rem;
+        margin-top: 1.2rem;
         padding: 0 3rem;
 
         .site-link {
@@ -34,18 +34,18 @@
     }
 
     .features {
-        margin-top: 3rem;
+        margin-top: 1.8rem;
         display: flex;
         justify-content: space-between;
         padding: 0 3rem;
 
         img {
-            width: 90px;
+            width: 60px;
         }
     }
 
     .banner {
-        margin-top: 4rem;
+        margin-top: 2.5rem;
         
         img {
             width: 100%;
