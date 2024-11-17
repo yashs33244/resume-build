@@ -161,7 +161,6 @@ const Dashboard = (props: any) => {
         setResumes(updatedResumes);
       } catch (error: any) {
         console.error("Error generating PDF:", error);
-        alert(error.message || "Failed to generate PDF. Please try again.");
       } finally {
         setIsGeneratingPDF(false);
         setDownloadingId(null);
@@ -262,7 +261,7 @@ const Dashboard = (props: any) => {
                       </div>
                     </Link>
                     <div
-                      className={`download ${!isPaid || downloadingId === resume.resumeId ? "opacity-50" : "cursor-pointer"}`}
+                      className={`download ${downloadingId === resume.resumeId ? "opacity-50" : "cursor-pointer"}`}
                       onClick={() =>
                         downloadingId !== resume.resumeId &&
                         handleDownload(resume.resumeId, resume.templateId)

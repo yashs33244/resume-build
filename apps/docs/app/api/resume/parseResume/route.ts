@@ -178,6 +178,16 @@ export async function POST(request: NextRequest) {
     const jsonResponse = text.slice(jsonStartIndex, jsonEndIndex + 1);
     const parsedData = JSON.parse(jsonResponse);
 
+    const transformBullets = (responsibilities:any) => {
+      const listItems = responsibilities.map(item => `<li>${item}</li>`).join('');
+    
+      // Wrap the list items in a <ul> tag
+      const formattedResponsibilities = `<ul>${listItems}</ul>`;
+      
+      // Return the updated object with the formatted string
+      return [formattedResponsibilities];
+    }
+
     // Post-process the parsed data with enhanced bullet point processing
     const processedData = {
       ...parsedData,
@@ -191,7 +201,7 @@ export async function POST(request: NextRequest) {
       experience: parsedData.experience?.map((exp: any) => ({
         ...exp,
         responsibilities: Array.isArray(exp.responsibilities) 
-          ? exp.responsibilities
+          ? transformBullets(exp.responsibilities)
               .filter((resp:any) => resp.trim()) // Remove empty entries
               .map(processBulletPoint)    // Apply enhanced processing
           : []
@@ -200,7 +210,7 @@ export async function POST(request: NextRequest) {
       projects: parsedData.projects?.map((proj: any) => ({
         ...proj,
         responsibilities: Array.isArray(proj.responsibilities)
-          ? proj.responsibilities
+          ? transformBullets(proj.responsibilities)
               .filter((resp:any) => resp.trim()) // Remove empty entries
               .map(processBulletPoint)     // Apply enhanced processing
           : []

@@ -1,3 +1,4 @@
+
 "use client";
 import React, { useState } from "react";
 import { Label } from "@repo/ui/components/ui/label";
@@ -9,7 +10,6 @@ import { ResumeProps } from "../../types/ResumeProps";
 import "./styles/experience.scss";
 import { BsStars } from "react-icons/bs";
 import { FaTrashAlt } from "react-icons/fa";
-import { GripVertical } from "lucide-react";
 import {
   Collapsible,
   CollapsibleTrigger,
@@ -17,7 +17,6 @@ import {
 } from "@repo/ui/components/ui/collapsible";
 import loading from "../../public/loading.gif";
 import ExperienceDatePickers from "../ExperienceDatePickers";
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
 const ClientSideQuill = dynamic(() => import("react-quill"), {
   ssr: false,
@@ -44,7 +43,6 @@ interface ExperienceProps {
     field: string,
     index?: number,
   ) => void;
-  handleReorderExperiences?: (experiences: any[]) => void;
 }
 
 export const Experience: React.FC<ExperienceProps> = ({
@@ -52,7 +50,6 @@ export const Experience: React.FC<ExperienceProps> = ({
   handleInputChange,
   handleAddField,
   handleDeleteField,
-  handleReorderExperiences,
 }) => {
   const experiences = resumeData.experience || [];
   const [isLoading, setIsLoading] = useState<{ [key: number]: boolean }>({});
@@ -69,40 +66,26 @@ export const Experience: React.FC<ExperienceProps> = ({
     );
   };
 
-  const onDragEnd = (result: any) => {
-    if (!result.destination) return;
-
-    const items = Array.from(experiences);
-    const [reorderedItem] = items.splice(result.source.index, 1);
-    if (reorderedItem) {
-      items.splice(result.destination.index, 0, reorderedItem);
-    }
-
-    if (handleReorderExperiences) {
-      handleReorderExperiences(items);
-    }
-  };
-
   const aiPrompts = [
     {
       label: "Make It Better",
       value: "make_it_better",
-      prompt: `Act as a great {jobTitle} and rewrite the following in the most impactful, sharp and result-oriented manner, such that my resume should stand out. Highlight achievements and strengths. Make it glamorous, but it should be realistic. Don't lose out on any significant information and context. Use your expertise in the subject. Extrapolate mildly if necessary, but ensure it aligns with the input text. It must not feel like fake or generalized information. Give me the revamped output:\n\n{content}`,
+      prompt: `Act as a great {jobTitle} and rewrite the following in the most impactful, sharp and result-oriented manner, such that my resume should stand out. Highlight achievements and strengths. Make it glamorous, but it should be realistic. Don't lose out on any significant information and context. Use your expertise in the subject. Extrapolate mildly if necessary, but ensure it aligns with the input text and is not stretched too much in length. It must not feel like fake or generalized information. Give me the revamped output. \n\n Input : {content}`,
     },
     {
       label: "Fix Grammar",
       value: "fix_grammar",
-      prompt: `Act like a grammar expert and scrutinize the following input. Fix it end-to-end for all grammatical errors and make it professional. Use best practices and rewrite it:\n\n{content}`,
+      prompt: `Act like a grammar expert and scrutinize the following input. Fix it end-to-end for all grammatical errors but do not change the content or it's delivery. Just fix the grammar and return the output with similar structure. \n\n Input : {content}`,
     },
     {
       label: "Shorten",
       value: "shorten",
-      prompt: `Act like a great {jobTitle} and summarize the following input. Make it concise and shorten it, but don't lose out on critical and impactful information:\n\n{content}`,
+      prompt: `Act like a great {jobTitle} and summarize the following input. Make it concise and shorten it, but don't lose out on critical and impactful information. \n\n Input : {content}`,
     },
     {
       label: "Lengthen",
       value: "lengthen",
-      prompt: `Act like a great {jobTitle} and elaborate on the following input. Rewrite it in a compelling manner. Don't stretch it too much though. Use your expertise to make it relevant:\n\n{content}`,
+      prompt: `Act like a great {jobTitle} and elaborate on the following input. Rewrite it in a compelling manner. Don't stretch it too much though. Use your expertise to keep it relevant. \n\n Input : {content}`,
     },
   ];
 
@@ -145,237 +128,180 @@ export const Experience: React.FC<ExperienceProps> = ({
 
   return (
     <div className="experience-container">
-      <DragDropContext onDragEnd={onDragEnd}>
-        <Droppable droppableId="experiences">
-          {(provided) => (
-            <div
-              className="experience-list"
-              {...provided.droppableProps}
-              ref={provided.innerRef}
-            >
-              {experiences.map((exp, index) => (
-                <Draggable
-                  key={index.toString()}
-                  draggableId={index.toString()}
-                  index={index}
-                >
-                  {(provided, snapshot) => (
-                    <div
-                      ref={provided.innerRef}
-                      {...provided.draggableProps}
-                      className={`${snapshot.isDragging ? "opacity-50" : ""}`}
-                    >
-                      <Collapsible
-                        className={
-                          index === 0 ? "collapse-comp first" : "collapse-comp"
-                        }
+      <div className="experience-list">
+        {experiences.map((exp, index) => (
+          <Collapsible
+            className={index === 0 ? "collapse-comp first" : "collapse-comp"}
+            key={index}
+          >
+            <CollapsibleTrigger className="collapse-trigger">
+              <div className="exp-note">
+                <ChevronDownIcon className="h-5 w-5 transition-transform" />
+                <div className="company-details">
+                  <div className="title">
+                    {exp.company || `Enter Experience`}
+                  </div>
+                  <div className="subtitle">{exp.role ? exp.role : null}</div>
+                </div>
+              </div>
+              <div
+                className="delete-cta"
+                onClick={() => handleDeleteField("experience", "", index)}
+              >
+                <FaTrashAlt />
+              </div>
+            </CollapsibleTrigger>
+            <CollapsibleContent className="collapse-content">
+              <div className="content-container">
+                <div className="form-row">
+                  <div className="row-form-field">
+                    <Label htmlFor={`company-${index}`} className="field-label">
+                      Company Name
+                    </Label>
+                    <Input
+                      id={`company-${index}`}
+                      value={exp.company || ""}
+                      onChange={(e) =>
+                        handleInputChange(
+                          "experience",
+                          "company",
+                          e.target.value,
+                          index,
+                        )
+                      }
+                      placeholder="Amazon"
+                      className="form-input"
+                    />
+                  </div>
+                  <div className="row-form-field">
+                    <Label htmlFor={`role-${index}`} className="field-label">
+                      Designation
+                    </Label>
+                    <Input
+                      id={`role-${index}`}
+                      value={exp.role || ""}
+                      onChange={(e) =>
+                        handleInputChange(
+                          "experience",
+                          "role",
+                          e.target.value,
+                          index,
+                        )
+                      }
+                      placeholder="Product Manager"
+                      className="form-input"
+                    />
+                  </div>
+                </div>
+                <div>
+                  <div className="form-row">
+                    <ExperienceDatePickers
+                      type="experience"
+                      index={index}
+                      exp={exp}
+                      handleInputChange={handleInputChange}
+                    />
+                  </div>
+                </div>
+
+                <div className="inline-flex items-center">
+                  <label
+                    className="relative flex cursor-pointer items-center rounded-full p-3"
+                    htmlFor={`ripple-on-${index}`}
+                    data-ripple-dark="true"
+                  >
+                    <input
+                      id={`ripple-on-${index}`}
+                      type="checkbox"
+                      checked={exp.current}
+                      onChange={(e) =>
+                        handleInputChange(
+                          "experience",
+                          "current",
+                          e.target.checked,
+                          index,
+                        )
+                      }
+                      className="peer relative h-5 w-5 cursor-pointer appearance-none rounded border border-slate-300 shadow hover:shadow-md transition-all before:absolute before:top-2/4 before:left-2/4 before:block before:h-12 before:w-12 before:-translate-y-2/4 before:-translate-x-2/4 before:rounded-full before:bg-slate-400 before:opacity-0 before:transition-opacity checked:border-slate-800 checked:bg-slate-800 checked:before:bg-slate-400 hover:before:opacity-10"
+                    />
+                    <span className="pointer-events-none absolute top-2/4 left-2/4 -translate-y-2/4 -translate-x-2/4 text-white opacity-0 transition-opacity peer-checked:opacity-100">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-3.5 w-3.5"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                        stroke="currentColor"
+                        strokeWidth="1"
                       >
-                        <CollapsibleTrigger className="collapse-trigger">
-                          <div className="exp-note">
-                            <div
-                              {...provided.dragHandleProps}
-                              className="cursor-move mr-2"
-                            >
-                              <GripVertical className="h-5 w-5" />
-                            </div>
-                            <ChevronDownIcon className="h-5 w-5 transition-transform" />
-                            <div className="company-details">
-                              <div className="title">
-                                {exp.company || `Enter Experience`}
-                              </div>
-                              <div className="subtitle">
-                                {exp.role ? exp.role : null}
-                              </div>
-                            </div>
-                          </div>
-                          <div
-                            className="delete-cta"
-                            onClick={() =>
-                              handleDeleteField("experience", "", index)
-                            }
-                          >
-                            <FaTrashAlt />
-                          </div>
-                        </CollapsibleTrigger>
-                        <CollapsibleContent className="collapse-content">
-                          <div className="content-container">
-                            {/* Rest of the form content remains the same */}
-                            <div className="form-row">
-                              <div className="row-form-field">
-                                <Label
-                                  htmlFor={`company-${index}`}
-                                  className="field-label"
-                                >
-                                  Company Name
-                                </Label>
-                                <Input
-                                  id={`company-${index}`}
-                                  value={exp.company || ""}
-                                  onChange={(e) =>
-                                    handleInputChange(
-                                      "experience",
-                                      "company",
-                                      e.target.value,
-                                      index,
-                                    )
-                                  }
-                                  placeholder="Amazon"
-                                  className="form-input"
-                                />
-                              </div>
-                              <div className="row-form-field">
-                                <Label
-                                  htmlFor={`role-${index}`}
-                                  className="field-label"
-                                >
-                                  Designation
-                                </Label>
-                                <Input
-                                  id={`role-${index}`}
-                                  value={exp.role || ""}
-                                  onChange={(e) =>
-                                    handleInputChange(
-                                      "experience",
-                                      "role",
-                                      e.target.value,
-                                      index,
-                                    )
-                                  }
-                                  placeholder="Product Manager"
-                                  className="form-input"
-                                />
-                              </div>
-                            </div>
-                            <div>
-                              <div className="form-row">
-                                <ExperienceDatePickers
-                                  type="experience"
-                                  index={index}
-                                  exp={exp}
-                                  handleInputChange={handleInputChange}
-                                />
-                              </div>
-                            </div>
+                        <path
+                          fillRule="evenodd"
+                          d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                          clipRule="evenodd"
+                        ></path>
+                      </svg>
+                    </span>
+                  </label>
+                  <label
+                    className="cursor-pointer text-slate-600 text-sm"
+                    htmlFor={`ripple-on-${index}`}
+                  >
+                    Current
+                  </label>
+                </div>
 
-                            <div className="inline-flex items-center">
-                              <label
-                                className="relative flex cursor-pointer items-center rounded-full p-3"
-                                htmlFor={`ripple-on-${index}`}
-                                data-ripple-dark="true"
-                              >
-                                <input
-                                  id={`ripple-on-${index}`}
-                                  type="checkbox"
-                                  checked={exp.current}
-                                  onChange={(e) =>
-                                    handleInputChange(
-                                      "experience",
-                                      "current",
-                                      e.target.checked,
-                                      index,
-                                    )
-                                  }
-                                  className="peer relative h-5 w-5 cursor-pointer appearance-none rounded border border-slate-300 shadow hover:shadow-md transition-all before:absolute before:top-2/4 before:left-2/4 before:block before:h-12 before:w-12 before:-translate-y-2/4 before:-translate-x-2/4 before:rounded-full before:bg-slate-400 before:opacity-0 before:transition-opacity checked:border-slate-800 checked:bg-slate-800 checked:before:bg-slate-400 hover:before:opacity-10"
-                                />
-                                <span className="pointer-events-none absolute top-2/4 left-2/4 -translate-y-2/4 -translate-x-2/4 text-white opacity-0 transition-opacity peer-checked:opacity-100">
-                                  <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    className="h-3.5 w-3.5"
-                                    viewBox="0 0 20 20"
-                                    fill="currentColor"
-                                    stroke="currentColor"
-                                    strokeWidth="1"
-                                  >
-                                    <path
-                                      fillRule="evenodd"
-                                      d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                                      clipRule="evenodd"
-                                    ></path>
-                                  </svg>
-                                </span>
-                              </label>
-                              <label
-                                className="cursor-pointer text-slate-600 text-sm"
-                                htmlFor={`ripple-on-${index}`}
-                              >
-                                Current
-                              </label>
-                            </div>
-
-                            <div className="single-form-row">
-                              <div className="form-field">
-                                <Label
-                                  htmlFor={`responsibilities-${index}`}
-                                  className="field-label"
-                                >
-                                  Details
-                                </Label>
-                                <div className="text-editor-container">
-                                  <ClientSideQuill
-                                    id={`responsibilities-${index}`}
-                                    value={
-                                      exp.responsibilities?.join("\n") || ""
-                                    }
-                                    onChange={(value) =>
-                                      handleResponsibilitiesChange(value, index)
-                                    }
-                                    className="text-editor"
-                                    modules={{
-                                      toolbar: [
-                                        [
-                                          "bold",
-                                          "italic",
-                                          "underline",
-                                          "strike",
-                                        ],
-                                        [
-                                          { list: "ordered" },
-                                          { list: "bullet" },
-                                        ],
-                                        ["link"],
-                                      ],
-                                    }}
-                                  />
-                                </div>
-                              </div>
-                              <div className="ai-container flex flex-wrap items-center gap-2 mt-4">
-                                {!isLoading[index] ? (
-                                  <BsStars
-                                    style={{ width: "20px", height: "20px" }}
-                                  />
-                                ) : (
-                                  <img
-                                    src={loading.src}
-                                    alt="loading..."
-                                    style={{ width: "20px", height: "20px" }}
-                                  />
-                                )}
-                                {aiPrompts.map((prompt, promptIndex) => (
-                                  <button
-                                    key={promptIndex}
-                                    onClick={() =>
-                                      handleAiGeneration(prompt.value, index)
-                                    }
-                                    className="ai-chip px-3 py-1 bg-blue-600 text-white rounded-full text-sm hover:bg-blue-700 transition-colors duration-200 disabled:opacity-50"
-                                    disabled={isLoading[index]}
-                                  >
-                                    {prompt.label}
-                                  </button>
-                                ))}
-                              </div>
-                            </div>
-                          </div>
-                        </CollapsibleContent>
-                      </Collapsible>
+                <div className="single-form-row">
+                  <div className="form-field">
+                    <Label
+                      htmlFor={`responsibilities-${index}`}
+                      className="field-label"
+                    >
+                      Details
+                    </Label>
+                    <div className="text-editor-container">
+                      <ClientSideQuill
+                        id={`responsibilities-${index}`}
+                        value={exp.responsibilities?.join("\n") || ""}
+                        onChange={(value) =>
+                          handleResponsibilitiesChange(value, index)
+                        }
+                        className="text-editor"
+                        modules={{
+                          toolbar: [
+                            ["bold", "italic", "underline", "strike"],
+                            [{ list: "ordered" }, { list: "bullet" }],
+                            ["link"],
+                          ],
+                        }}
+                      />
                     </div>
-                  )}
-                </Draggable>
-              ))}
-              {provided.placeholder}
-            </div>
-          )}
-        </Droppable>
-      </DragDropContext>
+                  </div>
+                  <div className="ai-container flex flex-wrap items-center gap-2 mt-4">
+                    {!isLoading[index] ? (
+                      <BsStars style={{ width: "20px", height: "20px" }} />
+                    ) : (
+                      <img
+                        src={loading.src}
+                        alt="loading..."
+                        style={{ width: "20px", height: "20px" }}
+                      />
+                    )}
+                    {aiPrompts.map((prompt, promptIndex) => (
+                      <button
+                        key={promptIndex}
+                        onClick={() => handleAiGeneration(prompt.value, index)}
+                        className="ai-chip px-3 py-1 bg-blue-600 text-white rounded-full text-sm hover:bg-blue-700 transition-colors duration-200 disabled:opacity-50"
+                        disabled={isLoading[index]}
+                      >
+                        {prompt.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </CollapsibleContent>
+          </Collapsible>
+        ))}
+      </div>
       <Button
         variant="default"
         onClick={() => handleAddField("experience")}

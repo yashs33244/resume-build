@@ -110,7 +110,6 @@ const DownloadModal: React.FC<DownloadModalProps> = ({
 
   const handleTailor = useCallback(async () => {
     if (!jobDescription) {
-      alert("Please enter the job description.");
       return;
     }
     setIsTailoring(true);
