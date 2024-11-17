@@ -174,16 +174,27 @@ export default function EditPage() {
     try {
       const element = document.getElementById("wrapper");
       if (!element) throw new Error("Resume wrapper not found");
-      element.style.transform = "scale(1)";
 
-      // Add the CSS link directly in the HTML content
-      const templateName =
-        TEMPLATE_NAME_MAPPING[
-          resumeData.templateId as keyof typeof TEMPLATE_NAME_MAPPING
-        ];
+      // Get the CSS URL from our API
+      const newele = element.cloneNode(true) as HTMLElement;
+      newele.style.transform = "scale(1)";
 
-      const cssLink = `<link rel="stylesheet" href="${process.env.NEXT_PUBLIC_BASE_URL}/${templateName}.css">`;
-      const htmlContent = cssLink + element.outerHTML;
+      const cssResponse = await fetch(
+        `/api/resume/getTemplate?templateName=${resumeData.templateId}`,
+      );
+      if (!cssResponse.ok) throw new Error("Failed to fetch CSS URL");
+      const { url: cssUrl } = await cssResponse.json();
+
+      // Fetch the actual CSS content
+      const cssContentResponse = await fetch(cssUrl);
+      if (!cssContentResponse.ok)
+        throw new Error("Failed to fetch CSS content");
+      const cssContent = await cssContentResponse.text();
+      const styleTag = `<style>${cssContent}</style>`;
+
+      // Include the CSS content directly in a style tag
+
+      const htmlContent = styleTag + newele.outerHTML;
       // console.log("HTML Content", htmlContent);
 
       const response = await fetch("/api/generate-pdf", {
@@ -359,7 +370,18 @@ export default function EditPage() {
       setResumeSize("XS");
     }
   };
-
+  if (loading) {
+    return (
+      <div
+        className="fixed inset-0 flex items-center justify-center"
+        style={{
+          backgroundColor: "#121420", // Set the background color
+        }}
+      >
+        <Loader className="w-8 h-8 animate-spin" />
+      </div>
+    );
+  }
   return (
     <Suspense
       fallback={
@@ -600,13 +622,21 @@ export default function EditPage() {
                 <ChanegTemplate resumeId={resumeId} />
                 <div className="download-container cursor-pointer">
                   {session?.user ? (
-                    <div className="download" onClick={openModel}>
-                      <IoMdDownload />
-                      <div>Download</div>
+                    <div
+                      className="download"
+                      onClick={!isGeneratingPDF ? handleDownload : undefined}
+                    >
+                      {isGeneratingPDF ? (
+                        <div className="loader">Generating...</div>
+                      ) : (
+                        <>
+                          <IoMdDownload />
+                          <div>Download</div>
+                        </>
+                      )}
                     </div>
                   ) : (
                     <div className="download">
-                      {" "}
                       <Link href="/api/auth/signin">Login to download</Link>
                     </div>
                   )}
