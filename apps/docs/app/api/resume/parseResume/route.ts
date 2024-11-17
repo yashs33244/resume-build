@@ -179,7 +179,7 @@ export async function POST(request: NextRequest) {
     const parsedData = JSON.parse(jsonResponse);
 
     const transformBullets = (responsibilities:any) => {
-      const listItems = responsibilities.map(item => `<li>${item}</li>`).join('');
+      const listItems = responsibilities.map((item:any) => `<li>${item}</li>`).join('');
     
       // Wrap the list items in a <ul> tag
       const formattedResponsibilities = `<ul>${listItems}</ul>`;
