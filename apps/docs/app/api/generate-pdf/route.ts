@@ -1,136 +1,93 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
-import { db } from '../../db';
-import { authOptions } from '../../lib/auth';
-import { ResumeState } from '../../../types/ResumeProps';
+
 import puppeteer from 'puppeteer';
-import { JSDOM } from 'jsdom';
+import { authOptions } from '../../lib/auth';
+import { db } from '../../db';
+import { ResumeState } from '../../../types/ResumeProps';
 
-class HTMLConverter {
-  private static async convertToPostScript(html: string, css: string): Promise<string> {
-    const dom = new JSDOM(html);
-    const document = dom.window.document;
-    
-    // Inline the CSS
-    const style = document.createElement('style');
-    style.textContent = css;
-    document.head.appendChild(style);
-
-    // Convert to PostScript compatible format
-    const psContent = `
-      %!PS-Adobe-3.0
-      %%BeginSetup
-      /Times-Roman findfont
-      12 scalefont
-      setfont
-      %%EndSetup
-      
-      % Define text rendering
-      /drawText {
-        moveto
-        show
-      } def
-      
-      % Start content
-      ${this.generatePostScriptContent(document.body, dom.window as unknown as Window & typeof globalThis)}
-      
-      showpage
-    `;
-
-    return psContent;
+class PDFGenerator {
+  private static async launchBrowser() {
+    return puppeteer.launch({
+      headless: true,
+      executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || '/usr/bin/chromium-browser',
+      args: [
+        '--no-sandbox', 
+        '--disable-setuid-sandbox', 
+        '--disable-dev-shm-usage',
+        '--disable-gpu',
+        '--disable-software-rasterizer'
+      ]
+    });
   }
 
-  private static generatePostScriptContent(element: Element, window: Window): string {
-    let content = '';
-    
-    // Use getComputedStyle from the JSDOM window
-    const styles = (window as any).getComputedStyle(element);
-    
-    // Convert element position and styles to PostScript commands
-    if (element.textContent) {
-      const x = parseInt(styles.left) || 0;
-      const y = parseInt(styles.top) || 0;
-      content += `
-        (${element.textContent.replace(/[()]/g, '\\$&')})
-        ${x} ${y} drawText
-      `;
+  static async generatePDF(htmlContent: string): Promise<Buffer> {
+    const browser = await this.launchBrowser();
+
+    try {
+      const page = await browser.newPage();
+      
+      // Set viewport to A4 size
+      await page.setViewport({
+        width: 595,
+        height: 842,
+        deviceScaleFactor: 2
+      });
+
+      // Set content with robust loading
+      await page.setContent(htmlContent, {
+        waitUntil: ['networkidle0', 'load', 'domcontentloaded'],
+        timeout: 30000
+      });
+
+      // Inject enhanced styling
+      await page.addStyleTag({
+        content: `
+          @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap');
+          
+          * {
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+            box-sizing: border-box;
+          }
+          
+          body {
+            font-family: 'Open Sans', sans-serif !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            width: 100% !important;
+            min-height: 100vh !important;
+          }
+
+          .wrapper {
+            transform: scale(1) !important;
+            width: 100% !important;
+            min-height: 100vh !important;
+            position: relative !important;
+            overflow: hidden !important;
+          }
+        `
+      });
+
+      // Wait for fonts and rendering
+      await page.evaluateHandle('document.fonts.ready');
+
+      // Generate high-quality PDF
+      const pdfBuffer = await page.pdf({
+        preferCSSPageSize: true,
+        width: '595px', // A4 width in pixels
+        height: '842px', // A4 height in pixels
+        printBackground: true,
+        margin: { top: 0, bottom: 0, left: 0, right: 0 }, // Remove margins
+      });
+
+      return Buffer.from(pdfBuffer);
+    } catch (error) {
+      console.error('PDF Generation Error:', error);
+      throw error;
+    } finally {
+      await browser.close();
     }
-
-    // Process children
-    Array.from(element.children).forEach(child => {
-      content += this.generatePostScriptContent(child, window);
-    });
-
-    return content;
-  }
-}
-
-async function generatePDF(htmlContent: string): Promise<Buffer> {
-  const browser = await puppeteer.launch({
-    headless: true,
-    args: ['--no-sandbox', '--disable-setuid-sandbox']
-  });
-
-  try {
-    const page = await browser.newPage();
-    
-    // Set viewport to A4 size
-    await page.setViewport({
-      width: 595,
-      height: 842,
-      deviceScaleFactor: 2
-    });
-
-    // Set content and wait for everything to load
-    await page.setContent(htmlContent, {
-      waitUntil: ['networkidle0', 'load', 'domcontentloaded']
-    });
-
-    // Inject default styles
-    await page.addStyleTag({
-      content: `
-        @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap');
-        
-
-        
-        * {
-          -webkit-print-color-adjust: exact !important;
-          print-color-adjust: exact !important;
-        }
-        
-        body {
-          font-family: 'Open Sans', sans-serif !important;
-          margin: 0 !important;
-          padding: 0 !important;
-          width: 100% !important;
-          min-height: 100vh !important;
-        }
-
-        .wrapper {
-          transform: scale(1) !important;
-          width: 100% !important;
-          min-height: 100vh !important;
-          position: relative !important;
-          overflow: hidden !important;
-        }
-      `
-    });
-
-    // Wait for fonts to load
-    await page.evaluateHandle('document.fonts.ready');
-
-    // Generate PDF with high-quality settings
-    const pdfBuffer = await page.pdf({
-      preferCSSPageSize: true,
-      width: '595px', // A4 width in pixels
-      height: '842px', // A4 height in pixels
-      printBackground: true,
-      margin: { top: 0, bottom: 0, left: 0, right: 0 }, // Remove margins
-    });
-
-    return Buffer.from(pdfBuffer);
-  } finally {
-    await browser.close();
   }
 }
 
@@ -138,7 +95,7 @@ export async function POST(request: NextRequest) {
   let resumeId;
 
   try {
-    // Authentication check
+    // Authenticate session
     const session = await getServerSession(authOptions);
     if (!session?.user?.email) {
       return NextResponse.json(
@@ -147,11 +104,12 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Get request body
+    // Parse request body
     const body = await request.json();
     const { html, css, resumeId: providedResumeId } = body;
     resumeId = providedResumeId;
 
+    // Validate input
     if (!html || !resumeId) {
       return NextResponse.json(
         { error: 'Missing required fields' },
@@ -159,7 +117,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Check user and permissions
+    // Check user permissions
     const user = await db.user.findUnique({
       where: { email: session.user.email },
       select: { id: true, status: true }
@@ -179,14 +137,14 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Update resume state
+    // Update resume state to downloading
     await db.resume.update({
       where: { id: resumeId },
       data: { state: ResumeState.DOWNLOADING }
     });
 
     // Generate PDF
-    const pdfBuffer = await generatePDF(html);
+    const pdfBuffer = await PDFGenerator.generatePDF(html);
 
     // Update success state
     await db.resume.update({
@@ -208,7 +166,7 @@ export async function POST(request: NextRequest) {
   } catch (error: any) {
     console.error('PDF generation error:', error);
 
-    // Update error state
+    // Update error state if possible
     if (resumeId) {
       await db.resume.update({
         where: { id: resumeId },

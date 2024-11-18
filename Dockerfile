@@ -1,6 +1,22 @@
 # Build stage
 FROM node:18-alpine AS builder
 
+# Install system dependencies
+RUN apk add --no-cache \
+    postgresql-client \
+    chromium \
+    nss \
+    freetype \
+    freetype-dev \
+    harfbuzz \
+    ca-certificates \
+    ttf-freefont \
+    cairo \
+    pango
+
+# Set Chrome path
+ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser
+
 # Install PostgreSQL client
 RUN apk add --no-cache postgresql-client
 
@@ -21,6 +37,22 @@ RUN cd apps/docs && pnpm run build
 
 # Production stage
 FROM node:18-alpine
+
+# Install system dependencies
+RUN apk add --no-cache \
+    postgresql-client \
+    chromium \
+    nss \
+    freetype \
+    freetype-dev \
+    harfbuzz \
+    ca-certificates \
+    ttf-freefont \
+    cairo \
+    pango
+
+# Set Chrome path
+ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser
 
 # Install PostgreSQL client
 RUN apk add --no-cache postgresql-client
