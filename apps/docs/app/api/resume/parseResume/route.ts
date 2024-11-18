@@ -188,41 +188,34 @@ export async function POST(request: NextRequest) {
     const jsonResponse = text.slice(jsonStartIndex, jsonEndIndex + 1);
     const parsedData = JSON.parse(jsonResponse);
 
-    const transformBullets = (responsibilities: string[]): string => {
-      const listItems = responsibilities.map((item) => `<li>${item}</li>`).join('');
-      return `<ul>${listItems}</ul>`;
-    }
-
     // Post-process the parsed data with enhanced bullet point processing
     const processedData = {
       ...parsedData,
       userId: 'default-user-id',
       state: 'EDITING',
       templateId: 'default-template-id',
+      // Ensure skills are properly categorized
       skills: Array.isArray(parsedData.skills) ? parsedData.skills : [],
       coreSkills: Array.isArray(parsedData.coreSkills) ? parsedData.coreSkills : [],
-      experience: (parsedData.experience || []).map((exp:any) => ({
+      // Process experience responsibilities with enhanced formatting
+      experience: parsedData.experience?.map((exp: any) => ({
         ...exp,
         responsibilities: Array.isArray(exp.responsibilities) 
-          ? transformBullets(
-              exp.responsibilities
-                .filter((resp:any) => resp.trim())
-                .map(processBulletPoint)
-            ).split('</li>').filter(item => item.trim() !== '<ul>' && item.trim() !== '')
+          ? exp.responsibilities
+              .filter((resp:any) => resp.trim()) // Remove empty entries
+              .map(processBulletPoint)     // Apply enhanced processing
           : []
-      })),
-      projects: (parsedData.projects || []).map((proj:any) => ({
+      })) || [],
+      // Process project responsibilities with enhanced formatting
+      projects: parsedData.projects?.map((proj: any) => ({
         ...proj,
         responsibilities: Array.isArray(proj.responsibilities)
-          ? transformBullets(
-              proj.responsibilities
-                .filter((resp:any) => resp.trim())
-                .map(processBulletPoint)
-            ).split('</li>').filter(item => item.trim() !== '<ul>' && item.trim() !== '')
+          ? proj.responsibilities
+              .filter((resp:any) => resp.trim()) // Remove empty entries
+              .map(processBulletPoint)     // Apply enhanced processing
           : []
-      }))
+      })) || []
     };
-    
 
     return NextResponse.json(processedData);
 
