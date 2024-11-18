@@ -25,7 +25,7 @@ export const useResumeUpload = ({ onUploadSuccess }: UseResumeUploadProps) => {
       } else {
         setProgress(Math.round(start));
       }
-    }, 100);
+    }, 50);
 
     return () => clearInterval(timer);
   }, []);
@@ -52,7 +52,7 @@ export const useResumeUpload = ({ onUploadSuccess }: UseResumeUploadProps) => {
       try {
         const formData = new FormData();
         formData.append('resume', file);
-        simulateProgress(0, 40, 1500);
+        simulateProgress(0, 40, 1000);
 
         const response = await fetch('/api/resume/parseResume', {
           method: 'POST',
@@ -65,7 +65,7 @@ export const useResumeUpload = ({ onUploadSuccess }: UseResumeUploadProps) => {
 
         const parsedData = await response.json();
         setProgressPhase('parsing');
-        simulateProgress(40, 90, 2000);
+        simulateProgress(40, 90, 1500);
 
         const resumeData: ResumeProps = {
           resumeId: parsedData.resumeId || 'resume-id',
@@ -122,7 +122,7 @@ export const useResumeUpload = ({ onUploadSuccess }: UseResumeUploadProps) => {
         };
 
         setProgressPhase('complete');
-        simulateProgress(90, 100, 500);
+        simulateProgress(90, 100, 300);
         console.log('Resume data from parse:', resumeData);  
 
         localStorage.setItem('resumeDataa', JSON.stringify(resumeData));

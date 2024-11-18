@@ -151,8 +151,11 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     const timeoutPromise = new Promise<never>((_, reject) => {
       setTimeout(() => {
         reject(new Error('Resume parsing timed out'));
-      }, 10000);
+      }, 5000);  // Changed from 10000 to 5000
     });
+    
+    // Reduce generation config tokens and temperature
+    
 
     const tempDir = os.tmpdir();
     const tempPath = path.join(tempDir, file.name);
@@ -165,7 +168,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     const model = genAI.getGenerativeModel({ 
       model: "gemini-1.5-flash",
       generationConfig: {
-        maxOutputTokens: 4096,
+        maxOutputTokens: 2048,
         temperature: 0.2
       }
     });
