@@ -158,7 +158,7 @@ export default async function RootLayout({
   children: ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="en" style={{ background: "#1B2432" }}>
       <head>
         {/* LinkedIn Profile Link */}
         <link
@@ -170,6 +170,7 @@ export default async function RootLayout({
       </head>
       <body
         className={cn("min-h-screen font-sans antialiased", fontSans.variable)}
+        style={{ background: "#1B2432" }}
       >
         <Providers>
           <ConditionalHeader />
