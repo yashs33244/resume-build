@@ -3,9 +3,11 @@ import { GoogleGenerativeAI } from '@google/generative-ai';
 import { promises as fs } from 'fs';
 import path from 'path';
 import os from 'os';
+import { ResumeProps } from '../../../../types/ResumeProps';
 
 const apiKey = process.env.GOOGLE_API_KEY || '';
 const genAI = new GoogleGenerativeAI(apiKey);
+
 
 // Bullet point processing utilities
 const processActionVerb = (bullet: string): string => {
@@ -133,7 +135,7 @@ Parse into this structure:
 }`;
 
 
-export async function POST(request: NextRequest) {
+export async function POST(request: NextRequest): Promise<NextResponse> {
   if (!apiKey) {
     return NextResponse.json({ message: 'API key is not configured.' }, { status: 500 });
   }
@@ -146,6 +148,12 @@ export async function POST(request: NextRequest) {
   }
 
   try {
+    const timeoutPromise = new Promise<never>((_, reject) => {
+      setTimeout(() => {
+        reject(new Error('Resume parsing timed out'));
+      }, 25000);
+    });
+
     const tempDir = os.tmpdir();
     const tempPath = path.join(tempDir, file.name);
     const fileBuffer = await file.arrayBuffer();
@@ -154,21 +162,30 @@ export async function POST(request: NextRequest) {
     const fileContent = await fs.readFile(tempPath);
     await fs.unlink(tempPath);
 
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
-    const result = await model.generateContent([
-      {
-        inlineData: {
-          mimeType: "application/pdf",
-          data: fileContent.toString('base64')
-        }
-      },
-      prompt
+    const model = genAI.getGenerativeModel({ 
+      model: "gemini-1.5-flash",
+      generationConfig: {
+        maxOutputTokens: 4096,
+        temperature: 0.2
+      }
+    });
+
+    const result = await Promise.race([
+      model.generateContent([
+        {
+          inlineData: {
+            mimeType: "application/pdf",
+            data: fileContent.toString('base64')
+          }
+        },
+        prompt
+      ]),
+      timeoutPromise
     ]);
-    console.log('prompt', prompt);
+
     const response = await result.response;
     const text = await response.text();
     
-
     const jsonStartIndex = text.indexOf('{');
     const jsonEndIndex = text.lastIndexOf('}');
     if (jsonStartIndex === -1 || jsonEndIndex === -1) {
@@ -176,45 +193,41 @@ export async function POST(request: NextRequest) {
     }
 
     const jsonResponse = text.slice(jsonStartIndex, jsonEndIndex + 1);
-    const parsedData = JSON.parse(jsonResponse);
+    const parsedData: ResumeProps = JSON.parse(jsonResponse);
 
-    const transformBullets = (responsibilities:any) => {
-      const listItems = responsibilities.map((item:any) => `<li>${item}</li>`).join('');
-    
-      // Wrap the list items in a <ul> tag
-      const formattedResponsibilities = `<ul>${listItems}</ul>`;
-      
-      // Return the updated object with the formatted string
-      return [formattedResponsibilities];
+    const transformBullets = (responsibilities: string[]): string => {
+      const listItems = responsibilities.map((item) => `<li>${item}</li>`).join('');
+      return `<ul>${listItems}</ul>`;
     }
 
-    // Post-process the parsed data with enhanced bullet point processing
-    const processedData = {
+    const processedData: ResumeProps = {
       ...parsedData,
       userId: 'default-user-id',
+      //@ts-ignore
       state: 'EDITING',
       templateId: 'default-template-id',
-      // Ensure skills are properly categorized
       skills: Array.isArray(parsedData.skills) ? parsedData.skills : [],
       coreSkills: Array.isArray(parsedData.coreSkills) ? parsedData.coreSkills : [],
-      // Process experience responsibilities with enhanced formatting
-      experience: parsedData.experience?.map((exp: any) => ({
+      experience: (parsedData.experience || []).map((exp): any => ({
         ...exp,
         responsibilities: Array.isArray(exp.responsibilities) 
-          ? transformBullets(exp.responsibilities)
-              .filter((resp:any) => resp.trim()) // Remove empty entries
-              .map(processBulletPoint)    // Apply enhanced processing
+          ? transformBullets(
+              exp.responsibilities
+                .filter((resp) => resp.trim())
+                .map(processBulletPoint)
+            ).split('</li>').filter(item => item.trim() !== '<ul>' && item.trim() !== '')
           : []
-      })) || [],
-      // Process project responsibilities with enhanced formatting
-      projects: parsedData.projects?.map((proj: any) => ({
+      })),
+      projects: (parsedData.projects || []).map((proj): any => ({
         ...proj,
         responsibilities: Array.isArray(proj.responsibilities)
-          ? transformBullets(proj.responsibilities)
-              .filter((resp:any) => resp.trim()) // Remove empty entries
-              .map(processBulletPoint)     // Apply enhanced processing
+          ? transformBullets(
+              proj.responsibilities
+                .filter((resp) => resp.trim())
+                .map(processBulletPoint)
+            ).split('</li>').filter(item => item.trim() !== '<ul>' && item.trim() !== '')
           : []
-      })) || []
+      }))
     };
 
     return NextResponse.json(processedData);
@@ -227,4 +240,3 @@ export async function POST(request: NextRequest) {
     );
   }
 }
-
