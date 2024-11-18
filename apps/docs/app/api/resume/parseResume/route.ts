@@ -3,11 +3,9 @@ import { GoogleGenerativeAI } from '@google/generative-ai';
 import { promises as fs } from 'fs';
 import path from 'path';
 import os from 'os';
-import { ResumeProps } from '../../../../types/ResumeProps';
 
 const apiKey = process.env.GOOGLE_API_KEY || '';
 const genAI = new GoogleGenerativeAI(apiKey);
-
 
 // Bullet point processing utilities
 const processActionVerb = (bullet: string): string => {
@@ -87,8 +85,18 @@ const processBulletPoint = (bullet: string): string => {
 };
 
 const prompt = `
-Parse the following resume with these props:
-Extract all the information as it is. Do not meddle with the data. However, follow this rule - 
+Parse the following resume with these props and follow these specific formatting rules:
+
+1. Skills should be categorized into two arrays:
+   - skills: General technical and soft skills
+   - coreSkills: Primary technical skills or specializations
+
+2. For experience and projects:
+   - Convert any paragraph descriptions into bullet points
+   - Each bullet point should start with an action verb
+   - Focus on achievements and quantifiable results
+   - Remove any articles (a, an, the) from the beginning of bullets
+   
 Parse into this structure:
 {
   personalInfo: {
@@ -131,11 +139,12 @@ Parse into this structure:
     issuer: string;
     issuedOn: string;
   }],
+  also add certificates array
+  give the responsibilities with bullet points
   if cgpa is not present, give it as null
 }`;
 
-
-export async function POST(request: NextRequest): Promise<NextResponse> {
+export async function POST(request: NextRequest) {
   if (!apiKey) {
     return NextResponse.json({ message: 'API key is not configured.' }, { status: 500 });
   }
@@ -148,12 +157,6 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
   }
 
   try {
-    const timeoutPromise = new Promise<never>((_, reject) => {
-      setTimeout(() => {
-        reject(new Error('Resume parsing timed out'));
-      }, 25000);
-    });
-
     const tempDir = os.tmpdir();
     const tempPath = path.join(tempDir, file.name);
     const fileBuffer = await file.arrayBuffer();
@@ -162,30 +165,20 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     const fileContent = await fs.readFile(tempPath);
     await fs.unlink(tempPath);
 
-    const model = genAI.getGenerativeModel({ 
-      model: "gemini-1.5-flash",
-      generationConfig: {
-        maxOutputTokens: 4096,
-        temperature: 0.2
-      }
-    });
-
-    const result = await Promise.race([
-      model.generateContent([
-        {
-          inlineData: {
-            mimeType: "application/pdf",
-            data: fileContent.toString('base64')
-          }
-        },
-        prompt
-      ]),
-      timeoutPromise
+    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+    const result = await model.generateContent([
+      {
+        inlineData: {
+          mimeType: "application/pdf",
+          data: fileContent.toString('base64')
+        }
+      },
+      prompt
     ]);
 
     const response = await result.response;
     const text = await response.text();
-    
+
     const jsonStartIndex = text.indexOf('{');
     const jsonEndIndex = text.lastIndexOf('}');
     if (jsonStartIndex === -1 || jsonEndIndex === -1) {
@@ -193,42 +186,43 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     }
 
     const jsonResponse = text.slice(jsonStartIndex, jsonEndIndex + 1);
-    const parsedData: ResumeProps = JSON.parse(jsonResponse);
+    const parsedData = JSON.parse(jsonResponse);
 
     const transformBullets = (responsibilities: string[]): string => {
       const listItems = responsibilities.map((item) => `<li>${item}</li>`).join('');
       return `<ul>${listItems}</ul>`;
     }
 
-    const processedData: ResumeProps = {
+    // Post-process the parsed data with enhanced bullet point processing
+    const processedData = {
       ...parsedData,
       userId: 'default-user-id',
-      //@ts-ignore
       state: 'EDITING',
       templateId: 'default-template-id',
       skills: Array.isArray(parsedData.skills) ? parsedData.skills : [],
       coreSkills: Array.isArray(parsedData.coreSkills) ? parsedData.coreSkills : [],
-      experience: (parsedData.experience || []).map((exp): any => ({
+      experience: (parsedData.experience || []).map((exp:any) => ({
         ...exp,
         responsibilities: Array.isArray(exp.responsibilities) 
           ? transformBullets(
               exp.responsibilities
-                .filter((resp) => resp.trim())
+                .filter((resp:any) => resp.trim())
                 .map(processBulletPoint)
             ).split('</li>').filter(item => item.trim() !== '<ul>' && item.trim() !== '')
           : []
       })),
-      projects: (parsedData.projects || []).map((proj): any => ({
+      projects: (parsedData.projects || []).map((proj:any) => ({
         ...proj,
         responsibilities: Array.isArray(proj.responsibilities)
           ? transformBullets(
               proj.responsibilities
-                .filter((resp) => resp.trim())
+                .filter((resp:any) => resp.trim())
                 .map(processBulletPoint)
             ).split('</li>').filter(item => item.trim() !== '<ul>' && item.trim() !== '')
           : []
       }))
     };
+    
 
     return NextResponse.json(processedData);
 
