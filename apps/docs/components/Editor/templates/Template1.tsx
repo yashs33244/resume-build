@@ -44,12 +44,12 @@ export const Template1 = (props: any) => {
   const initials = getInitials(personalInfo?.name?.toUpperCase() || "");
 
   return (
-    <div className={`template1-wrapper ${resumeSize} wrapper`} id={id}>
+    <div className={`template1-wrapper ${resumeData.size} wrapper`} id={id}>
       <link
         rel="stylesheet"
         href="https://fonts.googleapis.com/css?family=Inter"
       />
-      <div className={`template-container M ${resumeSize}`}>
+      <div className={`template-container M ${resumeData.size}`}>
         {initials && initials.length > 0 && (
           <div className="tag">
             {initials.map((item: any, index: number) => (

@@ -9,6 +9,7 @@ interface DatabaseResume {
   state: ResumeState;
   id: string;
   userId: string;
+  size: string;
   createdAt: Date | null;
   updatedAt: Date | null;
   templateId: string;
@@ -87,6 +88,7 @@ export async function GET(req: Request) {
         state: true,
         id: true,
         userId: true,
+        size: true,
         createdAt: true,
         updatedAt: true,
         templateId: true,
@@ -120,6 +122,7 @@ export async function GET(req: Request) {
       personalInfo: resume.personalInfo,
       resumeId: resume.id,
       userId: resume.userId,
+      size: resume.size,
       createdAt: resume.createdAt?.toISOString() ?? new Date().toISOString(), // Provide default value if null
       updatedAt: resume.updatedAt?.toISOString() ?? new Date().toISOString(), // Provide default value if null
       education: resume.education ?? [],

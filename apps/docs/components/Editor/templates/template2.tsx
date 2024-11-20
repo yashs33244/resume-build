@@ -15,7 +15,7 @@ export const Template2 = (props: any) => {
   const [resumeSize, setResumeSize] = useRecoilState(resumeSizeAtom);
 
   return (
-    <div className={`template2-wrapper ${resumeSize} wrapper`} id={id}>
+    <div className={`template2-wrapper ${resumeData.size} wrapper`} id={id}>
       <link
         rel="stylesheet"
         href="https://fonts.googleapis.com/css?family=Inter"
@@ -41,7 +41,7 @@ export const Template2 = (props: any) => {
               <a href={resumeData?.personalInfo?.linkedin || "#"}>
                 {`${resumeData?.personalInfo.linkedin ? `LinkedIn` : ""}`}
               </a>
-            </div>            
+            </div>
           </div>
         </div>
         <div className={"content"}>
