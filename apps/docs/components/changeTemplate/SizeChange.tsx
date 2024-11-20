@@ -1,63 +1,54 @@
 import { useRecoilState } from "recoil";
-import { resumeSizeAtom } from "../../store/resumeSize";
-import Box from '@mui/material/Box';
-import Slider, { SliderThumb } from '@mui/material/Slider';
-import { styled } from '@mui/material/styles';
-import { useState, useEffect } from 'react';
+import {
+  getSizeValue,
+  getValueSize,
+  resumeSizeAtom,
+} from "../../store/resumeSize";
+import Box from "@mui/material/Box";
+import Slider, { SliderThumb } from "@mui/material/Slider";
+import { styled } from "@mui/material/styles";
+import { useState, useEffect } from "react";
 import "./SizeChange.scss";
+import { ResumeProps } from "../../types/ResumeProps";
 
-const sizes = [
-  {
-    value: 1,
-    label: 'XS',
-  },
-  {
-    value: 2,
-    label: 'S',
-  },
-  {
-    value: 3,
-    label: 'M',
-  },
-  {
-    value: 4,
-    label: 'L',
-  },
-  {
-    value: 5,
-    label: 'XL',
-  },
-];
+interface SizeChangeProps {
+  handleInputChange: (
+    section: keyof ResumeProps,
+    field: string,
+    value: any,
+    index?: number,
+  ) => void;
+}
 
 const AirbnbSlider = styled(Slider)(({ theme }) => ({
-  color: '#3a8589',
+  color: "#3a8589",
   height: 3,
-  padding: '13px 0',
-  '& .MuiSlider-thumb': {
+  padding: "13px 0",
+  "& .MuiSlider-thumb": {
     height: 24,
     width: 24,
-    backgroundColor: '#fafafa',
-    border: '1px solid currentColor',
-    '&:hover': {
-      boxShadow: '0 0 0 8px rgba(58, 133, 137, 0.16)',
+    backgroundColor: "#fafafa",
+    border: "1px solid currentColor",
+    "&:hover": {
+      boxShadow: "0 0 0 8px rgba(58, 133, 137, 0.16)",
     },
-    '& .airbnb-bar': {
+    "& .airbnb-bar": {
       height: 7.5,
       width: 1.5,
-      backgroundColor: 'rgba(0,0,0,0.8)',
+      backgroundColor: "rgba(0,0,0,0.8)",
       marginLeft: 1,
       marginRight: 1,
     },
   },
-  '& .MuiSlider-track': {
+  "& .MuiSlider-track": {
     height: 3,
   },
-  '& .MuiSlider-rail': {
-    color: '#d8d8d8',
+  "& .MuiSlider-rail": {
+    color: "#d8d8d8",
     opacity: 1,
     height: 3,
-    ...theme.applyStyles('dark', {
-      color: '#bfbfbf',
+    ...theme.applyStyles("dark", {
+      color: "#bfbfbf",
       opacity: undefined,
     }),
   },
@@ -77,29 +68,27 @@ function AirbnbThumbComponent(props: AirbnbThumbComponentProps) {
   );
 }
 
-export default function SizeChange(props:any) {
-
+export default function SizeChange({ handleInputChange }: SizeChangeProps) {
   const [resumeSize, setResumeSize] = useRecoilState(resumeSizeAtom);
-  const [value, setValue] = useState(3);
+  const [value, setValue] = useState(getSizeValue(resumeSize));
 
-  function valuetext(value:number) {
+  function valuetext(value: number) {
     return `${value}`;
   }
 
   const handleChange = (event: Event, newValue: number | number[]) => {
-    if (typeof newValue === 'number') {
-      const sizeObj = sizes.find((s) => s.value === newValue)
-      if(sizeObj && sizeObj.label !== resumeSize) {
-        setResumeSize(sizeObj.label);
+    if (typeof newValue === "number") {
+      const newSize = getValueSize(newValue);
+      if (newSize !== resumeSize) {
+        setResumeSize(newSize);
+        handleInputChange("size" as keyof ResumeProps, "size", newSize);
       }
     }
   };
 
   useEffect(() => {
-    const sizeObj = sizes.find((s) => s.label === resumeSize);
-    if(sizeObj && sizeObj.value) {
-      setValue(sizeObj.value);
-    }
+    setValue(getSizeValue(resumeSize));
+    console.log("Resume size changed to", resumeSize);
   }, [resumeSize]);
 
   return (
@@ -107,7 +96,7 @@ export default function SizeChange(props:any) {
       <AirbnbSlider
         aria-label="Size"
         slots={{ thumb: AirbnbThumbComponent }}
-        defaultValue={3}
+        defaultValue={getSizeValue("M")}
         getAriaValueText={valuetext}
         valueLabelDisplay="on"
         onChange={handleChange}

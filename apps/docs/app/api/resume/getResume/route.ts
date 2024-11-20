@@ -4,6 +4,7 @@ import { NextResponse } from 'next/server';
 import { db } from '../../../db';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '../../../lib/auth';
+import { size } from 'lodash';
 
 export async function GET(req: Request) {
   const session = await getServerSession(authOptions);
@@ -37,6 +38,7 @@ export async function GET(req: Request) {
         id: true, 
         createdAt: true,
         updatedAt: true,
+        size: true, 
         templateId: true,
         personalInfo: true,
         education: true,
@@ -71,6 +73,7 @@ export async function GET(req: Request) {
     const formattedResume = {
       state: resumes.state,
       resumeId: resumes.id,
+      size : resumes.size,
       createdAt: resumes.createdAt,
       updatedAt: resumes.updatedAt,
       personalInfo: resumes.personalInfo,

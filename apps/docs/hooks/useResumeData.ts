@@ -3,19 +3,53 @@ import { ResumeProps } from "../types/ResumeProps";
 import { initialResumeData } from "../utils/resumeData";
 import { useFetchResumeData } from "./useFetchResumeData";
 import _ from "lodash"; // Lodash for deep comparison
+import { ResumeSize, resumeSizeAtom } from "../store/resumeSize";
+import { useRecoilState } from "recoil";
+
+const isValidSize = (size: string): size is ResumeSize => {
+    return ['XS', 'S', 'M', 'L', 'XL'].includes(size);
+  };
 
 export const useResumeData = (onDataChange?: (resumeData: ResumeProps) => void) => {
     
     const [selectedTemplate, setSelectedTemplate] = useState<string>('fresher');
     const [isClient, setIsClient] = useState<boolean>(false);
     const [previousData, setPreviousData] = useState<ResumeProps | null>(null);
-
+    const [resumeSize, setResumeSize] = useRecoilState(resumeSizeAtom);
     const { rdata, template, loading, error, id } = useFetchResumeData();
     const [resumeData, setResumeData] = useState<ResumeProps>(rdata);
   
     useEffect(() => {
         setIsClient(true);
     }, []);
+
+    useEffect(() => {
+        if (isClient && rdata) {
+            const fetchedSize = rdata.size;
+            if (fetchedSize && isValidSize(fetchedSize)) {
+                setResumeSize(fetchedSize);
+                window.localStorage.setItem('resumeSize', fetchedSize);
+            }
+        }
+    }, [isClient, rdata]);
+
+    useEffect(() => {
+        if (isClient) {
+            if (isValidSize(resumeSize)) {
+                
+                // Update resumeData with new size
+                setResumeData(prevData => ({
+                    ...prevData,
+                    size: resumeSize
+                }));
+
+                console.log('Resume Size Updated:', resumeSize);
+            } else {
+                console.warn(`Invalid resume size: ${resumeSize}. Not saving.`);
+            }
+        }
+    }, [resumeSize, isClient]);
+
     
     // Load initial resumeData from localStorage and avoid redundant fetch
     useEffect(() => {
@@ -32,7 +66,7 @@ export const useResumeData = (onDataChange?: (resumeData: ResumeProps) => void) 
                 if (!Array.isArray(parsedData.languages)) {
                     parsedData.languages = [];
                 }
-                setResumeData(parsedData);
+                setResumeData(parsedData);  
             }
 
             if (savedTemplate) {
@@ -44,11 +78,16 @@ export const useResumeData = (onDataChange?: (resumeData: ResumeProps) => void) 
     // Only send data changes if resumeData has changed meaningfully
     useEffect(() => {
         if (isClient && !_.isEqual(previousData, resumeData)) {
+            console.log("resumeSize",resumeSize);
             setPreviousData(resumeData); // Update to current data after successful change
             window.localStorage.setItem('resumeData', JSON.stringify(resumeData));
             onDataChange?.(resumeData);
         }
-    }, [resumeData, isClient, onDataChange, previousData]);
+    }, [resumeData, isClient, onDataChange, previousData,resumeSize]);
+
+
+    
+
 
     const handleInputChange = useCallback((
         section: keyof ResumeProps,
@@ -118,6 +157,16 @@ export const useResumeData = (onDataChange?: (resumeData: ResumeProps) => void) 
                     ...newData.achievement,
                     [field]: value,
                 } as { title: string; description: string };
+            } else if (field === "size") {
+                const newSize = value as ResumeSize;
+                if (isValidSize(newSize)) {
+                    newData.size = newSize;
+                    setResumeSize(newSize); // Update Recoil atom
+                    window.localStorage.setItem('resumeSize', newSize);
+                } else {
+                    console.warn(`Invalid size: ${newSize}. Keeping current size.`);
+                }
+                return newData;
             } else {
                 (newData as any)[field] = value;
             }

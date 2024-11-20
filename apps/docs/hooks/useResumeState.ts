@@ -44,6 +44,7 @@ export const useResumeState = (): UseResumeStateReturn => {
         const processedResumes = data.map((resume: ResumeProps) => ({
           userId: resume.userId,
           resumeId: resume.resumeId,
+          size: resume.size,  
           personalInfo: resume.personalInfo,  
           createdAt: resume.createdAt,
           updatedAt: resume.updatedAt,

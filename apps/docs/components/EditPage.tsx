@@ -32,7 +32,7 @@ import { Template2 } from "./Editor/templates/template2";
 import { Template3 } from "./Editor/templates/template3";
 import "react-responsive-modal/styles.css";
 import Link from "next/link";
-import ChanegTemplate from "./changeTemplate/ChangeTemplate";
+
 import { useRouter } from "next/navigation";
 import { ResumeProps } from "../types/ResumeProps";
 import { useSession } from "next-auth/react";
@@ -44,6 +44,7 @@ import { useFetchResumeData } from "../hooks/useFetchResumeData";
 import { useResumeDraft } from "../hooks/useResumeDraft";
 import debounce from "lodash/debounce";
 import { useUserStatus } from "../hooks/useUserStatus";
+import ChangeTemplate from "./changeTemplate/ChangeTemplate";
 
 const PersonalInfo = dynamic(
   () => import("./Editor/PersonalInfo").then((mod) => mod.PersonalInfo),
@@ -619,7 +620,10 @@ export default function EditPage() {
           <div className="preview">
             <div className="tools">
               <div className="tools-container">
-                <ChanegTemplate resumeId={resumeId} />
+                <ChangeTemplate
+                  resumeId={resumeId}
+                  handleInputChange={handleInputChange}
+                />
                 <div className="download-container cursor-pointer">
                   {session?.user ? (
                     <div
@@ -651,7 +655,7 @@ export default function EditPage() {
                 <span className="overflow_div_p1">
                   Your content is overflowing. You can optimize the content
                 </span>
-                {["M", "L", "S", "XL"].includes(resumeSize) && (
+                {["M", "L", "S", "XL", "XS"].includes(resumeSize) && (
                   <span className="overflow_div_p1">
                     &nbsp;or you can click&nbsp;
                     <span onClick={reduceSize} className="overflow_div_action">

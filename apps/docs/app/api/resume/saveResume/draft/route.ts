@@ -14,6 +14,7 @@ export async function POST(request: NextRequest) {
 
     const body = await request.json();
     const { resumeId, content } = body;
+    
 
     if (!resumeId || !content) {
       return NextResponse.json(
@@ -32,6 +33,7 @@ export async function POST(request: NextRequest) {
           userId: session.user.id,
           state: ResumeState.EDITING,
           templateId: content.templateId,
+          size: "M",
         },
       });
     } else {
@@ -40,6 +42,7 @@ export async function POST(request: NextRequest) {
         data: {
           state: resume.state === ResumeState.DOWNLOAD_SUCCESS ? ResumeState.DOWNLOAD_SUCCESS : ResumeState.EDITING,
           templateId: content.templateId,
+          size: content.size, 
           updatedAt: new Date(),
         },
       });

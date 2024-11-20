@@ -7,7 +7,20 @@ import { resumeSizeAtom } from "../../store/resumeSize";
 import SizeChange from "./SizeChange";
 import { BsGridFill } from "react-icons/bs";
 
-export default function ChangeTemplate({ resumeId }: { resumeId: string }, { resumeSize } : { resumeSize : any }) {
+interface ChangeTemplateProps {
+  resumeId: string;
+  handleInputChange: (
+    section: any,
+    field: string,
+    value: any,
+    index?: number,
+  ) => void;
+}
+
+export default function ChangeTemplate({
+  resumeId,
+  handleInputChange,
+}: ChangeTemplateProps) {
   return (
     <div className="widgets">
       <div className="change-template">
@@ -18,7 +31,7 @@ export default function ChangeTemplate({ resumeId }: { resumeId: string }, { res
           </Link>
         </div>
       </div>
-      <SizeChange resumeSize={resumeSize} />
+      <SizeChange handleInputChange={handleInputChange} />
     </div>
   );
 }

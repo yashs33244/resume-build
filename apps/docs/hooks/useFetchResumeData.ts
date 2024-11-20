@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { ResumeProps } from "../types/ResumeProps"; // Adjust import path as needed
 import { initialResumeData } from "../utils/resumeData";
+import { useRecoilState } from "recoil";
+import { resumeSizeAtom } from "../store/resumeSize";
 
 export function useFetchResumeData() {
   const [template, setTemplate] = useState<string>("");
@@ -8,6 +10,7 @@ export function useFetchResumeData() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [id, setId] = useState<string | "">("");
+  const [resumeSize, setResumeSize] = useRecoilState(resumeSizeAtom);
 
   useEffect(() => {
     const fetchResumeData = async () => {
@@ -47,6 +50,7 @@ export function useFetchResumeData() {
         
         // Set resume resumeData
         setrdata(resumeData);
+        setResumeSize(resumeData.size); 
 
         // Handle template selection
         let templateParam = resumeData.templateId;
@@ -59,6 +63,7 @@ export function useFetchResumeData() {
 
         // Set template state and save to localStorage
         setTemplate(templateParam);
+
         localStorage.setItem("selectedTemplate", templateParam);
         window.localStorage.setItem("resumeData", JSON.stringify(resumeData));
         

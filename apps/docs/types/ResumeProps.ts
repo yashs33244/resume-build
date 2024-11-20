@@ -3,6 +3,7 @@ export interface ResumeProps {
   userId: string;
   createdAt: string;
   updatedAt: string;
+  size?: string;
   personalInfo?: {
     name: string;
     title: string;

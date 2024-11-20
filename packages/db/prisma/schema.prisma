@@ -97,6 +97,7 @@ model Resume {
   state        ResumeState   @default(NOT_STARTED)
   templateId   String
   updatedAt    DateTime?     @updatedAt
+  size         String?
   createdAt    DateTime?
 }
 

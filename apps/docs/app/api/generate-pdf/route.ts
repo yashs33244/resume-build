@@ -10,7 +10,7 @@ class PDFGenerator {
   private static async launchBrowser() {
     return puppeteer.launch({
       headless: true,
-      executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || '/usr/bin/chromium-browser',
+      executablePath: '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
       args: [
         '--no-sandbox', 
         '--disable-setuid-sandbox', 
@@ -49,6 +49,10 @@ class PDFGenerator {
             -webkit-print-color-adjust: exact !important;
             print-color-adjust: exact !important;
             box-sizing: border-box;
+          }
+          a {
+            color: inherit !important;
+            text-decoration: none !important;
           }
           
           body {

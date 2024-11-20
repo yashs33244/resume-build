@@ -43,6 +43,7 @@ export async function POST(request: Request) {
         templateId: template,
         createdAt: now,
         updatedAt: null,
+        size: "M",
         education: {
           create: resumeData.education,
         },
