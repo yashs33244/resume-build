@@ -10,7 +10,7 @@ class PDFGenerator {
   private static async launchBrowser() {
     return puppeteer.launch({
       headless: true,
-      executablePath: '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
+      executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || '/usr/bin/chromium-browser',
       args: [
         '--no-sandbox', 
         '--disable-setuid-sandbox', 

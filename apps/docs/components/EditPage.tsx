@@ -87,7 +87,7 @@ export default function EditPage() {
   const [saveStatus, setSaveStatus] = useState<"saved" | "saving" | "error">(
     "saved",
   );
-  const { user, isPaid, refetchUser } = useUserStatus();
+  const { isPaid } = useUserStatus();
 
   const { data: session, status: sessionStatus } = useSession();
   const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
@@ -176,6 +176,13 @@ export default function EditPage() {
     setIsGeneratingPDF,
     resumeData: resumeData,
   });
+  // const handleNewDownload = () => {
+  //   if (!isPaid) {
+  //     router.push(`/select-templates/checkout?id=${resumeId}`);
+  //   } else {
+  //     handleDownload(resumeId, resumeData.templateId);
+  //   }
+  // };
 
   // const handleDownload = async () => {
   //   setIsGeneratingPDF(true);
@@ -630,7 +637,6 @@ export default function EditPage() {
                       onClick={
                         !isGeneratingPDF
                           ? () =>
-                              isPaid &&
                               handleDownload(resumeId, resumeData.templateId)
                           : undefined
                       }
