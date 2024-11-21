@@ -8,12 +8,15 @@ import { HiOutlineDocumentDownload } from "react-icons/hi";
 import { AiOutlineSafety } from "react-icons/ai";
 import { useUserStatus } from "../hooks/useUserStatus";
 import { useSubscription } from "../hooks/useSubscription";
+import { useFetchResumeData } from "../hooks/useFetchResumeData";
 
 export default function Checkout() {
   const [selectedPack, setSelectedPack] = useState("90");
   const { user } = useUserStatus();
+  const { rdata } = useFetchResumeData();
   const { handleSubscription, loading, error } = useSubscription({
     userId: user?.id || "",
+    resumeData: rdata,
   });
 
   const handlePackSelection = async (pack: "30" | "90") => {

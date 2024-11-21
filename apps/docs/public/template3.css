@@ -17,16 +17,16 @@
     --gap-base: 10px;
   
     /* Font-sizes and other dimensions */
-    --personalInfo-name-size: calc(var(--font-size-base) + 4px);
-    --personalInfo-role-size: calc(var(--font-size-base) - 1px);
+    --personalInfo-name-size: calc(var(--font-size-base) + 6px);
+    --personalInfo-role-size: calc(var(--font-size-base));
     --add-info-value-size: calc(var(--font-size-base) - 6px);
-    --container-header-size: calc(var(--font-size-base) - 4px);
-    --education-section-name-size: calc(var(--font-size-base) - 6px);
-    --education-section-year-size: calc(var(--font-size-base) - 8px);
+    --container-header-size: calc(var(--font-size-base) - 2px);
+    --education-section-name-size: calc(var(--font-size-base) - 4px);
+    --education-section-year-size: calc(var(--font-size-base) - 6px);
     --skill-item-size: calc(var(--font-size-base) - 6px);
     --rp-container-header-size: calc(var(--font-size-base) - 2px);
     --bio-value-size: calc(var(--font-size-base) - 6px);
-    --experience-section-name-size: calc(var(--font-size-base) - 6px);
+    --experience-section-name-size: calc(var(--font-size-base) - 4px);
     --experience-section-year-size: calc(var(--font-size-base) - 6px);
     --experience-section-work-size: calc(var(--font-size-base) - 6px);
   
@@ -155,17 +155,33 @@
   .template3-wrapper.S .lp_add_info_value {
     align-items: center;
     & svg{
-        min-width: 7px;
-        max-width: 7px;
-        height: 7px;
+        min-width: 9.5px;
+        max-width: 9.5px;
+        height: 13.3px;
+    }
+  }
+  .template3-wrapper.XS .lp_add_info_value {
+    align-items: center;
+    & svg{
+        min-width: 9.02px;
+        max-width: 9.02px;
+        height: 12.63px;
     }
   }
   .template3-wrapper.L .lp_add_info_value {
     align-items: center;
     & svg{
+        min-width: 10.5px;
+        max-width: 10.5px;
+        height:14.7px;
+    }
+  }
+  .template3-wrapper.XL .lp_add_info_value {
+    align-items: center;
+    & svg{
         min-width: 12px;
         max-width: 12px;
-        height:12px;
+        height:15.43px;
     }
   }
   
@@ -198,16 +214,17 @@
     display: flex;
     flex-direction: column;
     gap: 3px;
+    margin-top: 4px;
   }
   
   .template3-wrapper .lp_education_div_value_section_name {
     font-size: var(--education-section-name-size);
-    font-weight: 700;
+    font-weight: 600;
     line-height: normal;
   }
 
   .template3-wrapper .lp_education_div_value_section_major {
-    font-size: var(--education-section-name-size);
+    font-size: var(--education-section-year-size);
     font-weight: 500;
     line-height: normal;
   }
@@ -234,16 +251,17 @@
     display: flex;
     flex-direction: column;
     gap: 3px;
+    margin-top: 4px;
   }
   
   .template3-wrapper .lp_certificate_div_value_section_name {
     font-size: var(--education-section-name-size);
-    font-weight: 700;
+    font-weight: 600;
     line-height: normal;
   }
 
   .template3-wrapper .lp_certificate_div_value_section_major {
-    font-size: var(--education-section-name-size);
+    font-size: var(--education-section-year-size);
     font-weight: 500;
     line-height: normal;
   }
@@ -256,7 +274,8 @@
   .template3-wrapper .lp_skill_div_value {
     display: flex;
     flex-direction: column;
-    gap:4px;
+    gap:8px;
+    margin-top: 8px;
   }
   
   .template3-wrapper .lp_skill_div_value_item {
@@ -307,7 +326,7 @@
   
   .template3-wrapper .rp_experience_div_value_section_year {
     font-size: var(--experience-section-year-size);
-    line-height: normal;
+    line-height: 1.5;
   }
   
   .template3-wrapper .rp_experience_div_value_section_work {
@@ -316,6 +335,7 @@
     display: flex;
     flex-direction: column;
     gap: 5px;
+    margin-top: 5px;
   }
   
   .template3-wrapper .rp_experience_div_value_section_work ul {
@@ -351,7 +371,7 @@
 
 .template3-wrapper .rp_projerience_div_value_section_year {
   font-size: var(--experience-section-year-size);
-  line-height: normal;
+  line-height: 1.6;
 }
 
 .template3-wrapper .rp_projerience_div_value_section_work {
@@ -360,6 +380,7 @@
   display: flex;
   flex-direction: column;
   gap: 5px;
+  margin-top: 5px;
 }
 
 .template3-wrapper .rp_projerience_div_value_section_work ul {

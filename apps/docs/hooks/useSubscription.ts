@@ -1,16 +1,30 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
+import { useDownload } from './useDownload';
+import { useUserStatus } from './useUserStatus';
+import { ResumeProps } from '../types/ResumeProps';
 
 interface UseSubscriptionProps {
   userId: string;
+  resumeData: ResumeProps; 
 }
 
-export const  useSubscription = ({ userId }: UseSubscriptionProps) => {
+export const useSubscription = ({ userId, resumeData }: UseSubscriptionProps) => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const { isPaid } = useUserStatus();
+  const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
 
-  const handleSubscription = async (selectedPack: '30' | '90') => {
+  // Create the download handler using the useDownload hook outside of any async function
+  const downloadHandler = useDownload({
+    isPaid,
+    setIsGeneratingPDF,
+    resumeData: resumeData,
+  });
+
+  // Use useCallback to memoize the subscription handler
+  const handleSubscription = useCallback(async (selectedPack: '30' | '90') => {
     try {
       setLoading(true);
       setError(null);
@@ -35,14 +49,20 @@ export const  useSubscription = ({ userId }: UseSubscriptionProps) => {
         throw new Error(data.error || 'Failed to create subscription');
       }
 
-      // Redirect to dashboard on success
+      // Conditionally download if paid
+      if (response.ok) {
+        console.log('Downloading resume...'); 
+        downloadHandler(resumeData.resumeId, resumeData.templateId);
+      }
+      
       router.push('/dashboard');
+
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
     } finally {
       setLoading(false);
     }
-  };
+  }, [userId, isPaid, resumeData, router, downloadHandler]);
 
   return {
     handleSubscription,

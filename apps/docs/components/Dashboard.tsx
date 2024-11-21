@@ -37,6 +37,11 @@ const template_css_map = {
   designer:
     "https://utfs.io/f/Clj1dqnLZKky41CMBCeRQv1SI8iXB29JT3FDwqKozgGr4Zhu",
 };
+const TEMPLATE_NAME_MAPPING = {
+  fresher: "template1",
+  experienced: "template2",
+  designer: "template3",
+};
 
 const Dashboard = (props: any) => {
   const [isGeneratingPDF, setIsGeneratingPDF] =
@@ -110,12 +115,14 @@ const Dashboard = (props: any) => {
         const element = realElement.cloneNode(true) as HTMLElement;
         element.style.transform = "scale(1)";
         //@ts-ignore
-        const css = template_css_map[templateId];
-
-        const cssContent = `<link href=${css} rel='stylesheet'/>`;
+        const templateName =
+          TEMPLATE_NAME_MAPPING[
+            templateId as keyof typeof TEMPLATE_NAME_MAPPING
+          ];
+        const cssLink = `<link rel="stylesheet" href="${process.env.NEXT_PUBLIC_BASE_URL}/${templateName}.css">`;
 
         const fontLink = `<link href='https://fonts.googleapis.com/css?family=Inter' rel='stylesheet'/>`;
-        const htmlContent = cssContent + fontLink + element.outerHTML;
+        const htmlContent = cssLink + fontLink + element.outerHTML;
 
         const response = await fetch("/api/generate-pdf", {
           method: "POST",

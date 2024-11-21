@@ -14,6 +14,8 @@ import styles from "./style.module.scss";
 import { LandingLoader } from "../LandingLoader";
 import { Loader } from "lucide-react";
 import { useFetchResumeData } from "../../hooks/useFetchResumeData";
+import { useDownload } from "../../hooks/useDownload";
+import { useUserStatus } from "../../hooks/useUserStatus";
 
 const TEMPLATE_NAME_MAPPING = {
   fresher: "template1",
@@ -28,6 +30,7 @@ const TailoredResumePage: React.FC = () => {
   const resumeId = searchParams.get("id");
   const router = useRouter();
   const resumeData = rdata;
+  const { isPaid } = useUserStatus();
 
   if (!resumeId) {
     router.push("/");
@@ -90,84 +93,85 @@ const TailoredResumePage: React.FC = () => {
     [resumeData, tailoredResumeData],
   );
 
-  const handleDownload = useCallback(
-    async (data: ResumeProps) => {
-      setIsGeneratingPDF(true);
-      try {
-        // Get the specific wrapper for the resume being downloaded
-        const realElement = document.getElementById("wrapper");
-        if (!realElement) throw new Error("Resume wrapper not found");
+  const handleDownload = useDownload({
+    isPaid,
+    setIsGeneratingPDF,
+    searchParams,
+    tailoredResumeData,
+    resumeData,
+  });
 
-        // Find all wrappers and get the correct one based on the data being downloaded
-        const wrappers = document.querySelectorAll("#wrapper");
-        let targetWrapper: Element | null = null;
+  // const handleDownload = useCallback(
+  //   async (data: ResumeProps) => {
+  //     setIsGeneratingPDF(true);
+  //     try {
+  //       // Get the specific wrapper for the resume being downloaded
+  //       const realElement = document.getElementById("wrapper");
+  //       if (!realElement) throw new Error("Resume wrapper not found");
 
-        // If we're downloading tailored resume and it exists, use the second wrapper
-        if (data === tailoredResumeData && wrappers.length > 1) {
-          targetWrapper = wrappers[1] ?? null;
-        } else {
-          // Otherwise use the first wrapper (original resume)
-          targetWrapper = wrappers[0] ?? null;
-        }
+  //       // Find all wrappers and get the correct one based on the data being downloaded
+  //       const wrappers = document.querySelectorAll("#wrapper");
+  //       let targetWrapper: Element | null = null;
 
-        if (!targetWrapper) throw new Error("Target wrapper not found");
+  //       // If we're downloading tailored resume and it exists, use the second wrapper
+  //       if (data === tailoredResumeData && wrappers.length > 1) {
+  //         targetWrapper = wrappers[1] ?? null;
+  //       } else {
+  //         // Otherwise use the first wrapper (original resume)
+  //         targetWrapper = wrappers[0] ?? null;
+  //       }
 
-        // Cast element to HTMLElement after cloning
-        const element = targetWrapper.cloneNode(true) as HTMLElement;
+  //       if (!targetWrapper) throw new Error("Target wrapper not found");
 
-        element.style.transform = "scale(1)";
-        const resumeId = searchParams.get("id");
+  //       // Cast element to HTMLElement after cloning
+  //       const element = targetWrapper.cloneNode(true) as HTMLElement;
 
-        const cssResponse = await fetch(
-          `/api/resume/getTemplate?templateName=${resumeData.templateId}`,
-        );
-        if (!cssResponse.ok) throw new Error("Failed to fetch CSS URL");
-        const { url: cssUrl } = await cssResponse.json();
+  //       element.style.transform = "scale(1)";
+  //       const resumeId = searchParams.get("id");
 
-        // Fetch the actual CSS content
-        const cssContentResponse = await fetch(cssUrl);
-        if (!cssContentResponse.ok)
-          throw new Error("Failed to fetch CSS content");
-        const cssContent = await cssContentResponse.text();
-        const styleTag = `<style>${cssContent}</style>`;
-        const fontLink = `<link href='https://fonts.googleapis.com/css?family=Inter' rel='stylesheet'/>`;
-        const htmlContent = styleTag + fontLink + element.outerHTML;
+  //       const templateName =
+  //         TEMPLATE_NAME_MAPPING[
+  //           resumeData.templateId as keyof typeof TEMPLATE_NAME_MAPPING
+  //         ];
+  //       const cssLink = `<link rel="stylesheet" href="${process.env.NEXT_PUBLIC_BASE_URL}/${templateName}.css">`;
+  //       const fontLink = `<link href='https://fonts.googleapis.com/css?family=Inter' rel='stylesheet'/>`;
+  //       const htmlContent = cssLink + fontLink + element.outerHTML;
 
-        const response = await fetch("/api/generate-pdf", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            html: htmlContent,
-            resumeId: resumeId,
-            isTailored: data === tailoredResumeData,
-          }),
-        });
+  //       const response = await fetch("/api/generate-pdf", {
+  //         method: "POST",
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //         },
+  //         body: JSON.stringify({
+  //           html: htmlContent,
+  //           resumeId: resumeId,
+  //           isTailored: data === tailoredResumeData,
+  //         }),
+  //       });
 
-        if (!response.ok) throw new Error("PDF generation failed");
+  //       if (!response.ok) throw new Error("PDF generation failed");
 
-        const blob = await response.blob();
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement("a");
-        a.style.display = "none";
-        a.href = url;
-        // Add differentiation in filename for tailored resume
-        const filename =
-          data === tailoredResumeData ? "tailored-resume.pdf" : "resume.pdf";
-        a.download = filename;
-        document.body.appendChild(a);
-        a.click();
-        window.URL.revokeObjectURL(url);
-        router.push("/dashboard");
-      } catch (error) {
-        console.error("Error generating PDF:", error);
-      } finally {
-        setIsGeneratingPDF(false);
-      }
-    },
-    [setIsGeneratingPDF, resumeData, tailoredResumeData, searchParams],
-  );
+  //       const blob = await response.blob();
+  //       const url = window.URL.createObjectURL(blob);
+  //       const a = document.createElement("a");
+  //       a.style.display = "none";
+  //       a.href = url;
+  //       // Add differentiation in filename for tailored resume
+  //       const filename =
+  //         data === tailoredResumeData ? "tailored-resume.pdf" : "resume.pdf";
+  //       a.download = filename;
+  //       document.body.appendChild(a);
+  //       a.click();
+  //       window.URL.revokeObjectURL(url);
+  //       router.push("/dashboard");
+  //     } catch (error) {
+  //       console.error("Error generating PDF:", error);
+  //     } finally {
+  //       setIsGeneratingPDF(false);
+  //     }
+  //   },
+  //   [setIsGeneratingPDF, resumeData, tailoredResumeData, searchParams],
+  // );
 
   const handleTailor = useCallback(async () => {
     if (!jobDescription) {
@@ -239,7 +243,10 @@ const TailoredResumePage: React.FC = () => {
               </div>
               <button
                 className={styles.tailor_p2_head_section_heading_button}
-                onClick={() => resumeData && handleDownload(resumeData)}
+                onClick={() =>
+                  resumeData &&
+                  handleDownload(resumeData.resumeId, resumeData.templateId)
+                }
               >
                 <IoMdDownload />
                 Download
@@ -260,7 +267,11 @@ const TailoredResumePage: React.FC = () => {
               <button
                 className={styles.tailor_p2_head_section_heading_button}
                 onClick={() =>
-                  tailoredResumeData && handleDownload(tailoredResumeData)
+                  tailoredResumeData &&
+                  handleDownload(
+                    tailoredResumeData.resumeId,
+                    tailoredResumeData.templateId,
+                  )
                 }
               >
                 <IoMdDownload />

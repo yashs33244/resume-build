@@ -45,6 +45,7 @@ import { useResumeDraft } from "../hooks/useResumeDraft";
 import debounce from "lodash/debounce";
 import { useUserStatus } from "../hooks/useUserStatus";
 import ChangeTemplate from "./changeTemplate/ChangeTemplate";
+import { useDownload } from "../hooks/useDownload";
 
 const PersonalInfo = dynamic(
   () => import("./Editor/PersonalInfo").then((mod) => mod.PersonalInfo),
@@ -169,68 +170,66 @@ export default function EditPage() {
 
   const { activeSection, handleSectionChange, sections, setActiveSection } =
     useActiveSection();
+  // In edit page
+  const handleDownload = useDownload({
+    isPaid,
+    setIsGeneratingPDF,
+    resumeData: resumeData,
+  });
 
-  const handleDownload = async () => {
-    setIsGeneratingPDF(true);
-    try {
-      const element = document.getElementById("wrapper");
-      if (!element) throw new Error("Resume wrapper not found");
+  // const handleDownload = async () => {
+  //   setIsGeneratingPDF(true);
+  //   try {
+  //     const element = document.getElementById("wrapper");
+  //     if (!element) throw new Error("Resume wrapper not found");
 
-      // Get the CSS URL from our API
-      const newele = element.cloneNode(true) as HTMLElement;
-      newele.style.transform = "scale(1)";
+  //     // Get the CSS URL from our API
+  //     const newele = element.cloneNode(true) as HTMLElement;pc
+  //     newele.style.transform = "scale(1)";
 
-      const cssResponse = await fetch(
-        `/api/resume/getTemplate?templateName=${resumeData.templateId}`,
-      );
-      if (!cssResponse.ok) throw new Error("Failed to fetch CSS URL");
-      const { url: cssUrl } = await cssResponse.json();
+  //     const templateName =
+  //       TEMPLATE_NAME_MAPPING[
+  //         resumeData.templateId as keyof typeof TEMPLATE_NAME_MAPPING
+  //       ];
+  //     const cssLink = `<link rel="stylesheet" href="${process.env.NEXT_PUBLIC_BASE_URL}/${templateName}.css">`;
+  //     // Include the CSS content directly in a style tag
 
-      // Fetch the actual CSS content
-      const cssContentResponse = await fetch(cssUrl);
-      if (!cssContentResponse.ok)
-        throw new Error("Failed to fetch CSS content");
-      const cssContent = await cssContentResponse.text();
-      const styleTag = `<style>${cssContent}</style>`;
+  //     const htmlContent = cssLink + newele.outerHTML;
+  //     // console.log("HTML Content", htmlContent);
 
-      // Include the CSS content directly in a style tag
+  //     const response = await fetch("/api/generate-pdf", {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify({ html: htmlContent, resumeId: resumeId }),
+  //     });
 
-      const htmlContent = styleTag + newele.outerHTML;
-      // console.log("HTML Content", htmlContent);
+  //     if (!response.ok) throw new Error("PDF generation failed");
 
-      const response = await fetch("/api/generate-pdf", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ html: htmlContent, resumeId: resumeId }),
-      });
+  //     const blob = await response.blob();
+  //     const url = window.URL.createObjectURL(blob);
+  //     const a = document.createElement("a");
+  //     a.style.display = "none";
+  //     a.href = url;
+  //     a.download = "resume.pdf";
+  //     document.body.appendChild(a);
+  //     a.click();
+  //     window.URL.revokeObjectURL(url);
+  //   } catch (error) {
+  //     console.error("Error generating PDF:", error);
+  //   } finally {
+  //     setIsGeneratingPDF(false);
+  //   }
+  // };
 
-      if (!response.ok) throw new Error("PDF generation failed");
-
-      const blob = await response.blob();
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.style.display = "none";
-      a.href = url;
-      a.download = "resume.pdf";
-      document.body.appendChild(a);
-      a.click();
-      window.URL.revokeObjectURL(url);
-    } catch (error) {
-      console.error("Error generating PDF:", error);
-    } finally {
-      setIsGeneratingPDF(false);
-    }
-  };
-
-  const openModel = () => {
-    if (isPaid) {
-      handleDownload();
-    } else {
-      router.push("/select-templates/checkout");
-    }
-  };
+  // const openModel = () => {
+  //   if (isPaid) {
+  //     handleDownload(isPaid, setIsGeneratingPDF, resumeData);
+  //   } else {
+  //     router.push("/select-templates/checkout");
+  //   }
+  // };
 
   const closeModel = () => {
     setIsModelOpen(false);
@@ -628,7 +627,13 @@ export default function EditPage() {
                   {session?.user ? (
                     <div
                       className="download"
-                      onClick={!isGeneratingPDF ? handleDownload : undefined}
+                      onClick={
+                        !isGeneratingPDF
+                          ? () =>
+                              isPaid &&
+                              handleDownload(resumeId, resumeData.templateId)
+                          : undefined
+                      }
                     >
                       {isGeneratingPDF ? (
                         <div className="loader">Generating...</div>
