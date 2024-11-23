@@ -10,7 +10,7 @@ class PDFGenerator {
   private static async launchBrowser() {
     return puppeteer.launch({
       headless: true,
-      executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || '/usr/bin/chromium-browser',
+      executablePath: '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
       args: [
         '--no-sandbox', 
         '--disable-setuid-sandbox', 
@@ -70,6 +70,9 @@ class PDFGenerator {
             position: relative !important;
             overflow: hidden !important;
           }
+          ul {
+            margin : 0 !important;
+          }
         `
       });
 
@@ -111,6 +114,7 @@ export async function POST(request: NextRequest) {
     // Parse request body
     const body = await request.json();
     const { html, css, resumeId: providedResumeId } = body;
+    console.log('Request body:', html);
     resumeId = providedResumeId;
 
     // Validate input

@@ -1,5 +1,6 @@
 import { useCallback } from 'react';
 import { useRouter } from 'next/navigation';
+import { useSession } from 'next-auth/react';
 
 interface UseDownloadProps {
   isPaid: boolean;
@@ -19,11 +20,13 @@ const TEMPLATE_NAME_MAPPING = {
 };
 
 const TEMPLATE_CSS_MAP = {
-  fresher: "https://utfs.io/f/Clj1dqnLZKkyaWv9BvzoiLk2AQdWuZafvXHeBrEhSKFn7Ngz",
-  experienced: "https://utfs.io/f/Clj1dqnLZKkyHgL3tfqELCqQuhUwYHrz3lnvt0fTa4y5IgsW",
-  designer: "https://utfs.io/f/Clj1dqnLZKky41CMBCeRQv1SI8iXB29JT3FDwqKozgGr4Zhu",
+  fresher: "https://utfs.io/f/Clj1dqnLZKkyhoZWQGyF60iNrl5eMPZXqtkQpSRgAvCx7hTs",
+  experienced:
+    "https://utfs.io/f/Clj1dqnLZKkyHgL3tfqELCqQuhUwYHrz3lnvt0fTa4y5IgsW",
+  designer:
+    "https://utfs.io/f/Clj1dqnLZKky41CMBCeRQv1SI8iXB29JT3FDwqKozgGr4Zhu",
+  layout: "https://utfs.io/f/Clj1dqnLZKkyzeqwSthjSkdfL4v350YoTpwquWGDcysmh68z",
 };
-
 export const useDownload = ({
   isPaid,
   setIsGeneratingPDF,
@@ -42,6 +45,7 @@ export const useDownload = ({
     data?: any, 
     prevRoute?: string
   ) => {
+    const {data:session} = useSession(); 
     // Payment check for non-tailored resume pages
     if (!isPaid && !data) {
       router.push(`/select-templates/checkout?id=${resumeId}`);
@@ -93,19 +97,14 @@ export const useDownload = ({
         ];
 
       // Fetch template-specific CSS
-      const cssResponse = await fetch(templateCssUrl);
-      const cssText = await cssResponse.text();
+
 
       // Construct full HTML with inline styles
-      const styleTag = `
-        <style>
-          ${cssText}
-          /* Additional global styles */
-          body { font-family: 'Inter', sans-serif; }
-          * { margin: 0; padding: 0; box-sizing: border-box; }
-        </style>
-      `;
-
+   
+      const cssLink =  `
+        <link href='https://utfs.io/f/Clj1dqnLZKkyhoZWQGyF60iNrl5eMPZXqtkQpSRgAvCx7hTs' rel='stylesheet'/>
+        <link href='${templateCssUrl}' rel='stylesheet'/>
+      `
       const fontLink = `
         <link href='https://fonts.googleapis.com/css?family=Inter' rel='stylesheet'/>
       `;
@@ -115,7 +114,7 @@ export const useDownload = ({
         <!DOCTYPE html>
         <html lang="en">
         <head>
-          ${styleTag}
+          ${cssLink}
           ${fontLink}
         </head>
         <body>
@@ -146,8 +145,8 @@ export const useDownload = ({
       
       // Filename logic
       const filename = data === tailoredResumeData 
-        ? "finalcv_resume.pdf" 
-        : "resume.pdf";
+        ? `${session?.user?.name?.split(" ")[0] ?? "user"}_tailored_finalCV.pdf` 
+        : `${session?.user?.name?.split(" ")[0] ?? "user"}_finalCV.pdf`;
       a.download = filename;
       
       document.body.appendChild(a);

@@ -209,27 +209,27 @@
 
 .template1-wrapper .M .primary-info .summary {
     color: #707678;
-    font-size: 12px;
+    font-size: 10px;
     margin-top: 0.15rem;
 }
 
 .template1-wrapper .S .primary-info .summary {
-    font-size: 11.4px; /* 5% less than M */
+    font-size: 9.5px; /* 5% less than M */
     margin-top: 0.1425rem; /* 5% less than M */
 }
 
 .template1-wrapper .XS .primary-info .summary {
-    font-size: 10.83px; /* 5% less than S */
+    font-size: 9.02px; /* 5% less than S */
     margin-top: 0.135375rem; /* 5% less than S */
 }
 
 .template1-wrapper .L .primary-info .summary {
-    font-size: 12.6px; /* 5% more than M */
+    font-size: 10.5px; /* 5% more than M */
     margin-top: 0.1575rem; /* 5% more than M */
 }
 
 .template1-wrapper .XL .primary-info .summary {
-    font-size: 13.23px; /* 5% more than L */
+    font-size: 11.02px; /* 5% more than L */
     margin-top: 0.165375rem; /* 5% more than L */
 }
 

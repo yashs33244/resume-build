@@ -25,9 +25,11 @@ export async function GET(request: Request) {
 
     console.log("Found CSS file:", cssFile);
     console.log("Fetching file URL for key:", cssFile.key);
+    const layoutcssfile = await utapi.getFileUrls(["layout.css"]);
 
     const fileUrls = await utapi.getFileUrls([cssFile.key]);
     console.log("File URLs response:", fileUrls);
+    console.log("Layout CSS file URLs response:", layoutcssfile);
 
     // Accessing the data property correctly
     if (!fileUrls?.data?.length || !fileUrls.data[0]?.url) {

@@ -8,7 +8,7 @@ const buildGoogleGenAIPrompt = (prompt: string) => ({
     { 
       role: 'user', 
       parts: [{ 
-        text: `Please provide a short, professional response to the following prompt. The response should be in plain text, not markdown format, and should be concise and suitable for a resume or professional profile:\n\n${prompt}` 
+        text: `Please provide a short, professional response to the following prompt. The response should be in plain text, not markdown format, and should be concise and suitable for a resume or professional profile:${prompt}` 
       }] 
     }
   ],

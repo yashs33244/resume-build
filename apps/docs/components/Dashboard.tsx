@@ -21,6 +21,7 @@ import { MdLock } from "react-icons/md";
 import { Loader } from "lucide-react";
 import { useUserStatus } from "../hooks/useUserStatus";
 import { ResumeProps } from "../types/ResumeProps";
+import { useSession } from "next-auth/react";
 
 export async function getServerSideProps() {
   return {
@@ -30,19 +31,20 @@ export async function getServerSideProps() {
   };
 }
 
-const template_css_map = {
-  fresher: "https://utfs.io/f/Clj1dqnLZKkyaWv9BvzoiLk2AQdWuZafvXHeBrEhSKFn7Ngz",
-  experienced:
-    "https://utfs.io/f/Clj1dqnLZKkyHgL3tfqELCqQuhUwYHrz3lnvt0fTa4y5IgsW",
-  designer:
-    "https://utfs.io/f/Clj1dqnLZKky41CMBCeRQv1SI8iXB29JT3FDwqKozgGr4Zhu",
-};
 const TEMPLATE_NAME_MAPPING = {
   fresher: "template1",
   experienced: "template2",
   designer: "template3",
 };
 
+const TEMPLATE_CSS_MAP = {
+  fresher: "https://utfs.io/f/Clj1dqnLZKkyhoZWQGyF60iNrl5eMPZXqtkQpSRgAvCx7hTs",
+  experienced:
+    "https://utfs.io/f/Clj1dqnLZKkyHgL3tfqELCqQuhUwYHrz3lnvt0fTa4y5IgsW",
+  designer:
+    "https://utfs.io/f/Clj1dqnLZKky41CMBCeRQv1SI8iXB29JT3FDwqKozgGr4Zhu",
+  layout: "https://utfs.io/f/Clj1dqnLZKkyzeqwSthjSkdfL4v350YoTpwquWGDcysmh68z",
+};
 const Dashboard = (props: any) => {
   const [isGeneratingPDF, setIsGeneratingPDF] =
     useRecoilState(isGeneratingPDFAtom);
@@ -50,6 +52,7 @@ const Dashboard = (props: any) => {
   const router = useRouter();
   const { isPaid } = useUserStatus();
   const [downloadingId, setDownloadingId] = useState<string | null>(null);
+  const { data: session } = useSession();
 
   // Redirect first-time users with no resumes
   useEffect(() => {
@@ -119,7 +122,11 @@ const Dashboard = (props: any) => {
           TEMPLATE_NAME_MAPPING[
             templateId as keyof typeof TEMPLATE_NAME_MAPPING
           ];
-        const cssLink = `<link rel="stylesheet" href="${process.env.NEXT_PUBLIC_BASE_URL}/${templateName}.css">`;
+        const templateCssUrl =
+          TEMPLATE_CSS_MAP[templateId as keyof typeof TEMPLATE_CSS_MAP];
+        const cssLink = `<link rel="stylesheet" href="${process.env.NEXT_PUBLIC_BASE_URL}/${templateName}.css">
+                      <link href='${templateCssUrl}' rel='stylesheet'/>
+        `;
 
         const fontLink = `<link href='https://fonts.googleapis.com/css?family=Inter' rel='stylesheet'/>`;
         const htmlContent = cssLink + fontLink + element.outerHTML;
@@ -142,7 +149,7 @@ const Dashboard = (props: any) => {
         const a = document.createElement("a");
         a.style.display = "none";
         a.href = url;
-        a.download = "resume.pdf";
+        a.download = `${session?.user?.name?.split(" ")[0] ?? "user"}_finalCV.pdf`;
         document.body.appendChild(a);
         a.click();
         window.URL.revokeObjectURL(url);

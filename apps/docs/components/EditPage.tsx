@@ -145,7 +145,7 @@ export default function EditPage() {
   const debouncedSave = useCallback(
     debounce((data: ResumeProps) => {
       saveDraft(data);
-    }, 5000),
+    }, 2000),
     [saveDraft],
   );
 

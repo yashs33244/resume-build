@@ -14,11 +14,21 @@ import styles from "./style.module.scss";
 import { LandingLoader } from "../LandingLoader";
 import { Loader } from "lucide-react";
 import { useFetchResumeData } from "../../hooks/useFetchResumeData";
+import { useSession } from "next-auth/react";
 
 const TEMPLATE_NAME_MAPPING = {
   fresher: "template1",
   experienced: "template2",
   designer: "template3",
+};
+
+const TEMPLATE_CSS_MAP = {
+  fresher: "https://utfs.io/f/Clj1dqnLZKkyhoZWQGyF60iNrl5eMPZXqtkQpSRgAvCx7hTs",
+  experienced:
+    "https://utfs.io/f/Clj1dqnLZKkyHgL3tfqELCqQuhUwYHrz3lnvt0fTa4y5IgsW",
+  designer:
+    "https://utfs.io/f/Clj1dqnLZKky41CMBCeRQv1SI8iXB29JT3FDwqKozgGr4Zhu",
+  layout: "https://utfs.io/f/Clj1dqnLZKkyzeqwSthjSkdfL4v350YoTpwquWGDcysmh68z",
 };
 
 const TailoredResumePage: React.FC = () => {
@@ -32,6 +42,7 @@ const TailoredResumePage: React.FC = () => {
   if (!resumeId) {
     router.push("/");
   }
+  const { data: session } = useSession();
 
   const [jobDescription, setJobDescription] = useState("");
   const [isGeneratingPDF, setIsGeneratingPDF] =
@@ -119,20 +130,17 @@ const TailoredResumePage: React.FC = () => {
         element.style.transform = "scale(1)";
         const resumeId = searchParams.get("id");
 
-        const cssResponse = await fetch(
-          `/api/resume/getTemplate?templateName=${resumeData.templateId}`,
-        );
-        if (!cssResponse.ok) throw new Error("Failed to fetch CSS URL");
-        const { url: cssUrl } = await cssResponse.json();
-
-        // Fetch the actual CSS content
-        const cssContentResponse = await fetch(cssUrl);
-        if (!cssContentResponse.ok)
-          throw new Error("Failed to fetch CSS content");
-        const cssContent = await cssContentResponse.text();
-        const styleTag = `<style>${cssContent}</style>`;
+        const templateCssUrl =
+          TEMPLATE_CSS_MAP[
+            resumeData.templateId as keyof typeof TEMPLATE_CSS_MAP
+          ];
+        const cssLink = `
+          <link href='https://utfs.io/f/Clj1dqnLZKkyhoZWQGyF60iNrl5eMPZXqtkQpSRgAvCx7hTs' rel='stylesheet'/>
+          <link href='${templateCssUrl}' rel='stylesheet'/>
+        `;
         const fontLink = `<link href='https://fonts.googleapis.com/css?family=Inter' rel='stylesheet'/>`;
-        const htmlContent = styleTag + fontLink + element.outerHTML;
+        const htmlContent = cssLink + fontLink + element.outerHTML;
+        console.log(htmlContent);
 
         const response = await fetch("/api/generate-pdf", {
           method: "POST",
@@ -156,7 +164,9 @@ const TailoredResumePage: React.FC = () => {
         a.href = url;
         // Add differentiation in filename for tailored resume
         const filename =
-          data === tailoredResumeData ? "tailored-resume.pdf" : "resume.pdf";
+          data === tailoredResumeData
+            ? `${session?.user?.name?.split(" ")[0] ?? "user"}_tailored_finalCV.pdf`
+            : `${session?.user?.name?.split(" ")[0] ?? "user"}_finalCV.pdf`;
         a.download = filename;
         document.body.appendChild(a);
         a.click();

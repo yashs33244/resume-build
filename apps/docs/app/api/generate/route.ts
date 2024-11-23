@@ -9,7 +9,7 @@ const buildGoogleGenAIPrompt = (prompt: string) => ({
       role: 'user', 
       parts: [{ 
         text: `Give response not in readme , give a response so that it can render on react quill editor. Retain <p>, <ul>, <li> and <ol> tags wherever present to keep output consistent.
-        \n\n${prompt}` 
+        ${prompt}` 
       }] 
     }
   ],
