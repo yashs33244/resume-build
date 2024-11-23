@@ -2,9 +2,7 @@ version: '3.8'
 
 services:
   app:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: yashs3324/finalcv:latest    # Replace with your Docker Hub username
     ports:
       - "3000:3000"
     environment:
@@ -18,6 +16,7 @@ services:
       - NEXT_PUBLIC_BASE_URL=${NEXT_PUBLIC_BASE_URL}
     depends_on:
       - db
+    restart: unless-stopped    # Added for automatic restart
 
   db:
     image: postgres:13
@@ -29,6 +28,7 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    restart: unless-stopped    # Added for automatic restart
 
 volumes:
   postgres_data:

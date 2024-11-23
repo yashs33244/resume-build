@@ -18,6 +18,7 @@ export const useSubscription = ({ userId, resumeData }: UseSubscriptionProps) =>
 
   // Create the download handler using the useDownload hook outside of any async function
   const downloadHandler = useDownload({
+    session: null,
     isPaid,
     setIsGeneratingPDF,
     resumeData: resumeData,
@@ -49,11 +50,11 @@ export const useSubscription = ({ userId, resumeData }: UseSubscriptionProps) =>
         throw new Error(data.error || 'Failed to create subscription');
       }
 
-      // Conditionally download if paid
-      if (response.ok) {
-        console.log('Downloading resume...'); 
-        downloadHandler(resumeData.resumeId, resumeData.templateId);
-      }
+      // // Conditionally download if paid
+      // if (response.ok) {
+      //   console.log('Downloading resume...'); 
+      //   downloadHandler(resumeData.resumeId, resumeData.templateId);
+      // }
       
       router.push('/dashboard');
 
