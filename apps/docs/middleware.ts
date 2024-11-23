@@ -40,14 +40,7 @@ export async function middleware(request: NextRequest) {
     secret: process.env.NEXTAUTH_SECRET
   })
 
-  // Handle mobile redirects first
-  if (isMobile && !isMobileRoute && !isExcludedRoute) {
-    const url = request.nextUrl.clone()
-    url.pathname = '/mobile-page'
-    url.search = request.nextUrl.search
-    return NextResponse.redirect(url)
-  }
-
+  
   // If user is authenticated and trying to access public routes (like landing page),
   // redirect to dashboard
   if (token && PUBLIC_ROUTES.includes(pathname)) {
@@ -55,7 +48,14 @@ export async function middleware(request: NextRequest) {
     url.pathname = '/dashboard'
     return NextResponse.redirect(url)
   }
-
+  
+  // Handle mobile redirects first
+  if (isMobile && !isMobileRoute && !isExcludedRoute) {
+    const url = request.nextUrl.clone()
+    url.pathname = '/mobile-page'
+    url.search = request.nextUrl.search
+    return NextResponse.redirect(url)
+  }
   // For non-mobile devices or excluded routes, continue normally
   return NextResponse.next()
 }
