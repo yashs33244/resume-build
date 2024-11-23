@@ -89,6 +89,9 @@ importers:
       next:
         specifier: 14.2.4
         version: 14.2.4(react-dom@18.3.1)(react@18.3.1)(sass@1.78.0)
+      next-auth:
+        specifier: ^4.24.7
+        version: 4.24.7(next@14.2.4)(react-dom@18.3.1)(react@18.3.1)
       next-themes:
         specifier: ^0.3.0
         version: 0.3.0(react-dom@18.3.1)(react@18.3.1)
@@ -125,6 +128,9 @@ importers:
       react-tooltip:
         specifier: ^5.28.0
         version: 5.28.0
+      recoil:
+        specifier: ^0.7.7
+        version: 0.7.7(react-dom@18.3.1)(react@18.3.1)
       sass:
         specifier: ^1.77.8
         version: 1.78.0
@@ -136,7 +142,7 @@ importers:
         version: 2.21.0
       uploadthing:
         specifier: ^7.3.0
-        version: 7.3.0(next@14.2.4)
+        version: 7.3.0(next@14.2.4)(tailwindcss@3.4.11)
     devDependencies:
       '@repo/eslint-config':
         specifier: workspace:*
@@ -159,12 +165,18 @@ importers:
       lodash:
         specifier: ^4.17.21
         version: 4.17.21
+      postcss:
+        specifier: ^8.4.45
+        version: 8.4.45
       prettier:
         specifier: ^3.3.2
         version: 3.3.3
       puppeteer:
         specifier: ^23.3.0
         version: 23.3.0
+      tailwindcss:
+        specifier: ^3.4.11
+        version: 3.4.11
       turbo:
         specifier: latest
         version: 2.1.1
@@ -2957,7 +2969,7 @@ packages:
       '@uploadthing/shared': 7.1.1
       file-selector: 0.6.0
       next: 14.2.4(react-dom@18.3.1)(react@18.3.1)(sass@1.78.0)
-      uploadthing: 7.3.0(next@14.2.4)
+      uploadthing: 7.3.0(next@14.2.4)(tailwindcss@3.4.11)
     dev: false
 
   /@uploadthing/shared@7.1.1:
@@ -8141,7 +8153,7 @@ packages:
       picocolors: 1.1.0
     dev: true
 
-  /uploadthing@7.3.0(next@14.2.4):
+  /uploadthing@7.3.0(next@14.2.4)(tailwindcss@3.4.11):
     resolution: {integrity: sha512-ALZCOI5m5XyDD9YHCewCrhLFnELeI8xRJfJC4PvGdh9u6PcAyv851UT92JC6BLtJdgB2Fi/o9gPOXMpZkD5pSw==}
     engines: {node: '>=18.13.0'}
     peerDependencies:
@@ -8167,6 +8179,7 @@ packages:
       '@uploadthing/shared': 7.1.1
       effect: 3.10.3
       next: 14.2.4(react-dom@18.3.1)(react@18.3.1)(sass@1.78.0)
+      tailwindcss: 3.4.11
     dev: false
 
   /uri-js@4.4.1:
