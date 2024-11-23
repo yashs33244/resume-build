@@ -3,6 +3,7 @@ import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 
 interface UseDownloadProps {
+  session: any;
   isPaid: boolean;
   setIsGeneratingPDF: (value: boolean) => void;
   resumes?: any[];
@@ -28,6 +29,7 @@ const TEMPLATE_CSS_MAP = {
   layout: "https://utfs.io/f/Clj1dqnLZKkyzeqwSthjSkdfL4v350YoTpwquWGDcysmh68z",
 };
 export const useDownload = ({
+  session,
   isPaid,
   setIsGeneratingPDF,
   resumes,
@@ -45,7 +47,6 @@ export const useDownload = ({
     data?: any, 
     prevRoute?: string
   ) => {
-    const {data:session} = useSession(); 
     // Payment check for non-tailored resume pages
     if (!isPaid && !data) {
       router.push(`/select-templates/checkout?id=${resumeId}`);
@@ -144,9 +145,7 @@ export const useDownload = ({
       a.href = url;
       
       // Filename logic
-      const filename = data === tailoredResumeData 
-        ? `${session?.user?.name?.split(" ")[0] ?? "user"}_tailored_finalCV.pdf` 
-        : `${session?.user?.name?.split(" ")[0] ?? "user"}_finalCV.pdf`;
+      const filename = `${session?.user?.name?.split(" ")[0] ?? "user"}_finalCV.pdf`;
       a.download = filename;
       
       document.body.appendChild(a);

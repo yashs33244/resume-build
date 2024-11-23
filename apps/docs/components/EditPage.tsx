@@ -172,6 +172,7 @@ export default function EditPage() {
     useActiveSection();
   // In edit page
   const handleDownload = useDownload({
+    session: session,
     isPaid,
     setIsGeneratingPDF,
     resumeData: resumeData,
