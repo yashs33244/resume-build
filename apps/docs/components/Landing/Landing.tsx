@@ -108,7 +108,9 @@ export default function LandingPage() {
     }
   };
   const { user, sessionData } = useProfileSession();
-
+  if (!user) {
+    router.push("/dashboard");
+  }
   // Handle post-login redirect
   useEffect(() => {
     const template = searchParams.get("template");
