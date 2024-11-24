@@ -1,5 +1,5 @@
 # Build stage
-FROM --platform=linux/arm64 node:18-alpine AS builder
+FROM node:18-alpine AS builder
 
 # Install system dependencies
 RUN apk add --no-cache \
@@ -16,6 +16,9 @@ RUN apk add --no-cache \
 
 # Set Chrome path
 ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser
+
+# Install PostgreSQL client
+RUN apk add --no-cache postgresql-client
 
 WORKDIR /app
 
@@ -26,14 +29,13 @@ COPY . .
 RUN npm install -g pnpm
 RUN pnpm install
 
-# Generate Prisma client
-RUN cd packages/db && pnpm prisma generate
+
 
 # Build the application
 RUN cd apps/docs && pnpm run build
 
 # Production stage
-FROM --platform=linux/arm64 node:18-alpine
+FROM node:18-alpine
 
 # Install system dependencies
 RUN apk add --no-cache \
@@ -49,7 +51,10 @@ RUN apk add --no-cache \
     pango
 
 # Set Chrome path
-ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser
+ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium
+
+# Install PostgreSQL client
+RUN apk add --no-cache postgresql-client
 
 WORKDIR /app
 
