@@ -110,7 +110,7 @@ export default function CreatePreference() {
     const fakeProgress = { current: 0 };
     const progressInterval = setInterval(() => {
       fakeProgress.current += 2;
-      if (fakeProgress.current >= 100) {
+      if (fakeProgress.current >= 99) {
         clearInterval(progressInterval);
         handleUploadSuccess(emptyResumeData);
       }
@@ -121,7 +121,6 @@ export default function CreatePreference() {
     onDrop,
     accept: {
       "application/pdf": [".pdf"],
-      "image/*": [".png", ".jpg", ".jpeg"],
     },
     multiple: false,
     disabled: isLoading || isProcessing || selectedOption !== null,

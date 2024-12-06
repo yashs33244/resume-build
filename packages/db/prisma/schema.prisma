@@ -124,7 +124,7 @@ model Education {
   start       String
   end         String
   degree      String
-  score       Float?
+  score       String?
 }
 
 model Experience {

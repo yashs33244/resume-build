@@ -3,6 +3,7 @@ import { GoogleGenerativeAI } from '@google/generative-ai';
 
 const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY || '');
 import { ResumeProps } from '../../../../types/ResumeProps';
+import { ResumeState } from '@prisma/client';
 
 const buildTailorResumePrompt = (jobDescription: string, sectionName: string, sectionContent: any) => ({
   contents: [
@@ -93,16 +94,33 @@ export async function POST(req: Request) {
 
     const tailoredResume: ResumeProps = Object.fromEntries(tailoredSections) as ResumeProps;
 
-    // Ensure all required fields are present
-    const requiredFields: (keyof ResumeProps)[] = ['userId', 'personalInfo', 'education', 'experience', 'skills', 'coreSkills'];
-    for (const field of requiredFields) {
-      if (!(field in tailoredResume)) {
-        //@ts-ignore
-        tailoredResume[field] = resumeData[field];
-      }
-    }
+    // Ensure all required fields are present with default or original values
+    const defaultResume: Partial<ResumeProps> = {
+      resumeId: resumeData.resumeId || crypto.randomUUID(), // Generate if not present
+      userId: resumeData.userId,
+      createdAt: resumeData.createdAt || new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      size: resumeData.size || 'medium',
+      state: resumeData.state || ResumeState.EDITING,
+      templateId: resumeData.templateId || 'default-template',
+      personalInfo: resumeData.personalInfo || null,
+      languages: resumeData.languages || [],
+      achievement: resumeData.achievement || null,
+      projects: resumeData.projects || [],
+      certificates: resumeData.certificates || []
+    };
 
-    return NextResponse.json(tailoredResume, { status: 200 });
+    // Merge the tailored resume with default values
+    const finalResume: ResumeProps = {
+      ...defaultResume,
+      ...tailoredResume,
+      education: tailoredResume.education || resumeData.education,
+      experience: tailoredResume.experience || resumeData.experience,
+      skills: tailoredResume.skills || resumeData.skills,
+      coreSkills: tailoredResume.coreSkills || resumeData.coreSkills
+    } as ResumeProps;
+
+    return NextResponse.json(finalResume, { status: 200 });
   } catch (error) {
     console.error('Error tailoring resume:', error);
     return NextResponse.json({ 

@@ -29,7 +29,7 @@ interface DatabaseResume {
     start: string;
     end: string;
     degree: string;
-    score: number;
+    score: string | null;
   }>;
   experience: Array<{
     company: string;
@@ -125,7 +125,10 @@ export async function GET(req: Request) {
       size: resume.size,
       createdAt: resume.createdAt?.toISOString() ?? new Date().toISOString(), // Provide default value if null
       updatedAt: resume.updatedAt?.toISOString() ?? new Date().toISOString(), // Provide default value if null
-      education: resume.education ?? [],
+      education: resume.education.map(edu => ({
+        ...edu,
+        score: edu.score !== null ? edu.score : '',
+      })) ?? [],
       experience: resume.experience ?? [],
       skills: resume.skills?.map(skill => skill.name) ?? [],
       coreSkills: resume.coreSkills?.map(skill => skill.name),

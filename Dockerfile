@@ -24,12 +24,11 @@ WORKDIR /app
 
 # Copy the entire project
 COPY . .
-
 # Install dependencies
 RUN npm install -g pnpm
 RUN pnpm install
 
-
+RUN cd packages/db && pnpm prisma generate
 
 # Build the application
 RUN cd apps/docs && pnpm run build

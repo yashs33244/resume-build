@@ -15,6 +15,7 @@ import { LandingLoader } from "../LandingLoader";
 import { Loader } from "lucide-react";
 import { useFetchResumeData } from "../../hooks/useFetchResumeData";
 import { useSession } from "next-auth/react";
+import { initialResumeData } from "../../utils/resumeData";
 
 const TEMPLATE_NAME_MAPPING = {
   fresher: "template1",
@@ -50,7 +51,7 @@ const TailoredResumePage: React.FC = () => {
   const [isTailored, setIsTailored] = useState(false);
   const [resumeTimes, setResumeTimes] = useRecoilState(resumeTimeAtom);
   const [tailoredResumeData, setTailoredResumeData] =
-    useState<ResumeProps | null>(null);
+    useState<ResumeProps>(initialResumeData);
   const [showComparison, setShowComparison] = useState(false);
   const [isTailoring, setIsTailoring] = useState(false);
 
@@ -175,6 +176,7 @@ const TailoredResumePage: React.FC = () => {
       } catch (error) {
         console.error("Error generating PDF:", error);
       } finally {
+        setIsTailored(false);
         setIsGeneratingPDF(false);
       }
     },
@@ -193,7 +195,12 @@ const TailoredResumePage: React.FC = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ jobDescription, resumeData }),
+        body: JSON.stringify({
+          jobDescription,
+          resumeData: {
+            ...resumeData,
+          },
+        }),
       });
 
       if (!response.ok) {
@@ -204,13 +211,24 @@ const TailoredResumePage: React.FC = () => {
 
       const tailoredData: ResumeProps = await response.json();
 
+      // // Additional check to ensure education is not undefined
+      // if (!tailoredData.education) {
+      //   tailoredData.education = resumeData.education || [];
+      // }
+
+      // Ensure other critical sections are not undefined
+      tailoredData.experience = tailoredData.experience || [];
+      tailoredData.skills = tailoredData.skills || [];
+      tailoredData.coreSkills = tailoredData.coreSkills || [];
+
       if (JSON.stringify(tailoredData) === JSON.stringify(resumeData)) {
         throw new Error("Tailored resume is identical to the original.");
       }
-
+      console.log(tailoredData);
       setTailoredResumeData(tailoredData);
+
+      console.log(tailoredResumeData);
       setShowComparison(true);
-      // console.log("Tailored resume data:", tailoredResumeData);
     } catch (error: any) {
       alert(
         error.message ||
@@ -219,11 +237,11 @@ const TailoredResumePage: React.FC = () => {
     } finally {
       setIsTailoring(false);
     }
-  }, [jobDescription, resumeData, tailoredResumeData]);
+  }, [jobDescription, resumeData]);
 
-  const handleBackToEdit = useCallback(() => {
+  const handleBackToEdit = useCallback((newdata: ResumeProps) => {
     setShowComparison(false);
-    setTailoredResumeData(null);
+    setTailoredResumeData(newdata);
   }, []);
 
   return (

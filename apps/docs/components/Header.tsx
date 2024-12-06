@@ -28,6 +28,14 @@ export default function Header() {
     });
   };
 
+  useEffect(() => {
+    if (!user) {
+      router.push("/");
+    } else {
+      router.push("/dashboard");
+    }
+  }, [user]);
+
   return (
     <div className="header-container">
       <div className="logo-container">
@@ -56,7 +64,10 @@ export default function Header() {
           <div className="login-cta">
             <Link href="/api/auth/signin">Login</Link>
           </div>
-          <div className="create-cta" onClick={() => router.push('/api/auth/signin')}>
+          <div
+            className="create-cta"
+            onClick={() => router.push("/api/auth/signin")}
+          >
             <Link href={"/api/auth/signin"}>Create Resume</Link>
           </div>
         </div>

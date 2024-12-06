@@ -181,7 +181,7 @@ export const useResumeData = (onDataChange?: (resumeData: ResumeProps) => void) 
             if (section === "education") {
                 newData.education = [
                     ...(prevData.education || []),
-                    { institution: "", start: "", end: "", degree: "", major: "", score: 0 },
+                    { institution: "", start: "", end: "", degree: "", major: "", score: "" },
                 ];
             } else if (section === "experience") {
                 newData.experience = [

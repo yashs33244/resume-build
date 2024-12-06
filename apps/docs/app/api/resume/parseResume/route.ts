@@ -107,7 +107,7 @@ Parse into this structure:
     start: string;
     end: string;
     degree: string;
-    score: number;
+    score: string;
   }],
   experience: [{
     company: string;
