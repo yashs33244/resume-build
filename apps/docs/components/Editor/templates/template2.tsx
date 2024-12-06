@@ -5,6 +5,9 @@ import "./template2.css";
 import DOMPurify from "dompurify";
 import { useRecoilState } from "recoil";
 import { resumeSizeAtom } from "../../../store/resumeSize";
+import { IoMail } from "react-icons/io5";
+import { FaPhoneAlt } from "react-icons/fa";
+import { FaLinkedin } from "react-icons/fa";
 import { IoIosLink } from "react-icons/io";
 import { getDuration } from "../../../utils";
 
@@ -32,12 +35,15 @@ export const Template2 = (props: any) => {
           </div>
           <div className={"header_right_part"}>
             <div className={"header_right_part_url"}>
+              <IoMail />
               {resumeData?.personalInfo?.email || "Email"}
             </div>
             <div className={"header_right_part_email"}>
+              <FaPhoneAlt />
               {resumeData?.personalInfo?.phone || "Contact Number"}
             </div>
             <div className={"header_right_part_phone"}>
+              <FaLinkedin />
               <a href={resumeData?.personalInfo?.linkedin || "#"}>
                 {`${resumeData?.personalInfo.linkedin ? `LinkedIn` : ""}`}
               </a>

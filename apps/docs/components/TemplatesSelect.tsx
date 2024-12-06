@@ -41,13 +41,13 @@ const TemplatesSelect = () => {
       }
     >
       <div className="template-select-container">
-        <div className="container-title">Select your final CV template</div>
+        <div className="container-title">Select your template</div>
         <div className="templates-wrapper">
           <div className="template" onMouseOver={() => setActiveTemplate(1)}>
             <div
               className={`template-name ${activeTemplate === 1 ? "selected" : ""}`}
             >
-              Fresher
+              Professional
             </div>
             <Image
               src={template1}
@@ -64,7 +64,7 @@ const TemplatesSelect = () => {
                 : "Select Template"}
             </button>
             <div className="template-desc">
-              Ideal for young professionals with 0 to 3 years experience
+              Goold old fashioned classic template
             </div>
           </div>
 
@@ -72,7 +72,7 @@ const TemplatesSelect = () => {
             <div
               className={`template-name ${activeTemplate === 2 ? "selected" : ""}`}
             >
-              Experienced
+              Minimal
             </div>
             <Image
               src={template2}
@@ -89,7 +89,7 @@ const TemplatesSelect = () => {
                 : "Select Template"}
             </button>
             <div className="template-desc">
-              Perfect if you have 3+ work experiences to write about
+              Clean spacious layout with excellent readability
             </div>
           </div>
 
@@ -97,7 +97,7 @@ const TemplatesSelect = () => {
             <div
               className={`template-name ${activeTemplate === 3 ? "selected" : ""}`}
             >
-              Designer
+              Modern
             </div>
             <Image
               src={template3}
@@ -114,13 +114,13 @@ const TemplatesSelect = () => {
                 : "Select Template"}
             </button>
             <div className="template-desc">
-              Stand out in manual screening by hiring managers or recruiters
+              Efficient template for detailed content
             </div>
           </div>
         </div>
-        <div className="logo-wrapper">
+        {/* <div className="logo-wrapper">
           <Image src={logo} alt="logo" />
-        </div>
+        </div> */}
       </div>
     </Suspense>
   );

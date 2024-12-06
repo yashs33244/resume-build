@@ -176,71 +176,17 @@
                 }
             }
         }
-
-        // .second-resume {
-        //     width: 50%;
-
-        //     .timer {
-        //         opacity: 0.6;
-        //         font-size: 0.8rem;
-        //     }
-
-        //     .expired {
-        //         color: red;
-        //     }
-
-        //     .resume-section {
-        //         width: 100%;
-        //         margin-top: 4px;
-        //         display: flex;
-
-        //         img {
-        //             width: 36%;
-        //             height: auto;
-        //             aspect-ratio: 1/1.38;
-        //             margin-top: 10px;
-        //             border-radius: 8px;
-        //             opacity: 0.6;
-        //         }
-
-        //         .action-toolbar {
-        //             margin-left: 36px;
-        //             margin-top: 18px;
-                    
-        //             .renew {
-        //                 display: flex;
-        //                 align-items: center;
-        //                 padding: 6px 16px;
-        //                 border: 0.5px solid white;
-        //                 opacity: 0.8;
-        //                 border-radius: 8px;
-        //                 cursor: pointer;
-
-        //                 .cta-icon {
-        //                     width: 20px;
-        //                     height: 20px;
-        //                     opacity: 0.9;
-        //                 }
-                        
-        //                 div {
-        //                     font-size: 1.1rem;
-        //                     margin-left: 10px;
-        //                 }
-        //             }
-        //         }
-        //     }
-        // }
     }
 }
 
 .resume-preview{
     display: flex;
-    min-width: 250px;
-    max-width: 250px;
-    min-height: 350px;
-    max-height: 350px;
-    border-radius: 16px;
-    background-color: white;
+    min-width: 247.5px;
+    max-width: 247.5px;
+    min-height: 349px;
+    max-height: 349px;
+    border-radius: 10px;
+    border: 1px solid #1b2432;
     align-items: center;
     justify-content: center;
     overflow: hidden;

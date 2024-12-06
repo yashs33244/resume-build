@@ -68,7 +68,7 @@ export const Experience: React.FC<ExperienceProps> = ({
 
   const aiPrompts = [
     {
-      label: "Make It Better",
+      label: "Make It Professional",
       value: "make_it_better",
       prompt: `Act as a great {jobTitle} and rewrite the following in the most impactful, sharp and result-oriented manner, such that my resume should stand out. Highlight achievements and strengths. Make it glamorous, but it should be realistic. Don't lose out on any significant information and context. Use your expertise in the subject. Extrapolate mildly if necessary, but ensure it aligns with the input text and is not stretched too much in length. It must not feel like fake or generalized information. Give me the revamped output. \n\n Input : {content}`,
     },
@@ -78,12 +78,12 @@ export const Experience: React.FC<ExperienceProps> = ({
       prompt: `Act like a grammar expert and scrutinize the following input. Fix it end-to-end for all grammatical errors but do not change the content or it's delivery. Just fix the grammar and return the output with similar structure. \n\n Input : {content}`,
     },
     {
-      label: "Shorten",
+      label: "Concise",
       value: "shorten",
       prompt: `Act like a great {jobTitle} and summarize the following input. Make it concise and shorten it, but don't lose out on critical and impactful information. \n\n Input : {content}`,
     },
     {
-      label: "Lengthen",
+      label: "Elaborate",
       value: "lengthen",
       prompt: `Act like a great {jobTitle} and elaborate on the following input. Rewrite it in a compelling manner. Don't stretch it too much though. Use your expertise to keep it relevant. \n\n Input : {content}`,
     },

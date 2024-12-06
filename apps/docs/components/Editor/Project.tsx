@@ -104,7 +104,7 @@ export const Project: React.FC<ProjectProps> = ({
     }
   };
 
-  const aiPrompts = ["Make It Better", "Check Grammar", "Concise", "Elaborate"];
+  const aiPrompts = ["Make It Professional", "Fix Grammar", "Concise", "Elaborate"];
 
   return (
     <div className="project-container">

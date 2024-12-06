@@ -50,7 +50,7 @@ export const Template1 = (props: any) => {
         href="https://fonts.googleapis.com/css?family=Inter"
       />
       <div className={`template-container M ${resumeData.size}`}>
-        {initials && initials.length > 0 && (
+        {/* {initials && initials.length > 0 && (
           <div className="tag">
             {initials.map((item: any, index: number) => (
               <div className="tag_value" key={index}>
@@ -58,7 +58,7 @@ export const Template1 = (props: any) => {
               </div>
             ))}
           </div>
-        )}
+        )} */}
         <div className="primary-info">
           <div className="name">
             {personalInfo?.name?.toUpperCase() || "Full Name"}

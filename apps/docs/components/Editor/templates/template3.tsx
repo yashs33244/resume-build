@@ -6,6 +6,7 @@ import "./template3.css";
 import { IoMail } from "react-icons/io5";
 import { FaPhoneAlt } from "react-icons/fa";
 import { FaLinkedin } from "react-icons/fa";
+import { titleCase } from "title-case";
 import { useRecoilState } from "recoil";
 import { resumeSizeAtom } from "../../../store/resumeSize";
 import { getDuration } from "../../../utils";
@@ -25,7 +26,8 @@ export const Template3 = (props: any) => {
         <div className={"lp"}>
           <div className={"lp_personalInfo"}>
             <div className={"lp_personalInfo_name"}>
-              {resumeData?.personalInfo?.name || "Full Name"}
+              {resumeData?.personalInfo?.name ? titleCase(resumeData?.personalInfo?.name) : "Full Name"}
+              {/* {titleCase(resumeData?.personalInfo?.name) || "Full Name"} */}
             </div>
             <div className={"lp_personalInfo_role"}>
               {resumeData?.personalInfo?.title || "Job Title"}
@@ -34,13 +36,13 @@ export const Template3 = (props: any) => {
           <div className={"lp_add_info"}>
             {resumeData?.personalInfo?.email && (
               <div className={"lp_add_info_value"}>
-                <IoMail />
+                <div className="circle"><IoMail /></div>
                 <span>{resumeData?.personalInfo?.email || "Email"}</span>
               </div>
             )}
             {resumeData?.personalInfo?.phone && (
               <div className={"lp_add_info_value"}>
-                <FaPhoneAlt />
+                <div className="circle"><FaPhoneAlt /></div>
                 <span>
                   {resumeData?.personalInfo?.phone || "Contact Number"}
                 </span>
@@ -48,7 +50,7 @@ export const Template3 = (props: any) => {
             )}
             {resumeData?.personalInfo?.linkedin && (
               <div className={"lp_add_info_value"}>
-                <FaLinkedin />
+                <div className="circle"><FaLinkedin /></div>
                 <a href={resumeData.personalInfo?.linkedin}>
                   <span>
                     {resumeData.personalInfo?.linkedin ? "LinkedIn" : ""}
@@ -63,7 +65,7 @@ export const Template3 = (props: any) => {
                 <div
                   className={`${"lp_education_div_label"} ${"lp_container_header"}`}
                 >
-                  EDUCATION
+                  Education
                 </div>
                 <div className={`${"lp_education_div_value"}`}>
                   {resumeData.education.map((edu: any, index: number) => {
@@ -76,8 +78,14 @@ export const Template3 = (props: any) => {
                           <div
                             className={"lp_education_div_value_section_name"}
                           >
-                            <span>{`${edu.degree ? `${edu.degree}, ` : ""}`}</span>
                             <span>{`${edu.institution ? `${edu.institution}` : ""}`}</span>
+                          </div>
+                        )}
+                        {edu?.major && edu?.degree && (
+                          <div
+                            className={"lp_education_div_value_section_major"}
+                          >
+                            {`${edu.degree} - ${edu.major}`}
                           </div>
                         )}
                         {edu?.start && edu?.end && (
@@ -86,14 +94,7 @@ export const Template3 = (props: any) => {
                           >
                             {edu.start + " - " + edu.end}
                           </div>
-                        )}
-                        {edu?.major && (
-                          <div
-                            className={"lp_education_div_value_section_major"}
-                          >
-                            {edu.major}
-                          </div>
-                        )}
+                        )}                        
                       </div>
                     );
                   })}
@@ -106,7 +107,7 @@ export const Template3 = (props: any) => {
                 <div
                   className={`${"lp_certificate_div_label"} ${"lp_container_header"}`}
                 >
-                  CERTIFICATES
+                  Certificates
                 </div>
                 <div className={`${"lp_certificate_div_value"}`}>
                   {resumeData.certificates.map((cert: any, index: number) => {
@@ -148,7 +149,7 @@ export const Template3 = (props: any) => {
                 <div
                   className={`${"lp_skill_div_label"} ${"lp_container_header"}`}
                 >
-                  SKILLS
+                  Skills
                 </div>
                 <div className={`${"lp_skill_div_value"}`}>
                   {resumeData.coreSkills.map((item: any, index: number) => (
@@ -164,7 +165,7 @@ export const Template3 = (props: any) => {
           {resumeData?.personalInfo?.bio && (
             <div className={`${"rp_bio_div"} ${"rp_container"}`}>
               <div className={`${"rp_bio_div_label"} ${"rp_container_header"}`}>
-                PROFILE
+                Profile
               </div>
               <div
                 className={`${"rp_bio_div_value"} ${"rp_container_content"}`}
@@ -179,7 +180,7 @@ export const Template3 = (props: any) => {
                 <div
                   className={`${"rp_experience_div_label"} ${"rp_container_header"}`}
                 >
-                  WORK EXPERIENCE
+                  Work Experience
                 </div>
                 <div
                   className={`${"rp_experience_div_value"} ${"rp_container_content"}`}
@@ -194,7 +195,7 @@ export const Template3 = (props: any) => {
                           <div
                             className={"rp_experience_div_value_section_name"}
                           >
-                            {exp.company + " - " + exp.role}
+                            {exp.company} <span className="role">{exp.role}</span>
                           </div>
                         )}
                         {(exp?.start || exp?.end || exp?.duration) && (
@@ -229,7 +230,7 @@ export const Template3 = (props: any) => {
                 <div
                   className={`${"rp_experience_div_label"} ${"rp_container_header"}`}
                 >
-                  PROJECTS
+                  Projects
                 </div>
                 <div
                   className={`${"rp_experience_div_value"} ${"rp_container_content"}`}

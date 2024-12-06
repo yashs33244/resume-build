@@ -244,11 +244,7 @@ const Dashboard = (props: any) => {
             </div>
             <div className="resume-section">
               <div
-                className={`resume-preview resumeParent resumeParent-${resume.resumeId} border-2 ${
-                  resume.state === "DOWNLOAD_SUCCESS"
-                    ? "border-green-500"
-                    : "border-gray-500"
-                }`}
+                className={`resume-preview resumeParent resumeParent-${resume.resumeId}`}
               >
                 {renderTemplate(resume.templateId, resume)}
               </div>

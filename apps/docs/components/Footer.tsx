@@ -27,7 +27,7 @@ export default function Footer() {
         <div
           className="link"
           onClick={() =>
-            window.open("https://www.linkedin.com/companpdy/finalcv/")
+            window.open("https://www.linkedin.com/company/finalcv/")
           }
         >
           <FaLinkedin />

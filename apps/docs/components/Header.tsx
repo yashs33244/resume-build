@@ -10,6 +10,7 @@ import { FaCircleUser } from "react-icons/fa6";
 import logo from "./logo.svg";
 import premium from "./premium.svg";
 import { useUserStatus } from "../hooks/useUserStatus";
+import { useRouter } from "next/navigation";
 import { useProfileSession } from "../hooks/useProfileSession";
 import { useEffect } from "react";
 
@@ -17,6 +18,7 @@ export default function Header() {
   const { user } = useProfileSession();
   const sessionUser = user;
   const { isPaid, refetchUser } = useUserStatus();
+  const router = useRouter();
 
   const handleSignOut = async (e: any) => {
     e.preventDefault();
@@ -54,7 +56,7 @@ export default function Header() {
           <div className="login-cta">
             <Link href="/api/auth/signin">Login</Link>
           </div>
-          <div className="create-cta">
+          <div className="create-cta" onClick={() => router.push('/api/auth/signin')}>
             <Link href={"/api/auth/signin"}>Create Resume</Link>
           </div>
         </div>

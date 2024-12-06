@@ -497,7 +497,7 @@
 
     .referral-container {
         margin-top: 10rem;
-        padding-bottom: 10rem;
+        // padding-bottom: 10rem;
         .title {
             background: linear-gradient(to right, #0094FF, #FF33DE);
             // background: linear-gradient(to right, #0094FF, black);
@@ -556,6 +556,7 @@
                     text-align: center;
                     display: flex;
                     align-items: center;
+                    cursor: pointer;
                     gap: 8px;
                     font-weight: 500;
                     font-size: 1.3rem;
@@ -654,6 +655,7 @@
     }
 
     .testimonial-container {
+        margin-top: 10rem;
         .title {
             background: linear-gradient(to right, #0094FF, #FF33DE);
             -webkit-background-clip: text;

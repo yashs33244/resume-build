@@ -138,7 +138,7 @@
             
             .login-cta {
                 padding: 8px 16px;
-                background-color: #403F4C;
+                background-color: #1b2432;
                 border: 1px solid rgba(255,255,255,0.2);
                 border-radius: 8px;
                 display: flex;
@@ -170,6 +170,7 @@
                 border-top-right-radius: 16px;
                 display: flex;
                 justify-content: center;
+                cursor: pointer;
                 align-items: center;
                 background-color: #121420;
             }
@@ -248,7 +249,7 @@
                     margin-left: 16px;
                     font-weight: 500;
                     padding: 0 16px;
-                    background-color: #403F4C;
+                    background-color: #1b2432;
                     border-radius: 10px;
                     border: 0.5px solid rgba(255,255,255,0.2);
                     color: rgba(255,255,255,0.8);

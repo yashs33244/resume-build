@@ -153,11 +153,11 @@ export default function LandingPage() {
             </div>
             <div className="sub-head">
               <FaCircleCheck />
-              <div>Clean Designs</div>
+              <div>AI Powered</div>
             </div>
             <div className="sub-head">
               <FaCircleCheck />
-              <div>Concise Formats</div>
+              <div>Clean Designs</div>
             </div>
           </div>
           {/* <div className="typewriter">
@@ -175,7 +175,7 @@ export default function LandingPage() {
               }}
             />
           </div> */}
-          <div className="primary-cta">
+          <div className="primary-cta" onClick={() => router.push('/api/auth/signin')}>
             <MdRocketLaunch />
             <div>
               {user ? (
@@ -264,7 +264,7 @@ export default function LandingPage() {
             </div>
           </div>
         </div>
-        <div className="action-cta">
+        <div className="action-cta" onClick={() => router.push('/api/auth/signin')}>
           <button>
             {/* <Link href="/editor"> Build My Resume</Link> */}
             {user ? (
@@ -273,6 +273,82 @@ export default function LandingPage() {
               <Link href="/api/auth/signin"> Build My Resume</Link>
             )}
           </button>
+        </div>
+      </div>
+      <div className="referral-container">
+        <div className="title">Only on FinalCV</div>
+        <div className="subtitle">Interview With Top Companies</div>
+        <div className="referral">
+          <div className="left">
+            <div className="left-title">
+              <MdOutlineContentPasteSearch
+                style={{ fontSize: "5rem", marginRight: "16px" }}
+              />
+              <div>You finalCV is shared with Recruiters</div>
+            </div>
+            <div className="left-subtitle">
+              We automatically share your resume for relevant roles with top
+              companies
+            </div>
+            <div className="left-cta" onClick={() => router.push('/api/auth/signin')}>
+              <Link href="/api/auth/signin"> Build Now</Link>
+              <FaAngleRight />
+            </div>
+          </div>
+          <div className="right">
+            <div className="fang">
+              <div className="logo-container">
+                <img src={amz.src} alt="amz" width="60px" height="auto" />
+              </div>
+              <div className="logo-container">
+                <img src={meta.src} alt="meta" width="70px" height="auto" />
+              </div>
+              <div className="logo-container">
+                <img src={google.src} alt="google" width="60px" height="auto" />
+              </div>
+              <div className="logo-container">
+                <img
+                  src={microsoft.src}
+                  alt="microsoft"
+                  width="60px"
+                  height="auto"
+                />
+              </div>
+              <div className="fang-text">+3 more</div>
+            </div>
+            <div className="unicorns">
+              <div className="logo-container">
+                <img src={paytm.src} alt="paytm" width="60px" height="auto" />
+              </div>
+              <div className="logo-container">
+                <img src={swiggy.src} alt="swiggy" width="70px" height="auto" />
+              </div>
+              <div className="logo-container">
+                <img
+                  src={phonepe.src}
+                  alt="phonepe"
+                  width="70px"
+                  height="auto"
+                />
+              </div>
+              <div className="logo-container">
+                <img src={groww.src} alt="groww" width="70px" height="auto" />
+              </div>
+              <div className="logo-container">
+                <img src={cars.src} alt="cars" width="70px" height="auto" />
+              </div>
+              <div className="logo-container">
+                <img src={acko.src} alt="acko" width="70px" height="auto" />
+              </div>
+              <div className="unicorns-text">+20 more</div>
+            </div>
+            <div className="startups">
+              <div className="logo-container">
+                <img src={ycom.src} alt="ycom" width="60%" height="auto" />
+              </div>
+              <div className="startup-text">+50 Startups</div>
+            </div>
+          </div>
         </div>
       </div>
       <div className="templates-container">
@@ -387,82 +463,6 @@ export default function LandingPage() {
             <div className="feature-desc">
               Those spaces, margins and alignments are already neatly taken care
               of
-            </div>
-          </div>
-        </div>
-      </div>
-      <div className="referral-container">
-        <div className="title">That's Not All</div>
-        <div className="subtitle">Interview With Top Companies</div>
-        <div className="referral">
-          <div className="left">
-            <div className="left-title">
-              <MdOutlineContentPasteSearch
-                style={{ fontSize: "5rem", marginRight: "16px" }}
-              />
-              <div>You finalCV is shared with Recruiters</div>
-            </div>
-            <div className="left-subtitle">
-              We automatically share your resume for relevant roles with top
-              companies
-            </div>
-            <div className="left-cta">
-              <Link href="/api/auth/signin"> Build Now</Link>
-              <FaAngleRight />
-            </div>
-          </div>
-          <div className="right">
-            <div className="fang">
-              <div className="logo-container">
-                <img src={amz.src} alt="amz" width="60px" height="auto" />
-              </div>
-              <div className="logo-container">
-                <img src={meta.src} alt="meta" width="70px" height="auto" />
-              </div>
-              <div className="logo-container">
-                <img src={google.src} alt="google" width="60px" height="auto" />
-              </div>
-              <div className="logo-container">
-                <img
-                  src={microsoft.src}
-                  alt="microsoft"
-                  width="60px"
-                  height="auto"
-                />
-              </div>
-              <div className="fang-text">+3 more</div>
-            </div>
-            <div className="unicorns">
-              <div className="logo-container">
-                <img src={paytm.src} alt="paytm" width="60px" height="auto" />
-              </div>
-              <div className="logo-container">
-                <img src={swiggy.src} alt="swiggy" width="70px" height="auto" />
-              </div>
-              <div className="logo-container">
-                <img
-                  src={phonepe.src}
-                  alt="phonepe"
-                  width="70px"
-                  height="auto"
-                />
-              </div>
-              <div className="logo-container">
-                <img src={groww.src} alt="groww" width="70px" height="auto" />
-              </div>
-              <div className="logo-container">
-                <img src={cars.src} alt="cars" width="70px" height="auto" />
-              </div>
-              <div className="logo-container">
-                <img src={acko.src} alt="acko" width="70px" height="auto" />
-              </div>
-              <div className="unicorns-text">+20 more</div>
-            </div>
-            <div className="startups">
-              <div className="logo-container">
-                <img src={ycom.src} alt="ycom" width="60%" height="auto" />
-              </div>
-              <div className="startup-text">+50 Startups</div>
             </div>
           </div>
         </div>

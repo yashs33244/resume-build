@@ -476,7 +476,7 @@ export default function EditPage() {
               )}
             </div>
             <div className="nav-container">
-              <div className="logo-placement">
+              <div className="logo-placement" onClick={() => router.push('/dashboard')}>
                 <Image
                   alt="short_logo"
                   src={short_logo}
