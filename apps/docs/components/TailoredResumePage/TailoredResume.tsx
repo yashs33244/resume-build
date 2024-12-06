@@ -226,7 +226,6 @@ const TailoredResumePage: React.FC = () => {
       }
       console.log(tailoredData);
       setTailoredResumeData(tailoredData);
-
       console.log(tailoredResumeData);
       setShowComparison(true);
     } catch (error: any) {
@@ -237,7 +236,7 @@ const TailoredResumePage: React.FC = () => {
     } finally {
       setIsTailoring(false);
     }
-  }, [jobDescription, resumeData]);
+  }, [jobDescription, resumeData, setTailoredResumeData]);
 
   const handleBackToEdit = useCallback((newdata: ResumeProps) => {
     setShowComparison(false);

@@ -33,17 +33,17 @@ const buildTailorResumePrompt = (jobDescription: string, sectionName: string, se
   ]
 });
 
-const sanitizeJsonResponse = (response: string): string => {
-  // Find the first '{' and last '}' to extract just the JSON object
-  const start = response.indexOf('{');
-  const end = response.lastIndexOf('}');
+// const sanitizeJsonResponse = (response: string): string => {
+//   // Find the first '{' and last '}' to extract just the JSON object
+//   const start = response.indexOf('{');
+//   const end = response.lastIndexOf('}');
   
-  if (start === -1 || end === -1) {
-    throw new Error('No valid JSON object found in response');
-  }
+//   if (start === -1 || end === -1) {
+//     throw new Error('No valid JSON object found in response');
+//   }
   
-  return response.slice(start, end + 1);
-};
+//   return response.slice(start, end + 1);
+// };
 
 export async function POST(req: Request) {
   try {
@@ -75,16 +75,15 @@ export async function POST(req: Request) {
           const tailoredContent = response.text();
 
           // Clean and parse the response
-          const sanitizedJson = sanitizeJsonResponse(tailoredContent);
-          const parsedContent = JSON.parse(sanitizedJson);
+
           
           // Validate that the parsed content has the same structure
-          if (typeof parsedContent !== 'object') {
+          if (typeof tailoredContent !== 'object') {
             console.warn(`Invalid response structure for ${sectionName}, using original content`);
             return [sectionName, sectionContent];
           }
 
-          return [sectionName, parsedContent];
+          return [sectionName, tailoredContent];
         } catch (error) {
           console.error(`Error processing section ${sectionName}:`, error);
           return [sectionName, sectionContent]; // Fallback to original content
