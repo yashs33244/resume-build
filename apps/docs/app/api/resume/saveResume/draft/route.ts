@@ -168,6 +168,19 @@ export async function POST(request: NextRequest) {
             });
           })()
         : Promise.resolve(),
+
+        content.achievements?.length > 0
+          ? (async ()=> {
+            await db.achievement.deleteMany({ where: { resumeId } });
+            await db.achievement.createMany({
+              data: content.achievements.map((ach: any) => ({
+                resumeId,
+                title: ach.title,
+                description: ach.description,
+              })),
+            });
+          })()
+          : Promise.resolve(),
     ]);
 
     // Fetch the updated resume with all relations
@@ -182,6 +195,7 @@ export async function POST(request: NextRequest) {
         languages: true,
         projects: true,
         certificates: true,
+        achievements: true,
       },
     });
 

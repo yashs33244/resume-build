@@ -48,10 +48,10 @@ interface DatabaseResume {
   languages: {
     name: string;
   }[];
-  achievement: {
+  achievements: Array<{
     title: string;
     description: string;
-  } | null;
+  }>;
   projects: Array<{
     name: string;
     link: string;
@@ -110,7 +110,7 @@ export async function GET(req: Request) {
             name: true,
           },
         },
-        achievement: true,
+        achievements: true,
         projects: true,
         certificates: true,
       },
@@ -133,7 +133,7 @@ export async function GET(req: Request) {
       skills: resume.skills?.map(skill => skill.name) ?? [],
       coreSkills: resume.coreSkills?.map(skill => skill.name),
       languages: resume.languages?.map(lang => lang.name),
-      achievement: resume.achievement,
+      achievements: resume.achievements ?? [],
       projects: resume.projects ?? [],
       certificates: resume.certificates ?? [],
       state: resume.state,

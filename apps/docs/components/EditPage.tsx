@@ -1,14 +1,7 @@
 "use client";
 import dynamic from "next/dynamic";
 import Image from "next/image";
-import React, {
-  Suspense,
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import React, { Suspense, useCallback, useEffect, useState } from "react";
 import "./EditPage.scss";
 import { Education } from "./Editor/Education";
 import { Skills } from "./Editor/Skills";
@@ -40,8 +33,7 @@ import { resumeSizeAtom } from "../store/resumeSize";
 import { useRecoilState } from "recoil";
 import { Tooltip as ReactTooltip } from "react-tooltip";
 import "react-tooltip/dist/react-tooltip.css";
-import { useFetchResumeData } from "../hooks/useFetchResumeData";
-import { useResumeDraft } from "../hooks/useResumeDraft";
+import { GiAchievement } from "react-icons/gi";
 import debounce from "lodash/debounce";
 import { useUserStatus } from "../hooks/useUserStatus";
 import ChangeTemplate from "./changeTemplate/ChangeTemplate";
@@ -447,6 +439,12 @@ export default function EditPage() {
           style={{ zIndex: "1000", backgroundColor: "#1B2432" }}
         />
         <ReactTooltip
+          id="achievements"
+          place="right"
+          content="Achievements"
+          style={{ zIndex: "1000", backgroundColor: "#1B2432" }}
+        />
+        <ReactTooltip
           id="left"
           place="bottom"
           content="Previous Section"
@@ -476,7 +474,10 @@ export default function EditPage() {
               )}
             </div>
             <div className="nav-container">
-              <div className="logo-placement" onClick={() => router.push('/dashboard')}>
+              <div
+                className="logo-placement"
+                onClick={() => router.push("/dashboard")}
+              >
                 <Image
                   alt="short_logo"
                   src={short_logo}
@@ -536,6 +537,15 @@ export default function EditPage() {
               >
                 <PiCertificateFill
                   className={`icon ${activeSection === "Certificate" ? "selected" : ""}`}
+                />
+              </div>
+              <div
+                onClick={() => setActiveSection("Achievements")}
+                className={`icon-container ${activeSection === "Achivements" ? "border" : ""}`}
+                data-tooltip-id="achievements"
+              >
+                <GiAchievement
+                  className={`icon ${activeSection === "Achievements" ? "selected" : ""}`}
                 />
               </div>
             </div>
@@ -608,6 +618,14 @@ export default function EditPage() {
               )}
               {activeSection === "Certificate" && (
                 <Certificate
+                  resumeData={resumeData}
+                  handleInputChange={handleInputChange}
+                  handleAddField={handleAddField}
+                  handleDeleteField={handleDeleteField}
+                />
+              )}
+              {activeSection === "Achievements" && (
+                <Achievement
                   resumeData={resumeData}
                   handleInputChange={handleInputChange}
                   handleAddField={handleAddField}

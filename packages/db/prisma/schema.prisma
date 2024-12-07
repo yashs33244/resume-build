@@ -91,7 +91,7 @@ model Resume {
   skills       Skill[]
   coreSkills   CoreSkill[]
   languages    Language[]
-  achievement  Achievement?
+  achievements Achievement[]
   projects     Project[]
   certificates Certificate[]
   state        ResumeState   @default(NOT_STARTED)

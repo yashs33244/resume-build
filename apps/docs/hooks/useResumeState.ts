@@ -53,7 +53,7 @@ export const useResumeState = (): UseResumeStateReturn => {
           skills: resume.skills,
           coreSkills: resume.coreSkills,
           languages: resume.languages,
-          achievement: resume.achievement,
+          achievements: resume.achievements,
           projects: resume.projects,
           certificates: resume.certificates,
           templateId: resume.templateId,

@@ -117,6 +117,10 @@ export const useResumeUpload = ({ onUploadSuccess }: UseResumeUploadProps) => {
             issuer: cert.issuer || '',
             issuedOn: cert.issuedOn || '',
           })) || [],
+          achievements: parsedData.achievements?.map((ach: any) => ({
+            title: ach.title || '',
+            description: ach.description || '',
+          })) || [],
           state: ResumeState.EDITING,
           templateId: parsedData.templateId || 'default-template',
         };

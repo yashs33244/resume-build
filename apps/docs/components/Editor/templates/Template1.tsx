@@ -22,7 +22,7 @@ export const Template1 = (props: any) => {
   const experience = resumeData.experience || [];
   const education = resumeData.education || [];
   const coreSkills = resumeData.coreSkills || [];
-
+  const achievements = resumeData.achievements || [];
   const projects = resumeData.projects || [];
   const certificates = resumeData.certificates || [];
 
@@ -172,6 +172,19 @@ export const Template1 = (props: any) => {
                 </div>
               ))}
             </div>
+          </div>
+        )}
+        {achievements.length > 0 && (
+          <div className="certificates">
+            <div className="section-title">ACHIEVEMENTS</div>
+            {achievements.map((ach: any, index: any) => (
+              <div className="cert-container" key={index}>
+                {ach.title && <div className="cert-name">{ach.title}</div>}
+                {ach.description && (
+                  <div className="issuing">{ach.description}</div>
+                )}
+              </div>
+            ))}
           </div>
         )}
       </div>

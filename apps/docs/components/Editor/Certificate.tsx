@@ -3,15 +3,11 @@ import React, { useState } from "react";
 import { Label } from "@repo/ui/components/ui/label";
 import { Input } from "@repo/ui/components/ui/input";
 import { Button } from "@repo/ui/components/ui/button";
-import dynamic from "next/dynamic";
+
 import "react-quill/dist/quill.snow.css";
 import { ResumeProps } from "../../types/ResumeProps";
 import "./styles/certificate.scss";
-import { BsStars } from "react-icons/bs";
 import { FaTrashAlt } from "react-icons/fa";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import CustomDatePicker from "./CustomDatePicker";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import {
   Collapsible,
   CollapsibleTrigger,
@@ -115,7 +111,7 @@ export const Certificate: React.FC<CertificateProps> = ({
                       placeholder="For Eg: Google"
                       className="form-input"
                     />
-                  </div>                  
+                  </div>
                 </div>
               </div>
             </CollapsibleContent>

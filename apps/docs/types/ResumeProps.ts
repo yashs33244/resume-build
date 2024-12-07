@@ -34,10 +34,10 @@ export interface ResumeProps {
   skills: string[]; // General skills list
   coreSkills?: string[]; // Optional core skills
   languages?: string[]; // Optional languages
-  achievement?: {
+  achievements?: Array<{
     title: string;
     description: string;
-  } | null; // Nullable achievement
+  }>; // Nullable achievement
   projects?: Array<{
     name: string;
     link: string;

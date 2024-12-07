@@ -1,0 +1,124 @@
+.achievements-container {
+    .achievements-list {
+        .collapse-comp {
+            background-color: #1B2432;
+            border-radius: 16px;
+            padding: 1.5rem 2.5rem 2rem 2.5rem;
+            margin-top: 1.8rem;
+
+            &.first {
+                margin-top: 0;
+            }
+
+            .collapse-trigger {
+                display: flex;
+                width: 100%;
+                justify-content: space-between;
+                align-items: center;
+
+                .achievement-note {
+                    display: flex;
+                    align-items: center;
+
+                    svg {
+                        transition: transform 0.2s ease;
+                    }
+                }
+
+                .delete-cta {
+                    opacity: 0.4;
+                    cursor: pointer;
+                    transition: opacity 0.2s ease;
+
+                    &:hover {
+                        opacity: 0.7;
+                    }
+                }
+
+                .achievement-details {
+                    .title {
+                        text-align: left;
+                        margin-left: 8px;
+                        font-weight: 600;
+                        font-size: 18px;
+                        opacity: 0.85;
+                    }
+                }
+            }
+
+            .collapse-content {
+                .content-container {
+                    .single-form-row {
+                        margin-top: 28px;
+
+                        .row-form-field {
+                            width: 100%;
+                        }
+
+                        .field-label {
+                            margin-bottom: 8px;
+                            display: block;
+                            opacity: 0.7;
+                        }
+
+                        .form-input {
+                            width: 100%;
+                            background-color: rgba(255, 255, 255, 0.05);
+                            border: 1px solid rgba(255, 255, 255, 0.1);
+                            color: rgba(255, 255, 255, 0.8);
+
+                            &:focus {
+                                outline: none;
+                                border-color: rgba(255, 255, 255, 0.3);
+                            }
+                        }
+                    }
+                }
+
+                overflow: hidden;
+            }
+
+            .collapse-content[data-state='open'] {
+                animation: slideDown 300ms ease-out;
+            }
+
+            .collapse-content[data-state='closed'] {
+                animation: slideUp 300ms ease-out;
+            }
+            
+            @keyframes slideDown {
+                from {
+                    height: 0;
+                }
+                to {
+                    height: var(--radix-collapsible-content-height);
+                }
+            }
+            
+            @keyframes slideUp {
+                from {
+                    height: var(--radix-collapsible-content-height);
+                }
+                to {
+                    height: 0;
+                }
+            }
+        }
+    }
+
+    .add-cta {
+        background: transparent;
+        color: rgba(255,255,255,0.5);
+        width: 100%;
+        border: 1px dashed rgba(255,255,255,0.36);
+        border-radius: 12px;
+        margin-top: 20px;
+        transition: all 0.3s ease;
+
+        &:hover {
+            background: rgba(255,255,255,0.05);
+            color: rgba(255,255,255,0.7);
+            border-color: rgba(255,255,255,0.5);
+        }
+    }
+}

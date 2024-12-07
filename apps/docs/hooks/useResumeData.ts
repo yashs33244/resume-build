@@ -152,11 +152,12 @@ export const useResumeData = (onDataChange?: (resumeData: ResumeProps) => void) 
                         ...currentLanguages.slice(index + 1)
                     ];
                 }
-            } else if (section === "achievement") {
-                newData.achievement = {
-                    ...newData.achievement,
-                    [field]: value,
-                } as { title: string; description: string };
+            } else if (section === "achievements") {
+                if (newData.achievements && Array.isArray(newData.achievements) && index !== undefined) {
+                    newData.achievements = newData.achievements.map((item, i) =>
+                        i === index ? { ...item, [field]: value } : item
+                    );
+                }
             } else if (field === "size") {
                 const newSize = value as ResumeSize;
                 if (isValidSize(newSize)) {
@@ -206,6 +207,11 @@ export const useResumeData = (onDataChange?: (resumeData: ResumeProps) => void) 
                 newData.languages = Array.isArray(prevData.languages) 
                     ? [...prevData.languages, ""]
                     : [""];
+            }else if (section === "achievements") {
+                newData.achievements = [
+                    ...(prevData.achievements || []),
+                    { title: "", description: "" },
+                ];
             }
             return newData;
         });
@@ -231,8 +237,10 @@ export const useResumeData = (onDataChange?: (resumeData: ResumeProps) => void) 
                 newData.languages = Array.isArray(newData.languages) 
                     ? newData.languages.filter((_, i) => i !== index)
                     : [];
-            } else if (section === "achievement") {
-                newData.achievement = undefined;
+            }else if (section === "achievements" && index !== undefined) {
+                newData.achievements = (prevData.achievements || []).filter(
+                    (_, i) => i !== index
+                );
             }
             return newData;
         });

@@ -131,6 +131,10 @@ Parse into this structure:
     issuer: string;
     issuedOn: string;
   }],
+  achievements?: [{
+    title: string;
+    description: string;
+  }];
   if cgpa is not present, give it as null
 }`;
 
