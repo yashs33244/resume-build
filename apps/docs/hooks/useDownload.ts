@@ -26,7 +26,7 @@ const TEMPLATE_CSS_MAP = {
     "https://utfs.io/f/Clj1dqnLZKkyHgL3tfqELCqQuhUwYHrz3lnvt0fTa4y5IgsW",
   designer:
     "https://utfs.io/f/Clj1dqnLZKky41CMBCeRQv1SI8iXB29JT3FDwqKozgGr4Zhu",
-  layout: "https://utfs.io/f/Clj1dqnLZKkyzeqwSthjSkdfL4v350YoTpwquWGDcysmh68z",
+  layout: "https://utfs.io/f/Clj1dqnLZKkyyDNBZUId4YFMtsHjXk9zRpxlSUru0ngGTaC5",
 };
 export const useDownload = ({
   session,
@@ -91,21 +91,14 @@ export const useDownload = ({
         TEMPLATE_NAME_MAPPING[
           (templateId || resumeData?.templateId) as keyof typeof TEMPLATE_NAME_MAPPING
         ];
-      
-      const templateCssUrl = 
-        TEMPLATE_CSS_MAP[
-          (templateId || resumeData?.templateId) as keyof typeof TEMPLATE_CSS_MAP
-        ];
+     
 
       // Fetch template-specific CSS
 
 
       // Construct full HTML with inline styles
    
-      const cssLink =  `
-        <link href='https://utfs.io/f/Clj1dqnLZKkyhoZWQGyF60iNrl5eMPZXqtkQpSRgAvCx7hTs' rel='stylesheet'/>
-        <link href='${templateCssUrl}' rel='stylesheet'/>
-      `
+      const cssLink = `<link rel="stylesheet" href="${process.env.NEXT_PUBLIC_BASE_URL}/${templateName}.css">`;
       const fontLink = `
         <link href='https://fonts.googleapis.com/css?family=Inter' rel='stylesheet'/>
       `;

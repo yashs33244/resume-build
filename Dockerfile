@@ -12,7 +12,8 @@ RUN apk add --no-cache \
     ca-certificates \
     ttf-freefont \
     cairo \
-    pango
+    pango \
+    openssl
 
 # Set Chrome path
 ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser
@@ -47,7 +48,8 @@ RUN apk add --no-cache \
     ca-certificates \
     ttf-freefont \
     cairo \
-    pango
+    pango \
+    openssl
 
 # Set Chrome path
 ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium

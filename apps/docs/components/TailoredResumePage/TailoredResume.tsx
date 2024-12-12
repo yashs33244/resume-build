@@ -11,26 +11,25 @@ import { ResumeProps } from "../../types/ResumeProps";
 import { useRouter } from "next/navigation";
 import { useSearchParams } from "next/navigation";
 import styles from "./style.module.scss";
-import { LandingLoader } from "../LandingLoader";
 import { Loader } from "lucide-react";
 import { useFetchResumeData } from "../../hooks/useFetchResumeData";
 import { useSession } from "next-auth/react";
 import { initialResumeData } from "../../utils/resumeData";
 
-const TEMPLATE_NAME_MAPPING = {
-  fresher: "template1",
-  experienced: "template2",
-  designer: "template3",
-};
+// const TEMPLATE_NAME_MAPPING = {
+//   fresher: "template1",
+//   experienced: "template2",
+//   designer: "template3",
+// };
 
-const TEMPLATE_CSS_MAP = {
-  fresher: "https://utfs.io/f/Clj1dqnLZKkyhoZWQGyF60iNrl5eMPZXqtkQpSRgAvCx7hTs",
-  experienced:
-    "https://utfs.io/f/Clj1dqnLZKkyHgL3tfqELCqQuhUwYHrz3lnvt0fTa4y5IgsW",
-  designer:
-    "https://utfs.io/f/Clj1dqnLZKky41CMBCeRQv1SI8iXB29JT3FDwqKozgGr4Zhu",
-  layout: "https://utfs.io/f/Clj1dqnLZKkyzeqwSthjSkdfL4v350YoTpwquWGDcysmh68z",
-};
+// const TEMPLATE_CSS_MAP = {
+//   fresher: "https://utfs.io/f/Clj1dqnLZKkyhoZWQGyF60iNrl5eMPZXqtkQpSRgAvCx7hTs",
+//   experienced:
+//     "https://utfs.io/f/Clj1dqnLZKkyHgL3tfqELCqQuhUwYHrz3lnvt0fTa4y5IgsW",
+//   designer:
+//     "https://utfs.io/f/Clj1dqnLZKky41CMBCeRQv1SI8iXB29JT3FDwqKozgGr4Zhu",
+//   layout: "https://utfs.io/f/Clj1dqnLZKkyyDNBZUId4YFMtsHjXk9zRpxlSUru0ngGTaC5",
+// };
 
 const TailoredResumePage: React.FC = () => {
   const searchParams = useSearchParams();
@@ -131,17 +130,9 @@ const TailoredResumePage: React.FC = () => {
         element.style.transform = "scale(1)";
         const resumeId = searchParams.get("id");
 
-        const templateCssUrl =
-          TEMPLATE_CSS_MAP[
-            resumeData.templateId as keyof typeof TEMPLATE_CSS_MAP
-          ];
-        const cssLink = `
-          <link href='https://utfs.io/f/Clj1dqnLZKkyhoZWQGyF60iNrl5eMPZXqtkQpSRgAvCx7hTs' rel='stylesheet'/>
-          <link href='${templateCssUrl}' rel='stylesheet'/>
-        `;
+        const cssLink = `<link rel="stylesheet" href="${process.env.NEXT_PUBLIC_BASE_URL}/${resumeData.templateId}.css">`;
         const fontLink = `<link href='https://fonts.googleapis.com/css?family=Inter' rel='stylesheet'/>`;
         const htmlContent = cssLink + fontLink + element.outerHTML;
-        console.log(htmlContent);
 
         const response = await fetch("/api/generate-pdf", {
           method: "POST",

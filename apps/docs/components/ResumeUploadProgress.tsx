@@ -51,7 +51,7 @@ export const ResumeUploadProgress: React.FC<ResumeUploadProgressProps> = ({
         }
 
         // Call onComplete when reaching 100%
-        if (newProgress === 100 && !hasReachedComplete) {
+        if (newProgress === 99 && !hasReachedComplete) {
           setHasReachedComplete(true);
           setTimeout(() => {
             onComplete?.();

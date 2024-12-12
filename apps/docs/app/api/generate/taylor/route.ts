@@ -104,7 +104,7 @@ export async function POST(req: Request) {
       templateId: resumeData.templateId || 'default-template',
       personalInfo: resumeData.personalInfo || null,
       languages: resumeData.languages || [],
-      achievement: resumeData.achievement || null,
+      achievements: resumeData.achievements || [],
       projects: resumeData.projects || [],
       certificates: resumeData.certificates || []
     };

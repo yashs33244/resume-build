@@ -17,10 +17,10 @@
     --gap-base: 30px;
   
     /* Font-sizes and other dimensions */
-    --header-name-size: calc(var(--font-size-base) + 4px);
+    --header-name-size: calc(var(--font-size-base) + 6px);
     --header-role-size: calc(var(--font-size-base) - 0px);
     --header-contact-size: calc(var(--font-size-base) - 4px);
-    --content-label-size: var(--font-size-base);
+    --content-label-size: calc(var(--font-size-base) - 2px);
     --content-value-size: calc(var(--font-size-base) - 4px);
   
     /* Paddings, Margins */
@@ -62,8 +62,8 @@
   /* Template Container */
   .template2-wrapper .template-container {
     position: relative;
-    /* background-color: #fff; */
-    background: linear-gradient(to bottom, #fdebe2, #f8f8fa);
+    background-color: #fff;
+    background: linear-gradient(135deg, #fff, #e0f9ff);
     height: 95%;
     aspect-ratio: 0.7751937984;
     min-width: 595px;
@@ -99,19 +99,31 @@
   .template2-wrapper .header_left_part_name {
     font-size: var(--header-name-size);
     font-weight: 700;
-    color: #c50;
+    color: #0087a5;
   }
   
   .template2-wrapper .header_left_part_role {
     font-size: var(--header-role-size);
-    color: #808080;
-    font-weight: 550;
+    color: rgba(0,0,0,0.8);
+    font-weight: 500;
   }
   
   .template2-wrapper .header_right_part_url,
   .template2-wrapper .header_right_part_email,
   .template2-wrapper .header_right_part_phone {
     font-size: var(--header-contact-size);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: rgba(0,0,0,0.8);
+  }
+
+  .template2-wrapper .header_right_part_url,
+  .template2-wrapper .header_right_part_email,
+  .template2-wrapper .header_right_part_phone {
+    svg {
+      fill: #0087a5;
+    }
   }
   
   .template2-wrapper .header_right_part_phone a,
@@ -134,13 +146,13 @@
   }
   
   .template2-wrapper .content_left_part {
-    min-width: 130px;
-    max-width: 130px;
+    min-width: 112px;
+    max-width: 112px;
   }
   
   .template2-wrapper .content_right_part {
     flex: 1;
-    max-width: calc(100% - 130px);
+    max-width: calc(100% - 112px);
   }
   
   /* Content Labels and Values */
@@ -153,7 +165,7 @@
   .template2-wrapper .content_acheivement_div_label{
     font-size: var(--content-label-size);
     font-weight: 700;
-    color: #c50;
+    color: #0087a5;
   }
 
   .template2-wrapper .content_education_div_value_section_name,
@@ -170,6 +182,7 @@
     align-items: center;
     gap: 4px;
   }
+  
   
   .template2-wrapper .content_bio_div_value,
   .template2-wrapper .content_education_div_value_section_name,
@@ -188,7 +201,14 @@
   .template2-wrapper .content_acheivement_div_value_section_remarks,
   .template2-wrapper .content_skill_div_value_section_category{
     font-size: var(--content-value-size);
-    color: #808080;
+    color: rgba(0,0,0,0.6);
+  }
+
+  .template2-wrapper .content_experience_div_value_section_year,
+  .template2-wrapper .content_projects_div_value_section_year,
+  .template2-wrapper .content_education_div_value_section_year,
+  .template2-wrapper .content_certificates_div_value_section_year {
+    color: rgba(0,0,0,0.5);
   }
   
   /* Education, Experience, Skills, and Achievements Sections */
@@ -267,4 +287,5 @@
     flex-direction: column;
     gap: 5px;
   }
+  
   

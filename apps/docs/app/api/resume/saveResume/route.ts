@@ -3,7 +3,7 @@ import { db } from '../../../db';
 
 import { getServerSession } from "next-auth/next";
 import { authOptions } from '../../../lib/auth';
-import { ResumeState } from '../../../../types/ResumeProps';
+import { ResumeProps, ResumeState } from '../../../../types/ResumeProps';
 
 export async function POST(request: Request) {
   const session = await getServerSession(authOptions);
@@ -24,7 +24,15 @@ export async function POST(request: Request) {
 
     const now = new Date();
 
-
+    const existingResume = await db.resume.findFirst({
+      where: { userId: user.id }
+    });
+    
+    if (existingResume) {
+      await db.resume.delete({
+        where: { id: existingResume.id }
+      });
+    }
 
     // Create new resume
     const resume = await db.resume.create({

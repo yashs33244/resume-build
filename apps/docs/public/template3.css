@@ -23,17 +23,19 @@
     --container-header-size: calc(var(--font-size-base) - 2px);
     --education-section-name-size: calc(var(--font-size-base) - 4px);
     --education-section-year-size: calc(var(--font-size-base) - 6px);
+    --vertical-section-space: calc(var(--font-size-base) - 10px);
     --skill-item-size: calc(var(--font-size-base) - 6px);
-    --rp-container-header-size: calc(var(--font-size-base) - 2px);
+    --rp-container-header-size: calc(var(--font-size-base) + 2px);
     --bio-value-size: calc(var(--font-size-base) - 6px);
-    --experience-section-name-size: calc(var(--font-size-base) - 4px);
+    --experience-section-name-size: calc(var(--font-size-base) - 2px);
+    --experience-section-role-size: calc(var(--font-size-base) - 4px);
     --experience-section-year-size: calc(var(--font-size-base) - 6px);
     --experience-section-work-size: calc(var(--font-size-base) - 6px);
   
     /* Paddings, Margins */
     --lp-padding: var(--padding-base);
     --rp-padding: var(--padding-base);
-    --container-gap: var(--gap-base);
+    --container-gap: calc(var(--gap-base) + 10px);
     --ul-padding : 0px 0px 0px 10px
   }
   
@@ -104,9 +106,11 @@
     display: flex;
     flex-direction: column;
     /* background-color: #e5e4e2; */
-    background-color: #303D5D;
+    /* background-color: #303D5D; */
+    /* background-color: #f4f8fe; */
+    background-color: #1a2138;
     padding: var(--lp-padding);
-    color: white;
+    color: black;
     gap: var(--container-gap);
   }
   
@@ -121,11 +125,13 @@
     font-size: var(--personalInfo-name-size);
     font-weight: 700;
     line-height: normal;
+    color: rgba(255,255,255);
   }
   
   .template3-wrapper .lp_personalInfo_role {
     font-size: var(--personalInfo-role-size);
     font-weight: 500;
+    color: rgba(255,255,255,0.9)
   }
   
   .template3-wrapper .lp_add_info {
@@ -137,13 +143,31 @@
     display: flex;
     gap: 5px;
     margin-top: 4px;
+    display: flex;
+    align-items: center;
+    color: rgba(255,255,255);
+    font-weight: 500;
+    word-wrap: break-word;
     font-size: var(--add-info-value-size);
+  }
+
+  .template3-wrapper .lp_add_info_value .circle {
+    /* background-color: #e2e6ee; */
+    background-color: rgba(255,255,255,0.2);
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    padding: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
     & svg{
-        min-width: 10px;
-        max-width: 10px;
-        height: 14px;
-    }
+      min-width: 10px;
+      color: rgba(255,255,255,0.7);
+      max-width: 10px;
+      /* height: 14px; */
+  }
 
     & span{
         max-width: calc(100% - 10px);
@@ -195,6 +219,7 @@
   .template3-wrapper .lp_container_header {
     font-size: var(--container-header-size);
     font-weight: 700;
+    color: rgba(255,255,255,0.5);
   }
   
   .template3-wrapper .lp_education_div {
@@ -221,17 +246,20 @@
     font-size: var(--education-section-name-size);
     font-weight: 600;
     line-height: normal;
+    color: rgba(255,255,255,0.8);
   }
 
   .template3-wrapper .lp_education_div_value_section_major {
     font-size: var(--education-section-year-size);
     font-weight: 500;
+    color: rgba(255,255,255,0.8);
     line-height: normal;
   }
   
   .template3-wrapper .lp_education_div_value_section_year {
     font-size: var(--education-section-year-size);
     line-height: normal;
+    color: rgba(255,255,255,0.6);
   }
 
   .template3-wrapper .lp_certificate_div {
@@ -258,12 +286,14 @@
     font-size: var(--education-section-name-size);
     font-weight: 600;
     line-height: normal;
+    color: rgba(255,255,255, 0.8);
   }
 
   .template3-wrapper .lp_certificate_div_value_section_major {
     font-size: var(--education-section-year-size);
     font-weight: 500;
     line-height: normal;
+    color: rgba(255,255,255, 0.7);
   }
   
   .template3-wrapper .lp_certificate_div_value_section_year {
@@ -273,13 +303,18 @@
   
   .template3-wrapper .lp_skill_div_value {
     display: flex;
-    flex-direction: column;
+    /* flex-direction: column; */
+    flex-wrap: wrap;
     gap:8px;
     margin-top: 8px;
   }
   
   .template3-wrapper .lp_skill_div_value_item {
     font-size: var(--skill-item-size);
+    background-color: rgba(255,255,255,0.1);
+    padding: 4px 12px;
+    border-radius: 16px;
+    color: rgba(255,255,255,0.9);
   }
   
   /* Right Panel */
@@ -288,7 +323,7 @@
     flex-direction: column;
     gap: 15px;
     padding: var(--rp-padding);
-    width:calc(100% - 210px);
+    width:calc(100% - 210px);    
   }
   
   .template3-wrapper .rp_container {
@@ -300,6 +335,8 @@
   .template3-wrapper .rp_container_header {
     font-size: var(--rp-container-header-size);
     font-weight: 700;
+    color: rgba(0,0,0,0.8);
+    margin-bottom: var(--vertical-section-space);
   }
   
   .template3-wrapper .rp_bio_div_value {
@@ -311,6 +348,7 @@
     display: flex;
     flex-direction: column;
     gap: 10px;
+    margin-bottom: var(--vertical-section-space);
   }
   
   .template3-wrapper .rp_experience_div_value_section {
@@ -322,6 +360,13 @@
     font-size: var(--experience-section-name-size);
     font-weight: 700;
     line-height: normal;
+  }
+
+  .template3-wrapper .rp_experience_div_value_section_name .role {
+    font-size: var(--experience-section-role-size);
+    font-weight: 400;
+    line-height: normal;
+    margin-left: 6px;
   }
   
   .template3-wrapper .rp_experience_div_value_section_year {

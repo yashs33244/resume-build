@@ -19,23 +19,23 @@
 }
 
 .template1-wrapper .M {
-    padding: 2rem 3.5rem;
+    padding: 1.75rem 2.5rem;
 }
 
 .template1-wrapper .S {
-    padding: 1.9rem 3.32rem;
+    padding: 1.66rem 2.37rem;
 }
 
 .template1-wrapper .XS {
-    padding: 1.80rem 3.15rem;
+    padding: 1.58rem 2.25rem;
 }
 
 .template1-wrapper .L {
-    padding: 2.1rem 3.67rem;
+    padding: 1.83rem 2.62rem;
 }
 
 .template1-wrapper .XL {
-    padding: 2.2rem 3.85rem;
+    padding: 1.93rem 2.75rem;
 }
 
 .template1-wrapper .M .tag {
@@ -102,7 +102,8 @@
 }
 
 .template1-wrapper .M .primary-info .name {
-    color: #323336;
+    /* color: #323336; */
+    color: #002D62;
     font-weight: 700;
     font-size: 20px;
 }
@@ -124,7 +125,7 @@
 }
 
 .template1-wrapper .M .primary-info .position {
-    color: #323336;
+    color: rgba(0,0,0,0.9);
     font-size: 16px;
     margin-top: 0.1rem;
     font-weight: 500;
@@ -156,7 +157,7 @@
 
 
 .template1-wrapper .M .primary-info .information {
-    color: #707678;
+    color: rgba(0,0,0,0.8);
     font-size: 12px;
     margin-top: 0.15rem;
 }
@@ -208,7 +209,7 @@
 }
 
 .template1-wrapper .M .primary-info .summary {
-    color: #707678;
+    color: rgba(0,0,0,0.7);
     font-size: 10px;
     margin-top: 0.15rem;
 }
@@ -275,8 +276,8 @@
 
 .template1-wrapper .M .experience .section-title {
     /* color: #a6aaad; */
-    color: #1d2b5f;
-    border-bottom: 1px solid rgba(29,43,95, 0.5);
+    color: #002D62;
+    border-bottom: 0.5px solid #002D62;
     font-size: 10px;
     font-weight: 600;
 }
@@ -299,8 +300,8 @@
 
 .template1-wrapper .M .projects .section-title {
     /* color: #a6aaad; */
-    color: #1d2b5f;
-    border-bottom: 1px solid rgba(29,43,95, 0.5);
+    color: #002D62;
+    border-bottom: 0.5px solid #002D62;
     font-size: 10px;
     font-weight: 600;
 }
@@ -362,7 +363,7 @@
 }
 
 .template1-wrapper .M .experience .exp-container .company-name {
-    color: #323336;
+    color: rgba(0,0,0,0.7);
     font-size: 12px;
     font-weight: 600;
 }
@@ -384,7 +385,7 @@
 }
 
 .template1-wrapper .M .projects .proj-container .proj-name {
-    color: #323336;
+    color: rgba(0,0,0,0.7);
     display: flex;
     align-items: center;
     gap: 4px;
@@ -409,7 +410,7 @@
 }
 
 .template1-wrapper .M .experience .exp-container .role-duration {
-    color: #707678;
+    color: rgba(0,0,0,0.6);
     font-size: 10px;
 }
 
@@ -430,7 +431,7 @@
 }
 
 .template1-wrapper .M .projects .proj-container .link-duration {
-    color: #707678;
+    color: rgba(0,0,0,0.6);
     font-size: 10px;
 }
 
@@ -451,7 +452,7 @@
 }
 
 .template1-wrapper .M .experience .exp-container .responsibilities {
-    color: #323336;
+    color: rgba(0,0,0,0.7);
     font-size: 10px;
 }
 
@@ -472,7 +473,7 @@
 }
 
 .template1-wrapper .M .projects .proj-container .responsibilities {
-    color: #323336;
+    color: rgba(0,0,0,0.7);
     font-size: 10px;
 }
 
@@ -576,8 +577,8 @@
 
 .template1-wrapper .M .education .section-title {
     /* color: #a6aaad; */
-    color: #1d2b5f;
-    border-bottom: 1px solid rgba(29,43,95, 0.5);
+    color: #002D62;
+    border-bottom: 0.5px solid #002D62;
     font-size: 10px;
     font-weight: 600;
 }
@@ -600,8 +601,8 @@
 
 .template1-wrapper .M .certificates .section-title {
     /* color: #a6aaad; */
-    color: #1d2b5f;
-    border-bottom: 1px solid rgba(29,43,95, 0.5);
+    color: #002D62;
+    border-bottom: 0.5px solid #002D62;
     font-size: 10px;
     font-weight: 600;
 }
@@ -663,7 +664,7 @@
 }
 
 .template1-wrapper .M .education .edu-container .college-name {
-    color: #323336;
+    color: rgba(0,0,0,0.7);
     font-size: 12px;
     font-weight: 600;
 }
@@ -685,7 +686,7 @@
 }
 
 .template1-wrapper .M .certificates .cert-container .cert-name {
-    color: #323336;
+    color: rgba(0,0,0,0.7);
     font-size: 12px;
     font-weight: 600;
 }
@@ -707,7 +708,7 @@
 }
 
 .template1-wrapper .M .education .edu-container .degree-major {
-    color: #707678;
+    color: rgba(0,0,0,0.6);
     font-size: 10px;
 }
 
@@ -728,7 +729,7 @@
 }
 
 .template1-wrapper .M .certificates .cert-container .issuing {
-    color: #707678;
+    color: rgba(0,0,0,0.6);
     font-size: 10px;
 }
 
@@ -770,8 +771,8 @@
 
 .template1-wrapper .M .skills .section-title {
     /* color: #a6aaad; */
-    color: #1d2b5f;
-    border-bottom: 1px solid rgba(29,43,95, 0.5);
+    color: #002D62;
+    border-bottom: 0.5px solid #002D62;
     font-size: 10px;
     font-weight: 600;
 }
@@ -819,7 +820,7 @@
     padding: 0.2rem 0.4rem;
     background-color: #f1f5f7;
     border-radius: 2px;
-    color: #323336;
+    color: rgba(0,0,0,0.75);
 }
 
 .template1-wrapper .S .skills .core-skills .skill-container {
@@ -872,8 +873,8 @@
 
 .template1-wrapper .M .achievements .section-title {
     /* color: #a6aaad; */
-    color: #1d2b5f;
-    border-bottom: 1px solid rgba(29,43,95, 0.5);
+    color: #002D62;
+    border-bottom: 0.5px solid #002D62;
     font-size: 0.5rem;
     font-weight: 600;
 }
