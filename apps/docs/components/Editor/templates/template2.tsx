@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React from "react";
 //@ts-ignore
 import "./template2.css";
 import DOMPurify from "dompurify";
@@ -331,23 +331,48 @@ export const Template2 = (props: any) => {
                         </div>
                       </div>
                     )}
-                  {/* Uncomment this section if you want to display tech skills */}
-                  {/* {Array.isArray(resumeData?.techSkills) &&
-                resumeData?.techSkills?.length > 0 && (
-                  <div className={"content_skill_div_value_section"}>
-                    <div
-                      className={"content_skill_div_value_section_category"}
-                    >
-                      Tools and Technologies
-                    </div>
-                    <div className={"content_skill_div_value_section_skills"}>
-                      {resumeData?.techSkills.join(", ")}
-                    </div>
-                  </div>
-                )} */}
                 </div>
               </div>
             )}
+          {resumeData.achievements.length > 0 && (
+            <div className={`${"content_projects_div"} ${"content_container"}`}>
+              <div
+                className={`${"content_projects_div_label"} ${"content_left_part"}`}
+              >
+                Achievements
+              </div>
+              <div
+                className={`${"content_certificates_div_value"} ${"content_right_part"}`}
+              >
+                {resumeData.achievements.map((ach: any, index: any) => (
+                  <div
+                    className={"content_certificates_div_value_section"}
+                    key={index}
+                  >
+                    {ach.title && (
+                      <div
+                        className={
+                          "content_certificates_div_value_section_name"
+                        }
+                      >
+                        {ach.title}
+                      </div>
+                    )}
+                    {ach?.description && (
+                      <div
+                        className={
+                          "content_certificates_div_value_section_field"
+                        }
+                        dangerouslySetInnerHTML={{
+                          __html: DOMPurify.sanitize(ach.description),
+                        }}
+                      />
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>

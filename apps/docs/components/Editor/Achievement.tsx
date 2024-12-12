@@ -11,6 +11,19 @@ import {
   CollapsibleContent,
 } from "@repo/ui/components/ui/collapsible";
 import "./styles/achievments.scss";
+import dynamic from "next/dynamic";
+import "react-quill/dist/quill.snow.css";
+
+const ClientSideQuill = dynamic(() => import("react-quill"), {
+  ssr: false,
+  loading: () => (
+    <div className="flex flex-row gap-2">
+      <div className="w-4 h-4 rounded-full bg-white-500 animate-bounce [animation-delay:.7s]"></div>
+      <div className="w-4 h-4 rounded-full bg-white-500 animate-bounce [animation-delay:.3s]"></div>
+      <div className="w-4 h-4 rounded-full bg-white-500 animate-bounce [animation-delay:.7s]"></div>
+    </div>
+  ),
+});
 
 interface AchievementsProps {
   resumeData: ResumeProps;
@@ -35,6 +48,9 @@ export const Achievement: React.FC<AchievementsProps> = ({
   handleDeleteField,
 }) => {
   const achievements = resumeData.achievements || [];
+  const handleAchievementChange = (value: string, index: number) => {
+    handleInputChange("achievements", "description", value, index);
+  };
 
   return (
     <div className="achievements-container">
@@ -94,7 +110,7 @@ export const Achievement: React.FC<AchievementsProps> = ({
                     >
                       Description
                     </Label>
-                    <Input
+                    {/* <Input
                       id={`achievement-description-${index}`}
                       value={achievement.description || ""}
                       onChange={(e) =>
@@ -107,7 +123,25 @@ export const Achievement: React.FC<AchievementsProps> = ({
                       }
                       placeholder="Provide details about the achievement"
                       className="form-input"
-                    />
+                    /> */}
+
+                    <div className="text-editor-container">
+                      <ClientSideQuill
+                        id={`responsibilities-${index}`}
+                        value={achievement.description || ""}
+                        onChange={(value) =>
+                          handleAchievementChange(value, index)
+                        }
+                        className="text-editor"
+                        modules={{
+                          toolbar: [
+                            ["bold", "italic", "underline", "strike"],
+                            [{ list: "ordered" }, { list: "bullet" }],
+                            ["link"],
+                          ],
+                        }}
+                      />
+                    </div>
                   </div>
                 </div>
               </div>

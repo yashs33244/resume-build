@@ -26,7 +26,9 @@ export const Template3 = (props: any) => {
         <div className={"lp"}>
           <div className={"lp_personalInfo"}>
             <div className={"lp_personalInfo_name"}>
-              {resumeData?.personalInfo?.name ? titleCase(resumeData?.personalInfo?.name) : "Full Name"}
+              {resumeData?.personalInfo?.name
+                ? titleCase(resumeData?.personalInfo?.name)
+                : "Full Name"}
               {/* {titleCase(resumeData?.personalInfo?.name) || "Full Name"} */}
             </div>
             <div className={"lp_personalInfo_role"}>
@@ -36,13 +38,17 @@ export const Template3 = (props: any) => {
           <div className={"lp_add_info"}>
             {resumeData?.personalInfo?.email && (
               <div className={"lp_add_info_value"}>
-                <div className="circle"><IoMail /></div>
+                <div className="circle">
+                  <IoMail />
+                </div>
                 <span>{resumeData?.personalInfo?.email || "Email"}</span>
               </div>
             )}
             {resumeData?.personalInfo?.phone && (
               <div className={"lp_add_info_value"}>
-                <div className="circle"><FaPhoneAlt /></div>
+                <div className="circle">
+                  <FaPhoneAlt />
+                </div>
                 <span>
                   {resumeData?.personalInfo?.phone || "Contact Number"}
                 </span>
@@ -50,7 +56,9 @@ export const Template3 = (props: any) => {
             )}
             {resumeData?.personalInfo?.linkedin && (
               <div className={"lp_add_info_value"}>
-                <div className="circle"><FaLinkedin /></div>
+                <div className="circle">
+                  <FaLinkedin />
+                </div>
                 <a href={resumeData.personalInfo?.linkedin}>
                   <span>
                     {resumeData.personalInfo?.linkedin ? "LinkedIn" : ""}
@@ -94,7 +102,7 @@ export const Template3 = (props: any) => {
                           >
                             {edu.start + " - " + edu.end}
                           </div>
-                        )}                        
+                        )}
                       </div>
                     );
                   })}
@@ -195,7 +203,8 @@ export const Template3 = (props: any) => {
                           <div
                             className={"rp_experience_div_value_section_name"}
                           >
-                            {exp.company} <span className="role">{exp.role}</span>
+                            {exp.company}{" "}
+                            <span className="role">{exp.role}</span>
                           </div>
                         )}
                         {(exp?.start || exp?.end || exp?.duration) && (
@@ -257,6 +266,38 @@ export const Template3 = (props: any) => {
                           className={"rp_projerience_div_value_section_work"}
                           dangerouslySetInnerHTML={{
                             __html: DOMPurify.sanitize(proj.responsibilities),
+                          }}
+                        ></div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+          {Array.isArray(resumeData?.achievements) &&
+            resumeData.achievements.length > 0 && (
+              <div className={`${"rp_experience_div"} ${"rp_container"}`}>
+                <div
+                  className={`${"rp_experience_div_label"} ${"rp_container_header"}`}
+                >
+                  Achievements
+                </div>
+                <div
+                  className={`${"rp_experience_div_value"} ${"rp_container_content"}`}
+                >
+                  {resumeData.achievements?.map((ach: any, index: any) => {
+                    return (
+                      <div className={"rp_projerience_div_value_section"}>
+                        <div
+                          className={"rp_projerience_div_value_section_name"}
+                        >
+                          {ach?.title || ""}
+                        </div>
+
+                        <div
+                          className={"rp_projerience_div_value_section_work"}
+                          dangerouslySetInnerHTML={{
+                            __html: DOMPurify.sanitize(ach.description),
                           }}
                         ></div>
                       </div>

@@ -265,6 +265,7 @@ export default function EditPage() {
     "Project",
     "Skills",
     "Certificate",
+    "Achievements",
   ];
 
   const handleLeftNav = () => {
@@ -345,6 +346,9 @@ export default function EditPage() {
         break;
       case "Language":
         return "Add Languages";
+        break;
+      case "Achievements":
+        return "Add Achievements";
         break;
       default:
         return;

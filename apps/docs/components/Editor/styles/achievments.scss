@@ -1,3 +1,43 @@
+.text-editor-container {
+    margin-top: 8px;
+    
+    .text-editor {
+        .ql-toolbar {
+            border-left: 0.5px solid rgba(255,255,255,0.4);
+            border-right: 0.5px solid rgba(255,255,255,0.4);
+            border-top: 0.5px solid rgba(255,255,255,0.4);
+            border-bottom: none;
+        }
+        
+        button:hover .ql-stroke,
+        .ql-picker-label:hover .ql-stroke {
+            fill: none;
+            stroke: rgba(255,255,255,0.7) !important;
+        }
+        
+        .ql-active .ql-stroke {
+            fill: none;
+            stroke: rgba(255,255,255,0.7) !important;
+        }
+        
+        button:hover .ql-fill,
+        .ql-picker-label:hover .ql-fill {
+            fill: rgba(255,255,255,0.7) !important;
+            stroke: none;
+        }
+        
+        .ql-active .ql-fill {
+            fill: rgba(255,255,255,0.7) !important;
+            stroke: none;
+        }
+        
+        .ql-container {
+            border: 0.5px solid rgba(255,255,255,0.4);
+            height: 100px;
+        }
+    }
+}
+
 .achievements-container {
     .achievements-list {
         .collapse-comp {
@@ -47,6 +87,8 @@
             }
 
             .collapse-content {
+                overflow: hidden;
+
                 .content-container {
                     .single-form-row {
                         margin-top: 28px;
@@ -74,8 +116,6 @@
                         }
                     }
                 }
-
-                overflow: hidden;
             }
 
             .collapse-content[data-state='open'] {

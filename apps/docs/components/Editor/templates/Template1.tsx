@@ -175,13 +175,18 @@ export const Template1 = (props: any) => {
           </div>
         )}
         {achievements.length > 0 && (
-          <div className="certificates">
+          <div className="projects">
             <div className="section-title">ACHIEVEMENTS</div>
             {achievements.map((ach: any, index: any) => (
-              <div className="cert-container" key={index}>
-                {ach.title && <div className="cert-name">{ach.title}</div>}
-                {ach.description && (
-                  <div className="issuing">{ach.description}</div>
+              <div className="proj-container" key={index}>
+                {ach.title && <div className="proj-name">{ach.title}</div>}
+                {ach?.description && (
+                  <div
+                    className="responsibilities"
+                    dangerouslySetInnerHTML={{
+                      __html: DOMPurify.sanitize(ach.description),
+                    }}
+                  />
                 )}
               </div>
             ))}

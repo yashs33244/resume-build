@@ -15,9 +15,6 @@ import {
   CollapsibleTrigger,
   CollapsibleContent,
 } from "@repo/ui/components/ui/collapsible";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import CustomDatePicker from "./CustomDatePicker";
 import loading from "../../public/loading.gif";
 
 const ClientSideQuill = dynamic(() => import("react-quill"), {
@@ -104,7 +101,12 @@ export const Project: React.FC<ProjectProps> = ({
     }
   };
 
-  const aiPrompts = ["Make It Professional", "Fix Grammar", "Concise", "Elaborate"];
+  const aiPrompts = [
+    "Make It Professional",
+    "Fix Grammar",
+    "Concise",
+    "Elaborate",
+  ];
 
   return (
     <div className="project-container">
