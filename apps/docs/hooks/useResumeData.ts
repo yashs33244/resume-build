@@ -80,7 +80,7 @@ export const useResumeData = (onDataChange?: (resumeData: ResumeProps) => void) 
         if (isClient && !_.isEqual(previousData, resumeData)) {
             console.log("resumeSize",resumeSize);
             setPreviousData(resumeData); // Update to current data after successful change
-            // window.localStorage.setItem('resumeData', JSON.stringify(resumeData));
+            window.localStorage.setItem('resumeData', JSON.stringify(resumeData));
             onDataChange?.(resumeData);
         }
     }, [resumeData, isClient, onDataChange, previousData,resumeSize]);
