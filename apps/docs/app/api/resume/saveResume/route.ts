@@ -120,9 +120,11 @@ export async function POST(req: NextRequest) {
         // Skills
         ...(resumeData.skills && resumeData.skills.length > 0 && {
           skills: {
-            create: resumeData.skills.map(skill => ({
-              name: skill.name
-            }))
+            create: resumeData.skills
+              .filter(skill => skill && skill.name && skill.name.trim() !== '')
+              .map(skill => ({
+                name: skill.name.trim()
+              }))
           }
         }),
         // Add other sections as needed
