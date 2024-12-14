@@ -103,8 +103,8 @@ model Resume {
 
 model PersonalInfo {
   id       String  @id @default(cuid())
-  resumeId String
-  resume   Resume  @relation(fields: [id], references: [id], onDelete: Cascade)
+  resumeId String  @unique
+  resume   Resume  @relation(fields: [resumeId], references: [id], onDelete: Cascade)
   name     String
   title    String
   website  String?

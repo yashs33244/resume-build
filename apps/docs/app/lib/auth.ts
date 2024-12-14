@@ -254,10 +254,10 @@ export const authOptions: NextAuthOptions = {
           return `${baseUrl}/create-preference?template=${template}&fromLanding=true`;
         }
         
-        // // 2. Specific callback URL
-        // if (callbackUrl) {
-        //   return callbackUrl.startsWith("/") ? `${baseUrl}${callbackUrl}` : callbackUrl;
-        // }
+        // 2. Specific callback URL
+        if (callbackUrl) {
+          return callbackUrl.startsWith("/") ? `${baseUrl}${callbackUrl}` : callbackUrl;
+        }
         
         // 3. Default to dashboard
         return `${baseUrl}/dashboard`;

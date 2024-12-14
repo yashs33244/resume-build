@@ -1,81 +1,164 @@
-import { NextResponse } from 'next/server';
-import { db } from '../../../db';
-
-import { getServerSession } from "next-auth/next";
+import { NextRequest, NextResponse } from 'next/server';
+import { PrismaClient } from '@prisma/client';
+import { getServerSession } from 'next-auth';
 import { authOptions } from '../../../lib/auth';
-import { ResumeProps, ResumeState } from '../../../../types/ResumeProps';
 
-export async function POST(request: Request) {
-  const session = await getServerSession(authOptions);
-  const { resumeData, template } = await request.json();
 
-  if (!session?.user?.email || !resumeData || !template) {
-    return NextResponse.json({ message: 'Invalid input or user not authenticated' }, { status: 400 });
-  }
+// Prisma client initialization
+const prisma = new PrismaClient();
 
+// Type definition for Resume Data (adjust as needed)
+interface ResumeData {
+  personalInfo: {
+    name: string;
+    title: string;
+    email?: string;
+    phone?: string;
+    location?: string;
+    website?: string;
+    linkedin?: string;
+    bio?: string;
+  };
+  education?: Array<{
+    institution: string;
+    major?: string;
+    start: string;
+    end: string;
+    degree: string;
+    score?: string;
+  }>;
+  experience?: Array<{
+    company: string;
+    role: string;
+    start: string;
+    end: string;
+    responsibilities?: string[];
+    current?: boolean;
+  }>;
+  skills?: Array<{
+    name: string;
+  }>;
+  // Add other sections as needed
+}
+
+export async function POST(req: NextRequest) {
   try {
-    const user = await db.user.findUnique({
+    // Get the session to ensure the user is authenticated
+    const session = await getServerSession(authOptions);
+    
+    if (!session || !session.user || !session.user.email) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    // Parse the request body
+    const { resumeData, template } = await req.json() as { 
+      resumeData: ResumeData, 
+      template: string 
+    };
+
+    // Validate input
+    if (!resumeData || !resumeData.personalInfo || !template) {
+      return NextResponse.json({ 
+        error: 'Invalid input', 
+        details: 'Resume data or template is missing' 
+      }, { status: 400 });
+    }
+
+    // Find the user
+    const user = await prisma.user.findUnique({
       where: { email: session.user.email },
     });
 
     if (!user) {
-      return NextResponse.json({ message: 'User does not exist' }, { status: 404 });
+      return NextResponse.json({ error: 'User not found' }, { status: 404 });
     }
 
-    const now = new Date();
-
-    const existingResume = await db.resume.findFirst({
-      where: { userId: user.id }
-    });
-    
-    if (existingResume) {
-      await db.resume.delete({
-        where: { id: existingResume.id }
-      });
-    }
-
-    // Create new resume
-    const resume = await db.resume.create({
+    // Create the resume with all related data
+    const newResume = await prisma.resume.create({
       data: {
         userId: user.id,
-        state: ResumeState.EDITING,
         templateId: template,
-        createdAt: now,
-        updatedAt: null,
-        size: "M",
-        education: {
-          create: resumeData.education,
-        },
-        experience: {
-          create: resumeData.experience,
-        },
-        skills: {
-          create: resumeData.skills.map((skill: string) => ({ name: skill })),
-        },
-        coreSkills: {
-          create: (resumeData.coreSkills ?? []).map((skill: string) => ({ name: skill })),
-        },
-        languages: {
-          create: (resumeData.languages ?? []).map((language: string) => ({ name: language })),
-        },
-        projects: {
-          create: resumeData.projects,
-        },
-        certificates: {
-          create: resumeData.certificates,
-        },
+        state: 'NOT_STARTED',
         personalInfo: {
-          create: resumeData.personalInfo,
+          create: {
+            name: resumeData.personalInfo.name,
+            title: resumeData.personalInfo.title,
+            email: resumeData.personalInfo.email,
+            phone: resumeData.personalInfo.phone,
+            location: resumeData.personalInfo.location,
+            website: resumeData.personalInfo.website,
+            linkedin: resumeData.personalInfo.linkedin,
+            bio: resumeData.personalInfo.bio
+          }
         },
-        achievements: {
-          create: resumeData.achievements,
-        },
+        // Education
+        ...(resumeData.education && resumeData.education.length > 0 && {
+          education: {
+            create: resumeData.education.map(edu => ({
+              institution: edu.institution,
+              major: edu.major,
+              start: edu.start,
+              end: edu.end,
+              degree: edu.degree,
+              score: edu.score
+            }))
+          }
+        }),
+        // Experience
+        ...(resumeData.experience && resumeData.experience.length > 0 && {
+          experience: {
+            create: resumeData.experience.map(exp => ({
+              company: exp.company,
+              role: exp.role,
+              start: exp.start,
+              end: exp.end,
+              responsibilities: exp.responsibilities,
+              current: exp.current
+            }))
+          }
+        }),
+        // Skills
+        ...(resumeData.skills && resumeData.skills.length > 0 && {
+          skills: {
+            create: resumeData.skills.map(skill => ({
+              name: skill.name
+            }))
+          }
+        }),
+        // Add other sections as needed
       },
+      include: {
+        personalInfo: true,
+        education: true,
+        experience: true,
+        skills: true
+      }
     });
 
-    return NextResponse.json({ message: 'New resume saved successfully', resumeId: resume.id }, { status: 200 });
+    return NextResponse.json({ 
+      message: 'Resume saved successfully', 
+      resumeId: newResume.id 
+    }, { status: 200 });
+
   } catch (error) {
-    console.error('Error saving new resume:', error);
-    return NextResponse.json({ message: 'Error saving new resume', error }, { status: 500 });
+    console.error('Error saving resume:', error);
+
+    // More detailed error handling
+    if (error instanceof Error) {
+      return NextResponse.json({ 
+        error: 'Failed to save resume', 
+        details: error.message,
+        stack: process.env.NODE_ENV === 'development' ? error.stack : undefined
+      }, { status: 500 });
+    }
+
+    return NextResponse.json({ 
+      error: 'Failed to save resume', 
+      details: 'An unexpected error occurred' 
+    }, { status: 500 });
+
+  } finally {
+    // Ensure database connection is closed
+    await prisma.$disconnect();
   }
 }
