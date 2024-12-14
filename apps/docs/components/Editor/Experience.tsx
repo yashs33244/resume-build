@@ -1,6 +1,5 @@
-
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Label } from "@repo/ui/components/ui/label";
 import { Input } from "@repo/ui/components/ui/input";
 import { Button } from "@repo/ui/components/ui/button";
@@ -51,8 +50,15 @@ export const Experience: React.FC<ExperienceProps> = ({
   handleAddField,
   handleDeleteField,
 }) => {
+  const [openIndex, setOpenIndex] = useState(0);
   const experiences = resumeData.experience || [];
   const [isLoading, setIsLoading] = useState<{ [key: number]: boolean }>({});
+
+  useEffect(() => {
+    if (!resumeData.education) {
+      handleAddField("education");
+    }
+  }, [resumeData.education, handleAddField]);
 
   const handleResponsibilitiesChange = (value: string, index: number) => {
     const responsibilities = value
@@ -131,6 +137,12 @@ export const Experience: React.FC<ExperienceProps> = ({
       <div className="experience-list">
         {experiences.map((exp, index) => (
           <Collapsible
+            open={index === openIndex}
+            onOpenChange={(isOpen) => {
+              if (isOpen) {
+                setOpenIndex(index);
+              }
+            }}
             className={index === 0 ? "collapse-comp first" : "collapse-comp"}
             key={index}
           >

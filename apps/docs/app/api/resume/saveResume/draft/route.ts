@@ -4,7 +4,6 @@ import { authOptions } from "../../../../lib/auth";
 import { db } from "../../../../db";
 import { ResumeState } from "../../../../../types/ResumeProps";
 
-
 export async function POST(request: NextRequest) {
   try {
     const session = await getServerSession(authOptions);
@@ -15,7 +14,6 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     const { resumeId, content } = body;
     
-
     if (!resumeId || !content) {
       return NextResponse.json(
         { error: "Resume ID and content are required" },
@@ -23,7 +21,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Split the transaction into smaller chunks to prevent timeout
+    // Find or create resume
     let resume = await db.resume.findUnique({ where: { id: resumeId } });
 
     if (!resume) {
@@ -33,155 +31,148 @@ export async function POST(request: NextRequest) {
           userId: session.user.id,
           state: ResumeState.EDITING,
           templateId: content.templateId,
-          size: "M",
+          size: content.size || "M",
         },
       });
     } else {
       resume = await db.resume.update({
         where: { id: resumeId },  
         data: {
-          state: resume.state === ResumeState.DOWNLOAD_SUCCESS ? ResumeState.DOWNLOAD_SUCCESS : ResumeState.EDITING,
-          templateId: content.templateId,
-          size: content.size, 
+          state: resume.state === ResumeState.DOWNLOAD_SUCCESS 
+            ? ResumeState.DOWNLOAD_SUCCESS 
+            : ResumeState.EDITING,
+          templateId: content.templateId || resume.templateId,
+          size: content.size || resume.size,
           updatedAt: new Date(),
         },
       });
     }
 
-    // Handle personal info
-    if (content.personalInfo) {
-      await db.personalInfo.upsert({
-        where: { resumeId },
-        create: {
+    // Sections definition with update logic
+    const sectionUpdateMap = {
+      personalInfo: {
+        model: db.personalInfo,
+        updateMethod: 'upsert',
+        updateData: (data: any): Parameters<typeof db.personalInfo.upsert>[0] => ({
+          where: { resumeId },
+          create: { resumeId, ...data },
+          update: data
+        })
+      },
+      education: {
+        model: db.education,
+        updateMethod: 'deleteMany-createMany',
+        deleteFilter: { resumeId },
+        mapData: (edu: any) => ({
           resumeId,
-          ...content.personalInfo,
-        },
-        update: content.personalInfo,
-      });
-    }
+          institution: edu.institution,
+          major: edu.major,
+          start: edu.start,
+          end: edu.end,
+          degree: edu.degree,
+          score: edu.score,
+        })
+      },
+      experience: {
+        model: db.experience,
+        updateMethod: 'deleteMany-createMany',
+        deleteFilter: { resumeId },
+        mapData: (exp: any) => ({
+          resumeId,
+          company: exp.company,
+          role: exp.role,
+          start: exp.start,
+          end: exp.end,
+          responsibilities: exp.responsibilities,
+          current: exp.current,
+        })
+      },
+      skills: {
+        model: db.skill,
+        updateMethod: 'deleteMany-createMany',
+        deleteFilter: { resumeId },
+        mapData: (skill: any) => ({ resumeId, name: skill })
+      },
+      coreSkills: {
+        model: db.coreSkill,
+        updateMethod: 'deleteMany-createMany',
+        deleteFilter: { resumeId },
+        mapData: (skill: any) => ({ resumeId, name: skill })
+      },
+      languages: {
+        model: db.language,
+        updateMethod: 'deleteMany-createMany',
+        deleteFilter: { resumeId },
+        mapData: (lang: any) => ({ resumeId, name: lang })
+      },
+      projects: {
+        model: db.project,
+        updateMethod: 'deleteMany-createMany',
+        deleteFilter: { resumeId },
+        mapData: (proj: any) => ({
+          resumeId,
+          name: proj.name,
+          link: proj.link,
+          start: proj.start,
+          end: proj.end,
+          responsibilities: proj.responsibilities,
+        })
+      },
+      certificates: {
+        model: db.certificate,
+        updateMethod: 'deleteMany-createMany',
+        deleteFilter: { resumeId },
+        mapData: (cert: any) => ({
+          resumeId,
+          name: cert.name,
+          issuer: cert.issuer,
+          issuedOn: cert.issuedOn,
+        })
+      },
+      achievements: {
+        model: db.achievement,
+        updateMethod: 'deleteMany-createMany',
+        deleteFilter: { resumeId },
+        mapData: (ach: any) => ({
+          resumeId,
+          title: ach.title,
+          description: ach.description,
+        })
+      }
+    };
 
-    // Handle arrays in parallel for better performance
-    await Promise.all([
-      // Education
-      content.education?.length > 0
-        ? (async () => {
-            await db.education.deleteMany({ where: { resumeId } });
-            await db.education.createMany({
-              data: content.education.map((edu: any) => ({
-                resumeId,
-                institution: edu.institution,
-                major: edu.major,
-                start: edu.start,
-                end: edu.end,
-                degree: edu.degree,
-                score: edu.score,
-              })),
-            });
-          })()
-        : Promise.resolve(),
+    // Perform updates for each section
+    await Promise.all(
+      Object.entries(sectionUpdateMap).map(([key, section]) => {
+        const sectionContent = content[key];
+        
+        // Skip if no content for this section
+        if (!sectionContent) return Promise.resolve();
 
-      // Experience
-      content.experience?.length > 0
-        ? (async () => {
-            await db.experience.deleteMany({ where: { resumeId } });
-            await db.experience.createMany({
-              data: content.experience.map((exp: any) => ({
-                resumeId,
-                company: exp.company,
-                role: exp.role,
-                start: exp.start,
-                end: exp.end,
-                responsibilities: exp.responsibilities,
-                current: exp.current,
-              })),
-            });
-          })()
-        : Promise.resolve(),
+        // Handle different update methods
+        if (section.updateMethod === 'upsert') {
+          if (section.updateMethod === 'upsert' && 'updateData' in section) {
+            return (section.model.upsert as any)(section.updateData(sectionContent));
+          }
+          return Promise.resolve();
+        }
 
-      // Skills
-      content.skills?.length > 0
-        ? (async () => {
-            await db.skill.deleteMany({ where: { resumeId } });
-            await db.skill.createMany({
-              data: content.skills.map((skill: any) => ({
-                resumeId,
-                name: skill,
-              })),
-            });
-          })()
-        : Promise.resolve(),
+        if (section.updateMethod === 'deleteMany-createMany') {
+          // Delete existing records for the section
+          return Promise.all([
+            'deleteFilter' in section && section.deleteFilter ? (section.model as any).deleteMany({ where: section.deleteFilter }) : Promise.resolve(),
+            // Only create if there are items
+            sectionContent.length > 0 && 'mapData' in section
+              ? (section.model as any).createMany({
+                  data: sectionContent.map((item:any) => section.mapData(item)),
+                })
+              : Promise.resolve()
+          ]);
+        }
 
-      // Core Skills
-      content.coreSkills?.length > 0
-        ? (async () => {
-            await db.coreSkill.deleteMany({ where: { resumeId } });
-            await db.coreSkill.createMany({
-              data: content.coreSkills.map((skill: any) => ({
-                resumeId,
-                name: skill,
-              })),
-            });
-          })()
-        : Promise.resolve(),
-
-      // Languages
-      content.languages?.length > 0
-        ? (async () => {
-            await db.language.deleteMany({ where: { resumeId } });
-            await db.language.createMany({
-              data: content.languages.map((lang: any) => ({
-                resumeId,
-                name: lang,
-              })),
-            });
-          })()
-        : Promise.resolve(),
-
-      // Projects
-      content.projects?.length > 0
-        ? (async () => {
-            await db.project.deleteMany({ where: { resumeId } });
-            await db.project.createMany({
-              data: content.projects.map((proj: any) => ({
-                resumeId,
-                name: proj.name,
-                link: proj.link,
-                start: proj.start,
-                end: proj.end,
-                responsibilities: proj.responsibilities,
-              })),
-            });
-          })()
-        : Promise.resolve(),
-
-      // Certificates
-      content.certificates?.length > 0
-        ? (async () => {
-            await db.certificate.deleteMany({ where: { resumeId } });
-            await db.certificate.createMany({
-              data: content.certificates.map((cert: any) => ({
-                resumeId,
-                name: cert.name,
-                issuer: cert.issuer,
-                issuedOn: cert.issuedOn,
-              })),
-            });
-          })()
-        : Promise.resolve(),
-
-        content.achievements?.length > 0
-          ? (async ()=> {
-            await db.achievement.deleteMany({ where: { resumeId } });
-            await db.achievement.createMany({
-              data: content.achievements.map((ach: any) => ({
-                resumeId,
-                title: ach.title,
-                description: ach.description,
-              })),
-            });
-          })()
-          : Promise.resolve(),
-    ]);
+        return Promise.resolve();
+      })
+    );
 
     // Fetch the updated resume with all relations
     const updatedResume = await db.resume.findUnique({
@@ -209,10 +200,10 @@ export async function POST(request: NextRequest) {
         content: updatedResume,
         updatedAt: updatedResume.updatedAt,
       },
-      message: "Resume saved successfully",
+      message: "Resume draft updated successfully",
     });
   } catch (error) {
-    console.error("API Error:", error);
+    console.error("Draft Update API Error:", error);
     return NextResponse.json(
       {
         error: "Internal server error",

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Label } from "@repo/ui/components/ui/label";
 import { Input } from "@repo/ui/components/ui/input";
 import { Button } from "@repo/ui/components/ui/button";
@@ -36,11 +36,23 @@ export const Education: React.FC<EducationProps> = ({
   handleAddField,
   handleDeleteField,
 }) => {
+  const [openIndex, setOpenIndex] = useState(0);
+  useEffect(() => {
+    if (!resumeData.education) {
+      handleAddField("education");
+    }
+  }, [resumeData.education, handleAddField]);
   return (
     <div className="education-container">
       <div className="education-list">
         {resumeData.education?.map((edu, index): any => (
           <Collapsible
+            open={index === openIndex}
+            onOpenChange={(isOpen) => {
+              if (isOpen) {
+                setOpenIndex(index);
+              }
+            }}
             className={index === 0 ? "collapse-comp first" : "collapse-comp"}
             key={index}
           >
@@ -138,7 +150,7 @@ export const Education: React.FC<EducationProps> = ({
                     </Label>
                     <Input
                       id={`score-${index}`}
-                      value={edu.score ? edu.score : ''}
+                      value={edu.score ? edu.score : ""}
                       onChange={(e) =>
                         handleInputChange(
                           "education",

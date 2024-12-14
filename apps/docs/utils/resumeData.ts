@@ -15,9 +15,24 @@ export const initialResumeData: ResumeProps = {
     bio: "",
   },
   education: [
+    {
+      institution: "",
+      major: "",
+      start: "",
+      end: "",
+      degree: "",
+      score: ""
+    }
   ],
   experience: [
-    
+    {
+      company: "",
+      role: "",
+      start: "",
+      end: "",
+      responsibilities: [],
+      current: false
+    }
   ],
   skills: [], // Added the required 'skills' field as an empty array
   coreSkills: [

@@ -91,8 +91,26 @@ export default function CreatePreference() {
         phone: "",
         location: "",
       },
-      education: [],
-      experience: [],
+      education: [
+        {
+          institution: "",
+          major: "",
+          start: "",
+          end: "",
+          degree: "",
+          score: "",
+        },
+      ],
+      experience: [
+        {
+          company: "",
+          role: "",
+          start: "",
+          end: "",
+          responsibilities: [],
+          current: false,
+        },
+      ],
       skills: [],
       coreSkills: [],
       languages: [],
