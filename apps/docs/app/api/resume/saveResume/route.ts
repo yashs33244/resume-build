@@ -2,44 +2,14 @@ import { NextRequest, NextResponse } from 'next/server';
 import { PrismaClient } from '@prisma/client';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '../../../lib/auth';
+import { ResumeProps } from '../../../../types/ResumeProps';
 
 
 // Prisma client initialization
 const prisma = new PrismaClient();
 
 // Type definition for Resume Data (adjust as needed)
-interface ResumeData {
-  personalInfo: {
-    name: string;
-    title: string;
-    email?: string;
-    phone?: string;
-    location?: string;
-    website?: string;
-    linkedin?: string;
-    bio?: string;
-  };
-  education?: Array<{
-    institution: string;
-    major?: string;
-    start: string;
-    end: string;
-    degree: string;
-    score?: string;
-  }>;
-  experience?: Array<{
-    company: string;
-    role: string;
-    start: string;
-    end: string;
-    responsibilities?: string[];
-    current?: boolean;
-  }>;
-  skills?: Array<{
-    name: string;
-  }>;
-  // Add other sections as needed
-}
+
 
 export async function POST(req: NextRequest) {
   try {
@@ -52,7 +22,7 @@ export async function POST(req: NextRequest) {
 
     // Parse the request body
     const { resumeData, template } = await req.json() as { 
-      resumeData: ResumeData, 
+      resumeData: ResumeProps, 
       template: string 
     };
 
@@ -121,13 +91,44 @@ export async function POST(req: NextRequest) {
         ...(resumeData.skills && resumeData.skills.length > 0 && {
           skills: {
             create: resumeData.skills
-              .filter(skill => skill && skill.name && skill.name.trim() !== '')
-              .map(skill => ({
+              .filter((skill:any) => skill && skill.name && skill.name.trim() !== '')
+              .map((skill:any) => ({
                 name: skill.name.trim()
               }))
           }
         }),
-        // Add other sections as needed
+        
+         // Achievements
+         ...(resumeData.achievements && resumeData.achievements.length > 0 && {
+          achievements: {
+            create: resumeData.achievements.map(achievement => ({
+              title: achievement.title,
+              description: achievement.description
+            }))
+          }
+        }),
+        // Projects
+        ...(resumeData.projects && resumeData.projects.length > 0 && {
+          projects: {
+            create: resumeData.projects.map(project => ({
+              name: project.name,
+              link: project.link,
+              start: project.start,
+              end: project.end,
+              responsibilities: project.responsibilities
+            }))
+          }
+        }),
+        // Certificates
+        ...(resumeData.certificates && resumeData.certificates.length > 0 && {
+          certificates: {
+            create: resumeData.certificates.map(cert => ({
+              name: cert.name,
+              issuer: cert.issuer,
+              issuedOn: cert.issuedOn
+            }))
+          }
+        }),
       },
       include: {
         personalInfo: true,
