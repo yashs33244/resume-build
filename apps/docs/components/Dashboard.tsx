@@ -123,7 +123,7 @@ const Dashboard = (props: any) => {
             templateId as keyof typeof TEMPLATE_NAME_MAPPING
           ];
 
-        const cssLink = `<link rel="stylesheet" href="${process.env.NEXT_PUBLIC_BASE_URL}/${templateName}.css">`;
+        const cssLink = `<link rel="stylesheet" href="https://finalcv.com/${templateName}.css">`;
 
         const fontLink = `<link href='https://fonts.googleapis.com/css?family=Inter' rel='stylesheet'/>`;
         const htmlContent = cssLink + fontLink + element.outerHTML;

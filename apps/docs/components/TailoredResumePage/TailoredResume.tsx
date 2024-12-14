@@ -130,7 +130,8 @@ const TailoredResumePage: React.FC = () => {
         element.style.transform = "scale(1)";
         const resumeId = searchParams.get("id");
 
-        const cssLink = `<link rel="stylesheet" href="${process.env.NEXT_PUBLIC_BASE_URL}/${resumeData.templateId}.css">`;
+        // const cssLink = `<link rel="stylesheet" href="${process.env.NEXT_PUBLIC_BASE_URL}/${resumeData.templateId}.css">`;
+        const cssLink = `<link rel="stylesheet" href="https://finalcv.com/${data.templateId}.css">`;
         const fontLink = `<link href='https://fonts.googleapis.com/css?family=Inter' rel='stylesheet'/>`;
         const htmlContent = cssLink + fontLink + element.outerHTML;
 

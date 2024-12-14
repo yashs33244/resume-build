@@ -52,7 +52,7 @@ RUN apk add --no-cache \
     openssl
 
 # Set Chrome path
-ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium
+ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser
 
 # Install PostgreSQL client
 RUN apk add --no-cache postgresql-client
