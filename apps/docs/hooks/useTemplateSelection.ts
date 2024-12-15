@@ -74,7 +74,8 @@ export const useTemplateSelection = () => {
             content: {
               ...data,
               state: "EDITING",
-              userId: session?.user?.id || "default-user-id",
+              templateId: data.templateId,
+              resumeId
             },
           }),
         });
