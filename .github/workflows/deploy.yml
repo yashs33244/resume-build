@@ -55,13 +55,3 @@ jobs:
               docker image prune -f
             EOF
           done
-
-      # Optional: Health Check or Notification
-      - name: Deployment Notification
-        if: success()
-        uses: 8398a7/action-slack@v3
-        with:
-          status: ${{ job.status }}
-          text: Deployment successful to all instances
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }} # Optional
