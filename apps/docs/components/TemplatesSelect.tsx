@@ -25,10 +25,15 @@ const TemplatesSelect = () => {
     error,
   } = useTemplateSelection();
 
-  if (resumeLoading) {
+  if (resumeLoading || (templateSelected && loading)) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <Loader className="w-8 h-8 animate-spin" />
+        <div className="flex flex-col items-center justify-center">
+          <Loader className="w-8 h-8 animate-spin" />
+          <p className="text-lg text-gray-600">
+            {loading ? "please wait..." : "Loading..."}
+          </p>
+        </div>
       </div>
     );
   }

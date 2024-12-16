@@ -16,21 +16,6 @@ import { useFetchResumeData } from "../../hooks/useFetchResumeData";
 import { useSession } from "next-auth/react";
 import { initialResumeData } from "../../utils/resumeData";
 
-// const TEMPLATE_NAME_MAPPING = {
-//   fresher: "template1",
-//   experienced: "template2",
-//   designer: "template3",
-// };
-
-// const TEMPLATE_CSS_MAP = {
-//   fresher: "https://utfs.io/f/Clj1dqnLZKkyhoZWQGyF60iNrl5eMPZXqtkQpSRgAvCx7hTs",
-//   experienced:
-//     "https://utfs.io/f/Clj1dqnLZKkyHgL3tfqELCqQuhUwYHrz3lnvt0fTa4y5IgsW",
-//   designer:
-//     "https://utfs.io/f/Clj1dqnLZKky41CMBCeRQv1SI8iXB29JT3FDwqKozgGr4Zhu",
-//   layout: "https://utfs.io/f/Clj1dqnLZKkyyDNBZUId4YFMtsHjXk9zRpxlSUru0ngGTaC5",
-// };
-
 const TailoredResumePage: React.FC = () => {
   const searchParams = useSearchParams();
   const { rdata, loading } = useFetchResumeData();
@@ -53,6 +38,9 @@ const TailoredResumePage: React.FC = () => {
     useState<ResumeProps>(initialResumeData);
   const [showComparison, setShowComparison] = useState(false);
   const [isTailoring, setIsTailoring] = useState(false);
+  const [downloadingResume, setDownloadingResume] = useState<
+    "original" | "tailored" | null
+  >(null);
 
   function scaleContent() {
     const containers = document.querySelectorAll(".resumeParent");
@@ -103,19 +91,16 @@ const TailoredResumePage: React.FC = () => {
   );
 
   const handleDownload = useCallback(
-    async (data: ResumeProps) => {
+    async (data: ResumeProps, type: "original" | "tailored") => {
+      setDownloadingResume(type);
       setIsGeneratingPDF(true);
       try {
         // Get the specific wrapper for the resume being downloaded
-        const realElement = document.getElementById("wrapper");
-        if (!realElement) throw new Error("Resume wrapper not found");
-
-        // Find all wrappers and get the correct one based on the data being downloaded
         const wrappers = document.querySelectorAll("#wrapper");
         let targetWrapper: Element | null = null;
 
         // If we're downloading tailored resume and it exists, use the second wrapper
-        if (data === tailoredResumeData && wrappers.length > 1) {
+        if (type === "tailored" && wrappers.length > 1) {
           targetWrapper = wrappers[1] ?? null;
         } else {
           // Otherwise use the first wrapper (original resume)
@@ -130,7 +115,6 @@ const TailoredResumePage: React.FC = () => {
         element.style.transform = "scale(1)";
         const resumeId = searchParams.get("id");
 
-        // const cssLink = `<link rel="stylesheet" href="${process.env.NEXT_PUBLIC_BASE_URL}/${resumeData.templateId}.css">`;
         const cssLink = `<link rel="stylesheet" href="https://finalcv.com/${data.templateId}.css">`;
         const fontLink = `<link href='https://fonts.googleapis.com/css?family=Inter' rel='stylesheet'/>`;
         const htmlContent = cssLink + fontLink + element.outerHTML;
@@ -143,10 +127,9 @@ const TailoredResumePage: React.FC = () => {
           body: JSON.stringify({
             html: htmlContent,
             resumeId: resumeId,
-            isTailored: data === tailoredResumeData,
+            isTailored: type === "tailored",
           }),
         });
-        setIsTailored(data === tailoredResumeData);
 
         if (!response.ok) throw new Error("PDF generation failed");
 
@@ -157,18 +140,17 @@ const TailoredResumePage: React.FC = () => {
         a.href = url;
         // Add differentiation in filename for tailored resume
         const filename =
-          data === tailoredResumeData
+          type === "tailored"
             ? `${session?.user?.name?.split(" ")[0] ?? "user"}_tailored_finalCV.pdf`
             : `${session?.user?.name?.split(" ")[0] ?? "user"}_finalCV.pdf`;
         a.download = filename;
         document.body.appendChild(a);
         a.click();
         window.URL.revokeObjectURL(url);
-        // router.push("/dashboard");
       } catch (error) {
         console.error("Error generating PDF:", error);
       } finally {
-        setIsTailored(false);
+        setDownloadingResume(null);
         setIsGeneratingPDF(false);
       }
     },
@@ -203,11 +185,6 @@ const TailoredResumePage: React.FC = () => {
 
       const tailoredData: ResumeProps = await response.json();
 
-      // // Additional check to ensure education is not undefined
-      // if (!tailoredData.education) {
-      //   tailoredData.education = resumeData.education || [];
-      // }
-
       // Ensure other critical sections are not undefined
       tailoredData.experience = tailoredData.experience || [];
       tailoredData.skills = tailoredData.skills || [];
@@ -216,9 +193,11 @@ const TailoredResumePage: React.FC = () => {
       if (JSON.stringify(tailoredData) === JSON.stringify(resumeData)) {
         throw new Error("Tailored resume is identical to the original.");
       }
-      console.log(tailoredData);
+
+      // Ensure templateId is preserved
+      tailoredData.templateId = resumeData?.templateId || "fresher";
+
       setTailoredResumeData(tailoredData);
-      console.log(tailoredResumeData);
       setShowComparison(true);
     } catch (error: any) {
       alert(
@@ -260,11 +239,13 @@ const TailoredResumePage: React.FC = () => {
               </div>
               <button
                 className={styles.tailor_p2_head_section_heading_button}
-                onClick={() => resumeData && handleDownload(resumeData)}
-                disabled={isGeneratingPDF && !isTailored}
+                onClick={() =>
+                  resumeData && handleDownload(resumeData, "original")
+                }
+                disabled={downloadingResume === "original"}
               >
                 <IoMdDownload />
-                {isGeneratingPDF && isTailored ? "Cooking..." : "Download"}
+                {downloadingResume === "original" ? "Cooking..." : "Download"}
               </button>
             </div>
             <div className={styles.tailor_p2_head_section}>
@@ -282,12 +263,13 @@ const TailoredResumePage: React.FC = () => {
               <button
                 className={styles.tailor_p2_head_section_heading_button}
                 onClick={() =>
-                  tailoredResumeData && handleDownload(tailoredResumeData)
+                  tailoredResumeData &&
+                  handleDownload(tailoredResumeData, "tailored")
                 }
-                disabled={isGeneratingPDF && isTailored}
+                disabled={downloadingResume === "tailored"}
               >
                 <IoMdDownload />
-                {isGeneratingPDF && !isTailored ? "Cooking..." : "Download"}
+                {downloadingResume === "tailored" ? "Cooking..." : "Download"}
               </button>
             </div>
           </div>

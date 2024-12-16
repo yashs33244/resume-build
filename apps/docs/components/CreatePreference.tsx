@@ -203,14 +203,14 @@ export default function CreatePreference() {
           >
             Craft your perfect resume from start
           </div>
-          {/* {selectedOption === "scratch" && (
+          {selectedOption === "scratch" && (
             <ResumeUploadProgress
               isLoading={true}
               progress={0}
               progressPhase="parsing"
               error={undefined}
             />
-          )} */}
+          )}
         </div>
       </div>
       <div className="loader-container">

@@ -41,7 +41,7 @@ export const ResumeUploadProgress: React.FC<ResumeUploadProgressProps> = ({
           increment = 0.2; // Very slow near the end
         }
 
-        const newProgress = Math.min(prev + increment, 100);
+        const newProgress = Math.min(prev + increment, 99);
 
         // Update phases based on progress
         if (newProgress >= 70) {

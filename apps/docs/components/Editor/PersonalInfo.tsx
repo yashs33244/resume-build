@@ -138,9 +138,13 @@ export const PersonalInfo: React.FC<PersonalInfoProps> = ({
               className="form-input"
               type="text"
               value={resumeData.personalInfo?.linkedin || ""}
-              onChange={(e) =>
-                handleInputChange("personalInfo", "linkedin", e.target.value)
-              }
+              onChange={(e) => {
+                let input = e.target.value;
+                if (!input.startsWith("https://www.linkedin.com/in/")) {
+                  input = "https://www.linkedin.com/in/" + input;
+                }
+                handleInputChange("personalInfo", "linkedin", input);
+              }}
               placeholder="For Eg : linkedin/com/in/pgpm"
             />
           </div>

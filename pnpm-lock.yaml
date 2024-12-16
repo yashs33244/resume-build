@@ -65,6 +65,9 @@ importers:
       '@types/wkhtmltopdf':
         specifier: ^0.3.9
         version: 0.3.9
+      '@types/xmldom':
+        specifier: ^0.1.34
+        version: 0.1.34
       '@uploadthing/react':
         specifier: ^7.1.1
         version: 7.1.1(next@14.2.4)(uploadthing@7.3.0)
@@ -149,6 +152,9 @@ importers:
       uploadthing:
         specifier: ^7.3.0
         version: 7.3.0(next@14.2.4)(tailwindcss@3.4.11)
+      xmldom:
+        specifier: ^0.6.0
+        version: 0.6.0
     devDependencies:
       '@repo/eslint-config':
         specifier: workspace:*
@@ -2754,6 +2760,10 @@ packages:
     resolution: {integrity: sha512-tJqpM2QBiAZGmkIldVbGo1O63SIIdOjSYoMOp1LVHdNJKKl98smguJqRTZB3jsXQgldQ9fUJDRLALZPUAyoNUw==}
     dependencies:
       '@types/node': 20.16.5
+    dev: false
+
+  /@types/xmldom@0.1.34:
+    resolution: {integrity: sha512-7eZFfxI9XHYjJJuugddV6N5YNeXgQE1lArWOcd1eCOKWb/FGs5SIjacSYuEJuwhsGS3gy4RuZ5EUIcqYscuPDA==}
     dev: false
 
   /@types/yauzl@2.10.3:
@@ -8464,6 +8474,11 @@ packages:
 
   /xmlchars@2.2.0:
     resolution: {integrity: sha512-JZnDKK8B0RCDw84FNdDAIpZK+JuJw+s7Lz8nksI7SIuU3UXJJslUthsi+uWBUYOwPFwW7W7PRLRfUKpxjtjFCw==}
+    dev: false
+
+  /xmldom@0.6.0:
+    resolution: {integrity: sha512-iAcin401y58LckRZ0TkI4k0VSM1Qg0KGSc3i8rU+xrxe19A/BN1zHyVSJY7uoutVlaTSzYyk/v5AmkewAP7jtg==}
+    engines: {node: '>=10.0.0'}
     dev: false
 
   /y18n@5.0.8:
