@@ -3,7 +3,7 @@ name: CI/CD Pipeline
 on:
   push:
     branches:
-      - deployment # The branch that triggers deployment
+      - master # The branch that triggers deployment
 
 jobs:
   deploy:
