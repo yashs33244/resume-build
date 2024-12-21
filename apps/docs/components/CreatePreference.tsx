@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useCallback, useEffect } from "react";
+import React, { useState, useCallback, useEffect, use } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useDropzone } from "react-dropzone";
 import Image from "next/image";
@@ -11,6 +11,7 @@ import { ResumeProps, ResumeState } from "../types/ResumeProps";
 import { useSaveResume } from "../hooks/useSaveResume";
 import { useResumeUpload } from "../hooks/useResumeUpload";
 import { ResumeUploadProgress } from "./ResumeUploadProgress";
+import { Loader } from "lucide-react";
 
 type LandingPageTemplateType = "classic" | "modern" | "bold";
 type ActualTemplateType = "fresher" | "experienced" | "designer";
@@ -144,6 +145,19 @@ export default function CreatePreference() {
     disabled: isLoading || isProcessing || selectedOption !== null,
   });
 
+  if (selectedOption === "scratch" || selectedOption !== null) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="flex flex-col items-center justify-center">
+          <Loader className="w-8 h-8 animate-spin" />
+          <p className="text-lg text-gray-600">
+            {isLoading ? "please wait..." : "Loading..."}
+          </p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="preference-container">
       <div className="content-container">
@@ -203,14 +217,16 @@ export default function CreatePreference() {
           >
             Craft your perfect resume from start
           </div>
-          {selectedOption === "scratch" && (
+          {/* {selectedOption === "scratch" && (
             <ResumeUploadProgress
               isLoading={true}
               progress={0}
               progressPhase="parsing"
               error={undefined}
             />
-          )}
+          )} */}
+
+          {/* {scratchLoader(isLoading, error, selectedOption)} */}
         </div>
       </div>
       <div className="loader-container">

@@ -98,13 +98,14 @@ export const useResumeData = (onDataChange?: (resumeData: ResumeProps) => void) 
         setResumeData((prevData) => {
             const newData = { ...prevData } as ResumeProps;
 
-            if (section === "personalInfo") {
-                //@ts-ignore
-                newData.personalInfo = {
-                    ...newData.personalInfo,
-                    [field]: value,
-                };
-            } else if (section === "education") {
+                if (section === "personalInfo") {
+                    newData.personalInfo = {
+                        ...newData.personalInfo,
+                        name: newData.personalInfo?.name || '',
+                        title: newData.personalInfo?.title || '',
+                        [field]: value,
+                    };
+                } else if (section === "education") {
                 if (newData.education && Array.isArray(newData.education) && index !== undefined) {
                     newData.education = newData.education.map((item, i) =>
                         i === index ? { ...item, [field]: value } : item

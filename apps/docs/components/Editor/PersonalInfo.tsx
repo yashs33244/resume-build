@@ -1,16 +1,14 @@
 "use client";
-
 import React, { useEffect, useState } from "react";
 import { Label } from "@repo/ui/components/ui/label";
 import { Input } from "@repo/ui/components/ui/input";
 import { ResumeProps } from "../../types/ResumeProps";
-import AiPrompt from "../Aiprompt";
 import dynamic from "next/dynamic";
 import ReactQuill from "react-quill";
 import "./styles/personal.scss";
-import { MdTipsAndUpdates } from "react-icons/md";
 import "react-quill/dist/quill.snow.css";
 import { useProfileSession } from "../../hooks/useProfileSession"; // Adjust the import path as needed
+import { LinkedInInput } from "../LinkedInInput";
 
 const ClientSideQuill = dynamic(() => Promise.resolve(ReactQuill), {
   ssr: false,
@@ -133,19 +131,12 @@ export const PersonalInfo: React.FC<PersonalInfoProps> = ({
             <Label className="field-label" htmlFor="website">
               Linkedin URL
             </Label>
-            <Input
-              id="website"
-              className="form-input"
-              type="text"
+            // In PersonalInfo component
+            <LinkedInInput
               value={resumeData.personalInfo?.linkedin || ""}
-              onChange={(e) => {
-                let input = e.target.value;
-                if (!input.startsWith("https://www.linkedin.com/in/")) {
-                  input = "https://www.linkedin.com/in/" + input;
-                }
-                handleInputChange("personalInfo", "linkedin", input);
-              }}
-              placeholder="For Eg : linkedin/com/in/pgpm"
+              onChange={(value) =>
+                handleInputChange("personalInfo", "linkedin", value)
+              }
             />
           </div>
         </div>
