@@ -73,9 +73,7 @@ export const useTemplateSelection = () => {
             resumeId,
             content: {
               ...data,
-              state: "EDITING",
               templateId: data.templateId,
-              resumeId
             },
           }),
         });

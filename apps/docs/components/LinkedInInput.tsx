@@ -50,20 +50,18 @@ export const LinkedInInput: React.FC<{
   };
 
   return (
-    <div className="form-row">
-      <div className="form-field">
-        <Label className="field-label" htmlFor="linkedin">
-          LinkedIn Username
-        </Label>
-        <Input
-          id="linkedin"
-          className="form-input"
-          type="text"
-          value={extractLinkedinUsername(value)}
-          onChange={handleInputChange}
-          placeholder="username"
-        />
-      </div>
+    <div className="form-field">
+      <Label className="field-label" htmlFor="linkedin">
+        LinkedIn Username
+      </Label>
+      <Input
+        id="linkedin"
+        className="form-input"
+        type="text"
+        value={extractLinkedinUsername(value)}
+        onChange={handleInputChange}
+        placeholder="username"
+      />
     </div>
   );
 };
