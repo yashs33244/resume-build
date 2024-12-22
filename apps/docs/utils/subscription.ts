@@ -3,9 +3,16 @@ import { PrismaClient, SubscriptionStatus, UserStatus } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-export async function createSubscription(userId: string, planId: string) {
+interface SubscriptionParams {
+  userId: string;
+  planId: string;
+  paymentId: string;
+  orderId: string;
+}
+
+export async function createSubscription(params: SubscriptionParams) {
   const plan = await prisma.subscriptionPlan.findUnique({
-    where: { id: planId }
+    where: { id: params.planId }
   });
 
   if (!plan) {
@@ -25,15 +32,15 @@ export async function createSubscription(userId: string, planId: string) {
   const subscription = await prisma.$transaction([
     prisma.userSubscription.create({
       data: {
-        userId,
-        planId,
+        userId: params.userId,
+        planId: params.planId,
         startDate,
         endDate,
         status: SubscriptionStatus.ACTIVE,
       }
     }),
     prisma.user.update({
-      where: { id: userId },
+      where: { id: params.userId },
       data: { status: UserStatus.PAID }
     })
   ]);

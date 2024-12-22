@@ -4,9 +4,15 @@ import { useDownload } from './useDownload';
 import { useUserStatus } from './useUserStatus';
 import { ResumeProps } from '../types/ResumeProps';
 
+declare global {
+  interface Window {
+    Razorpay: any;
+  }
+}
+
 interface UseSubscriptionProps {
   userId: string;
-  resumeData: ResumeProps; 
+  resumeData: ResumeProps;
 }
 
 export const useSubscription = ({ userId, resumeData }: UseSubscriptionProps) => {
@@ -16,7 +22,7 @@ export const useSubscription = ({ userId, resumeData }: UseSubscriptionProps) =>
   const { isPaid } = useUserStatus();
   const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
 
-  // Create the download handler using the useDownload hook outside of any async function
+  // Create the download handler using the useDownload hook
   const downloadHandler = useDownload({
     session: null,
     isPaid,
@@ -24,7 +30,6 @@ export const useSubscription = ({ userId, resumeData }: UseSubscriptionProps) =>
     resumeData: resumeData,
   });
 
-  // Use useCallback to memoize the subscription handler
   const handleSubscription = useCallback(async (selectedPack: '30' | '90') => {
     try {
       setLoading(true);
@@ -33,7 +38,7 @@ export const useSubscription = ({ userId, resumeData }: UseSubscriptionProps) =>
       // Map the selected pack to the plan ID
       const planId = selectedPack === '30' ? '30-day-plan' : '90-day-plan';
 
-      // Call the API route to create a Razorpay order
+      // Create order on the server
       const response = await fetch('/api/subscription/create', {
         method: 'POST',
         headers: {
@@ -48,79 +53,86 @@ export const useSubscription = ({ userId, resumeData }: UseSubscriptionProps) =>
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.error || 'Failed to create Razorpay order');
+        throw new Error(data.error || 'Failed to create order');
       }
 
-      // Extract the order ID from the response
-      const { orderId, amount, currency } = data;
+      // Load Razorpay SDK
+      const script = document.createElement('script');
+      script.src = 'https://checkout.razorpay.com/v1/checkout.js';
+      document.body.appendChild(script);
 
-      // Trigger Razorpay payment modal
-      const razorpayOptions = {
-        key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID, // Razorpay public key
-        amount: amount, // Amount in paise (e.g., 499 INR = 49900 paise)
-        currency: currency,
-        order_id: orderId,
-        name: 'Your Company Name',
-        description: `Subscription Plan: ${selectedPack === "30" ? "30 Days" : "90 Days"}`,
-        handler: async (response: any) => {
-          // Call the API to confirm the payment and create the subscription
-          await confirmPaymentAndCreateSubscription(response, selectedPack);
+      // Wait for the script to load
+      await new Promise((resolve) => {
+        script.onload = resolve;
+      });
+
+      // Configure Razorpay options
+      const options = {
+        key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
+        amount: data.amount,
+        currency: data.currency,
+        name: 'Resume Builder',
+        description: `${selectedPack} Days Subscription`,
+        order_id: data.orderId,
+        handler: async function (response: {
+          razorpay_payment_id: string;
+          razorpay_order_id: string;
+          razorpay_signature: string;
+        }) {
+          try {
+            // Verify payment on the server
+            const verificationResponse = await fetch('/api/subscription/confirm', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                userId,
+                paymentDetails: {
+                  razorpay_payment_id: response.razorpay_payment_id,
+                  razorpay_order_id: response.razorpay_order_id,
+                  razorpay_signature: response.razorpay_signature,
+                },
+                planId,
+              }),
+            });
+
+            const verificationData = await verificationResponse.json();
+
+            if (!verificationResponse.ok) {
+              throw new Error(verificationData.error || 'Payment verification failed');
+            }
+
+            // Redirect to dashboard on success
+            router.push('/dashboard');
+          } catch (err) {
+            setError(err instanceof Error ? err.message : 'Payment verification failed');
+          }
         },
         prefill: {
-          name: '', // Prefill name from user if available
-          email: '', // Prefill email from user if available
+          name: '', // Add user's name if available
+          email: '', // Add user's email if available
+          contact: '', // Add user's contact if available
+        },
+        modal: {
+          ondismiss: function() {
+            setLoading(false);
+          },
         },
         theme: {
           color: '#F37254',
         },
       };
 
-      const razorpay = new (window as any).Razorpay(razorpayOptions);
+      // Initialize Razorpay
+      const razorpay = new window.Razorpay(options);
       razorpay.open();
+
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
-    } finally {
       setLoading(false);
     }
-  }, [userId, resumeData, router]);
-
-  // Function to confirm payment and create subscription
-  const confirmPaymentAndCreateSubscription = async (paymentResponse: any, selectedPack: '30' | '90') => {
-    try {
-      setLoading(true);
-      const { razorpay_payment_id, razorpay_order_id, razorpay_signature } = paymentResponse;
-
-      // Send the payment details to the backend to verify the payment
-      const confirmationResponse = await fetch('/api/subscription/confirm', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          userId,
-          paymentDetails: {
-            razorpay_payment_id,
-            razorpay_order_id,
-            razorpay_signature,
-          },
-          planId: selectedPack === '30' ? '30-day-plan' : '90-day-plan',
-        }),
-      });
-
-      const confirmationData = await confirmationResponse.json();
-
-      if (!confirmationResponse.ok) {
-        throw new Error(confirmationData.error || 'Failed to confirm payment');
-      }
-
-      // Payment successful, create the subscription
-      router.push('/dashboard');
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'An error occurred during payment confirmation');
-    } finally {
-      setLoading(false);
-    }
-  };
+  }, [userId, router]);
 
   return {
     handleSubscription,
