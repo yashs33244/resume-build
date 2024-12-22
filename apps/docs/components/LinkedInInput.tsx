@@ -52,16 +52,20 @@ export const LinkedInInput: React.FC<{
   return (
     <div className="form-field">
       <Label className="field-label" htmlFor="linkedin">
-        LinkedIn Username
+        Your LinkedIn
       </Label>
-      <Input
-        id="linkedin"
-        className="form-input"
-        type="text"
-        value={extractLinkedinUsername(value)}
-        onChange={handleInputChange}
-        placeholder="username"
-      />
+      <div style={{display: 'flex', alignItems: 'center'}}>
+        <div style={{ backgroundColor: '#121420', color: 'rgba(255,255,255,0.5)', padding: '6.9px 20px', marginTop: '12px', border: '0.5px solid rgba(255,255,255,0.4)', borderRight: 'none', borderTopLeftRadius: '12px', borderBottomLeftRadius: '12px'}}>https://linkedin.com/in/</div>
+        <Input
+          id="linkedin"
+          className="form-input"
+          style={{borderTopLeftRadius: '0px', borderBottomLeftRadius: '0px', borderLeft: 'none'}}
+          type="text"
+          value={extractLinkedinUsername(value)}
+          onChange={handleInputChange}
+          placeholder="Paste your username here.."
+        />
+      </div>      
     </div>
   );
 };

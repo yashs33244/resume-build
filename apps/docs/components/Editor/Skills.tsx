@@ -42,7 +42,7 @@ export const Skills: React.FC<SkillsProps> = ({
     async (role: string) => {
       setIsLoading(true);
       try {
-        const prompt = `Based on the following resume information, suggest 10 relevant skills, tools or technologies for a ${role} position:
+        const prompt = `Based on the following resume information, suggest 10 relevant strings which is a healthy mix of skills, tools and technologies for a ${role} position:
 
 
         Experience: ${resumeData.experience}
@@ -50,7 +50,7 @@ export const Skills: React.FC<SkillsProps> = ({
         certifications: ${resumeData.certificates}  
         Bio: ${resumeData.personalInfo?.bio ?? ""}
 
-        Also leverage above resume data to give 10 unique skills, tools and technologies as individual items. Make sure each item is dicreate and output should not be a long sentenced`;
+        Also leverage above resume data to give the required 10 suggestions. No output string not be a long sentence. Suggest like they need to be mapped with a resume.`;
 
         const response = await fetch("/api/generate/skills", {
           method: "POST",
