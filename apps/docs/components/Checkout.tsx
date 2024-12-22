@@ -72,8 +72,8 @@ export default function Checkout() {
             >
               <div className="pack-type">Popular</div>
               <div className="timeline">30 Days</div>
-              <div className="price">₹199</div>
-              <div className="pack-info">Good for Trial</div>
+              <div className="price">₹249</div>
+              <div className="pack-info">Value for Money</div>
             </div>
             <div
               onClick={() => handlePackSelection("90")}
@@ -81,8 +81,8 @@ export default function Checkout() {
             >
               <div className="pack-type">Value</div>
               <div className="timeline">90 Days</div>
-              <div className="price">₹499</div>
-              <div className="pack-info">Best for Job Hunting</div>
+              <div className="price">₹599</div>
+              <div className="pack-info">Ideal for Job Hunting</div>
             </div>
           </div>
           <div className="payment-cta">
