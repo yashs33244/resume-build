@@ -61,9 +61,10 @@ export const Template1 = (props: any) => {
         )} */}
         <div className="primary-info">
           <div className="name">
-            {personalInfo?.name?.toUpperCase() || "Full Name"}
+            <div>{personalInfo?.name?.toUpperCase() || "Full Name"}</div>
+            <div className="job-title">{personalInfo?.title || "Job Title"}</div>
           </div>
-          <div className="position">{personalInfo?.title || "Job Title"}</div>
+          {/* <div className="position">{personalInfo?.title || "Job Title"}</div> */}
           <div className="information">
             {`${personalInfo?.email || "Email"} | ${personalInfo?.phone || "Contact Number"} `}
             <a href={personalInfo?.linkedin || "#"}>
@@ -78,13 +79,19 @@ export const Template1 = (props: any) => {
             {experience.map((exp: any, index: any) => (
               <div className="exp-container" key={index}>
                 {exp?.company && (
-                  <div className="company-name">{exp.company}</div>
-                )}
-                {(exp?.role || exp?.start || exp?.end) && (
-                  <div className="role-duration">
-                    {`${exp?.role || ""} | ${getDuration(exp?.start)} - ${exp?.current ? "Present" : getDuration(exp?.end)}`}
+                  <div className="company-name">
+                    <div className="company-role">
+                      <div>{exp.company}</div>
+                      <div className="role">{exp?.role || ""}</div>
+                    </div>
+                    <div className="company-duration">{`${getDuration(exp?.start)} - ${exp?.current ? "Present" : getDuration(exp?.end)}`}</div>
                   </div>
                 )}
+                {/* {(exp?.role || exp?.start || exp?.end) && (
+                  <div className="role-duration">
+                    {`${exp?.role || ""}`}
+                  </div>
+                )} */}
                 {exp?.responsibilities && (
                   <div
                     className="responsibilities"
@@ -103,12 +110,15 @@ export const Template1 = (props: any) => {
             {education.map((edu: any, index: any) => (
               <div className="edu-container" key={index}>
                 {edu?.institution && (
-                  <div className="college-name">{edu.institution}</div>
+                  <div className="college-name">
+                    <div>{edu.institution}</div>
+                    <div className="college-duration">{`${edu.start} - ${edu.end}`}</div>
+                  </div>
                 )}
                 {(edu?.degree || edu?.major) && (
                   <div className="degree-major">
                     {/* {`${edu?.degree || ""} - ${edu?.major || ""}`} */}
-                    {`${edu.degree ? edu.degree : ""} ${edu.major ? `- ${edu.major}` : ""} | ${edu.start} - ${edu.end}`}
+                    {`${edu.degree ? edu.degree : ""} ${edu.major ? `- ${edu.major}` : ""}`}
                   </div>
                 )}
               </div>
@@ -122,12 +132,13 @@ export const Template1 = (props: any) => {
               <div className="proj-container" key={index}>
                 {proj?.name && (
                   <a className="proj-name" href={proj?.link || null}>
-                    {proj.name} {proj?.link ? <IoIosLink /> : null}
+                    <div style={{display: 'flex', alignItems: 'center', gap: '4px'}}>{proj.name} {proj?.link ? <IoIosLink /> : null}</div>
+                    <div className="project-duration">{`${getDuration(proj?.start)} - ${proj?.current ? "Present" : getDuration(proj?.end)}`}</div>
                   </a>
                 )}
                 {(proj?.link || proj?.start || proj?.end) && (
                   <div className="link-duration">
-                    {`${getDuration(proj?.start)} - ${proj?.current ? "Present" : getDuration(proj?.end)}`}
+                    {/* {`${getDuration(proj?.start)} - ${proj?.current ? "Present" : getDuration(proj?.end)}`} */}
                   </div>
                 )}
                 {proj?.responsibilities && (
@@ -145,16 +156,18 @@ export const Template1 = (props: any) => {
         {certificates.length > 0 && (
           <div className="certificates">
             <div className="section-title">CERTIFICATES</div>
-            {certificates.map((cert: any, index: any) => (
-              <div className="cert-container" key={index}>
-                {cert?.name && <div className="cert-name">{cert.name}</div>}
-                {(cert?.issuedOn || cert?.issuer) && (
-                  <div className="issuing">
-                    {`${cert.issuer ? cert.issuer : ""} ${cert.issuedOn ? `- ${getDuration(cert.issuedOn)}` : ""}`}
-                  </div>
-                )}
-              </div>
-            ))}
+            <div className="cert-wrapper">
+              {certificates.map((cert: any, index: any) => (
+                <div className="cert-container" key={index}>
+                  {cert?.name && <div className="cert-name">{cert.name}</div>}
+                  {(cert?.issuedOn || cert?.issuer) && (
+                    <div className="issuing">
+                      {`${cert.issuer ? cert.issuer : ""} ${cert.issuedOn ? `- ${getDuration(cert.issuedOn)}` : ""}`}
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>            
           </div>
         )}
         {coreSkills.length > 0 && (

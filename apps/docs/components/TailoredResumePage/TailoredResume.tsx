@@ -258,7 +258,7 @@ const TailoredResumePage: React.FC = () => {
                 {resumeData && renderTemplate(resumeData)}
               </div>
               <button
-                className={styles.tailor_p2_head_section_heading_button}
+                className={styles.tailor_p2_head_section_heading_button_secondary}
                 onClick={() => resumeData && handleDownload(resumeData)}
                 disabled={isGeneratingPDF && !isTailored}
               >
@@ -291,7 +291,7 @@ const TailoredResumePage: React.FC = () => {
             </div>
           </div>
         ) : (
-          <div className={styles.tailor_p1_head}>
+          <div className={loading ? styles.tailor_p1_head_loader : styles.tailor_p1_head}>
             {loading || resumeData == null ? (
               <>
                 <Loader />
@@ -316,7 +316,7 @@ const TailoredResumePage: React.FC = () => {
                         styles.tailor_p1_head_section_user_action_heading
                       }
                     >
-                      Enter the job description from the job post below
+                      Enter the job description below from a job post
                     </p>
                     <div
                       className={
@@ -324,7 +324,7 @@ const TailoredResumePage: React.FC = () => {
                       }
                     >
                       <textarea
-                        placeholder="Paste the job description here to tailor your resume"
+                        placeholder="Paste your job description here.."
                         className={
                           styles.tailor_p1_head_section_user_action_input_textarea
                         }
@@ -340,7 +340,7 @@ const TailoredResumePage: React.FC = () => {
                       onClick={handleTailor}
                       disabled={isTailoring}
                     >
-                      {isTailoring ? "Sit back and relax..." : "Customize"}
+                      {isTailoring ? "Processing..." : "Tailor My CV"}
                     </button>
                   </div>
                 </div>
