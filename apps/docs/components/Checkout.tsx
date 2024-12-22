@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useState } from "react";
 import "./Checkout.scss";
 import { TbUserScreen } from "react-icons/tb";
 import { FaUsersViewfinder } from "react-icons/fa6";
@@ -11,7 +11,7 @@ import { useSubscription } from "../hooks/useSubscription";
 import { useFetchResumeData } from "../hooks/useFetchResumeData";
 
 export default function Checkout() {
-  const [selectedPack, setSelectedPack] = useState("90");
+  const [selectedPack, setSelectedPack] = useState<"30" | "90">("90");
   const { user } = useUserStatus();
   const { rdata } = useFetchResumeData();
   const { handleSubscription, loading, error } = useSubscription({
@@ -19,12 +19,13 @@ export default function Checkout() {
     resumeData: rdata,
   });
 
-  const handlePackSelection = async (pack: "30" | "90") => {
+  const handlePackSelection = (pack: "30" | "90") => {
     setSelectedPack(pack);
   };
 
   const handlePayment = async () => {
-    await handleSubscription(selectedPack as "30" | "90");
+    // Trigger the payment process
+    await handleSubscription(selectedPack);
   };
 
   return (
@@ -95,7 +96,7 @@ export default function Checkout() {
           </div>
           {error && <div className="error-message">{error}</div>}
           <div className="side-note">
-            One time payment with 7-day money back guarentee
+            One time payment with 7-day money back guarantee
           </div>
         </div>
       </div>
