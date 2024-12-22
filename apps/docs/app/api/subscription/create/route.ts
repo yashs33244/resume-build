@@ -43,7 +43,7 @@ export async function POST(request: NextRequest) {
       amount, // Amount in paise
       currency: 'INR',
       receipt: `receipt_${new Date().getTime()}`,
-      payment_capture: 1, // Automatically capture payment
+      payment_capture: true, // Automatically capture payment
     });
 
     // Return Razorpay order ID and payment details to the frontend
