@@ -73,7 +73,8 @@ export default function SizeChange({ handleInputChange }: SizeChangeProps) {
   const [value, setValue] = useState(getSizeValue(resumeSize));
 
   function valuetext(value: number) {
-    return `${value}`;
+    const arr = ['XS', 'S', 'M', 'L', 'XL'];
+    return `${arr[--value]}`;
   }
 
   const handleChange = (event: Event, newValue: number | number[]) => {
@@ -98,6 +99,7 @@ export default function SizeChange({ handleInputChange }: SizeChangeProps) {
         slots={{ thumb: AirbnbThumbComponent }}
         defaultValue={getSizeValue("M")}
         getAriaValueText={valuetext}
+        valueLabelFormat={valuetext}
         valueLabelDisplay="on"
         onChange={handleChange}
         shiftStep={1}

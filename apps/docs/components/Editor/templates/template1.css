@@ -106,6 +106,9 @@
     color: #002D62;
     font-weight: 700;
     font-size: 20px;
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
 }
 
 .template1-wrapper .S .primary-info .name {
@@ -122,6 +125,30 @@
 
 .template1-wrapper .XL .primary-info .name {
     font-size: 22.05px;
+}
+
+.template1-wrapper .M .primary-info .name .job-title {
+    font-size: 16px;
+    /* color: rgba(0,0,0,0.9); */
+    color: #002D62;
+    opacity: 0.9;
+    font-weight: 500;
+}
+
+.template1-wrapper .S .primary-info .name .job-title {
+    font-size: 15.2px;
+}
+
+.template1-wrapper .XS .primary-info .name .job-title {
+    font-size: 14.44px;
+}
+
+.template1-wrapper .L .primary-info .name .job-title {
+    font-size: 16.8px;
+}
+
+.template1-wrapper .XL .primary-info .name .job-title {
+    font-size: 17.64px;
 }
 
 .template1-wrapper .M .primary-info .position {
@@ -366,6 +393,9 @@
     color: rgba(0,0,0,0.7);
     font-size: 12px;
     font-weight: 600;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .template1-wrapper .S .experience .exp-container .company-name {
@@ -384,6 +414,56 @@
     font-size: 13.23px; /* 5% more than L */
 }
 
+.template1-wrapper .M .experience .exp-container .company-name .company-duration {
+    color: rgba(0,0,0,0.6);
+    font-size: 10px;
+    font-weight: 400;
+}
+
+.template1-wrapper .S .experience .exp-container .company-name .company-duration {
+    font-size: 9.5px;
+}
+
+.template1-wrapper .XS .experience .exp-container .company-name .company-duration {
+    font-size: 9.02px;
+}
+
+.template1-wrapper .L .experience .exp-container .company-name .company-duration {
+    font-size: 10.5px;
+}
+
+.template1-wrapper .XL .experience .exp-container .company-name .company-duration {
+    font-size: 11.02px;
+}
+
+.template1-wrapper .M .experience .exp-container .company-name .company-role {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.template1-wrapper .M .experience .exp-container .company-name .company-role .role {
+    color: rgba(0,0,0,0.7);
+    font-size: 10px;
+    font-weight: 500;
+}
+
+.template1-wrapper .S .experience .exp-container .company-name .company-role .role {
+    font-size: 9.5px;
+}
+
+.template1-wrapper .XS .experience .exp-container .company-name .company-role .role {
+    font-size: 9.02px;
+}
+
+.template1-wrapper .L .experience .exp-container .company-name .company-role .role {
+    font-size: 10.5px;
+}
+
+.template1-wrapper .XL .experience .exp-container .company-name .company-role .role {
+    font-size: 11.02px;
+}
+
 .template1-wrapper .M .projects .proj-container .proj-name {
     color: rgba(0,0,0,0.7);
     display: flex;
@@ -391,6 +471,9 @@
     gap: 4px;
     font-size: 12px;
     font-weight: 600;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .template1-wrapper .S .projects .proj-container .proj-name {
@@ -407,6 +490,28 @@
 
 .template1-wrapper .XL .projects .proj-container .proj-name {
     font-size: 13.23px; /* 5% more than L */
+}
+
+.template1-wrapper .M .projects .proj-container .proj-name .project-duration {
+    color: rgba(0,0,0,0.6);
+    font-size: 10px;
+    font-weight: 400;
+}
+
+.template1-wrapper .S .projects .proj-container .proj-name .project-duration {
+    font-size: 9.5px;
+}
+
+.template1-wrapper .XS .projects .proj-container .proj-name .project-duration {
+    font-size: 9.02px;
+}
+
+.template1-wrapper .L .projects .proj-container .proj-name .project-duration {
+    font-size: 10.5px;
+}
+
+.template1-wrapper .XL .projects .proj-container .proj-name .project-duration {
+    font-size: 11.02px;
 }
 
 .template1-wrapper .M .experience .exp-container .role-duration {
@@ -643,6 +748,14 @@
     margin-top: 0.6174rem; /* 5% more than L */
 }
 
+.template1-wrapper .M .certificates .cert-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    row-gap: 4px;
+    column-gap: 50px;
+    /* justify-content: space-between; */
+}
+
 .template1-wrapper .M .certificates .cert-container {
     margin-top: 0.56rem;
 }
@@ -667,6 +780,9 @@
     color: rgba(0,0,0,0.7);
     font-size: 12px;
     font-weight: 600;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .template1-wrapper .S .education .edu-container .college-name {
@@ -683,6 +799,28 @@
 
 .template1-wrapper .XL .education .edu-container .college-name {
     font-size: 13.23px; /* 5% more than L */
+}
+
+.template1-wrapper .M .education .edu-container .college-name .college-duration {
+    color: rgba(0,0,0,0.6);
+    font-size: 10px;
+    font-weight: 400;
+}
+
+.template1-wrapper .S .education .edu-container .college-name .college-duration {
+    font-size: 9.5px;
+}
+
+.template1-wrapper .XS .education .edu-container .college-name .college-duration {
+    font-size: 9.02px;
+}
+
+.template1-wrapper .L .education .edu-container .college-name .college-duration {
+    font-size: 10.5px;
+}
+
+.template1-wrapper .XL .education .edu-container .college-name .college-duration {
+    font-size: 11.02px;
 }
 
 .template1-wrapper .M .certificates .cert-container .cert-name {
