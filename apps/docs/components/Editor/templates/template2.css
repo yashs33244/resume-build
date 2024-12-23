@@ -78,10 +78,12 @@
     gap: var(--container-gap);
     overflow-y: hidden;
     word-wrap: break-word;
+    overflow-wrap: anywhere;
   }
 
   .template2-wrapper .template-container *{
     word-wrap: break-word;
+    overflow-wrap: anywhere;
   }
   
   /* Header Section */

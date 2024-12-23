@@ -150,7 +150,13 @@ export default function CreatePreference() {
     (selectedOption !== null && selectedOption !== "upload")
   ) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
+      <div
+        className="flex items-center justify-center min-h-screen"
+        style={{
+          minHeight: "calc(100vh - 100px)",
+          maxHeight: "calc(100vh - 100px)",
+        }}
+      >
         <div className="flex flex-col items-center justify-center">
           <Loader className="w-8 h-8 animate-spin" />
           <p className="text-lg text-gray-600">

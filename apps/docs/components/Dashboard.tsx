@@ -127,6 +127,7 @@ const Dashboard = (props: any) => {
         const layoutcss = `<link rel="stylesheet" href="http://localhost:3000/layout.css">`;
         const fontLink = `<link href='https://fonts.googleapis.com/css?family=Inter' rel='stylesheet'/>`;
         const htmlContent = cssLink + layoutcss + fontLink + element.outerHTML;
+        console.log("this is html content", htmlContent);
 
         const response = await fetch("/api/generate-pdf", {
           method: "POST",

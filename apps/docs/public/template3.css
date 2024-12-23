@@ -93,10 +93,12 @@
     overflow-y: hidden;
     font-family: ui-serif !important;
     word-wrap: break-word;
+    overflow-wrap: anywhere;
   }
 
   .template3-wrapper .template-container *{
     word-wrap: break-word;
+    overflow-wrap: anywhere;
   }
   
   /* Left Panel */
@@ -148,6 +150,7 @@
     color: rgba(255,255,255);
     font-weight: 500;
     word-wrap: break-word;
+    overflow-wrap: anywhere;
     font-size: var(--add-info-value-size);
   }
 

@@ -34,7 +34,7 @@ export default function Header() {
     } else {
       router.push("/dashboard");
     }
-  }, [user]);
+  }, [user?.email]);
 
   return (
     <div className="header-container">

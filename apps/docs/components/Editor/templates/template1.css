@@ -16,6 +16,7 @@
     max-height: 842px;
     overflow: hidden;
     word-wrap: break-word;
+    overflow-wrap: anywhere;
 }
 
 .template1-wrapper .M {

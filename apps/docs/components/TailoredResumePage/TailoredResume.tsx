@@ -16,6 +16,12 @@ import { useFetchResumeData } from "../../hooks/useFetchResumeData";
 import { useSession } from "next-auth/react";
 import { initialResumeData } from "../../utils/resumeData";
 
+const TEMPLATE_NAME_MAPPING = {
+  fresher: "template1",
+  experienced: "template2",
+  designer: "template3",
+};
+
 const TailoredResumePage: React.FC = () => {
   const searchParams = useSearchParams();
   const { rdata, loading } = useFetchResumeData();
@@ -114,8 +120,11 @@ const TailoredResumePage: React.FC = () => {
 
         element.style.transform = "scale(1)";
         const resumeId = searchParams.get("id");
-
-        const cssLink = `<link rel="stylesheet" href="https://finalcv.com/${data.templateId}.css">`;
+        const templateName =
+          TEMPLATE_NAME_MAPPING[
+            data.templateId as keyof typeof TEMPLATE_NAME_MAPPING
+          ];
+        const cssLink = `<link rel="stylesheet" href="https://finalcv.com/${templateName}.css">`;
         const layoutcss = `<link rel="stylesheet" href="https://finalcv.com/layout.css">`;
         const fontLink = `<link href='https://fonts.googleapis.com/css?family=Inter' rel='stylesheet'/>`;
         const htmlContent = cssLink + layoutcss + fontLink + element.outerHTML;
@@ -231,6 +240,18 @@ const TailoredResumePage: React.FC = () => {
                 <p className={styles.tailor_p2_head_section_heading_data}>
                   Original
                 </p>
+                <button
+                  className={
+                    styles.tailor_p2_head_section_heading_button_secondary
+                  }
+                  onClick={() =>
+                    resumeData && handleDownload(resumeData, "original")
+                  }
+                  disabled={downloadingResume === "original"}
+                >
+                  <IoMdDownload />
+                  {downloadingResume === "original" ? "Cooking..." : "Download"}
+                </button>
               </div>
               <div
                 className={`${styles.tailor_p2_head_section_preview} resumeParent`}
@@ -238,24 +259,23 @@ const TailoredResumePage: React.FC = () => {
               >
                 {resumeData && renderTemplate(resumeData)}
               </div>
-              <button
-                className={
-                  styles.tailor_p2_head_section_heading_button_secondary
-                }
-                onClick={() =>
-                  resumeData && handleDownload(resumeData, "original")
-                }
-                disabled={downloadingResume === "original"}
-              >
-                <IoMdDownload />
-                {downloadingResume === "original" ? "Cooking..." : "Download"}
-              </button>
             </div>
             <div className={styles.tailor_p2_head_section}>
               <div className={styles.tailor_p2_head_section_heading}>
                 <p className={styles.tailor_p2_head_section_heading_data}>
                   Tailored CV
                 </p>
+                <button
+                  className={styles.tailor_p2_head_section_heading_button}
+                  onClick={() =>
+                    tailoredResumeData &&
+                    handleDownload(tailoredResumeData, "tailored")
+                  }
+                  disabled={downloadingResume === "tailored"}
+                >
+                  <IoMdDownload />
+                  {downloadingResume === "tailored" ? "Cooking..." : "Download"}
+                </button>
               </div>
               <div
                 className={`${styles.tailor_p2_head_section_preview} resumeParent`}
@@ -263,17 +283,6 @@ const TailoredResumePage: React.FC = () => {
               >
                 {tailoredResumeData && renderTemplate(tailoredResumeData)}
               </div>
-              <button
-                className={styles.tailor_p2_head_section_heading_button}
-                onClick={() =>
-                  tailoredResumeData &&
-                  handleDownload(tailoredResumeData, "tailored")
-                }
-                disabled={downloadingResume === "tailored"}
-              >
-                <IoMdDownload />
-                {downloadingResume === "tailored" ? "Cooking..." : "Download"}
-              </button>
             </div>
           </div>
         ) : (

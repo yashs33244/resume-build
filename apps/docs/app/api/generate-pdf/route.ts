@@ -52,7 +52,6 @@ class PDFGenerator {
             box-sizing: border-box;
           }
           a {
-            color: inherit !important;
             text-decoration: none !important;
           }
           
