@@ -19,7 +19,7 @@ export const metadata: Metadata = {
     template: "%s | FinalCV",
   },
   description:
-    "Create professional resumes and CVs instantly with FinalCV. Free online resume builder with modern templates, AI-powered suggestions, and expert tips. Build your perfect CV today.",
+    "Create professional resumes and CVs instantly with FinalCV. Online resume builder with modern templates, AI-powered suggestions, and expert tips. Build your perfect CV today.",
   applicationName: "FinalCV - Resume Builder",
   authors: [
     {
