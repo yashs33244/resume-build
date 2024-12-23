@@ -2,11 +2,12 @@ version: '3.8'
 
 services:
   app:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    # build:
+    #   context: .
+    #   dockerfile: Dockerfile
+    image: yashs3324/finalcv:latest
     ports:
-      - "3000:3000"
+      - "3000:3000"dock
     environment:
       - DATABASE_URL=postgresql://postgres:mysecretpassword@db:5432/find-it-here?schema=public
       - NEXTAUTH_URL=${NEXTAUTH_URL}
