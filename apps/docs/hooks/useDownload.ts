@@ -1,6 +1,7 @@
 import { useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
+import { Layout } from 'lucide-react';
 
 interface UseDownloadProps {
   session: any;
@@ -99,6 +100,7 @@ export const useDownload = ({
       // Construct full HTML with inline styles
    
       const cssLink = `<link rel="stylesheet" href="https://finalcv.com/${templateName}.css">`;
+      const layoutcss = `<link rel="stylesheet" href="https://finalcv.com/layout.css">`
       const fontLink = `
         <link href='https://fonts.googleapis.com/css?family=Inter' rel='stylesheet'/>
       `;
@@ -108,6 +110,7 @@ export const useDownload = ({
         <!DOCTYPE html>
         <html lang="en">
         <head>
+          ${layoutcss}
           ${cssLink}
           ${fontLink}
         </head>

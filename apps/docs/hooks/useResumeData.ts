@@ -51,40 +51,55 @@ export const useResumeData = (onDataChange?: (resumeData: ResumeProps) => void) 
     }, [resumeSize, isClient]);
 
     
-    // Load initial resumeData from localStorage and avoid redundant fetch
     useEffect(() => {
         if (isClient && rdata) {
-            const savedData = JSON.stringify(rdata);
-            const parsedData = JSON.parse(savedData);
-            const savedTemplate = parsedData.templateId;
+            const processedData = {
+                ...rdata,
+                education: Array.isArray(rdata.education) ? rdata.education : [],
+                experience: Array.isArray(rdata.experience) ? rdata.experience : [],
+                projects: Array.isArray(rdata.projects) ? rdata.projects : [],
+                certificates: Array.isArray(rdata.certificates) ? rdata.certificates : [],
+                skills: Array.isArray(rdata.skills) ? rdata.skills : [],
+                coreSkills: Array.isArray(rdata.coreSkills) ? rdata.coreSkills : [],
+                languages: Array.isArray(rdata.languages) ? rdata.languages : [],
+                achievements: Array.isArray(rdata.achievements) ? rdata.achievements : [],
+            };
 
-            if (savedData) {
-                const parsedData = JSON.parse(savedData);
-                if (!Array.isArray(parsedData.coreSkills)) {
-                    parsedData.coreSkills = [];
-                }
-                if (!Array.isArray(parsedData.languages)) {
-                    parsedData.languages = [];
-                }
-                setResumeData(parsedData);  
+            setResumeData(processedData);
+            
+            // Handle template and size
+            if (rdata.templateId) {
+                setSelectedTemplate(rdata.templateId);
             }
-
-            if (savedTemplate) {
-                setSelectedTemplate(savedTemplate);
+            
+            if (rdata.size && isValidSize(rdata.size)) {
+                setResumeSize(rdata.size);
+                window.localStorage.setItem('resumeSize', rdata.size);
             }
         }
     }, [isClient, rdata]);
-  
-    // Only send data changes if resumeData has changed meaningfully
+
+    // Handle data changes and persistence
     useEffect(() => {
         if (isClient && !_.isEqual(previousData, resumeData)) {
-            console.log("resumeSize",resumeSize);
-            setPreviousData(resumeData); // Update to current data after successful change
-            window.localStorage.setItem('resumeData', JSON.stringify(resumeData));
-            onDataChange?.(resumeData);
-        }
-    }, [resumeData, isClient, onDataChange, previousData,resumeSize]);
+            // Ensure all arrays are properly initialized
+            const sanitizedData = {
+                ...resumeData,
+                education: Array.isArray(resumeData.education) ? resumeData.education : [],
+                experience: Array.isArray(resumeData.experience) ? resumeData.experience : [],
+                projects: Array.isArray(resumeData.projects) ? resumeData.projects : [],
+                certificates: Array.isArray(resumeData.certificates) ? resumeData.certificates : [],
+                skills: Array.isArray(resumeData.skills) ? resumeData.skills : [],
+                coreSkills: Array.isArray(resumeData.coreSkills) ? resumeData.coreSkills : [],
+                languages: Array.isArray(resumeData.languages) ? resumeData.languages : [],
+                achievements: Array.isArray(resumeData.achievements) ? resumeData.achievements : [],
+            };
 
+            setPreviousData(sanitizedData);
+            window.localStorage.setItem('resumeData', JSON.stringify(sanitizedData));
+            onDataChange?.(sanitizedData);
+        }
+    }, [resumeData, isClient, onDataChange, previousData]);
 
     
 

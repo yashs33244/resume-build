@@ -145,7 +145,10 @@ export default function CreatePreference() {
     disabled: isLoading || isProcessing || selectedOption !== null,
   });
 
-  if (selectedOption === "scratch" || selectedOption !== null) {
+  if (
+    selectedOption === "scratch" ||
+    (selectedOption !== null && selectedOption !== "upload")
+  ) {
     return (
       <div className="flex items-center justify-center min-h-screen">
         <div className="flex flex-col items-center justify-center">
@@ -185,16 +188,9 @@ export default function CreatePreference() {
           >
             Autofill details using your current resume
           </div>
-          {/* {(isLoading || selectedOption === "upload") && (
-            <ResumeUploadProgress
-              isLoading={true}
-              progress={progress}
-              progressPhase={progressPhase}
-              error={error}
-            />
-          )} */}
         </div>
         <div
+          //@ts-ignore
           className={`right ${selectedOption && selectedOption !== "scratch" ? "disabled" : ""}`}
           onClick={selectedOption === null ? handleStartFromScratch : undefined}
         >
@@ -204,29 +200,22 @@ export default function CreatePreference() {
             width={150}
             height={150}
             className={
+              //@ts-ignore
               selectedOption && selectedOption !== "scratch" ? "opacity-50" : ""
             }
           />
           <div
+            //@ts-ignore
             className={`action ${selectedOption && selectedOption !== "scratch" ? "opacity-50" : ""}`}
           >
             Create From Scratch
           </div>
           <div
+            //@ts-ignore
             className={`info ${selectedOption && selectedOption !== "scratch" ? "opacity-50" : ""}`}
           >
             Craft your perfect resume from start
           </div>
-          {/* {selectedOption === "scratch" && (
-            <ResumeUploadProgress
-              isLoading={true}
-              progress={0}
-              progressPhase="parsing"
-              error={undefined}
-            />
-          )} */}
-
-          {/* {scratchLoader(isLoading, error, selectedOption)} */}
         </div>
       </div>
       <div className="loader-container">

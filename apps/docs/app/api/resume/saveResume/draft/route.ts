@@ -48,33 +48,33 @@ export async function POST(request: NextRequest) {
       });
     }
 
-    // Enhanced sectionUpdateMap with more comprehensive handling
+    // Enhanced sectionUpdateMap with more comprehensive handling and error checking
     const sectionUpdateMap = {
       personalInfo: {
         model: db.personalInfo,
         updateMethod: 'upsert',
-        updateData: (data: any): Parameters<typeof db.personalInfo.upsert>[0] => ({
+        updateData: (data: any) => ({
           where: { resumeId },
           create: { 
             resumeId, 
-            name: data.name,
-            title: data.title || '',
-            email: data.email || '',
-            phone: data.phone || '',
-            location: data.location || '',
-            website: data.website || '',
-            linkedin: data.linkedin || '',
-            bio: data.bio || ''
+            name: data?.name || '',
+            title: data?.title || '',
+            email: data?.email || '',
+            phone: data?.phone || '',
+            location: data?.location || '',
+            website: data?.website || '',
+            linkedin: data?.linkedin || '',
+            bio: data?.bio || ''
           },
           update: {
-            name: data.name,
-            title: data.title || '',
-            email: data.email || '',
-            phone: data.phone || '',
-            location: data.location || '',
-            website: data.website || '',
-            linkedin: data.linkedin || '',
-            bio: data.bio || ''
+            name: data?.name || '',
+            title: data?.title || '',
+            email: data?.email || '',
+            phone: data?.phone || '',
+            location: data?.location || '',
+            website: data?.website || '',
+            linkedin: data?.linkedin || '',
+            bio: data?.bio || ''
           }
         })
       },
@@ -84,12 +84,12 @@ export async function POST(request: NextRequest) {
         deleteFilter: { resumeId },
         mapData: (edu: any) => ({
           resumeId,
-          institution: edu.institution || '',
-          major: edu.major || '',
-          start: edu.start || '',
-          end: edu.end || '',
-          degree: edu.degree || '',
-          score: edu.score || '',
+          institution: edu?.institution || '',
+          major: edu?.major || '',
+          start: edu?.start || '',
+          end: edu?.end || '',
+          degree: edu?.degree || '',
+          score: edu?.score || '',
         })
       },
       experience: {
@@ -98,12 +98,12 @@ export async function POST(request: NextRequest) {
         deleteFilter: { resumeId },
         mapData: (exp: any) => ({
           resumeId,
-          company: exp.company || '',
-          role: exp.role || '',
-          start: exp.start || '',
-          end: exp.end || '',
-          responsibilities: exp.responsibilities || [],
-          current: exp.current || false,
+          company: exp?.company || '',
+          role: exp?.role || '',
+          start: exp?.start || '',
+          end: exp?.end || '',
+          responsibilities: Array.isArray(exp?.responsibilities) ? exp.responsibilities : [],
+          current: exp?.current || false,
         })
       },
       skills: {
@@ -139,11 +139,11 @@ export async function POST(request: NextRequest) {
         deleteFilter: { resumeId },
         mapData: (proj: any) => ({
           resumeId,
-          name: proj.name || '',
-          link: proj.link || '',
-          start: proj.start || '',
-          end: proj.end || '',
-          responsibilities: proj.responsibilities || [],
+          name: proj?.name || '',
+          link: proj?.link || '',
+          start: proj?.start || '',
+          end: proj?.end || '',
+          responsibilities: Array.isArray(proj?.responsibilities) ? proj.responsibilities : [],
         })
       },
       certificates: {
@@ -152,9 +152,9 @@ export async function POST(request: NextRequest) {
         deleteFilter: { resumeId },
         mapData: (cert: any) => ({
           resumeId,
-          name: cert.name || '',
-          issuer: cert.issuer || '',
-          issuedOn: cert.issuedOn || '',
+          name: cert?.name || '',
+          issuer: cert?.issuer || '',
+          issuedOn: cert?.issuedOn || '',
         })
       },
       achievements: {
@@ -163,53 +163,51 @@ export async function POST(request: NextRequest) {
         deleteFilter: { resumeId },
         mapData: (ach: any) => ({
           resumeId,
-          title: ach.title || '',
-          description: ach.description || '',
+          title: ach?.title || '',
+          description: ach?.description || '',
         })
       }
     };
 
-    // Perform updates for each section with comprehensive error handling
-    
+    // Perform updates for each section with enhanced error handling
     await Promise.all(
-      Object.entries(sectionUpdateMap).map(([key, section]) => {
-        const sectionContent = content[key];
-        
-        // Skip if no content for this section
-        if (!sectionContent) return Promise.resolve();
+      Object.entries(sectionUpdateMap).map(async ([key, section]) => {
+        try {
+          const sectionContent = content[key];
+          
+          // Skip if section is undefined
+          if (sectionContent === undefined) return Promise.resolve();
 
-        // Sanitize input to ensure we always have an array
-        const sanitizedContent = Array.isArray(sectionContent) 
-          ? sectionContent 
-          : (sectionContent ? [sectionContent] : []);
+          // Ensure arrays are properly handled
+          const sanitizedContent = Array.isArray(sectionContent) 
+            ? sectionContent.filter(item => item !== null && item !== undefined)
+            : (sectionContent ? [sectionContent] : []);
 
-        if (section.updateMethod === 'upsert') {
-          if (section.updateMethod === 'upsert' && 'updateData' in section) {
-            return (section.model.upsert as any)(section.updateData(sanitizedContent[0] || {}));
+          if (section.updateMethod === 'upsert') {
+            if ('updateData' in section) {
+              return (section.model.upsert as any)(section.updateData(sanitizedContent[0] || {}));
+            }
+          } else if (section.updateMethod === 'deleteMany-createMany') {
+            // Always perform delete operation
+            await (section.model as any).deleteMany({ 
+              where: 'deleteFilter' in section ? section.deleteFilter : { resumeId } 
+            });
+
+            // Only create if there are valid items
+            if (sanitizedContent.length > 0 && 'mapData' in section) {
+              return (section.model as any).createMany({
+                data: sanitizedContent.map((item: any) => section.mapData(item)),
+              });
+            }
           }
-          return Promise.resolve();
+        } catch (error) {
+          console.error(`Error updating ${key}:`, error);
+          throw error; // Re-throw to be caught by the main try-catch
         }
-
-        if (section.updateMethod === 'deleteMany-createMany') {
-          // Delete existing records for the section
-          return Promise.all([
-            'deleteFilter' in section && section.deleteFilter 
-              ? (section.model as any).deleteMany({ where: section.deleteFilter }) 
-              : Promise.resolve(),
-            // Only create if there are items
-            sanitizedContent.length > 0 && 'mapData' in section
-              ? (section.model as any).createMany({
-                  data: sanitizedContent.map((item:any) => section.mapData(item)),
-                })
-              : Promise.resolve()
-          ]);
-        }
-
-        return Promise.resolve();
       })
     );
 
-    // Rest of the code remains the same...
+    // Fetch the complete updated resume
     const updatedResume = await db.resume.findUnique({
       where: { id: resumeId },
       include: {

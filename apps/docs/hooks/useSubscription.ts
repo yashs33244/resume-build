@@ -71,7 +71,7 @@ export const useSubscription = ({ userId, resumeData }: UseSubscriptionProps) =>
         key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
         amount: data.amount,
         currency: data.currency,
-        name: 'Resume Builder',
+        name: 'finalCV',
         description: `${selectedPack} Days Subscription`,
         order_id: data.orderId,
         handler: async function (response: {

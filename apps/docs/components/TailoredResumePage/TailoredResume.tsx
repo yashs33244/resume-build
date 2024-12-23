@@ -116,8 +116,9 @@ const TailoredResumePage: React.FC = () => {
         const resumeId = searchParams.get("id");
 
         const cssLink = `<link rel="stylesheet" href="https://finalcv.com/${data.templateId}.css">`;
+        const layoutcss = `<link rel="stylesheet" href="https://finalcv.com/layout.css">`;
         const fontLink = `<link href='https://fonts.googleapis.com/css?family=Inter' rel='stylesheet'/>`;
-        const htmlContent = cssLink + fontLink + element.outerHTML;
+        const htmlContent = cssLink + layoutcss + fontLink + element.outerHTML;
 
         const response = await fetch("/api/generate-pdf", {
           method: "POST",
@@ -238,7 +239,9 @@ const TailoredResumePage: React.FC = () => {
                 {resumeData && renderTemplate(resumeData)}
               </div>
               <button
-                className={styles.tailor_p2_head_section_heading_button_secondary}
+                className={
+                  styles.tailor_p2_head_section_heading_button_secondary
+                }
                 onClick={() =>
                   resumeData && handleDownload(resumeData, "original")
                 }
@@ -274,7 +277,11 @@ const TailoredResumePage: React.FC = () => {
             </div>
           </div>
         ) : (
-          <div className={loading ? styles.tailor_p1_head_loader : styles.tailor_p1_head}>
+          <div
+            className={
+              loading ? styles.tailor_p1_head_loader : styles.tailor_p1_head
+            }
+          >
             {loading || resumeData == null ? (
               <>
                 <Loader />
