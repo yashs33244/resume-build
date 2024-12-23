@@ -225,9 +225,9 @@ const Dashboard = (props: any) => {
       )}
       <div className="top-section">
         <div className="dash-title">My Resumes</div>
-        <div className="create-cta">
+        <div className="create-cta" onClick={handleCreateNew}>
           <IoAddCircleOutline className="create-icon" />
-          <div onClick={handleCreateNew}>Create New</div>
+          <div>Create New</div>
         </div>
       </div>
       <div className="resume-container">
