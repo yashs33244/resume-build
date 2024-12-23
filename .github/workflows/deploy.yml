@@ -9,6 +9,9 @@ env:
   PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
   INSTANCE_GROUP: ${{ secrets.GCP_INSTANCE_GROUP }}
   ZONE: ${{ secrets.GCP_ZONE }}
+  DOCKERHUB_USERNAME: yashs3324
+  DOCKER_IMAGE_NAME: finalcv
+  DOCKER_IMAGE_TAG: latest
 
 jobs:
   deploy:
@@ -18,7 +21,8 @@ jobs:
       id-token: "write"
 
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
 
       - id: "auth"
         name: "Authenticate to Google Cloud"
@@ -31,20 +35,23 @@ jobs:
         with:
           version: ">= 363.0.0"
 
-      - name: "Use gcloud CLI"
-        run: "gcloud info"
+      - name: "Build Docker image"
+        run: |
+          docker build -t ${{ env.DOCKERHUB_USERNAME }}/${{ env.DOCKER_IMAGE_NAME }}:${{ env.DOCKER_IMAGE_TAG }} .
 
-      - name: Deploy to VM
+      - name: "Push Docker image to Docker Hub"
+        run: |
+          echo "${{ secrets.DOCKERHUB_PASSWORD }}" | docker login --username ${{ env.DOCKERHUB_USERNAME }} --password-stdin
+          docker push ${{ env.DOCKERHUB_USERNAME }}/${{ env.DOCKER_IMAGE_NAME }}:${{ env.DOCKER_IMAGE_TAG }}
+
+      - name: "Deploy to VM"
         run: |
           gcloud compute instance-groups list-instances ${{ secrets.GCP_INSTANCE_GROUP }} \
             --zone ${{ secrets.GCP_ZONE }} \
             --format='get(instance)' | while read instance; do
             gcloud compute ssh $instance --zone ${{ secrets.GCP_ZONE }} --command '
               cd resume-build && \
-              sudo docker system prune -a -f && \
               sudo docker-compose down && \
-              git checkout master && \
-              git pull origin master && \
-              sudo docker-compose up --build -d
+              sudo docker-compose up -d
             '
           done
