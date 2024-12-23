@@ -51,7 +51,7 @@ RUN apk add --no-cache \
     pango \
     openssl
 
-# Set Chrome path
+# Set Chrome pathxp
 ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser
 
 # Install PostgreSQL client

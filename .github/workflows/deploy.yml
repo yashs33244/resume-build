@@ -35,16 +35,25 @@ jobs:
         with:
           version: ">= 363.0.0"
 
-      - name: "Build Docker image"
+      - name: Set up environment variables for Next.js
         run: |
-          docker build -t ${{ env.DOCKERHUB_USERNAME }}/${{ env.DOCKER_IMAGE_NAME }}:${{ env.DOCKER_IMAGE_TAG }} .
+          echo "RAZORPAY_KEY_ID=${{ secrets.RAZORPAY_KEY_ID }}" >> apps/docs/.env
+          echo "NEXT_PUBLIC_RAZORPAY_KEY_ID=${{ secrets.NEXT_PUBLIC_RAZORPAY_KEY_ID }}" >> apps/docs/.env
+          echo "RAZORPAY_KEY_SECRET=${{ secrets.RAZORPAY_KEY_SECRET }}" >> apps/docs/.env
 
-      - name: "Push Docker image to Docker Hub"
+      - name: Build Docker image
+        run: |
+          docker build --build-arg RAZORPAY_KEY_ID=${{ secrets.RAZORPAY_KEY_ID }} \
+                       --build-arg NEXT_PUBLIC_RAZORPAY_KEY_ID=${{ secrets.NEXT_PUBLIC_RAZORPAY_KEY_ID }} \
+                       --build-arg RAZORPAY_KEY_SECRET=${{ secrets.RAZORPAY_KEY_SECRET }} \
+                       -t ${{ env.DOCKERHUB_USERNAME }}/${{ env.DOCKER_IMAGE_NAME }}:${{ env.DOCKER_IMAGE_TAG }} .
+
+      - name: Push Docker image to Docker Hub
         run: |
           echo "${{ secrets.DOCKERHUB_PASSWORD }}" | docker login --username ${{ env.DOCKERHUB_USERNAME }} --password-stdin
           docker push ${{ env.DOCKERHUB_USERNAME }}/${{ env.DOCKER_IMAGE_NAME }}:${{ env.DOCKER_IMAGE_TAG }}
 
-      - name: "Deploy to VM"
+      - name: Deploy to VM
         run: |
           gcloud compute instance-groups list-instances ${{ secrets.GCP_INSTANCE_GROUP }} \
             --zone ${{ secrets.GCP_ZONE }} \
