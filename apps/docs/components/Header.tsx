@@ -10,7 +10,7 @@ import { FaCircleUser } from "react-icons/fa6";
 import logo from "./logo.svg";
 import premium from "./premium.svg";
 import { useUserStatus } from "../hooks/useUserStatus";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { useProfileSession } from "../hooks/useProfileSession";
 import { useEffect } from "react";
 
@@ -19,6 +19,7 @@ export default function Header() {
   const sessionUser = user;
   const { isPaid, refetchUser } = useUserStatus();
   const router = useRouter();
+  const pathname = usePathname();
 
   const handleSignOut = async (e: any) => {
     e.preventDefault();
@@ -26,7 +27,19 @@ export default function Header() {
       callbackUrl: "/?redirectType=signout",
       redirect: true,
     });
-  };
+  };  
+
+  useEffect(() => {
+    if(pathname === '/select-templates/checkout') {
+      return;
+    }
+
+    if (!user) {
+      router.push("/");
+    } else {
+      router.push("/dashboard");
+    }
+  }, [user?.email]);
 
   return (
     <div className="header-container">
