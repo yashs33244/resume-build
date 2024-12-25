@@ -10,12 +10,18 @@ import { FaPhoneAlt } from "react-icons/fa";
 import { FaLinkedin } from "react-icons/fa";
 import { IoIosLink } from "react-icons/io";
 import { getDuration } from "../../../utils";
+import { ImSphere } from "react-icons/im";
 
 export const Template2 = (props: any) => {
   const { resumeData, id } = props;
   // console.log("Resume data = ", resumeData);
   // console.log("Resume data = ", resumeData);
   const [resumeSize, setResumeSize] = useRecoilState(resumeSizeAtom);
+
+  const getDomainName = (website: any) => {
+    const domain = website.match(/^(?:https?:\/\/)?(?:[^@\n]+@)?(?:www\.)?([^:\/\n]+)/im)[1];
+    return domain.split(".")[0];
+  }
 
   return (
     <div className={`template2-wrapper ${resumeData.size} wrapper`} id={id}>
@@ -42,12 +48,18 @@ export const Template2 = (props: any) => {
               <FaPhoneAlt />
               {resumeData?.personalInfo?.phone || "Contact Number"}
             </div>
-            <div className={"header_right_part_phone"}>
+            {resumeData?.personalInfo?.linkedin && <div className={"header_right_part_phone"}>
               <FaLinkedin />
               <a href={resumeData?.personalInfo?.linkedin || "#"}>
                 {`${resumeData?.personalInfo.linkedin ? `LinkedIn` : ""}`}
               </a>
-            </div>
+            </div>}
+            {resumeData?.personalInfo?.website && <div className={"header_right_part_phone"} style={{textTransform: 'capitalize'}}>
+              <ImSphere />
+              <a href={resumeData?.personalInfo?.website || "#"}>
+                {`${resumeData?.personalInfo.website ? `${getDomainName(resumeData.personalInfo.website)}` : ""}`}
+              </a>
+            </div>}
           </div>
         </div>
         <div className={"content"}>

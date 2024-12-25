@@ -88,8 +88,8 @@ const processBulletPoint = (bullet: string): string => {
 
 const prompt = `
 Parse the following resume with these props:
-Extract all the information as it is. Do not meddle with the data. However, follow this rule - 
-Parse into this structure:
+Extract all the information as it is. Do not add or remove anything from the data on your own. Also, do not add "Implemented" prefix to any bullet point. However, follow this rule - 
+Parse all the data into this structure:
 {
   personalInfo: {
     name: string;
@@ -117,7 +117,6 @@ Parse into this structure:
     responsibilities: string[];
     current: boolean;
   }],
-  skills: string[],
   coreSkills: string[],
   projects: [{
     name: string;

@@ -40,6 +40,11 @@ export const Template1 = (props: any) => {
     return name?.split?.(" ")?.map((item: any) => item?.[0]);
   };
 
+  const getDomainName = (website: any) => {
+    const domain = website.match(/^(?:https?:\/\/)?(?:[^@\n]+@)?(?:www\.)?([^:\/\n]+)/im)[1];
+    return domain.split(".")[0];
+  }
+
   // Safely access name for initials
   const initials = getInitials(personalInfo?.name?.toUpperCase() || "");
 
@@ -69,6 +74,9 @@ export const Template1 = (props: any) => {
             {`${personalInfo?.email || "Email"} | ${personalInfo?.phone || "Contact Number"} `}
             <a href={personalInfo?.linkedin || "#"}>
               {`${personalInfo.linkedin ? `| LinkedIn` : ""}`}
+            </a>
+            <a href={personalInfo?.website || "#"} style={{textTransform: 'capitalize'}}>
+              {`${personalInfo.website ? ` | ${getDomainName(personalInfo.website)}` : ""}`}
             </a>
           </div>
           <div className="summary">{personalInfo?.bio || ""}</div>

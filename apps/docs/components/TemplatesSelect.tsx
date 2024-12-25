@@ -3,9 +3,9 @@
 import React, { Suspense } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import template1 from "./template1.png";
-import template2 from "./template2.png";
-import template3 from "./template3.png";
+import template1 from "./Landing/temp_resume1.jpeg";
+import template2 from "./Landing/temp_resume2.jpeg";
+import template3 from "./Landing/temp_resume3.jpeg";
 import logo from "./logo.svg";
 import "./TemplatesSelect.scss";
 import { Loader } from "lucide-react";
@@ -123,9 +123,6 @@ const TemplatesSelect = () => {
             </div>
           </div>
         </div>
-        {/* <div className="logo-wrapper">
-          <Image src={logo} alt="logo" />
-        </div> */}
       </div>
     </Suspense>
   );

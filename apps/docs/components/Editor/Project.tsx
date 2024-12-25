@@ -60,15 +60,26 @@ export const Project: React.FC<ProjectProps> = ({
     handleInputChange("projects", "responsibilities", responsibilities, index);
   };
 
-  const handleAiGeneration = async (prompt: string, index: number) => {
+  const handleAiGeneration = async (promptValue: string, index: number) => {
     setIsLoading({ ...isLoading, [index]: true });
     try {
+      const promptObj = aiPrompts.find((p) => p.value === promptValue);
+      if (!promptObj) throw new Error("Invalid prompt value");
+
+      const project = projects[index];
+      if (!project) throw new Error("Experience not found");
+
+      const content = project.responsibilities?.join("\n") || "";
+
+      const promptText = promptObj.prompt
+        .replace("{content}", content);
+
       const response = await fetch("/api/generate", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ prompt }),
+        body: JSON.stringify({ prompt: promptText }),
       });
 
       if (!response.ok) {
@@ -76,24 +87,7 @@ export const Project: React.FC<ProjectProps> = ({
       }
 
       const data = await response.text();
-      const selection = window.getSelection();
-      if (selection && !selection.isCollapsed) {
-        const range = selection.getRangeAt(0);
-        const quillEditor = document.querySelector(
-          `#responsibilities-${index} .ql-editor`,
-        ) as HTMLElement;
-        if (quillEditor) {
-          const start = range.startOffset;
-          const end = range.endOffset;
-          const newContent =
-            quillEditor.innerHTML.slice(0, start) +
-            data +
-            quillEditor.innerHTML.slice(end);
-          handleResponsibilitiesChange(newContent, index);
-        }
-      } else {
-        handleResponsibilitiesChange(data, index);
-      }
+      handleResponsibilitiesChange(data, index);
     } catch (error) {
       console.error("Error generating content:", error);
     } finally {
@@ -101,11 +95,34 @@ export const Project: React.FC<ProjectProps> = ({
     }
   };
 
+  // const aiPrompts = [
+  //   "Make It Professional",
+  //   "Fix Grammar",
+  //   "Concise",
+  //   "Elaborate",
+  // ];
+
   const aiPrompts = [
-    "Make It Professional",
-    "Fix Grammar",
-    "Concise",
-    "Elaborate",
+    {
+      label: "Make It Professional",
+      value: "make_it_better",
+      prompt: `Act as a great resume expert and rewrite the following in the most impactful, sharp, result-oriented and professional manner, such that my resume should stand out. Highlight achievements and strengths. Don't lose out on any significant information and context. Use your expertise in the subject. Ensure it aligns with the input text and is not stretched too much in length. Give me the revamped output. \n\n Input : {content}`,
+    },
+    {
+      label: "Fix Grammar",
+      value: "fix_grammar",
+      prompt: `Act like a grammar expert and scrutinize the following input. Fix it end-to-end for all grammatical errors but do not change the content or it's delivery. Just fix the grammar and return the output with similar structure. \n\n Input : {content}`,
+    },
+    {
+      label: "Concise",
+      value: "shorten",
+      prompt: `Act like a great resume expert, rewrite the following and summarize the following input. Make it concise and shorten it, but don't lose out on critical and impactful information. \n\n Input : {content}`,
+    },
+    {
+      label: "Elaborate",
+      value: "lengthen",
+      prompt: `Act like a great resume expert, rewrite the following and elaborate on the following input. Rewrite it in a compelling manner. Don't stretch it too much though. Use your expertise to keep it relevant. \n\n Input : {content}`,
+    },
   ];
 
   return (
@@ -219,18 +236,11 @@ export const Project: React.FC<ProjectProps> = ({
                     {aiPrompts.map((prompt, promptIndex) => (
                       <button
                         key={promptIndex}
-                        onClick={() => {
-                          const selection = window.getSelection()?.toString();
-                          const textToUse =
-                            selection ||
-                            proj.responsibilities?.join("\n") ||
-                            "";
-                          handleAiGeneration(`${prompt}: ${textToUse}`, index);
-                        }}
-                        className=" ai-chip px-3 py-1 bg-blue-600 text-white rounded-full text-sm hover:bg-blue-700 transition-colors duration-200 disabled:opacity-50"
+                        onClick={() => handleAiGeneration(prompt.value, index)}
+                        className="ai-chip px-3 py-1 bg-blue-600 text-white rounded-full text-sm hover:bg-blue-700 transition-colors duration-200 disabled:opacity-50"
                         disabled={isLoading[index]}
                       >
-                        {prompt}
+                        {prompt.label}
                       </button>
                     ))}
                   </div>

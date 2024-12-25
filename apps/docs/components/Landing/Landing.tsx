@@ -1,7 +1,5 @@
 "use client";
-import logo from "./logo.svg";
 import React, { useState, useEffect } from "react";
-import imp from "./imp.svg";
 import ats from "./ats.svg";
 import ai from "./ai.svg";
 import job from "./job.svg";
@@ -10,25 +8,18 @@ import meta from "./referrals/meta.png";
 import google from "./referrals/google.png";
 import microsoft from "./referrals/microsoft.png";
 import phonepe from "./referrals/phonepe.png";
-import flip from "./referrals/flipkart.png";
 import cars from "./referrals/cars.png";
 import acko from "./referrals/acko.png";
 import groww from "./referrals/groww.png";
 import ycom from "./referrals/ycom.png";
-import cover from "./cover.svg";
 import format from "./format.svg";
-import { GrLinkedin } from "react-icons/gr";
 import { MdOutlineContentPasteSearch } from "react-icons/md";
-import { FaEdit } from "react-icons/fa";
-import template1 from "./template1.png";
-import template2 from "./template2.png";
-import template3 from "./template3.png";
-import legend1 from "./legend1.svg";
-import legend2 from "./legend2.svg";
-import legend3 from "./legend3.svg";
-import temp_resume1 from "./temp_resume1.png";
-import temp_resume2 from "./temp_resume2.png";
-import temp_resume3 from "./temp_resume3.png";
+import legend1 from "./legend1.png";
+import legend2 from "./legend2.png";
+import legend3 from "./legend3.png";
+import temp_resume1 from "./temp_resume1.jpeg";
+import temp_resume2 from "./temp_resume2.jpeg";
+import temp_resume3 from "./temp_resume3.jpeg";
 import Image from "next/image";
 import lovedby from "./lovedby.svg";
 import flipkart from "./flipkart.png";
@@ -38,7 +29,6 @@ import swiggy from "./swiggy1.png";
 import { MdRocketLaunch } from "react-icons/md";
 import amazon from "./amazon.png";
 import paytm from "./paytm.png";
-import Typewriter from "typewriter-effect";
 import stars from "./stars.svg";
 import apoorv from "./apoorv.jpeg";
 import apoorva from "./apoorva.jpeg";
@@ -201,6 +191,12 @@ export default function LandingPage() {
             infinite={true}
           >
             <img
+              src={legend1.src}
+              alt="template"
+              // width="100%"
+              // height="200px"
+            />
+            <img
               src={legend2.src}
               alt="template"
               // width="100%"
@@ -208,12 +204,6 @@ export default function LandingPage() {
             />
             <img
               src={legend3.src}
-              alt="template"
-              // width="100%"
-              // height="200px"
-            />
-            <img
-              src={legend1.src}
               alt="template"
               // width="100%"
               // height="200px"
@@ -368,7 +358,7 @@ export default function LandingPage() {
                   setSelectedTemplate("classic");
               }}
             >
-              Fresher
+              Professional
             </div>
             <div
               className={`${selectedTemplate === "modern" ? "nav-item selected" : "nav-item"}`}
@@ -377,7 +367,7 @@ export default function LandingPage() {
                   setSelectedTemplate("modern");
               }}
             >
-              Experienced
+              Minimal
             </div>
             <div
               className={`${selectedTemplate === "bold" ? "nav-item selected" : "nav-item"}`}
@@ -386,7 +376,7 @@ export default function LandingPage() {
                 setSelectedTemplate("bold");
               }}
             >
-              Presentable
+              Modern
             </div>
             <div
               className="template-cta"
@@ -500,7 +490,7 @@ export default function LandingPage() {
               <Image src={stars} alt="stars" />
             </div>
             <div className="content">
-              "There custom AI prompts and tips were truly a live saver. I could
+              "The custom AI prompts and tips were truly a live saver. I could
               finally write my experiences professionally."
             </div>
             <div className="timestamp">Jan 19, 2024</div>

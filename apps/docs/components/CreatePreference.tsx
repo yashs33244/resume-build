@@ -234,21 +234,9 @@ export default function CreatePreference() {
               error={error}
             />
           )}
-          {/* <ResumeUploadProgress
-                isLoading={isLoading}
-                progress={progress}
-                progressPhase={progressPhase}
-                error={error}
-            /> */}
         </div>
         <div className="right"> </div>
       </div>
-      {/* <style jsx>{`
-        .disabled {
-          pointer-events: none;
-          cursor: not-allowed;
-        }
-      `}</style> */}
     </div>
   );
 }

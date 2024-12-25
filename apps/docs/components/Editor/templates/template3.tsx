@@ -11,10 +11,16 @@ import { useRecoilState } from "recoil";
 import { resumeSizeAtom } from "../../../store/resumeSize";
 import { getDuration } from "../../../utils";
 import { IoIosLink } from "react-icons/io";
+import { ImSphere } from "react-icons/im";
 
 export const Template3 = (props: any) => {
   const { resumeData, id } = props;
   const [resumeSize, setResumeSize] = useRecoilState(resumeSizeAtom);
+
+  const getDomainName = (website: any) => {
+    const domain = website.match(/^(?:https?:\/\/)?(?:[^@\n]+@)?(?:www\.)?([^:\/\n]+)/im)[1];
+    return domain.split(".")[0];
+  }
 
   return (
     <div className={`template3-wrapper ${resumeData.size} wrapper`} id={id}>
@@ -62,6 +68,18 @@ export const Template3 = (props: any) => {
                 <a href={resumeData.personalInfo?.linkedin}>
                   <span>
                     {resumeData.personalInfo?.linkedin ? "LinkedIn" : ""}
+                  </span>
+                </a>
+              </div>
+            )}
+            {resumeData?.personalInfo?.website && (
+              <div className={"lp_add_info_value"} style={{textTransform: 'capitalize'}}>
+                <div className="circle">
+                  <ImSphere />
+                </div>
+                <a href={resumeData.personalInfo?.website}>
+                  <span>
+                    {resumeData.personalInfo?.website ? getDomainName(resumeData.personalInfo.website) : ""}
                   </span>
                 </a>
               </div>
