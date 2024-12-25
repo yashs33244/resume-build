@@ -28,14 +28,6 @@ export default function Header() {
     });
   };
 
-  useEffect(() => {
-    if (!user) {
-      router.push("/");
-    } else {
-      router.push("/dashboard");
-    }
-  }, [user?.email]);
-
   return (
     <div className="header-container">
       <div className="logo-container">

@@ -41,9 +41,11 @@ export const Template1 = (props: any) => {
   };
 
   const getDomainName = (website: any) => {
-    const domain = website.match(/^(?:https?:\/\/)?(?:[^@\n]+@)?(?:www\.)?([^:\/\n]+)/im)[1];
+    const domain = website.match(
+      /^(?:https?:\/\/)?(?:[^@\n]+@)?(?:www\.)?([^:\/\n]+)/im,
+    )[1];
     return domain.split(".")[0];
-  }
+  };
 
   // Safely access name for initials
   const initials = getInitials(personalInfo?.name?.toUpperCase() || "");
@@ -67,7 +69,9 @@ export const Template1 = (props: any) => {
         <div className="primary-info">
           <div className="name">
             <div>{personalInfo?.name?.toUpperCase() || "Full Name"}</div>
-            <div className="job-title">{personalInfo?.title || "Job Title"}</div>
+            <div className="job-title">
+              {personalInfo?.title || "Job Title"}
+            </div>
           </div>
           {/* <div className="position">{personalInfo?.title || "Job Title"}</div> */}
           <div className="information">
@@ -75,7 +79,10 @@ export const Template1 = (props: any) => {
             <a href={personalInfo?.linkedin || "#"}>
               {`${personalInfo.linkedin ? `| LinkedIn` : ""}`}
             </a>
-            <a href={personalInfo?.website || "#"} style={{textTransform: 'capitalize'}}>
+            <a
+              href={personalInfo?.website || "#"}
+              style={{ textTransform: "capitalize" }}
+            >
               {`${personalInfo.website ? ` | ${getDomainName(personalInfo.website)}` : ""}`}
             </a>
           </div>
@@ -140,7 +147,15 @@ export const Template1 = (props: any) => {
               <div className="proj-container" key={index}>
                 {proj?.name && (
                   <a className="proj-name" href={proj?.link || null}>
-                    <div style={{display: 'flex', alignItems: 'center', gap: '4px'}}>{proj.name} {proj?.link ? <IoIosLink /> : null}</div>
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "4px",
+                      }}
+                    >
+                      {proj.name} {proj?.link ? <IoIosLink /> : null}
+                    </div>
                     <div className="project-duration">{`${getDuration(proj?.start)} - ${proj?.current ? "Present" : getDuration(proj?.end)}`}</div>
                   </a>
                 )}
@@ -175,7 +190,7 @@ export const Template1 = (props: any) => {
                   )}
                 </div>
               ))}
-            </div>            
+            </div>
           </div>
         )}
         {coreSkills.length > 0 && (

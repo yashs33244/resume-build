@@ -50,7 +50,7 @@ export const useDownload = ({
   ) => {
     // Payment check for non-tailored resume pages
     if (!isPaid && !data) {
-      router.push(`/select-templates/checkout?id=${resumeId}`);
+      router.push(`/select-templates/checkout`);
       return;
     }
 

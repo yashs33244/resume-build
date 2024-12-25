@@ -19,16 +19,9 @@ export const useSubscription = ({ userId, resumeData }: UseSubscriptionProps) =>
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const { isPaid } = useUserStatus();
-  const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
 
   // Create the download handler using the useDownload hook
-  const downloadHandler = useDownload({
-    session: null,
-    isPaid,
-    setIsGeneratingPDF,
-    resumeData: resumeData,
-  });
+
 
   const handleSubscription = useCallback(async (selectedPack: '30' | '90') => {
     try {

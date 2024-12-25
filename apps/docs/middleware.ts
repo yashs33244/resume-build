@@ -17,7 +17,7 @@ const EXCLUDED_ROUTES = [
 ]
 
 // List of public routes that don't require authentication
-const PUBLIC_ROUTES = ['/', '/login', '/register', '/forgot-password']
+const PUBLIC_ROUTES = ['/', '/login', '/register', '/forgot-password', '/select-templates/checkout/*']
 
 export async function middleware(request: NextRequest) {
   // Get the user agent string
