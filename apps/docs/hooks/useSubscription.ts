@@ -113,7 +113,7 @@ export const useSubscription = ({ userId, resumeData }: UseSubscriptionProps) =>
           },
         },
         theme: {
-          color: '#F37254',
+          color: '#3B5BFF',
         },
       };
 

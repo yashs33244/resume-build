@@ -88,13 +88,11 @@ export async function POST(req: NextRequest) {
           }
         }),
         // Skills
-        ...(resumeData.skills && resumeData.skills.length > 0 && {
-          skills: {
-            create: resumeData.skills
-              .filter((skill:any) => skill && skill.name && skill.name.trim() !== '')
-              .map((skill:any) => ({
-                name: skill.name.trim()
-              }))
+        ...(resumeData.coreSkills && resumeData.coreSkills.length > 0 && {
+          coreSkills: {
+            create: resumeData.coreSkills.map(skill => ({
+              name: skill 
+            }))
           }
         }),
         
@@ -134,7 +132,11 @@ export async function POST(req: NextRequest) {
         personalInfo: true,
         education: true,
         experience: true,
-        skills: true
+        projects: true,
+        certificates: true,
+        achievements: true,
+        skills: true,
+        coreSkills: true, 
       }
     });
 
