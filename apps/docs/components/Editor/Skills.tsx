@@ -50,7 +50,7 @@ export const Skills: React.FC<SkillsProps> = ({
         certifications: ${resumeData.certificates}  
         Bio: ${resumeData.personalInfo?.bio ?? ""}
 
-        Also leverage above resume data to give the required 10 suggestions. No output string not be a long sentence. Suggest like they need to be mapped with a resume.`;
+        Also leverage above resume data to give the required 10 suggestions. No output string not be a long sentence. Suggest like they need to be mapped with a resume. No suggested item in the output list should contain any index or numers. They should just be a suggestion of type string.`;
 
         const response = await fetch("/api/generate/skills", {
           method: "POST",
