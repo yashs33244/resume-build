@@ -10,8 +10,8 @@ const razorpay = new Razorpay({
 
 // Plan configurations
 const PLAN_AMOUNTS = {
-  '30-day-plan': 24900, // 199 INR in paise
-  '90-day-plan': 59900  // 499 INR in paise
+  '30-day-plan': 17500, // 199 INR in paise
+  '90-day-plan': 42000  // 499 INR in paise
 } as const;
 
 export async function POST(request: NextRequest) {
