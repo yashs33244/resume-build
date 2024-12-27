@@ -1,10 +1,11 @@
 "use client";
 import { signIn } from "next-auth/react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { PiHandWavingDuotone } from "react-icons/pi";
 import logo from "./logo.svg";
 import Image from "next/image";
+import ReactGA from "react-ga4";
 import { FaCheck } from "react-icons/fa6";
 import vector1 from "./vector1.svg";
 import vector2 from "./vector2.svg";
@@ -32,6 +33,10 @@ export default function SignIn() {
       router.push("/dashboard");
     }
   };
+
+  useEffect(() => {
+    ReactGA.send({ hitType: "pageview", page: 'Login', title: "App" });
+  }, [])
 
   return (
     <div className="signin-container">

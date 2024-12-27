@@ -7,6 +7,7 @@ import file_upload from "./File_Upload.png";
 import file_add from "./File_Add.png";
 
 import "./CreatePreference.scss";
+import ReactGA from "react-ga4";
 import { ResumeProps, ResumeState } from "../types/ResumeProps";
 import { useSaveResume } from "../hooks/useSaveResume";
 import { useResumeUpload } from "../hooks/useResumeUpload";
@@ -64,6 +65,10 @@ export default function CreatePreference() {
       localStorage.setItem("fromLandingPage", "true");
     }
   }, [template, fromLanding]);
+
+  useEffect(() => {
+    ReactGA.send({ hitType: "pageview", page: 'Create-Preference', title: "App" });
+  }, [])
 
   const onDrop = useCallback(
     async (acceptedFiles: File[]) => {

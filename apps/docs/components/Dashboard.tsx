@@ -11,6 +11,7 @@ import { VscDebugRestart } from "react-icons/vsc";
 import { IoAddCircleOutline } from "react-icons/io5";
 import { Template1 } from "./Editor/templates/Template1";
 import { Template2 } from "./Editor/templates/template2";
+import ReactGA from "react-ga4";
 import { Template3 } from "./Editor/templates/template3";
 import { useResumeState } from "../hooks/useResumeState";
 import TimeAgo from "./TimeAgo";
@@ -60,6 +61,10 @@ const Dashboard = (props: any) => {
       router.push("/create-preference");
     }
   }, [isLoading, resumes, router]);
+
+  useEffect(() => {
+    ReactGA.send({ hitType: "pageview", page: 'Dashboard', title: "App" });
+  }, [])
 
   const renderTemplate = (template: string, resumeData: object) => {
     switch (template) {
@@ -263,9 +268,16 @@ const Dashboard = (props: any) => {
                     </Link>
                     <div
                       className={`download ${downloadingId === resume.resumeId ? "opacity-50" : "cursor-pointer"}`}
-                      onClick={() =>
-                        downloadingId !== resume.resumeId &&
-                        handleDownload(resume.resumeId, resume.templateId)
+                      onClick={() => {
+                          ReactGA.event({
+                            category: "User Intent",
+                            action: "Download",
+                            label: "Download", // optional                              
+                          });
+                          if(downloadingId !== resume.resumeId) {
+                            handleDownload(resume.resumeId, resume.templateId)
+                          }
+                        }                        
                       }
                     >
                       {downloadingId === resume.resumeId ? (

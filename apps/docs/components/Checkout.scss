@@ -111,11 +111,27 @@
             flex-direction: column;
             align-items: center;
 
+            .offer-ribbon {
+                background-color: #0F8C30;
+                padding: 4px 24px;
+                border-radius: 30px;
+                opacity: 0.8;
+                border: 1px dotted rgba(255,255,255,0.7);
+                width: 75%;
+                text-align: center;
+                font-style: italic;
+
+                .offer {
+                    font-weight: 700;
+                }
+            }
+
             .payment-packs {
                 display: flex;
                 align-items: center;
                 justify-content: space-between;
                 width: 78%;
+                margin-top: 16px;
 
                 .pack-30 {
                     width: 45%;

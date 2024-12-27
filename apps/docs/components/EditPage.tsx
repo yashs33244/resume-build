@@ -15,6 +15,7 @@ import { AiFillProject } from "react-icons/ai";
 import short_logo from "./short_logo.svg";
 import { IoMdDownload } from "react-icons/io";
 import { Loader } from "lucide-react";
+import ReactGA from "react-ga4";
 import { CiCircleChevLeft } from "react-icons/ci";
 import { PiCaretCircleRightFill, PiCertificateFill } from "react-icons/pi";
 import { MdTipsAndUpdates } from "react-icons/md";
@@ -290,6 +291,10 @@ export default function EditPage() {
     const newIndex = currentIndex + 1;
     setActiveSection(navElements[newIndex]);
   };
+
+  useEffect(() => {
+    ReactGA.send({ hitType: "pageview", page: 'Edit-Page', title: "App" });
+  }, [])
 
   useEffect(() => {
     function scaleContent() {
@@ -659,8 +664,15 @@ export default function EditPage() {
                       className="download"
                       onClick={
                         !isGeneratingPDF
-                          ? () =>
-                              handleDownload(resumeId, resumeData.templateId)
+                          ? () => {
+                            ReactGA.event({
+                              category: "User Intent",
+                              action: "Download",
+                              label: "Download", // optional                              
+                            });
+                            handleDownload(resumeId, resumeData.templateId)
+                          }
+                              
                           : undefined
                       }
                     >

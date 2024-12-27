@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { ReactNode, useEffect } from "react";
 import { Inter as FontSans } from "next/font/google";
 import { cn } from "@repo/ui/lib/utils";
 import type { Metadata } from "next";
@@ -6,6 +6,9 @@ import "@repo/ui/globals.css";
 import { Providers } from "./providers";
 import ConditionalHeader from "../components/ConditionalHeader";
 import ConditionalFooter from "../components/ConditionalFooter";
+import ReactGA from "react-ga4";
+
+ReactGA.initialize("G-4HR83E05K0");
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -156,7 +159,8 @@ export default async function RootLayout({
   children,
 }: {
   children: ReactNode;
-}) {
+}) {  
+
   return (
     <html lang="en" style={{ background: "#1B2432" }}>
       <head>

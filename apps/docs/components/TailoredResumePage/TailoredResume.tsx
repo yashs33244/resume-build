@@ -4,6 +4,7 @@ import { IoMdDownload } from "react-icons/io";
 import { useRecoilState } from "recoil";
 import { isGeneratingPDFAtom } from "../../store/pdfgenerating";
 import { resumeTimeAtom } from "../../store/expiry";
+import ReactGA from 'react-ga4';
 import { Template1 } from "../Editor/templates/Template1";
 import { Template2 } from "../Editor/templates/template2";
 import { Template3 } from "../Editor/templates/template3";
@@ -63,6 +64,7 @@ const TailoredResumePage: React.FC = () => {
   }
 
   useEffect(() => {
+    ReactGA.send({ hitType: "pageview", page: 'Tailor-Resume', title: "App" });
     window.addEventListener("resize", scaleContent);
     scaleContent();
     return () => {

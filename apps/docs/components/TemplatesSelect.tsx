@@ -1,6 +1,6 @@
 "use client";
 
-import React, { Suspense } from "react";
+import React, { Suspense, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import template1 from "./Landing/temp_resume1.jpeg";
@@ -9,6 +9,7 @@ import template3 from "./Landing/temp_resume3.jpeg";
 import logo from "./logo.svg";
 import "./TemplatesSelect.scss";
 import { Loader } from "lucide-react";
+import ReactGA from "react-ga4";
 import { useTemplateSelection } from "../hooks/useTemplateSelection";
 import { LandingLoader } from "./LandingLoader";
 
@@ -24,6 +25,10 @@ const TemplatesSelect = () => {
     loading,
     error,
   } = useTemplateSelection();
+
+  useEffect(() => {
+    ReactGA.send({ hitType: "pageview", page: 'Select-Template', title: "App" });
+  }, [])
 
   if (resumeLoading || (templateSelected && loading)) {
     return (

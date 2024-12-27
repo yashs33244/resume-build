@@ -17,6 +17,7 @@ import { MdOutlineContentPasteSearch } from "react-icons/md";
 import legend1 from "./legend1.png";
 import legend2 from "./legend2.png";
 import legend3 from "./legend3.png";
+import ReactGA from "react-ga4";
 import temp_resume1 from "./temp_resume1.jpeg";
 import temp_resume2 from "./temp_resume2.jpeg";
 import temp_resume3 from "./temp_resume3.jpeg";
@@ -119,6 +120,8 @@ export default function LandingPage() {
     if (user) {
       router.push("/dashboard");
     }
+    
+    ReactGA.send({ hitType: "pageview", page: '/Landing', title: "App" });
   }, []);
 
   // Handle redirect based on user session
