@@ -34,6 +34,7 @@ jobs:
         uses: "google-github-actions/setup-gcloud@v1"
         with:
           version: ">= 363.0.0"
+          project_id: ${{ env.PROJECT_ID }}
 
       - name: Set up environment variables for Next.js
         run: |
@@ -44,23 +45,49 @@ jobs:
       - name: Build Docker image
         run: |
           docker build --build-arg RAZORPAY_KEY_ID=${{ secrets.RAZORPAY_KEY_ID }} \
-                       --build-arg NEXT_PUBLIC_RAZORPAY_KEY_ID=${{ secrets.NEXT_PUBLIC_RAZORPAY_KEY_ID }} \
-                       --build-arg RAZORPAY_KEY_SECRET=${{ secrets.RAZORPAY_KEY_SECRET }} \
-                       -t ${{ env.DOCKERHUB_USERNAME }}/${{ env.DOCKER_IMAGE_NAME }}:${{ env.DOCKER_IMAGE_TAG }} .
+                      --build-arg NEXT_PUBLIC_RAZORPAY_KEY_ID=${{ secrets.NEXT_PUBLIC_RAZORPAY_KEY_ID }} \
+                      --build-arg RAZORPAY_KEY_SECRET=${{ secrets.RAZORPAY_KEY_SECRET }} \
+                      -t ${{ env.DOCKERHUB_USERNAME }}/${{ env.DOCKER_IMAGE_NAME }}:${{ env.DOCKER_IMAGE_TAG }} .
 
       - name: Push Docker image to Docker Hub
         run: |
           echo "${{ secrets.DOCKERHUB_PASSWORD }}" | docker login --username ${{ env.DOCKERHUB_USERNAME }} --password-stdin
           docker push ${{ env.DOCKERHUB_USERNAME }}/${{ env.DOCKER_IMAGE_NAME }}:${{ env.DOCKER_IMAGE_TAG }}
 
-      - name: Deploy to VM
+      - name: Configure SSH
         run: |
-          gcloud compute instance-groups list-instances ${{ secrets.GCP_INSTANCE_GROUP }} \
-            --zone ${{ secrets.GCP_ZONE }} \
-            --format='get(instance)' | while read instance; do
-            gcloud compute ssh $instance --zone ${{ secrets.GCP_ZONE }} --command '
-              cd resume-build && \
-              sudo docker-compose down && \
-              sudo docker-compose up -d
-            '
+          mkdir -p ~/.ssh/
+          echo "${{ secrets.GCP_SSH_PRIVATE_KEY }}" > ~/.ssh/google_compute_engine
+          echo "${{ secrets.GCP_SSH_PUBLIC_KEY }}" > ~/.ssh/google_compute_engine.pub
+          chmod 600 ~/.ssh/google_compute_engine
+          chmod 600 ~/.ssh/google_compute_engine.pub
+
+      - name: Deploy to VM instances
+        run: |
+          instances=$(gcloud compute instance-groups list-instances ${{ env.INSTANCE_GROUP }} \
+            --zone ${{ env.ZONE }} \
+            --format='get(instance)')
+
+          for instance in $instances; do
+            echo "Deploying to instance: $instance"
+            
+            # Wait for SSH to be available
+            gcloud compute ssh --quiet $instance \
+              --zone ${{ env.ZONE }} \
+              --command "exit" \
+              --ssh-key-file=~/.ssh/google_compute_engine
+            
+            # Pull latest image and restart containers
+            gcloud compute ssh $instance \
+              --zone ${{ env.ZONE }} \
+              --ssh-key-file=~/.ssh/google_compute_engine \
+              --command '
+                cd resume-build && \
+                sudo docker pull ${{ env.DOCKERHUB_USERNAME }}/${{ env.DOCKER_IMAGE_NAME }}:${{ env.DOCKER_IMAGE_TAG }} && \
+                sudo docker-compose down && \
+                sudo docker system prune -af && \
+                sudo docker-compose up -d
+              '
+            
+            echo "Deployment completed for instance: $instance"
           done
