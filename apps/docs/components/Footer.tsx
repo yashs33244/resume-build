@@ -31,7 +31,7 @@ export default function Footer() {
           }
         >
           <FaLinkedin />
-          <div style={{ marginLeft: "8px" }}>LinkedIn</div>
+          <div style={{ marginLeft: "8px" }}>Linkedin</div>
         </div>
       </div>
       <div className="contact">

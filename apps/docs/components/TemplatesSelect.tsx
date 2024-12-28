@@ -27,8 +27,12 @@ const TemplatesSelect = () => {
   } = useTemplateSelection();
 
   useEffect(() => {
-    ReactGA.send({ hitType: "pageview", page: 'Select-Template', title: "App" });
-  }, [])
+    ReactGA.send({
+      hitType: "pageview",
+      page: "Select-Template",
+      title: "App",
+    });
+  }, []);
 
   if (resumeLoading || (templateSelected && loading)) {
     return (
@@ -74,7 +78,7 @@ const TemplatesSelect = () => {
                 : "Select Template"}
             </button>
             <div className="template-desc">
-              Goold old fashioned classic template
+              Good old fashioned classic template
             </div>
           </div>
 
