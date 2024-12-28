@@ -40,12 +40,6 @@ export async function middleware(request: NextRequest) {
     secret: process.env.NEXTAUTH_SECRET
   })
 
-  // Always redirect authenticated users from the landing page to dashboard
-  if (token && pathname === '/') {
-    const url = request.nextUrl.clone()
-    url.pathname = '/dashboard'
-    return NextResponse.redirect(url)
-  }
   
   // Handle other public routes for authenticated users
   if (token && PUBLIC_ROUTES.includes(pathname)) {

@@ -27,19 +27,19 @@ export default function Header() {
       callbackUrl: "/?redirectType=signout",
       redirect: true,
     });
-  };  
+  };
 
-  useEffect(() => {
-    if(pathname === '/select-templates/checkout') {
-      return;
-    }
+  // useEffect(() => {
+  //   if (pathname === "/select-templates/checkout") {
+  //     return;
+  //   }
 
-    if (!user) {
-      router.push("/");
-    } else {
-      router.push("/dashboard");
-    }
-  }, [user?.email]);
+  //   if (!user) {
+  //     router.push("/");
+  //   } else {
+  //     router.push("/dashboard");
+  //   }
+  // }, [user?.email]);
 
   return (
     <div className="header-container">
