@@ -80,7 +80,7 @@
   /* Template Container */
   .template3-wrapper .template-container {
     position: relative;
-    background-color: #fff;
+    background-color: transparent;
     height: 95%;
     aspect-ratio: 0.7751937984;
     min-width: 595px;
@@ -325,6 +325,7 @@
     display: flex;
     flex-direction: column;
     gap: 15px;
+    background-color: #fff;
     padding: var(--rp-padding);
     width:calc(100% - 210px);    
   }

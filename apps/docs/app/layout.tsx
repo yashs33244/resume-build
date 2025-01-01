@@ -6,9 +6,7 @@ import "@repo/ui/globals.css";
 import { Providers } from "./providers";
 import ConditionalHeader from "../components/ConditionalHeader";
 import ConditionalFooter from "../components/ConditionalFooter";
-import ReactGA from "react-ga4";
-
-ReactGA.initialize("G-4HR83E05K0");
+import { App } from "./App";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -177,7 +175,8 @@ export default async function RootLayout({
         style={{ background: "#1B2432" }}
       >
         <Providers>
-          <ConditionalHeader />
+          <App />
+          <ConditionalHeader />          
           <div style={{ background: "#1B2432" }}>{children}</div>
           <ConditionalFooter />
         </Providers>

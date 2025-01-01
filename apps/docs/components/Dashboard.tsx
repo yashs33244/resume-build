@@ -217,6 +217,10 @@ const Dashboard = (props: any) => {
     return null;
   }
 
+  const handleResumeClick = (resumeId:string) => {
+    router.push(`/select-templates/editor?id=${resumeId}`)
+  }
+
   // Render dashboard only if there are resumes
   return (
     <div className="dashboard-container">
@@ -248,6 +252,7 @@ const Dashboard = (props: any) => {
             <div className="resume-section">
               <div
                 className={`resume-preview resumeParent resumeParent-${resume.resumeId}`}
+                onClick={() => handleResumeClick(resume.resumeId)}
               >
                 {renderTemplate(resume.templateId, resume)}
               </div>
@@ -268,6 +273,7 @@ const Dashboard = (props: any) => {
                     </Link>
                     <div
                       className={`download ${downloadingId === resume.resumeId ? "opacity-50" : "cursor-pointer"}`}
+                      style={isPaid ? {fontWeight: '700'} : {}}
                       onClick={() => {
                           ReactGA.event({
                             category: "User Intent",
