@@ -35,7 +35,7 @@ export const PersonalInfo: React.FC<PersonalInfoProps> = ({
     title: "Provide your job title.",
     email: "Enter a valid email address.",
     phone: "Enter a valid phone number.",
-    linkedin: "Enter your LinkedIn profile URL.",
+    linkedin: "Enter your Linkedin profile URL.",
     website: "Provide a valid link (e.g., GitHub, portfolio).",
     bio: "Provide a brief professional summary.",
   };
